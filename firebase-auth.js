@@ -427,9 +427,9 @@ function closePerfilModal() {
     document.getElementById('perfil-menu-dropdown').style.display = 'none';
 }
 function renderPerfilView() {
-  // Volver al tamaño normal en vista de perfil
+  // Volver al tamaño compacto en vista normal
   const box = document.getElementById('perfil-modal-box');
-  if (box) box.style.maxWidth = '420px';
+  if (box) { box.style.maxWidth = '420px'; box.style.width = ''; }
   const av = getAvatar(userProfile.avatarId || 1);
   document.getElementById('perfil-avatar-display').textContent      = av.emoji;
   document.getElementById('perfil-avatar-display').style.background = av.bg;
@@ -442,9 +442,9 @@ function renderPerfilView() {
   document.getElementById('perfil-edit').style.display = 'none';
 }
 function enterEditMode() {
-  // Ampliar modal para el layout horizontal
+  // Ampliar modal para layout horizontal de edición
   const box = document.getElementById('perfil-modal-box');
-  if (box) box.style.maxWidth = '620px';
+  if (box) { box.style.maxWidth = '640px'; box.style.width = '95vw'; }
   tempAvatarId = userProfile.avatarId || 1;
   document.getElementById('edit-nombre').value   = userProfile.nombre   || '';
   document.getElementById('edit-apellido').value = userProfile.apellido || '';
@@ -493,21 +493,74 @@ async function saveProfileChanges() {
   const btn = document.getElementById('btn-guardar-cambios');
   btn.textContent = 'Guardando...'; btn.disabled = true; errEl.textContent = '';
   try {
+    // Guardar nombre, apellido, avatar y género en Firestore (no requiere reautenticación)
     await saveProfile(currentUser.uid, { nombre, apellido, avatarId: tempAvatarId, genero });
     userProfile.nombre = nombre; userProfile.apellido = apellido;
     userProfile.avatarId = tempAvatarId; userProfile.genero = genero;
-    if (email !== currentUser.email) {
-      await updateEmail(currentUser, email);
-      await saveProfile(currentUser.uid, { email });
-      userProfile.email = email;
+
+    // Cambio de correo — requiere reautenticación reciente
+    if (email && email !== currentUser.email) {
+      try {
+        await updateEmail(currentUser, email);
+        await saveProfile(currentUser.uid, { email });
+        userProfile.email = email;
+      } catch(emailErr) {
+        if (emailErr.code === 'auth/requires-recent-login' || emailErr.code === 'auth/user-token-expired') {
+          // Mostrar modal de reautenticación para cambio de correo
+          errEl.textContent = '';
+          renderPerfilView();
+          updateNav(currentUser, userProfile);
+          toast('✓ Datos guardados. Para cambiar el correo debes verificar tu contraseña.', 'success');
+          openReauthModal(email);
+          return;
+        }
+        throw emailErr;
+      }
     }
+
     renderPerfilView();
     updateNav(currentUser, userProfile);
     toast('✓ Perfil actualizado', 'success');
   } catch(e) {
-    errEl.textContent = e.code === 'auth/requires-recent-login'
-      ? 'Para cambiar el correo debes cerrar sesión y volver a ingresar.' : e.message;
+    if (e.code === 'auth/requires-recent-login' || e.code === 'auth/user-token-expired') {
+      errEl.textContent = 'Tu sesión expiró. Cierra sesión, vuelve a ingresar e intenta de nuevo.';
+    } else {
+      errEl.textContent = e.message;
+    }
   } finally { btn.textContent = 'Guardar cambios'; btn.disabled = false; }
+}
+
+// Modal de reautenticación para cambio de correo
+function openReauthModal(newEmail) {
+  document.getElementById('reauth-new-email').value = newEmail || '';
+  document.getElementById('reauth-modal').classList.add('open');
+  document.getElementById('reauth-err').textContent = '';
+  document.getElementById('reauth-pass').value = '';
+  setTimeout(() => document.getElementById('reauth-pass')?.focus(), 100);
+}
+function closeReauthModal() {
+  document.getElementById('reauth-modal').classList.remove('open');
+}
+async function doReauth() {
+  const pass     = document.getElementById('reauth-pass').value;
+  const newEmail = document.getElementById('reauth-new-email').value;
+  const errEl    = document.getElementById('reauth-err');
+  const btn      = document.getElementById('btn-reauth-confirm');
+  if (!pass) { errEl.textContent = 'Ingresa tu contraseña.'; return; }
+  btn.textContent = 'Verificando...'; btn.disabled = true;
+  try {
+    const credential = EmailAuthProvider.credential(currentUser.email, pass);
+    await reauthenticateWithCredential(currentUser, credential);
+    await updateEmail(currentUser, newEmail);
+    await saveProfile(currentUser.uid, { email: newEmail });
+    userProfile.email = newEmail;
+    closeReauthModal();
+    updateNav(currentUser, userProfile);
+    toast('✓ Correo actualizado correctamente', 'success');
+  } catch(e) {
+    errEl.textContent = (e.code === 'auth/wrong-password' || e.code === 'auth/invalid-credential')
+      ? 'Contraseña incorrecta.' : e.message;
+  } finally { btn.textContent = 'Confirmar'; btn.disabled = false; }
 }
 async function doLogout() {
   await signOut(auth);
@@ -658,7 +711,7 @@ function injectModals() {
 
   <!-- MODAL PERFIL -->
   <div class="modal-overlay" id="perfil-modal">
-    <div class="modal" id="perfil-modal-box" style="max-width:420px;max-height:90vh;overflow-y:auto;transition:max-width .25s ease;">
+    <div class="modal" id="perfil-modal-box" style="max-width:420px;max-height:92vh;overflow-y:auto;transition:max-width .28s cubic-bezier(.4,0,.2,1);">
       <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:1.5rem;position:sticky;top:0;background:var(--bg2);padding-top:.25rem">
         <h2 style="font-family:'Fraunces',serif;color:var(--accent)">Mi perfil</h2>
         <div style="display:flex;align-items:center;gap:.5rem">
@@ -720,6 +773,21 @@ function injectModals() {
           <button id="btn-guardar-cambios" class="btn-submit" style="flex:1" onclick="saveProfileChanges()">Guardar cambios</button>
         </div>
       </div>
+    </div>
+  </div>
+
+  <!-- MODAL REAUTENTICACIÓN (cambio de correo) -->
+  <div class="modal-overlay" id="reauth-modal">
+    <div class="modal" style="max-width:360px">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:1.25rem">
+        <h2 style="font-family:'Fraunces',serif;color:var(--accent)">Verificar identidad</h2>
+        <button onclick="closeReauthModal()" style="background:none;border:none;color:var(--muted);font-size:1.2rem;cursor:pointer;">✕</button>
+      </div>
+      <p style="color:var(--muted);font-size:.88rem;margin-bottom:1.25rem">Para cambiar tu correo necesitamos verificar tu identidad.</p>
+      <input type="hidden" id="reauth-new-email">
+      <div class="form-group"><label>Tu contraseña actual</label><input type="password" id="reauth-pass" placeholder="••••••••"></div>
+      <p style="color:#c0392b;font-size:.82rem;min-height:1.2em" id="reauth-err"></p>
+      <button id="btn-reauth-confirm" class="btn-submit" onclick="doReauth()">Confirmar cambio de correo</button>
     </div>
   </div>
 
@@ -786,13 +854,14 @@ function injectModals() {
   document.getElementById('phone-otp')?.addEventListener('keydown',   e => { if(e.key==='Enter') verifyPhoneOTP(); });
 
   // Cerrar modales con mousedown en overlay
-  ['student-modal','avance-modal','perfil-modal','delete-modal'].forEach(id => {
+  ['student-modal','avance-modal','perfil-modal','delete-modal','reauth-modal'].forEach(id => {
     document.getElementById(id)?.addEventListener('mousedown', e => {
       if (e.target.id === id) {
         if (id==='student-modal') closeStudentModal();
         if (id==='avance-modal')  closeAvanceModal();
         if (id==='perfil-modal')  closePerfilModal();
         if (id==='delete-modal')  closeDeleteModal();
+        if (id==='reauth-modal')   closeReauthModal();
       }
     });
   });
@@ -889,3 +958,6 @@ window.openDeleteModal       = openDeleteModal;
 window.closeDeleteModal      = closeDeleteModal;
 window.doDeleteAccount       = doDeleteAccount;
 window.forgotPasswordDelete  = forgotPasswordDelete;
+window.openReauthModal       = openReauthModal;
+window.closeReauthModal      = closeReauthModal;
+window.doReauth              = doReauth;

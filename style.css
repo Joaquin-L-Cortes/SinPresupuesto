@@ -347,17 +347,19 @@ footer a:hover { text-decoration: underline; }
 /* ── REGISTRO HORIZONTAL ── */
 .reg-layout {
   display: grid;
-  grid-template-columns: auto 1fr auto;
-  gap: 1.25rem;
+  grid-template-columns: 100px 1fr 148px;
+  gap: 1rem;
   align-items: start;
 }
 .reg-avatar-col {
   display: flex; flex-direction: column; align-items: center;
-  padding-top: 1.5rem;
+  padding-top: 1.25rem;
+  width: 100px;
 }
 .reg-fields-col { min-width: 0; }
-.reg-picker-col { min-width: 0; }
-.reg-picker-col .avatar-opt { width: 42px !important; height: 42px !important; font-size: 1.3rem !important; }
+.reg-picker-col { min-width: 0; width: 148px; }
+.reg-picker-col .avatar-opt { width: 40px !important; height: 40px !important; font-size: 1.25rem !important; }
+#reg-avatar-picker, #edit-avatar-picker { display: grid !important; grid-template-columns: repeat(3, 1fr) !important; gap: .3rem !important; }
 
 @media (max-width: 600px) {
   .reg-layout { grid-template-columns: 1fr; }
