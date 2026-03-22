@@ -66,7 +66,7 @@ nav {
 /* ── MODAL ── */
 .modal-overlay { position: fixed; inset: 0; background: rgba(26,54,107,0.45); backdrop-filter: blur(4px); z-index: 1000; display: none; align-items: center; justify-content: center; }
 .modal-overlay.open { display: flex; }
-.modal { background: var(--bg2); border: 1px solid var(--border); border-radius: 20px; padding: 2rem; width: 100%; max-width: 380px; box-shadow: 0 8px 40px var(--shadow); }
+.modal { background: var(--bg2); border: 1px solid var(--border); border-radius: 20px; padding: 2rem; width: 100%; box-shadow: 0 8px 40px var(--shadow); }
 .modal h2 { font-family: 'Fraunces', serif; font-size: 1.4rem; margin-bottom: 0.4rem; color: var(--accent); }
 .modal > p { color: var(--muted); font-size: 0.85rem; margin-bottom: 1.5rem; }
 .form-group { margin-bottom: 1rem; }
@@ -393,9 +393,9 @@ footer a:hover { text-decoration: underline; }
   .reg-picker-col .avatar-opt,
   #reg-avatar-picker .avatar-opt,
   #edit-avatar-picker .avatar-opt {
-    width: 42px !important;
-    height: 42px !important;
-    font-size: 1.2rem !important;
+    width: 34px !important;
+    height: 34px !important;
+    font-size: 1rem !important;
   }
   /* Campos: columna 1-2 (full width), fila 2 */
   .reg-fields-col {
