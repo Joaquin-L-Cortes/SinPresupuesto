@@ -462,11 +462,30 @@ function enterEditMode() {
   }
 
   document.getElementById('edit-avatar-picker').innerHTML = renderAvatarPicker(tempAvatarId);
-  if (window._initEditPicker) window._initEditPicker();
 
-  document.getElementById('perfil-view').style.display        = 'none';
-  document.getElementById('perfil-edit').style.display        = 'block';
-  document.getElementById('perfil-edit-btns').style.display   = 'flex';
+  // Inicializar picker de avatares directamente aquí
+  document.querySelectorAll('#edit-avatar-picker .avatar-opt').forEach(btn => {
+    btn.addEventListener('click', () => {
+      document.querySelectorAll('#edit-avatar-picker .avatar-opt').forEach(b => {
+        b.classList.remove('av-selected'); b.style.borderColor = 'transparent';
+      });
+      btn.classList.add('av-selected'); btn.style.borderColor = btn.dataset.color;
+      tempAvatarId = parseInt(btn.dataset.id);
+      const av = getAvatar(tempAvatarId);
+      const editPreview = document.getElementById('edit-avatar-preview');
+      if (editPreview) {
+        editPreview.textContent = av.emoji;
+        editPreview.style.background  = av.bg;
+        editPreview.style.borderColor = av.color;
+      }
+      document.getElementById('perfil-avatar-display').textContent      = av.emoji;
+      document.getElementById('perfil-avatar-display').style.background = av.bg;
+    });
+  });
+
+  document.getElementById('perfil-view').style.display      = 'none';
+  document.getElementById('perfil-edit').style.display      = 'block';
+  document.getElementById('perfil-edit-btns').style.display = 'flex';
 }
 async function saveProfileChanges() {
   const nombre   = document.getElementById('edit-nombre').value.trim();
@@ -816,7 +835,6 @@ function injectModals() {
 
   // El edit picker se inicializa en enterEditMode() cada vez que se abre
   // pero reutilizamos la misma lógica de actualizar el preview
-  window._initEditPicker = function() {
     document.querySelectorAll('#edit-avatar-picker .avatar-opt').forEach(btn => {
       btn.addEventListener('click', () => {
         document.querySelectorAll('#edit-avatar-picker .avatar-opt').forEach(b => {
@@ -937,39 +955,6 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 });
 
-window.openAdminModal        = openAdminModal;
-window.closeAdminModal       = closeAdminModal;
-window.doAdminLogin          = doAdminLogin;
-window.confirmAdminLogout    = confirmAdminLogout;
-window.closeAdminLogoutModal = closeAdminLogoutModal;
-window.doAdminLogout         = doAdminLogout;
-window.adminForgotPassword   = adminForgotPassword;
-window.openStudentModal      = openStudentModal;
-window.closeStudentModal     = closeStudentModal;
-window.showStudentTab        = showStudentTab;
-window.doStudentLogin        = doStudentLogin;
-window.doStudentRegister     = doStudentRegister;
-window.doForgotPassword      = doForgotPassword;
-window.loginWithGoogle       = loginWithGoogle;
-window.loginWithMicrosoft    = loginWithMicrosoft;
-window.loginWithApple        = loginWithApple;
-window.showPhonePane         = showPhonePane;
-window.sendPhoneOTP          = sendPhoneOTP;
-window.verifyPhoneOTP        = verifyPhoneOTP;
-window.openAvanceModal       = openAvanceModal;
-window.closeAvanceModal      = closeAvanceModal;
-window.openPerfilModal       = openPerfilModal;
-window.closePerfilModal      = closePerfilModal;
-window.enterEditMode         = enterEditMode;
-window.saveProfileChanges    = saveProfileChanges;
-window.doLogout              = doLogout;
-window.openDeleteModal       = openDeleteModal;
-window.closeDeleteModal      = closeDeleteModal;
-window.doDeleteAccount       = doDeleteAccount;
-window.forgotPasswordDelete  = forgotPasswordDelete;
-window.openReauthModal       = openReauthModal;
-window.closeReauthModal      = closeReauthModal;
-window.doReauth              = doReauth;
 window.openAdminModal        = openAdminModal;
 window.closeAdminModal       = closeAdminModal;
 window.doAdminLogin          = doAdminLogin;
