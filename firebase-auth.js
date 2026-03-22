@@ -660,25 +660,34 @@ function injectModals() {
 
       <!-- REGISTRO COMPACTO -->
       <div id="pane-reg" style="display:none">
-        <!-- Avatar picker compacto + preview en línea -->
-        <div style="display:flex;align-items:center;gap:.75rem;margin-bottom:.75rem">
-          <div id="reg-avatar-preview" style="font-size:2.2rem;width:52px;height:52px;border-radius:50%;display:flex;align-items:center;justify-content:center;background:var(--bg3);border:2px solid var(--border);flex-shrink:0;transition:all .3s;">🦁</div>
-          <div id="reg-avatar-picker" style="display:grid;grid-template-columns:repeat(9,1fr);gap:.2rem;flex:1;"></div>
+        <div class="reg-layout">
+          <!-- Columna izquierda: avatar preview grande -->
+          <div class="reg-avatar-col">
+            <div id="reg-avatar-preview" style="font-size:3.5rem;width:90px;height:90px;border-radius:50%;display:flex;align-items:center;justify-content:center;background:var(--bg3);border:2px solid var(--border);transition:all .3s;">🦁</div>
+            <p style="font-size:.72rem;color:var(--muted);margin-top:.4rem;text-align:center">Tu avatar</p>
+          </div>
+          <!-- Columna centro: campos -->
+          <div class="reg-fields-col">
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:.5rem;margin-bottom:.5rem">
+              <div class="form-group" style="margin-bottom:0"><label>Nombre</label><input type="text" id="st-nombre" placeholder="Joaquín"></div>
+              <div class="form-group" style="margin-bottom:0"><label>Apellido</label><input type="text" id="st-apellido" placeholder="Cortés"></div>
+            </div>
+            <div class="form-group"><label>Correo</label><input type="email" id="st-remail" placeholder="tucorreo@gmail.com"></div>
+            <div class="form-group"><label>Contraseña</label><input type="password" id="st-rpass" placeholder="Mínimo 6 caracteres"></div>
+            <div class="form-group"><label>Género</label>
+              <select id="st-genero" style="width:100%;background:var(--bg3);border:1.5px solid var(--border);border-radius:10px;padding:.55rem .9rem;color:var(--text);font-family:'DM Sans',sans-serif;font-size:.9rem;outline:none;">
+                <option value="M">Masculino</option><option value="F">Femenino</option>
+                <option value="NB">No binario</option><option value="NR">Prefiero no responder</option>
+              </select>
+            </div>
+          </div>
+          <!-- Columna derecha: picker de avatares -->
+          <div class="reg-picker-col">
+            <p style="font-size:.72rem;color:var(--muted);margin-bottom:.4rem;font-weight:600;text-transform:uppercase;letter-spacing:.05em">Elige tu avatar</p>
+            <div id="reg-avatar-picker" style="display:grid;grid-template-columns:repeat(3,1fr);gap:.3rem"></div>
+          </div>
         </div>
-        <!-- Campos en dos columnas -->
-        <div style="display:grid;grid-template-columns:1fr 1fr;gap:.5rem;margin-bottom:.5rem">
-          <div class="form-group" style="margin-bottom:0"><label>Nombre</label><input type="text" id="st-nombre" placeholder="Joaquín"></div>
-          <div class="form-group" style="margin-bottom:0"><label>Apellido</label><input type="text" id="st-apellido" placeholder="Cortés"></div>
-        </div>
-        <div class="form-group"><label>Correo</label><input type="email" id="st-remail" placeholder="tucorreo@gmail.com"></div>
-        <div class="form-group"><label>Contraseña</label><input type="password" id="st-rpass" placeholder="Mínimo 6 caracteres"></div>
-        <div class="form-group"><label>Género</label>
-          <select id="st-genero" style="width:100%;background:var(--bg3);border:1.5px solid var(--border);border-radius:10px;padding:.55rem .9rem;color:var(--text);font-family:'DM Sans',sans-serif;font-size:.9rem;outline:none;">
-            <option value="M">Masculino</option><option value="F">Femenino</option>
-            <option value="NB">No binario</option><option value="NR">Prefiero no responder</option>
-          </select>
-        </div>
-        <p style="color:#c0392b;font-size:.82rem;min-height:1.2em" id="st-reg-err"></p>
+        <p style="color:#c0392b;font-size:.82rem;min-height:1.2em;margin-top:.5rem" id="st-reg-err"></p>
         <button class="btn-submit" onclick="doStudentRegister()">Crear cuenta</button>
       </div>
     </div>

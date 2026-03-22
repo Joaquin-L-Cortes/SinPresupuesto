@@ -355,12 +355,7 @@ footer a:hover { text-decoration: underline; }
 .reg-picker-col .avatar-opt { width: 40px !important; height: 40px !important; font-size: 1.25rem !important; }
 #reg-avatar-picker, #edit-avatar-picker { display: grid !important; grid-template-columns: repeat(3, 1fr) !important; gap: .3rem !important; }
 
-@media (max-width: 600px) {
-  .reg-layout { grid-template-columns: 1fr; }
-  .reg-avatar-col { flex-direction: row; gap: 1rem; padding-top: 0; }
-  .reg-picker-col .avatar-opt { width: 38px !important; height: 38px !important; font-size: 1.1rem !important; }
-  #reg-avatar-picker { grid-template-columns: repeat(4,1fr) !important; }
-}
+
 
 @media (max-width: 768px) {
   /* Punto 1: mostrar hamburguesa */
@@ -478,6 +473,47 @@ footer a:hover { text-decoration: underline; }
     align-items: center !important;
   }
   .modal {
+    overflow: visible !important;
+  }
+
+  /* 3. Registro en móvil: misma estructura compacta que el modal de login */
+  .reg-layout {
+    grid-template-columns: 1fr !important;
+    gap: 0 !important;
+  }
+  /* Avatar preview + picker en una sola fila compacta */
+  .reg-avatar-col {
+    flex-direction: row !important;
+    align-items: center !important;
+    gap: 0.6rem !important;
+    padding-top: 0 !important;
+    width: 100% !important;
+    margin-bottom: 0.6rem !important;
+  }
+  .reg-avatar-col > div:first-child {
+    width: 44px !important;
+    height: 44px !important;
+    font-size: 1.6rem !important;
+    flex-shrink: 0 !important;
+  }
+  .reg-avatar-col > p { display: none !important; }
+  .reg-picker-col {
+    width: 100% !important;
+    order: -1 !important; /* picker antes del preview en móvil */
+  }
+  .reg-picker-col > p { display: none !important; }
+  #reg-avatar-picker, #edit-avatar-picker {
+    grid-template-columns: repeat(9, 1fr) !important;
+    gap: 0.15rem !important;
+  }
+  .reg-picker-col .avatar-opt,
+  #reg-avatar-picker .avatar-opt,
+  #edit-avatar-picker .avatar-opt {
+    width: 30px !important;
+    height: 30px !important;
+    font-size: 0.85rem !important;
+  }
+  .reg-fields-col { width: 100% !important; }
     border-radius: 14px !important;
     max-width: calc(100vw - 1.5rem) !important;
     max-height: 90vh !important;
@@ -507,47 +543,6 @@ footer a:hover { text-decoration: underline; }
     height: 52px !important;
     object-fit: contain !important;
     aspect-ratio: 1 / 1;
-  }
-}
-
-/* 3. Layout registro/edición en móvil: todo apilado limpiamente */
-@media (max-width: 600px) {
-  .reg-layout {
-    grid-template-columns: 1fr !important;
-    gap: 0.75rem;
-  }
-  .reg-avatar-col {
-    flex-direction: row !important;
-    align-items: center;
-    gap: 1rem;
-    padding-top: 0 !important;
-    width: 100% !important;
-  }
-  .reg-avatar-col > div:first-child {
-    /* El preview del avatar */
-    width: 72px !important;
-    height: 72px !important;
-    font-size: 2.2rem !important;
-    flex-shrink: 0;
-  }
-  .reg-picker-col {
-    width: 100% !important;
-    display: flex;
-    flex-direction: column;
-  }
-  #reg-avatar-picker,
-  #edit-avatar-picker {
-    grid-template-columns: repeat(6, 1fr) !important;
-    gap: 0.25rem !important;
-  }
-  .reg-picker-col .avatar-opt {
-    width: 36px !important;
-    height: 36px !important;
-    font-size: 1rem !important;
-  }
-  /* Campos nombre/apellido en columna en móvil muy pequeño */
-  .reg-fields-col > div[style*="grid-template-columns"] {
-    grid-template-columns: 1fr !important;
   }
 }
 
@@ -611,33 +606,7 @@ footer a:hover { text-decoration: underline; }
     padding: 0.45rem 0.85rem !important;
     font-size: 0.85rem !important;
   }
-  /* Avatar preview más pequeño en registro */
-  #reg-avatar-preview,
-  #edit-avatar-preview {
-    width: 44px !important;
-    height: 44px !important;
-    font-size: 1.6rem !important;
-  }
-  /* Avatar picker: 9 columnas en línea */
-  #reg-avatar-picker,
-  #edit-avatar-picker {
-    grid-template-columns: repeat(9, 1fr) !important;
-    gap: 0.15rem !important;
-  }
-  .reg-picker-col .avatar-opt,
-  #reg-avatar-picker .avatar-opt,
-  #edit-avatar-picker .avatar-opt {
-    width: 30px !important;
-    height: 30px !important;
-    font-size: 0.85rem !important;
-  }
-  /* Nombre y apellido lado a lado siempre */
-  #st-nombre,
-  #st-apellido,
-  #edit-nombre,
-  #edit-apellido {
-    font-size: 0.88rem !important;
-  }
+
   /* Reducir margen del sticky header */
   #student-modal-box > div:first-child,
   #perfil-modal-box > div:first-child {
