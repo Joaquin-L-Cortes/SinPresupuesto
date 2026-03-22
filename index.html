@@ -3,189 +3,128 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Sin-Presupuesto UN · PreUniversitario gratuito</title>
-  <meta name="description" content="PreUniversitario gratuito y popular para la Universidad Nacional de Colombia. Clases, módulos, simulacros y más.">
-  <style>
-  @import url('https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,600;1,9..144,300&family=DM+Sans:wght@400;500&display=swap');
-  :root {
-    --bg: #0d0f14; --bg2: #13161d; --bg3: #1a1e28;
-    --border: #252a38; --accent: #f5c842; --accent2: #e8854a;
-    --text: #e8e6df; --muted: #7a7d8a; --card: #161a24;
-  }
-  * { margin: 0; padding: 0; box-sizing: border-box; }
-  body { background: var(--bg); color: var(--text); font-family: 'DM Sans', sans-serif; font-size: 16px; line-height: 1.75; }
-  nav { position: sticky; top: 0; z-index: 100; background: rgba(13,15,20,0.92); backdrop-filter: blur(12px); border-bottom: 1px solid var(--border); padding: 0 2rem; display: flex; align-items: center; gap: 0; }
-  .nav-logo { font-family: 'Fraunces', serif; font-size: 1.25rem; font-weight: 600; color: var(--accent); text-decoration: none; padding: 1rem 1.5rem 1rem 0; border-right: 1px solid var(--border); margin-right: 1rem; white-space: nowrap; }
-  .nav-links { display: flex; flex-wrap: wrap; gap: 0; list-style: none; flex: 1; }
-  .nav-links a { display: block; padding: 1rem 0.85rem; color: var(--muted); text-decoration: none; font-size: 0.875rem; font-weight: 500; transition: color 0.2s; white-space: nowrap; }
-  .nav-links a:hover, .nav-links a.active { color: var(--accent); }
-  
-  /* HERO */
-  .hero { padding: 5rem 2rem 4rem; max-width: 900px; margin: 0 auto; position: relative; }
-  .hero-eyebrow { font-size: 0.75rem; font-weight: 500; letter-spacing: 0.15em; text-transform: uppercase; color: var(--accent2); margin-bottom: 1.25rem; }
-  .hero h1 { font-family: 'Fraunces', serif; font-size: clamp(2.5rem, 6vw, 4rem); font-weight: 600; line-height: 1.1; margin-bottom: 1.25rem; }
-  .hero h1 em { font-style: italic; color: var(--accent); }
-  .hero-desc { font-size: 1.1rem; color: var(--muted); max-width: 560px; margin-bottom: 2.5rem; }
-  .hero-badges { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-bottom: 3rem; }
-  .badge { background: var(--bg3); border: 1px solid var(--border); border-radius: 100px; padding: 0.3rem 0.85rem; font-size: 0.8rem; color: var(--muted); }
-  .badge.hot { border-color: rgba(245,200,66,0.3); color: var(--accent); background: rgba(245,200,66,0.07); }
-  
-  /* GRID DE SECCIONES */
-  .sections-wrap { max-width: 1100px; margin: 0 auto; padding: 0 2rem 5rem; }
-  .sections-title { font-size: 0.7rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--muted); margin-bottom: 1.5rem; padding-bottom: 0.75rem; border-bottom: 1px solid var(--border); }
-  .sections-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 1px; background: var(--border); border: 1px solid var(--border); border-radius: 12px; overflow: hidden; }
-  .section-card { background: var(--card); padding: 1.5rem; text-decoration: none; display: block; transition: background 0.2s; position: relative; }
-  .section-card:hover { background: var(--bg3); }
-  .section-card:hover .card-arrow { opacity: 1; transform: translate(2px,-2px); }
-  .card-num { font-family: 'Fraunces', serif; font-size: 0.85rem; color: var(--accent2); margin-bottom: 0.4rem; font-style: italic; }
-  .card-title { font-size: 0.95rem; font-weight: 500; color: var(--text); line-height: 1.4; }
-  .card-arrow { position: absolute; top: 1.25rem; right: 1.25rem; color: var(--muted); font-size: 0.9rem; opacity: 0; transition: opacity 0.2s, transform 0.2s; }
-  
-  footer { border-top: 1px solid var(--border); padding: 2rem; text-align: center; color: var(--muted); font-size: 0.82rem; }
-  footer a { color: var(--accent); text-decoration: none; }
-  
-  @media (max-width: 768px) {
-    .hero { padding: 3rem 1rem 2rem; }
-    .sections-wrap { padding: 0 1rem 3rem; }
-    .sections-grid { grid-template-columns: 1fr; }
-  }
-</style>
+  <title>Sin-Presupuesto · PreUniversitario gratuito</title>
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
   <nav>
-    <a class="nav-logo" href="index.html">Sin-Presupuesto UN</a>
-    <ul class="nav-links"><li><a href="index.html" class="active">Inicio</a></li><li><a href="motivacion-guia.html" class="">Motivación</a></li><li><a href="clases-sin-pre.html" class="">Clases</a></li><li><a href="modulos-teoricos.html" class="">Material</a></li><li><a href="ejercicios-practicas.html" class="">Práctica</a></li><li><a href="temarios.html" class="">Recursos</a></li><li><a href="donativos.html" class="">Comunidad</a></li></ul>
-  </nav>
-
-  <section class="hero">
-    <p class="hero-eyebrow">PreUniversitario gratuito · Popular · Colombia</p>
-    <h1>Del pueblo,<br>hecho para<br><em>el pueblo.</em></h1>
-    <p class="hero-desc">Somos Sin-Presupuesto UN — un preuniversitario 100% gratuito y popular para quienes aspiran a la Universidad Nacional. Clases, módulos teóricos, simulacros, ejercicios y más.</p>
-    <div class="hero-badges">
-      <span class="badge hot">✦ Completamente gratis</span>
-      <span class="badge">Clases grabadas</span>
-      <span class="badge">Simulacros UN</span>
-      <span class="badge">Módulos teóricos</span>
-      <span class="badge">Recursos UdeA</span>
-      <span class="badge">Apps de estudio</span>
+    <a class="nav-logo" href="index.html">
+      <img src="logos/filosofia.png" alt="Sin-Presupuesto logo">
+      Sin-Presupuesto
+    </a>
+    <ul class="nav-links"><li><a href="index.html" class="active">Inicio</a></li><li><a href="motivacion-guia.html" class="active">Motivación</a></li><li><a href="clases-sin-pre.html" class="active">Clases</a></li><li><a href="modulos-teoricos.html" class="active">Material</a></li><li><a href="ejercicios-practicas.html" class="active">Práctica</a></li><li><a href="temarios.html" class="active">Recursos</a></li><li><a href="donativos.html" class="active">Comunidad</a></li></ul>
+    <div class="nav-right">
+      <button class="btn-login" id="btn-login">&#128274; Ingresar</button>
     </div>
-  </section>
-
-  <div class="sections-wrap">
-    <p class="sections-title">Todas las secciones — 21 recursos disponibles</p>
-    <div class="sections-grid">
-      
-    <a class="section-card" href="motivacion-guia.html">
-      <div class="card-num">I.</div>
-      <div class="card-title">Motivación/Guía</div>
-      <span class="card-arrow">↗</span>
-    </a>
-    <a class="section-card" href="clases-sin-pre.html">
-      <div class="card-num">II.</div>
-      <div class="card-title">Clases Sin-Pre</div>
-      <span class="card-arrow">↗</span>
-    </a>
-    <a class="section-card" href="temarios.html">
-      <div class="card-num">III.</div>
-      <div class="card-title">Temarios</div>
-      <span class="card-arrow">↗</span>
-    </a>
-    <a class="section-card" href="admision-y-examenes-un.html">
-      <div class="card-num">IV.</div>
-      <div class="card-title">Admisión y Exámenes UN</div>
-      <span class="card-arrow">↗</span>
-    </a>
-    <a class="section-card" href="clases-preu-s-i.html">
-      <div class="card-num">V.</div>
-      <div class="card-title">Clases PreU's I</div>
-      <span class="card-arrow">↗</span>
-    </a>
-    <a class="section-card" href="clases-preu-s-ii-libres.html">
-      <div class="card-num">VI.</div>
-      <div class="card-title">Clases PreU's II (Libres)</div>
-      <span class="card-arrow">↗</span>
-    </a>
-    <a class="section-card" href="recursos-udea.html">
-      <div class="card-num">VII.</div>
-      <div class="card-title">Recursos UdeA</div>
-      <span class="card-arrow">↗</span>
-    </a>
-    <a class="section-card" href="diapositivas-con-todo.html">
-      <div class="card-num">VIII.</div>
-      <div class="card-title">Diapositivas con TODO</div>
-      <span class="card-arrow">↗</span>
-    </a>
-    <a class="section-card" href="apuntes-estudio-un.html">
-      <div class="card-num">IX.</div>
-      <div class="card-title">Apuntes Estudio UN</div>
-      <span class="card-arrow">↗</span>
-    </a>
-    <a class="section-card" href="textos-varios-practica-textual.html">
-      <div class="card-num">X.</div>
-      <div class="card-title">Textos Varios (Práctica Textual)</div>
-      <span class="card-arrow">↗</span>
-    </a>
-    <a class="section-card" href="modulos-teoricos.html">
-      <div class="card-num">XI.</div>
-      <div class="card-title">Módulos Teóricos</div>
-      <span class="card-arrow">↗</span>
-    </a>
-    <a class="section-card" href="modulos-especiales.html">
-      <div class="card-num">XII.</div>
-      <div class="card-title">Módulos Especiales</div>
-      <span class="card-arrow">↗</span>
-    </a>
-    <a class="section-card" href="ejercicios-practicas.html">
-      <div class="card-num">XIII.</div>
-      <div class="card-title">Ejercicios Prácticas</div>
-      <span class="card-arrow">↗</span>
-    </a>
-    <a class="section-card" href="simulacros-un.html">
-      <div class="card-num">XIV.</div>
-      <div class="card-title">Simulacros UN</div>
-      <span class="card-arrow">↗</span>
-    </a>
-    <a class="section-card" href="simulacros-calificados-un.html">
-      <div class="card-num">XV.</div>
-      <div class="card-title">Simulacros Calificados UN</div>
-      <span class="card-arrow">↗</span>
-    </a>
-    <a class="section-card" href="app-s-estudio-android.html">
-      <div class="card-num">XVI.</div>
-      <div class="card-title">App's Estudio (Android)</div>
-      <span class="card-arrow">↗</span>
-    </a>
-    <a class="section-card" href="clases-en-vivo-grabadas-sin-presupuesto-un.html">
-      
-      <div class="card-title">Clases en vivo/grabadas - Sin-Presupuesto UN</div>
-      <span class="card-arrow">↗</span>
-    </a>
-    <a class="section-card" href="donativos.html">
-      
-      <div class="card-title">Donativos</div>
-      <span class="card-arrow">↗</span>
-    </a>
-    <a class="section-card" href="formulario-economico-1.html">
-      
-      <div class="card-title">Formulario Económico 1</div>
-      <span class="card-arrow">↗</span>
-    </a>
-    <a class="section-card" href="medios-de-sin-presupuesto-un.html">
-      
-      <div class="card-title">Medios de Sin-Presupuesto UN</div>
-      <span class="card-arrow">↗</span>
-    </a>
-    <a class="section-card" href="tomos.html">
-      
-      <div class="card-title">Tomos</div>
-      <span class="card-arrow">↗</span>
-    </a>
+  </nav>
+  <div class="modal-overlay" id="login-modal">
+    <div class="modal">
+      <h2>Acceso editor</h2>
+      <p>Ingresa la contraseña para editar esta página.</p>
+      <div class="form-group">
+        <label>Contraseña</label>
+        <input type="password" id="inp-pass" placeholder="••••••••••••">
+      </div>
+      <p class="login-error" id="login-error">Contraseña incorrecta.</p>
+      <button class="btn-submit" id="btn-submit">Ingresar</button>
     </div>
   </div>
-
+  <div class="editing-badge" id="editing-badge">✦ Modo edición activo</div>
+  <div class="editor-bar" id="editor-bar">
+    <span>Editar:</span>
+    <button class="editor-btn" onclick="document.execCommand('bold')"><b>N</b></button>
+    <button class="editor-btn" onclick="document.execCommand('italic')"><i>I</i></button>
+    <button class="editor-btn" onclick="document.execCommand('underline')"><u>S</u></button>
+    <button class="editor-btn cancel-btn">Descartar</button>
+    <button class="editor-btn save-btn">Guardar ✓</button>
+  </div>
+  <section class="hero">
+    <img class="hero-logo" src="logos/filosofia.png" alt="Sin-Presupuesto">
+    <div class="hero-text">
+      <p class="hero-eyebrow">PreUniversitario gratuito · Popular · Colombia</p>
+      <h1>Del pueblo,<br>hecho para<br><em>el pueblo.</em></h1>
+      <p class="hero-desc">Somos Sin-Presupuesto — un preuniversitario 100% gratuito y popular. Clases, módulos teóricos, simulacros, ejercicios y más.</p>
+      <div class="hero-badges">
+        <span class="badge hot">✦ Completamente gratis</span>
+        <span class="badge">Clases grabadas</span>
+        <span class="badge">Simulacros</span>
+        <span class="badge">Módulos teóricos</span>
+        <span class="badge">Recursos</span>
+        <span class="badge">Apps de estudio</span>
+      </div>
+    </div>
+  </section>
+  <div class="sections-wrap">
+    <p class="sections-title">Todas las secciones — 21 recursos disponibles</p>
+    <div class="sections-grid"><a class="section-card" href="motivacion-guia.html">
+          <img src="logos/imagen.png" alt="Motivación/Guía">
+          <div class="card-info"><div class="card-num">I.</div><div class="card-title">Motivación/Guía</div></div>
+        </a><a class="section-card" href="clases-sin-pre.html">
+          <img src="logos/sociales.png" alt="Clases Sin-Pre">
+          <div class="card-info"><div class="card-num">II.</div><div class="card-title">Clases Sin-Pre</div></div>
+        </a><a class="section-card" href="temarios.html">
+          <img src="logos/quimica.png" alt="Temarios">
+          <div class="card-info"><div class="card-num">III.</div><div class="card-title">Temarios</div></div>
+        </a><a class="section-card" href="admision-y-examenes-un.html">
+          <img src="logos/ingles.png" alt="Admisión y Exámenes ">
+          <div class="card-info"><div class="card-num">IV.</div><div class="card-title">Admisión y Exámenes </div></div>
+        </a><a class="section-card" href="clases-preu-s-i.html">
+          <img src="logos/sociales.png" alt="Clases PreU's I">
+          <div class="card-info"><div class="card-num">V.</div><div class="card-title">Clases PreU's I</div></div>
+        </a><a class="section-card" href="clases-preu-s-ii-libres.html">
+          <img src="logos/sociales.png" alt="Clases PreU's II (Libres)">
+          <div class="card-info"><div class="card-num">VI.</div><div class="card-title">Clases PreU's II (Libres)</div></div>
+        </a><a class="section-card" href="recursos-udea.html">
+          <img src="logos/biologia.png" alt="Recursos UdeA">
+          <div class="card-info"><div class="card-num">VII.</div><div class="card-title">Recursos UdeA</div></div>
+        </a><a class="section-card" href="diapositivas-con-todo.html">
+          <img src="logos/filosofia.png" alt="Diapositivas con TODO">
+          <div class="card-info"><div class="card-num">VIII.</div><div class="card-title">Diapositivas con TODO</div></div>
+        </a><a class="section-card" href="apuntes-estudio-un.html">
+          <img src="logos/filosofia.png" alt="Apuntes Estudio ">
+          <div class="card-info"><div class="card-num">IX.</div><div class="card-title">Apuntes Estudio </div></div>
+        </a><a class="section-card" href="textos-varios-practica-textual.html">
+          <img src="logos/textual.png" alt="Textos Varios (Práctica Textual)">
+          <div class="card-info"><div class="card-num">X.</div><div class="card-title">Textos Varios (Práctica Textual)</div></div>
+        </a><a class="section-card" href="modulos-teoricos.html">
+          <img src="logos/filosofia.png" alt="Módulos Teóricos">
+          <div class="card-info"><div class="card-num">XI.</div><div class="card-title">Módulos Teóricos</div></div>
+        </a><a class="section-card" href="modulos-especiales.html">
+          <img src="logos/filosofia.png" alt="Módulos Especiales">
+          <div class="card-info"><div class="card-num">XII.</div><div class="card-title">Módulos Especiales</div></div>
+        </a><a class="section-card" href="ejercicios-practicas.html">
+          <img src="logos/matematicas.png" alt="Ejercicios Prácticas">
+          <div class="card-info"><div class="card-num">XIII.</div><div class="card-title">Ejercicios Prácticas</div></div>
+        </a><a class="section-card" href="simulacros-un.html">
+          <img src="logos/fisica.png" alt="Simulacros ">
+          <div class="card-info"><div class="card-num">XIV.</div><div class="card-title">Simulacros </div></div>
+        </a><a class="section-card" href="simulacros-calificados-un.html">
+          <img src="logos/fisica.png" alt="Simulacros Calificados ">
+          <div class="card-info"><div class="card-num">XV.</div><div class="card-title">Simulacros Calificados </div></div>
+        </a><a class="section-card" href="app-s-estudio-android.html">
+          <img src="logos/matematicas.png" alt="App's Estudio (Android)">
+          <div class="card-info"><div class="card-num">XVI.</div><div class="card-title">App's Estudio (Android)</div></div>
+        </a><a class="section-card" href="clases-en-vivo-grabadas-sin-presupuesto-un.html">
+          <img src="logos/sociales.png" alt="Clases en vivo/grabadas - Sin-Presupuesto">
+          <div class="card-info"><div class="card-title">Clases en vivo/grabadas - Sin-Presupuesto</div></div>
+        </a><a class="section-card" href="donativos.html">
+          <img src="logos/sociales.png" alt="Donativos">
+          <div class="card-info"><div class="card-title">Donativos</div></div>
+        </a><a class="section-card" href="formulario-economico-1.html">
+          <img src="logos/matematicas.png" alt="Formulario Económico 1">
+          <div class="card-info"><div class="card-title">Formulario Económico 1</div></div>
+        </a><a class="section-card" href="medios-de-sin-presupuesto-un.html">
+          <img src="logos/imagen.png" alt="Medios de Sin-Presupuesto">
+          <div class="card-info"><div class="card-title">Medios de Sin-Presupuesto</div></div>
+        </a><a class="section-card" href="tomos.html">
+          <img src="logos/textual.png" alt="Tomos">
+          <div class="card-info"><div class="card-title">Tomos</div></div>
+        </a></div>
+  </div>
   <footer>
-    <p>Sin-Presupuesto UN · PreUniversitario gratuito y popular ❤️</p>
+    <p>Sin-Presupuesto · PreUniversitario gratuito y popular ❤️</p>
     <p style="margin-top:0.4rem"><a href="donativos.html">Apoya el proyecto</a> · <a href="medios-de-sin-presupuesto-un.html">Redes sociales</a></p>
   </footer>
+  <script src="editor.js"></script>
 </body>
 </html>

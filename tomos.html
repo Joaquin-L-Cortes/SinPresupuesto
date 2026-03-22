@@ -3,276 +3,64 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Tomos · Sin-Presupuesto UN</title>
-  <meta name="description" content="PreUniversitario gratuito y popular - Tomos">
-  <style>
-  @import url('https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,600;1,9..144,300&family=DM+Sans:wght@400;500&display=swap');
-  
-  :root {
-    --bg: #0d0f14;
-    --bg2: #13161d;
-    --bg3: #1a1e28;
-    --border: #252a38;
-    --accent: #f5c842;
-    --accent2: #e8854a;
-    --text: #e8e6df;
-    --muted: #7a7d8a;
-    --card: #161a24;
-  }
-  
-  * { margin: 0; padding: 0; box-sizing: border-box; }
-  
-  body {
-    background: var(--bg);
-    color: var(--text);
-    font-family: 'DM Sans', sans-serif;
-    font-size: 16px;
-    line-height: 1.75;
-    min-height: 100vh;
-  }
-
-  /* NAVBAR */
-  nav {
-    position: sticky; top: 0; z-index: 100;
-    background: rgba(13,15,20,0.92);
-    backdrop-filter: blur(12px);
-    border-bottom: 1px solid var(--border);
-    padding: 0 2rem;
-    display: flex; align-items: center; gap: 0;
-  }
-
-  .nav-logo {
-    font-family: 'Fraunces', serif;
-    font-size: 1.25rem;
-    font-weight: 600;
-    color: var(--accent);
-    text-decoration: none;
-    padding: 1rem 1.5rem 1rem 0;
-    border-right: 1px solid var(--border);
-    margin-right: 1rem;
-    white-space: nowrap;
-  }
-
-  .nav-links {
-    display: flex; flex-wrap: wrap; gap: 0;
-    list-style: none; flex: 1;
-  }
-
-  .nav-links a {
-    display: block;
-    padding: 1rem 0.85rem;
-    color: var(--muted);
-    text-decoration: none;
-    font-size: 0.875rem;
-    font-weight: 500;
-    transition: color 0.2s;
-    white-space: nowrap;
-  }
-
-  .nav-links a:hover, .nav-links a.active {
-    color: var(--accent);
-  }
-
-  /* CONTENIDO */
-  main {
-    max-width: 860px;
-    margin: 0 auto;
-    padding: 3rem 2rem 5rem;
-  }
-
-  .page-header {
-    margin-bottom: 2.5rem;
-    padding-bottom: 1.5rem;
-    border-bottom: 1px solid var(--border);
-  }
-
-  .page-label {
-    font-size: 0.75rem;
-    font-weight: 500;
-    letter-spacing: 0.12em;
-    text-transform: uppercase;
-    color: var(--accent2);
-    margin-bottom: 0.75rem;
-  }
-
-  h1 {
-    font-family: 'Fraunces', serif;
-    font-weight: 600;
-    font-size: clamp(1.75rem, 4vw, 2.5rem);
-    line-height: 1.2;
-    color: var(--text);
-  }
-
-  .page-date {
-    color: var(--muted);
-    font-size: 0.8rem;
-    margin-top: 0.5rem;
-  }
-
-  /* CONTENIDO BLOGGER limpiado */
-  .entry-body {
-    color: var(--text);
-  }
-
-  .entry-body h2, .entry-body h3, .entry-body h4 {
-    font-family: 'Fraunces', serif;
-    font-weight: 600;
-    color: var(--text);
-    margin: 2rem 0 0.75rem;
-    line-height: 1.3;
-  }
-  .entry-body h2 { font-size: 1.5rem; }
-  .entry-body h3 { font-size: 1.2rem; }
-
-  .entry-body p {
-    margin-bottom: 1rem;
-  }
-
-  .entry-body a {
-    color: var(--accent);
-    text-decoration: underline;
-    text-decoration-color: rgba(245,200,66,0.3);
-    transition: text-decoration-color 0.2s;
-  }
-  .entry-body a:hover {
-    text-decoration-color: var(--accent);
-  }
-
-  .entry-body b, .entry-body strong {
-    color: var(--text);
-    font-weight: 500;
-  }
-
-  .entry-body img {
-    max-width: 100%;
-    border-radius: 8px;
-    margin: 1rem 0;
-  }
-
-  .entry-body table {
-    width: 100%;
-    border-collapse: collapse;
-    margin: 1.5rem 0;
-    font-size: 0.9rem;
-  }
-
-  .entry-body th, .entry-body td {
-    padding: 0.6rem 0.9rem;
-    border: 1px solid var(--border);
-    text-align: left;
-  }
-
-  .entry-body th {
-    background: var(--bg3);
-    color: var(--accent);
-    font-weight: 500;
-  }
-
-  .entry-body tr:hover td {
-    background: var(--bg3);
-  }
-
-  /* SIDEBAR */
-  .layout {
-    display: grid;
-    grid-template-columns: 1fr 240px;
-    gap: 3rem;
-    max-width: 1100px;
-    margin: 0 auto;
-    padding: 3rem 2rem 5rem;
-    align-items: start;
-  }
-
-  .sidebar {
-    position: sticky;
-    top: 80px;
-  }
-
-  .sidebar-title {
-    font-size: 0.7rem;
-    letter-spacing: 0.12em;
-    text-transform: uppercase;
-    color: var(--muted);
-    margin-bottom: 0.75rem;
-    padding-bottom: 0.5rem;
-    border-bottom: 1px solid var(--border);
-  }
-
-  .sidebar-links {
-    list-style: none;
-    display: flex;
-    flex-direction: column;
-    gap: 2px;
-  }
-
-  .sidebar-links a {
-    display: block;
-    padding: 0.4rem 0.5rem;
-    border-radius: 5px;
-    color: var(--muted);
-    text-decoration: none;
-    font-size: 0.82rem;
-    line-height: 1.4;
-    transition: background 0.15s, color 0.15s;
-  }
-
-  .sidebar-links a:hover {
-    background: var(--bg3);
-    color: var(--text);
-  }
-
-  .sidebar-links a.current {
-    background: rgba(245,200,66,0.12);
-    color: var(--accent);
-  }
-
-  /* FOOTER */
-  footer {
-    border-top: 1px solid var(--border);
-    padding: 2rem;
-    text-align: center;
-    color: var(--muted);
-    font-size: 0.82rem;
-  }
-
-  footer a { color: var(--accent); text-decoration: none; }
-
-  @media (max-width: 768px) {
-    .layout { grid-template-columns: 1fr; }
-    .sidebar { display: none; }
-    nav { padding: 0 1rem; }
-    .nav-logo { font-size: 1rem; padding-right: 1rem; }
-    main, .layout { padding: 1.5rem 1rem 4rem; }
-  }
-</style>
+  <title>Tomos · Sin-Presupuesto</title>
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  
-    <nav>
-      <a class="nav-logo" href="index.html">Sin-Presupuesto UN</a>
-      <ul class="nav-links"><li><a href="index.html" class="">Inicio</a></li><li><a href="motivacion-guia.html" class="">Motivación</a></li><li><a href="clases-sin-pre.html" class="">Clases</a></li><li><a href="modulos-teoricos.html" class="">Material</a></li><li><a href="ejercicios-practicas.html" class="">Práctica</a></li><li><a href="temarios.html" class="">Recursos</a></li><li><a href="donativos.html" class="">Comunidad</a></li></ul>
-    </nav>
+  <nav>
+    <a class="nav-logo" href="index.html">
+      <img src="logos/filosofia.png" alt="Sin-Presupuesto logo">
+      Sin-Presupuesto
+    </a>
+    <ul class="nav-links"><li><a href="index.html" class="">Inicio</a></li><li><a href="motivacion-guia.html" class="">Motivación</a></li><li><a href="clases-sin-pre.html" class="">Clases</a></li><li><a href="modulos-teoricos.html" class="">Material</a></li><li><a href="ejercicios-practicas.html" class="">Práctica</a></li><li><a href="temarios.html" class="">Recursos</a></li><li><a href="donativos.html" class="">Comunidad</a></li></ul>
+    <div class="nav-right">
+      <button class="btn-login" id="btn-login">&#128274; Ingresar</button>
+    </div>
+  </nav>
+  <div class="modal-overlay" id="login-modal">
+    <div class="modal">
+      <h2>Acceso editor</h2>
+      <p>Ingresa la contraseña para editar esta página.</p>
+      <div class="form-group">
+        <label>Contraseña</label>
+        <input type="password" id="inp-pass" placeholder="••••••••••••">
+      </div>
+      <p class="login-error" id="login-error">Contraseña incorrecta.</p>
+      <button class="btn-submit" id="btn-submit">Ingresar</button>
+    </div>
+  </div>
+  <div class="editing-badge" id="editing-badge">✦ Modo edición activo</div>
+  <div class="editor-bar" id="editor-bar">
+    <span>Editar:</span>
+    <button class="editor-btn" onclick="document.execCommand('bold')"><b>N</b></button>
+    <button class="editor-btn" onclick="document.execCommand('italic')"><i>I</i></button>
+    <button class="editor-btn" onclick="document.execCommand('underline')"><u>S</u></button>
+    <button class="editor-btn cancel-btn">Descartar</button>
+    <button class="editor-btn save-btn">Guardar ✓</button>
+  </div>
   <div class="layout">
     <main>
       <div class="page-header">
-        <p class="page-label">Sección</p>
-        <h1>Tomos</h1>
-        <p class="page-date">2024-09-17</p>
+        <img class="page-header-logo" src="logos/textual.png" alt="Tomos">
+        <div class="page-header-text">
+          <p class="page-label">Sección</p>
+          <h1>Tomos</h1>
+          <p class="page-date">2024-09-17</p>
+        </div>
       </div>
-      <div class="entry-body">
-        <div> <br />En esta sección encontrará el <b>Material de: Tomos de Resumen</b> creados por mí (Joaquín Caicedo, creador de este PreU) para Sin-Pre UN, esperando que sea de ayuda para su examen de admisión a la Universidad Nacional de Colombia.</div><div><br /></div><div><br /><h2>Matemáticas:    <br /></h2><h4><a href="https://drive.google.com/file/d/1Vccn2DQzj_IiO68qGxYZ4hp0kBk5GaYq/view?usp=sharing" target="_blank">Tomo I</a></h4></div><div><b>Textual:</b><br /></div><div><h4><a href="https://drive.google.com/file/d/1I6Ai3r27U5OXNImMGU1zOxnr1KdAXgEX/view?usp=sharing" target="_blank">Tomo II</a></h4><h2>Biología:</h2><h4><a href="https://drive.google.com/file/d/1pa8i4x6bZLQvNU4HE1IpWFTwHjfvgGpo/view?usp=sharing" target="_blank">Tomo III</a></h4><h2>Física:</h2><a href="https://drive.google.com/file/d/12bH9qyzhWpdPdRGbBgFfl_E-FLh-lvTo/view?usp=sharing" target="_blank"><b>Tomo IV</b></a></div><div><a href="https://drive.google.com/file/d/12bH9qyzhWpdPdRGbBgFfl_E-FLh-lvTo/view?usp=sharing" target="_blank"><br /></a><b>Química:</b><br /></div><h4><a href="https://drive.google.com/file/d/1tF2wetBh6anVTeRWcoUgs_ULI0fNIqJg/view?usp=sharing" target="_blank">Tomo V</a></h4>
+      <div class="entry-body" id="entry-body">
+        <div> <br />En esta sección encontrará el <b>Material de: Tomos de Resumen</b> creados por mí (Joaquín Caicedo, creador de este PreU) para Sin-Pre, esperando que sea de ayuda para su examen de admisión a la Universidad Nacional de Colombia.</div><div><br /></div><div><br /><h2>Matemáticas:    <br /></h2><h4><a href="https://drive.google.com/file/d/1Vccn2DQzj_IiO68qGxYZ4hp0kBk5GaYq/view?usp=sharing" target="_blank">Tomo I</a></h4></div><div><b>Textual:</b><br /></div><div><h4><a href="https://drive.google.com/file/d/1I6Ai3r27U5OXNImMGU1zOxnr1KdAXgEX/view?usp=sharing" target="_blank">Tomo II</a></h4><h2>Biología:</h2><h4><a href="https://drive.google.com/file/d/1pa8i4x6bZLQvNU4HE1IpWFTwHjfvgGpo/view?usp=sharing" target="_blank">Tomo III</a></h4><h2>Física:</h2><a href="https://drive.google.com/file/d/12bH9qyzhWpdPdRGbBgFfl_E-FLh-lvTo/view?usp=sharing" target="_blank"><b>Tomo IV</b></a></div><div><a href="https://drive.google.com/file/d/12bH9qyzhWpdPdRGbBgFfl_E-FLh-lvTo/view?usp=sharing" target="_blank"><br /></a><b>Química:</b><br /></div><h4><a href="https://drive.google.com/file/d/1tF2wetBh6anVTeRWcoUgs_ULI0fNIqJg/view?usp=sharing" target="_blank">Tomo V</a></h4>
       </div>
     </main>
-    
     <aside class="sidebar">
       <p class="sidebar-title">Todas las secciones</p>
-      <ul class="sidebar-links"><li><a href="motivacion-guia.html" class="">I. Motivación/Guía</a></li><li><a href="clases-sin-pre.html" class="">II. Clases Sin-Pre</a></li><li><a href="temarios.html" class="">III. Temarios</a></li><li><a href="admision-y-examenes-un.html" class="">IV. Admisión y Exámenes UN</a></li><li><a href="clases-preu-s-i.html" class="">V. Clases PreU's I</a></li><li><a href="clases-preu-s-ii-libres.html" class="">VI. Clases PreU's II (Libres)</a></li><li><a href="recursos-udea.html" class="">VII. Recursos UdeA</a></li><li><a href="diapositivas-con-todo.html" class="">VIII. Diapositivas con TODO</a></li><li><a href="apuntes-estudio-un.html" class="">IX. Apuntes Estudio UN</a></li><li><a href="textos-varios-practica-textual.html" class="">X. Textos Varios (Práctica Textual)</a></li><li><a href="modulos-teoricos.html" class="">XI. Módulos Teóricos</a></li><li><a href="modulos-especiales.html" class="">XII. Módulos Especiales</a></li><li><a href="ejercicios-practicas.html" class="">XIII. Ejercicios Prácticas</a></li><li><a href="simulacros-un.html" class="">XIV. Simulacros UN</a></li><li><a href="simulacros-calificados-un.html" class="">XV. Simulacros Calificados UN</a></li><li><a href="app-s-estudio-android.html" class="">XVI. App's Estudio (Android)</a></li><li><a href="clases-en-vivo-grabadas-sin-presupuesto-un.html" class="">Clases en vivo/grabadas - Sin-Presupuesto UN</a></li><li><a href="donativos.html" class="">Donativos</a></li><li><a href="formulario-economico-1.html" class="">Formulario Económico 1</a></li><li><a href="medios-de-sin-presupuesto-un.html" class="">Medios de Sin-Presupuesto UN</a></li><li><a href="tomos.html" class="current">Tomos</a></li></ul>
+      <ul class="sidebar-links"><li><a href="motivacion-guia.html" class=""><img src="logos/imagen.png" alt="">I. Motivación/Guía</a></li><li><a href="clases-sin-pre.html" class=""><img src="logos/sociales.png" alt="">II. Clases Sin-Pre</a></li><li><a href="temarios.html" class=""><img src="logos/quimica.png" alt="">III. Temarios</a></li><li><a href="admision-y-examenes-un.html" class=""><img src="logos/ingles.png" alt="">IV. Admisión y Exámenes </a></li><li><a href="clases-preu-s-i.html" class=""><img src="logos/sociales.png" alt="">V. Clases PreU's I</a></li><li><a href="clases-preu-s-ii-libres.html" class=""><img src="logos/sociales.png" alt="">VI. Clases PreU's II (Libres)</a></li><li><a href="recursos-udea.html" class=""><img src="logos/biologia.png" alt="">VII. Recursos UdeA</a></li><li><a href="diapositivas-con-todo.html" class=""><img src="logos/filosofia.png" alt="">VIII. Diapositivas con TODO</a></li><li><a href="apuntes-estudio-un.html" class=""><img src="logos/filosofia.png" alt="">IX. Apuntes Estudio </a></li><li><a href="textos-varios-practica-textual.html" class=""><img src="logos/textual.png" alt="">X. Textos Varios (Práctica Textual)</a></li><li><a href="modulos-teoricos.html" class=""><img src="logos/filosofia.png" alt="">XI. Módulos Teóricos</a></li><li><a href="modulos-especiales.html" class=""><img src="logos/filosofia.png" alt="">XII. Módulos Especiales</a></li><li><a href="ejercicios-practicas.html" class=""><img src="logos/matematicas.png" alt="">XIII. Ejercicios Prácticas</a></li><li><a href="simulacros-un.html" class=""><img src="logos/fisica.png" alt="">XIV. Simulacros </a></li><li><a href="simulacros-calificados-un.html" class=""><img src="logos/fisica.png" alt="">XV. Simulacros Calificados </a></li><li><a href="app-s-estudio-android.html" class=""><img src="logos/matematicas.png" alt="">XVI. App's Estudio (Android)</a></li><li><a href="clases-en-vivo-grabadas-sin-presupuesto-un.html" class=""><img src="logos/sociales.png" alt="">Clases en vivo/grabadas - Sin-Presupuesto</a></li><li><a href="donativos.html" class=""><img src="logos/sociales.png" alt="">Donativos</a></li><li><a href="formulario-economico-1.html" class=""><img src="logos/matematicas.png" alt="">Formulario Económico 1</a></li><li><a href="medios-de-sin-presupuesto-un.html" class=""><img src="logos/imagen.png" alt="">Medios de Sin-Presupuesto</a></li><li><a href="tomos.html" class="current"><img src="logos/textual.png" alt="">Tomos</a></li></ul>
     </aside>
   </div>
-  
-    <footer>
-      <p>Sin-Presupuesto UN · PreUniversitario gratuito y popular ❤️</p>
-      <p style="margin-top:0.4rem"><a href="donativos.html">Apoya el proyecto</a> · <a href="medios-de-sin-presupuesto-un.html">Redes sociales</a></p>
-    </footer>
+  <footer>
+    <p>Sin-Presupuesto · PreUniversitario gratuito y popular ❤️</p>
+    <p style="margin-top:0.4rem"><a href="donativos.html">Apoya el proyecto</a> · <a href="medios-de-sin-presupuesto-un.html">Redes sociales</a></p>
+  </footer>
+  <script src="editor.js"></script>
 </body>
 </html>

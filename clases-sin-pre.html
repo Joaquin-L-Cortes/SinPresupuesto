@@ -3,276 +3,64 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>II. Clases Sin-Pre · Sin-Presupuesto UN</title>
-  <meta name="description" content="PreUniversitario gratuito y popular - II. Clases Sin-Pre">
-  <style>
-  @import url('https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,600;1,9..144,300&family=DM+Sans:wght@400;500&display=swap');
-  
-  :root {
-    --bg: #0d0f14;
-    --bg2: #13161d;
-    --bg3: #1a1e28;
-    --border: #252a38;
-    --accent: #f5c842;
-    --accent2: #e8854a;
-    --text: #e8e6df;
-    --muted: #7a7d8a;
-    --card: #161a24;
-  }
-  
-  * { margin: 0; padding: 0; box-sizing: border-box; }
-  
-  body {
-    background: var(--bg);
-    color: var(--text);
-    font-family: 'DM Sans', sans-serif;
-    font-size: 16px;
-    line-height: 1.75;
-    min-height: 100vh;
-  }
-
-  /* NAVBAR */
-  nav {
-    position: sticky; top: 0; z-index: 100;
-    background: rgba(13,15,20,0.92);
-    backdrop-filter: blur(12px);
-    border-bottom: 1px solid var(--border);
-    padding: 0 2rem;
-    display: flex; align-items: center; gap: 0;
-  }
-
-  .nav-logo {
-    font-family: 'Fraunces', serif;
-    font-size: 1.25rem;
-    font-weight: 600;
-    color: var(--accent);
-    text-decoration: none;
-    padding: 1rem 1.5rem 1rem 0;
-    border-right: 1px solid var(--border);
-    margin-right: 1rem;
-    white-space: nowrap;
-  }
-
-  .nav-links {
-    display: flex; flex-wrap: wrap; gap: 0;
-    list-style: none; flex: 1;
-  }
-
-  .nav-links a {
-    display: block;
-    padding: 1rem 0.85rem;
-    color: var(--muted);
-    text-decoration: none;
-    font-size: 0.875rem;
-    font-weight: 500;
-    transition: color 0.2s;
-    white-space: nowrap;
-  }
-
-  .nav-links a:hover, .nav-links a.active {
-    color: var(--accent);
-  }
-
-  /* CONTENIDO */
-  main {
-    max-width: 860px;
-    margin: 0 auto;
-    padding: 3rem 2rem 5rem;
-  }
-
-  .page-header {
-    margin-bottom: 2.5rem;
-    padding-bottom: 1.5rem;
-    border-bottom: 1px solid var(--border);
-  }
-
-  .page-label {
-    font-size: 0.75rem;
-    font-weight: 500;
-    letter-spacing: 0.12em;
-    text-transform: uppercase;
-    color: var(--accent2);
-    margin-bottom: 0.75rem;
-  }
-
-  h1 {
-    font-family: 'Fraunces', serif;
-    font-weight: 600;
-    font-size: clamp(1.75rem, 4vw, 2.5rem);
-    line-height: 1.2;
-    color: var(--text);
-  }
-
-  .page-date {
-    color: var(--muted);
-    font-size: 0.8rem;
-    margin-top: 0.5rem;
-  }
-
-  /* CONTENIDO BLOGGER limpiado */
-  .entry-body {
-    color: var(--text);
-  }
-
-  .entry-body h2, .entry-body h3, .entry-body h4 {
-    font-family: 'Fraunces', serif;
-    font-weight: 600;
-    color: var(--text);
-    margin: 2rem 0 0.75rem;
-    line-height: 1.3;
-  }
-  .entry-body h2 { font-size: 1.5rem; }
-  .entry-body h3 { font-size: 1.2rem; }
-
-  .entry-body p {
-    margin-bottom: 1rem;
-  }
-
-  .entry-body a {
-    color: var(--accent);
-    text-decoration: underline;
-    text-decoration-color: rgba(245,200,66,0.3);
-    transition: text-decoration-color 0.2s;
-  }
-  .entry-body a:hover {
-    text-decoration-color: var(--accent);
-  }
-
-  .entry-body b, .entry-body strong {
-    color: var(--text);
-    font-weight: 500;
-  }
-
-  .entry-body img {
-    max-width: 100%;
-    border-radius: 8px;
-    margin: 1rem 0;
-  }
-
-  .entry-body table {
-    width: 100%;
-    border-collapse: collapse;
-    margin: 1.5rem 0;
-    font-size: 0.9rem;
-  }
-
-  .entry-body th, .entry-body td {
-    padding: 0.6rem 0.9rem;
-    border: 1px solid var(--border);
-    text-align: left;
-  }
-
-  .entry-body th {
-    background: var(--bg3);
-    color: var(--accent);
-    font-weight: 500;
-  }
-
-  .entry-body tr:hover td {
-    background: var(--bg3);
-  }
-
-  /* SIDEBAR */
-  .layout {
-    display: grid;
-    grid-template-columns: 1fr 240px;
-    gap: 3rem;
-    max-width: 1100px;
-    margin: 0 auto;
-    padding: 3rem 2rem 5rem;
-    align-items: start;
-  }
-
-  .sidebar {
-    position: sticky;
-    top: 80px;
-  }
-
-  .sidebar-title {
-    font-size: 0.7rem;
-    letter-spacing: 0.12em;
-    text-transform: uppercase;
-    color: var(--muted);
-    margin-bottom: 0.75rem;
-    padding-bottom: 0.5rem;
-    border-bottom: 1px solid var(--border);
-  }
-
-  .sidebar-links {
-    list-style: none;
-    display: flex;
-    flex-direction: column;
-    gap: 2px;
-  }
-
-  .sidebar-links a {
-    display: block;
-    padding: 0.4rem 0.5rem;
-    border-radius: 5px;
-    color: var(--muted);
-    text-decoration: none;
-    font-size: 0.82rem;
-    line-height: 1.4;
-    transition: background 0.15s, color 0.15s;
-  }
-
-  .sidebar-links a:hover {
-    background: var(--bg3);
-    color: var(--text);
-  }
-
-  .sidebar-links a.current {
-    background: rgba(245,200,66,0.12);
-    color: var(--accent);
-  }
-
-  /* FOOTER */
-  footer {
-    border-top: 1px solid var(--border);
-    padding: 2rem;
-    text-align: center;
-    color: var(--muted);
-    font-size: 0.82rem;
-  }
-
-  footer a { color: var(--accent); text-decoration: none; }
-
-  @media (max-width: 768px) {
-    .layout { grid-template-columns: 1fr; }
-    .sidebar { display: none; }
-    nav { padding: 0 1rem; }
-    .nav-logo { font-size: 1rem; padding-right: 1rem; }
-    main, .layout { padding: 1.5rem 1rem 4rem; }
-  }
-</style>
+  <title>II. Clases Sin-Pre · Sin-Presupuesto</title>
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  
-    <nav>
-      <a class="nav-logo" href="index.html">Sin-Presupuesto UN</a>
-      <ul class="nav-links"><li><a href="index.html" class="">Inicio</a></li><li><a href="motivacion-guia.html" class="">Motivación</a></li><li><a href="clases-sin-pre.html" class="active">Clases</a></li><li><a href="modulos-teoricos.html" class="">Material</a></li><li><a href="ejercicios-practicas.html" class="">Práctica</a></li><li><a href="temarios.html" class="">Recursos</a></li><li><a href="donativos.html" class="">Comunidad</a></li></ul>
-    </nav>
+  <nav>
+    <a class="nav-logo" href="index.html">
+      <img src="logos/filosofia.png" alt="Sin-Presupuesto logo">
+      Sin-Presupuesto
+    </a>
+    <ul class="nav-links"><li><a href="index.html" class="">Inicio</a></li><li><a href="motivacion-guia.html" class="">Motivación</a></li><li><a href="clases-sin-pre.html" class="active">Clases</a></li><li><a href="modulos-teoricos.html" class="">Material</a></li><li><a href="ejercicios-practicas.html" class="">Práctica</a></li><li><a href="temarios.html" class="">Recursos</a></li><li><a href="donativos.html" class="">Comunidad</a></li></ul>
+    <div class="nav-right">
+      <button class="btn-login" id="btn-login">&#128274; Ingresar</button>
+    </div>
+  </nav>
+  <div class="modal-overlay" id="login-modal">
+    <div class="modal">
+      <h2>Acceso editor</h2>
+      <p>Ingresa la contraseña para editar esta página.</p>
+      <div class="form-group">
+        <label>Contraseña</label>
+        <input type="password" id="inp-pass" placeholder="••••••••••••">
+      </div>
+      <p class="login-error" id="login-error">Contraseña incorrecta.</p>
+      <button class="btn-submit" id="btn-submit">Ingresar</button>
+    </div>
+  </div>
+  <div class="editing-badge" id="editing-badge">✦ Modo edición activo</div>
+  <div class="editor-bar" id="editor-bar">
+    <span>Editar:</span>
+    <button class="editor-btn" onclick="document.execCommand('bold')"><b>N</b></button>
+    <button class="editor-btn" onclick="document.execCommand('italic')"><i>I</i></button>
+    <button class="editor-btn" onclick="document.execCommand('underline')"><u>S</u></button>
+    <button class="editor-btn cancel-btn">Descartar</button>
+    <button class="editor-btn save-btn">Guardar ✓</button>
+  </div>
   <div class="layout">
     <main>
       <div class="page-header">
-        <p class="page-label">Sección</p>
-        <h1>II. Clases Sin-Pre</h1>
-        <p class="page-date">2024-08-24</p>
+        <img class="page-header-logo" src="logos/sociales.png" alt="II. Clases Sin-Pre">
+        <div class="page-header-text">
+          <p class="page-label">Sección</p>
+          <h1>II. Clases Sin-Pre</h1>
+          <p class="page-date">2024-08-24</p>
+        </div>
       </div>
-      <div class="entry-body">
-        <div><br /></div><div>En esta sección encontrará las <b>Clases hechas por</b><b> Sin-Presupuesto UN</b>, esperando que sean de ayuda para su examen de admisión a la Universidad Nacional de Colombia.</div><div><br /></div><div><br /></div><div><b><a href="https://www.youtube.com/@sinpresupuestoun"></a><a href="https://www.youtube.com/@sinpresupuestoun">Clases</a></b></div><div><br /></div><div><br /></div><div><h2>Calculo resultados - DIPA</h2><div>En esta sección encontrará el <b>Material de: Calculo resultados - DIPA</b> creado por mí (Joaquín Caicedo, creador de este PreU) para Sin-Pre UN, esperando que sea de ayuda para su examen de admisión a la Universidad Nacional de Colombia.</div><div><br /></div></div><div><a href="https://docs.google.com/spreadsheets/d/1D7VJy-4Sf37BPUk-JzzRCU7vfl5-0UyQ/edit?usp=sharing&amp;ouid=107806560525543497146&amp;rtpof=true&amp;sd=true" target="_blank"><b>Calculadora DIPA</b></a><br /></div><div><br /></div><h3></h3><h2>Material Clases - Mate' (Diapositivas)</h2><div>En esta sección encontrará el Material de las clases de Matemáticas (Diapositivas) de Sin-Pre UN, esperando que sea de ayuda para su examen de admisión a la Universidad Nacional de Colombia.</div><p><b><a href="https://drive.google.com/file/d/1W6kZZt07k-YqJaUaxJfw4TDdCap10pUa/view?usp=sharing" target="_blank">Archivo 1</a>     <a href="https://drive.google.com/file/d/1N3qV40QjIu6ERewDQRQO7QKij2nHSo3T/view?usp=sharing" target="_blank">Archivo 2</a>     <a href="https://drive.google.com/file/d/1E1jL0Bp1UIg33960oDSk6fCrahMrO_TA/view" target="_blank">Archivo 3</a>     <a href="https://drive.google.com/file/d/1ig700nidOcDuL-2t8C6WcMym07VnmYuL/view" target="_blank">Archivo 4</a>     <a href="https://drive.google.com/file/d/1JlldJbLS1Q57IU_rZLrICkbtPW9YcUfU/view?usp=sharing" target="_blank">Archivo 5</a>     <a href="https://drive.google.com/file/d/1rM77FH2IXWq4xSJKjrIt9InVgzlXtquF/view?usp=sharing" target="_blank">Archivo 6</a></b></p><p><b><a href="https://drive.google.com/file/d/1ULZhmMw5MFTFUNL8OrKvrVot-ZIvsOaf/view?usp=sharing" target="_blank">Archivo 7</a>     <a href="https://drive.google.com/file/d/1ULZhmMw5MFTFUNL8OrKvrVot-ZIvsOaf/view?usp=sharing" target="_blank">Archivo 8</a>     <a href="https://drive.google.com/file/d/1ugqqYIuHc2yKewNgsxU0TVrpU1cB13lS/view?usp=sharing" target="_blank">Archivo 9</a>    <a href="https://drive.google.com/file/d/1DjHDLSBnQm1PRY_DltQ3yMEW6TAZxkA7/view?usp=sharing" target="_blank">Archivo 10</a>    <a href="https://drive.google.com/file/d/1zePqd5jIHkLt9mWtfqGp23YFhWoig4aR/view?usp=sharing" target="_blank">Archivo 11</a>     <a href="https://drive.google.com/file/d/10ViHMg0yIYZMIXuH0ty1OUAb8L7MmThN/view?usp=sharing" target="_blank">Archivo 12</a></b></p><p><b><a href="https://drive.google.com/file/d/1XilMhUEtVm4sMpg4YkzWuhTOrVpmbDsW/view?usp=sharing" target="_blank">Archivo 13</a>   <a href="https://drive.google.com/file/d/1XilMhUEtVm4sMpg4YkzWuhTOrVpmbDsW/view?usp=sharing" target="_blank">Archivo 14</a>     <a href="https://drive.google.com/file/d/1fo3SnTmzyr8DCWJmSaMoxLYfJegSgpzl/view?usp=sharing" target="_blank">Archivo 15</a>     <a href="https://drive.google.com/file/d/1WlYikwYQnKg4pj4PsMGu3gOjT2W2PpFa/view?usp=sharing" target="_blank">Archivo 16</a>     <a href="https://drive.google.com/file/d/1GuTBDi4CPl6ICWmt7fxbEVUNOAhg98XT/view?usp=sharing" target="_blank">Archivo 17</a>     <a href="https://drive.google.com/file/d/10h1MQcIowEon_7SmUeJb-qhEEr0cacAL/view?usp=sharing" target="_blank">Archivo 18</a></b><br /></p><p><b><a href="https://drive.google.com/file/d/1S0lTgQipYf_I4oPJl4LCR9NaRJjyUriN/view?usp=sharing" target="_blank">Archivo 19</a>     <a href="https://drive.google.com/file/d/1Psz1oJEMwyf87V7NUXbWnCfHIcg5HM4D/view?usp=sharing" target="_blank">Archivo 20</a>     <a href="https://drive.google.com/file/d/1ievfnbfLfPaAfKWWuAOsBAjPOU6I2sfg/view?usp=sharing" target="_blank">Archivo 21</a>     <a href="https://drive.google.com/file/d/1901nz8uF3CpQP1TrxCLxl4p4Iczcvz-t/view?usp=sharing" target="_blank">Archivo 22</a>     <a href="https://drive.google.com/file/d/1j4PE2ytcqykE8PdicU5hQEugpTSvLUsM/view?usp=sharing" target="_blank">Archivo 23</a>     <a href="https://drive.google.com/file/d/1hpaflRPAqyKFV8j68o-UYWOUCCxtRuUX/view?usp=sharing" target="_blank">Archivo 24</a><br /></b></p><div><b><a href="https://drive.google.com/file/d/1aYHoPcsHwlWXycJYd8g0bgmbYkf4DwBR/view?usp=sharing" target="_blank">Archivo 25</a>     <a href="https://drive.google.com/file/d/1qTRHDpBED9DPx-YMGvouZnz_WzEi9trh/view?usp=sharing" target="_blank">Archivo 26</a></b></div><p><b><br /></b></p><h2>Material Clases - Mate' (Talleres)</h2><div>En esta sección encontrará el <b>Material de las clases de Matemáticas </b>(Talleres) de Sin-Pre UN, esperando que sea de ayuda para su examen de admisión a la Universidad Nacional de Colombia.</div><div><br /></div><div><b><a href="https://drive.google.com/file/d/12ZH5S-GSjH13xotbT_MAHagsC8ICm5GN/view?usp=sharing" target="_blank">Archivo 1</a>     <a href="https://drive.google.com/file/d/10vd2ywbi-6Opuf9p5ORQOmIn7pOrO1Ot/view?usp=sharing" target="_blank">Archivo 2</a>      <a href="https://drive.google.com/file/d/10vd2ywbi-6Opuf9p5ORQOmIn7pOrO1Ot/view?usp=sharing" target="_blank">Archivo 3</a>     <a href="https://drive.google.com/file/d/10vd2ywbi-6Opuf9p5ORQOmIn7pOrO1Ot/view?usp=sharing" target="_blank">Archivo 4</a>     <a href="https://drive.google.com/file/d/1zVKKaWHvA-6ByBRjg7E3mynGVBYVfhRZ/view?usp=sharing" target="_blank">Archivo 5</a>      <a href="https://drive.google.com/file/d/1hOjUTCHZv29e6jG82vRh7ln_1qauXgwA/view?usp=sharing" target="_blank">Archivo 6</a></b></div><div><a href="https://drive.google.com/file/d/1I85ugutzPzjbgbHPlLYdJpJz5Cgdao6b/view?usp=sharing" target="_blank"><b>Archivo 7</b></a><b>     <a href="https://drive.google.com/file/d/1WaP0t2xcvmjC0WXCu6vA9eY7k6ljOJVA/view?usp=sharing" target="_blank">Archivo 8</a>     <a href="https://drive.google.com/file/d/1JsPJi55A2RRkAETWkKivMSQLFhqH2EKO/view?usp=sharing" target="_blank">Archivo 9</a>     <a href="https://drive.google.com/file/d/1F3YhpqwRFo6o-3OIAU3lxfFNwo00z4C-/view?usp=sharing" target="_blank">Archivo 10</a>     <a href="https://drive.google.com/file/d/1qjZ1RSgunWAnpnzj88TZ4h--oM810W-j/view?usp=sharing" target="_blank">Archivo 11</a>     <a href="https://drive.google.com/file/d/1sbEI_3NkmHSBF1ye29xwKUsNxDA6PW17/view?usp=sharing" target="_blank">Archivo 12</a></b><br /></div><div><br /></div><div><br /></div><div><h2>Material Clases - Textual (Diapositivas)</h2><div>En esta sección encontrará el <b>Material de las clases de Análisis de Textual </b>(Diapositivas) de Sin-Pre UN, esperando que sea de ayuda para su examen de admisión a la Universidad Nacional de Colombia.</div><div><b><br /></b></div><div><b><a href="https://drive.google.com/file/d/1bSFQ7-GzlBgZNGnSDdfUgtxTBtPb68jS/view?usp=sharing" target="_blank">Archivo 1</a>     <a href="https://drive.google.com/file/d/1hvkbbDt-VW2MjUlU07uyhySV2K-jQhha/view?usp=sharing" target="_blank">Archivo 2</a>     <a href="https://drive.google.com/file/d/10L9PlRIgKAx72yspXAIZsHSBkQOmRby7/view?usp=sharing" target="_blank">Archivo 3</a>      <a href="https://drive.google.com/file/d/1CgqHz5XhmoHLyg3YhYkciH71QNc5MrCO/view?usp=sharing" target="_blank">Archivo 4</a>     <a href="https://drive.google.com/file/d/1caPVyiaHWReZcaboPdt4E18YOQcUdCmE/view?usp=sharing" target="_blank">Archivo 5</a>      <a href="https://drive.google.com/file/d/1r3SKTSQeWN7885ggnpdBtj0LuByC5yda/view?usp=sharing" target="_blank">Archivo 6</a></b></div><div><b><a href="https://drive.google.com/file/d/1NyPqNbW-3JP64GA9DSInPjXvdbTkzNj7/view?usp=sharing" target="_blank">Archivo 7</a>   </b><br /></div><div><br /></div><h2>Material Clases - Ciencias (Diapositivas)</h2><div><div>En esta sección encontrará el <b>Material de las clases de Ciencias </b>(Diapositivas) de Sin-Pre UN, esperando que sea de ayuda para su examen de admisión a la Universidad Nacional de Colombia.</div><div><br /></div><div><b><a href="https://drive.google.com/file/d/17spa2c8REkw9WYj0hdrgQKB25n9CdqeF/view?usp=sharing" target="_blank">Archivo 1</a>      <a href="https://drive.google.com/file/d/1hF2rQdqDsyGJIxwoWg-bumZ4c5oxqWvU/view?usp=sharing" target="_blank">Archivo 2</a>     <a href="https://drive.google.com/file/d/1cvwVLXThgMGMjebPCs8wG3uNwxSyG7MA/view?usp=sharing" target="_blank">Archivos 3</a>     <a href="https://drive.google.com/file/d/1OtynFDwunMr3q_kxHxVyHOQbyzcgN3PA/view?usp=sharing" target="_blank">Archivo 4</a></b><br /></div><div><br /></div><div><br /></div><h2>Material Clases - Física (Diapositivas)</h2><div>En esta sección encontrará el <b>Material de las clases de Física </b>(Diapositivas) de Sin-Pre UN, esperando que sea de ayuda para su examen de admisión a la Universidad Nacional de Colombia.</div><div><br /></div><div><b><a href="https://drive.google.com/file/d/14F85zTxSeUfVTQErRKSxXR1aFNtPahYV/view?usp=sharing" target="_blank">Archivo 1</a>     <a href="https://drive.google.com/file/d/1AvyqVGGQkaJgGIIdGIk705Rq2SAB_Tdu/view?usp=sharing" target="_blank">Archivo 2</a>     <a href="https://drive.google.com/file/d/1PO5z8A6WyPqncZd78CvTEVc2kvG0yYzK/view?usp=sharing" target="_blank">Archivo 3</a>     <a href="https://drive.google.com/file/d/1H2wuS5d6KWcIj_-W5F6qpSiIZ4cmJU9a/view?usp=sharing" target="_blank">Archivo 4</a>     <a href="https://drive.google.com/file/d/1TMvScsTO3V-FwhnRzO8_kt2IcDk6pUSx/view?usp=sharing" target="_blank">Archivo 5</a>     <a href="https://drive.google.com/file/d/1_3XJCP1DfIRkQUPf83GAhHkBI5EpmShm/view?usp=sharing" target="_blank">Archivo 6</a></b><br /></div><div><a href="https://drive.google.com/file/d/1l1REN4XjRukpPBuzhwR7o5TxPwEvpZaU/view?usp=sharing" target="_blank"><b>Archivo 7</b></a><br /></div><div><br /></div><div><br /></div><div><h2>Material Clases - Física (Talleres)</h2><div>En esta sección encontrará el <b>Material de las clases de Física </b>(Talleres) de Sin-Pre UN, esperando que sea de ayuda para su examen de admisión a la Universidad Nacional de Colombia.</div><div><b><br /></b></div><div><b><a href="https://drive.google.com/file/d/1RiBWzoNFzNKG39Wls-x_Q1kSIVgupS_M/view?usp=sharing" target="_blank">Archivo 1</a>     <a href="https://drive.google.com/file/d/1g2XAtpJZ8XxecNosL3rP67i645VgIiyc/view?usp=sharing" target="_blank">Archivo 2</a>     <a href="https://drive.google.com/file/d/1Z_yKnlv8ubczBzRn9TSNSgkdQ3KDWbVn/view?usp=sharing" target="_blank">Archivo 3</a>     <a href="https://drive.google.com/file/d/1gCz6H9wd2UswpK0uiInlQJ6sF4uH75nF/view?usp=sharing" target="_blank">Archivo 4</a>     <a href="https://drive.google.com/file/d/1BITuqphgjCzTlCobCDEKjQrTBx2An5HA/view?usp=sharing" target="_blank">Archivo 5</a></b><br /></div><div><br /></div><div><br /></div></div><h2>Material Clases - Sociales (Lecturas)</h2><div><div>En esta sección encontrará el <b>Material de las clases de Sociales </b>(Lecturas) de Sin-Pre UN, esperando que sea de ayuda para su examen de admisión a la Universidad Nacional de Colombia.</div><div><br /></div><div><b><a href="https://drive.google.com/file/d/1jeUzhl7O45qayDadndK2u_hBZGX_wf5k/view?usp=sharing" target="_blank">Archivo 1</a>     <a href="https://drive.google.com/file/d/1jeUzhl7O45qayDadndK2u_hBZGX_wf5k/view?usp=sharing" target="_blank">Archivo 2</a>     <a href="https://drive.google.com/file/d/13fNJgZIish9boylmud1p68akEI-9sLi3/view?usp=sharing" target="_blank">Archivo 3</a></b></div><div><br /></div><div><h2>Material Clases - Imagen (Diapositivas)</h2><div>En esta sección encontrará el <b>Material de las clases de Análisis de Imagen </b>(Diapositivas) de Sin-Pre UN, esperando que sea de ayuda para su examen de admisión a la Universidad Nacional de Colombia.</div><div><br /></div><div><b><a href="https://drive.google.com/file/d/1kvE8O_kgcOYfP0RWHcGA-sFNXiqzaRON/view?usp=sharing" target="_blank">Archivo 1</a>     <a href="https://drive.google.com/file/d/1Ygy4xnDjHuZ2BNKRltQrI0JwkbABTIcE/view?usp=sharing" target="_blank">Archivo 2</a>     <a href="https://drive.google.com/file/d/1dq7L3AkwIdpwyJX5KfxMbrk80up02J7Q/view?usp=sharing" target="_blank">Archivo 3</a>      <a href="https://drive.google.com/file/d/1sFVHf7O0Olt6gdPQivd51YD3AubNi4yN/view?usp=sharing" target="_blank">Archivo 4</a>     <a href="https://drive.google.com/file/d/11AJSVZTxGJMvONiBK8O5Z9EuuJel7DaP/view?usp=sharing" target="_blank">Archivo 5</a>     <a href="https://drive.google.com/file/d/1hRViiUanRnDQW5fY-wD1Nj9lAGXqreqB/view?usp=sharing" target="_blank">Archivo 6</a></b></div><div><br /></div><div><br /></div></div><h2>Material Clases - Imagen (Talleres)</h2><div>En esta sección encontrará el <b>Material de las clases de Análisis de Imagen </b>(Talleres) de Sin-Pre UN, esperando que sea de ayuda para su examen de admisión a la Universidad Nacional de Colombia.</div><div><br /></div><div><b><a href="https://drive.google.com/file/d/1zFGtizZe1uCJ_-FDl1Wc4X7kXXQDRAAS/view?usp=sharing" target="_blank">Archivo 1</a>     <a href="https://drive.google.com/file/d/1QZPH7i8YXudiO-OdT_deEJ_awU03y39R/view?usp=sharing" target="_blank">Archivo 2</a>      <a href="https://drive.google.com/file/d/1i-pYjRAqZStDPwAhNnUFGzhpuLUQRt7w/view?usp=sharing" target="_blank">Archivo 3</a>     <a href="https://drive.google.com/file/d/1KCJcid88Gms76dwQFLuKVDs46_6vuzgI/view?usp=sharing" target="_blank">Archivo 4</a>     <a href="https://drive.google.com/file/d/1AVYCVJ1YhvedkD1yNE93mS2rH8Gfqp6h/view?usp=sharing" target="_blank">Archivo 5</a>     <a href="https://drive.google.com/file/d/1yCeUMkspTCyy_w1_BTm0fzzJw_UoytYV/view?usp=sharing" target="_blank">Archivo 6</a></b><br /></div></div></div></div>
+      <div class="entry-body" id="entry-body">
+        <div><br /></div><div>En esta sección encontrará las <b>Clases hechas por</b><b> Sin-Presupuesto</b>, esperando que sean de ayuda para su examen de admisión a la Universidad Nacional de Colombia.</div><div><br /></div><div><br /></div><div><b><a href="https://www.youtube.com/@sinpresupuestoun"></a><a href="https://www.youtube.com/@sinpresupuestoun">Clases</a></b></div><div><br /></div><div><br /></div><div><h2>Calculo resultados - DIPA</h2><div>En esta sección encontrará el <b>Material de: Calculo resultados - DIPA</b> creado por mí (Joaquín Caicedo, creador de este PreU) para Sin-Pre, esperando que sea de ayuda para su examen de admisión a la Universidad Nacional de Colombia.</div><div><br /></div></div><div><a href="https://docs.google.com/spreadsheets/d/1D7VJy-4Sf37BPUk-JzzRCU7vfl5-0UyQ/edit?usp=sharing&amp;ouid=107806560525543497146&amp;rtpof=true&amp;sd=true" target="_blank"><b>Calculadora DIPA</b></a><br /></div><div><br /></div><h3></h3><h2>Material Clases - Mate' (Diapositivas)</h2><div>En esta sección encontrará el Material de las clases de Matemáticas (Diapositivas) de Sin-Pre, esperando que sea de ayuda para su examen de admisión a la Universidad Nacional de Colombia.</div><p><b><a href="https://drive.google.com/file/d/1W6kZZt07k-YqJaUaxJfw4TDdCap10pUa/view?usp=sharing" target="_blank">Archivo 1</a>     <a href="https://drive.google.com/file/d/1N3qV40QjIu6ERewDQRQO7QKij2nHSo3T/view?usp=sharing" target="_blank">Archivo 2</a>     <a href="https://drive.google.com/file/d/1E1jL0Bp1UIg33960oDSk6fCrahMrO_TA/view" target="_blank">Archivo 3</a>     <a href="https://drive.google.com/file/d/1ig700nidOcDuL-2t8C6WcMym07VnmYuL/view" target="_blank">Archivo 4</a>     <a href="https://drive.google.com/file/d/1JlldJbLS1Q57IU_rZLrICkbtPW9YcUfU/view?usp=sharing" target="_blank">Archivo 5</a>     <a href="https://drive.google.com/file/d/1rM77FH2IXWq4xSJKjrIt9InVgzlXtquF/view?usp=sharing" target="_blank">Archivo 6</a></b></p><p><b><a href="https://drive.google.com/file/d/1ULZhmMw5MFTFUNL8OrKvrVot-ZIvsOaf/view?usp=sharing" target="_blank">Archivo 7</a>     <a href="https://drive.google.com/file/d/1ULZhmMw5MFTFUNL8OrKvrVot-ZIvsOaf/view?usp=sharing" target="_blank">Archivo 8</a>     <a href="https://drive.google.com/file/d/1ugqqYIuHc2yKewNgsxU0TVrpU1cB13lS/view?usp=sharing" target="_blank">Archivo 9</a>    <a href="https://drive.google.com/file/d/1DjHDLSBnQm1PRY_DltQ3yMEW6TAZxkA7/view?usp=sharing" target="_blank">Archivo 10</a>    <a href="https://drive.google.com/file/d/1zePqd5jIHkLt9mWtfqGp23YFhWoig4aR/view?usp=sharing" target="_blank">Archivo 11</a>     <a href="https://drive.google.com/file/d/10ViHMg0yIYZMIXuH0ty1OUAb8L7MmThN/view?usp=sharing" target="_blank">Archivo 12</a></b></p><p><b><a href="https://drive.google.com/file/d/1XilMhUEtVm4sMpg4YkzWuhTOrVpmbDsW/view?usp=sharing" target="_blank">Archivo 13</a>   <a href="https://drive.google.com/file/d/1XilMhUEtVm4sMpg4YkzWuhTOrVpmbDsW/view?usp=sharing" target="_blank">Archivo 14</a>     <a href="https://drive.google.com/file/d/1fo3SnTmzyr8DCWJmSaMoxLYfJegSgpzl/view?usp=sharing" target="_blank">Archivo 15</a>     <a href="https://drive.google.com/file/d/1WlYikwYQnKg4pj4PsMGu3gOjT2W2PpFa/view?usp=sharing" target="_blank">Archivo 16</a>     <a href="https://drive.google.com/file/d/1GuTBDi4CPl6ICWmt7fxbEVUNOAhg98XT/view?usp=sharing" target="_blank">Archivo 17</a>     <a href="https://drive.google.com/file/d/10h1MQcIowEon_7SmUeJb-qhEEr0cacAL/view?usp=sharing" target="_blank">Archivo 18</a></b><br /></p><p><b><a href="https://drive.google.com/file/d/1S0lTgQipYf_I4oPJl4LCR9NaRJjyUriN/view?usp=sharing" target="_blank">Archivo 19</a>     <a href="https://drive.google.com/file/d/1Psz1oJEMwyf87V7NUXbWnCfHIcg5HM4D/view?usp=sharing" target="_blank">Archivo 20</a>     <a href="https://drive.google.com/file/d/1ievfnbfLfPaAfKWWuAOsBAjPOU6I2sfg/view?usp=sharing" target="_blank">Archivo 21</a>     <a href="https://drive.google.com/file/d/1901nz8uF3CpQP1TrxCLxl4p4Iczcvz-t/view?usp=sharing" target="_blank">Archivo 22</a>     <a href="https://drive.google.com/file/d/1j4PE2ytcqykE8PdicU5hQEugpTSvLUsM/view?usp=sharing" target="_blank">Archivo 23</a>     <a href="https://drive.google.com/file/d/1hpaflRPAqyKFV8j68o-UYWOUCCxtRuUX/view?usp=sharing" target="_blank">Archivo 24</a><br /></b></p><div><b><a href="https://drive.google.com/file/d/1aYHoPcsHwlWXycJYd8g0bgmbYkf4DwBR/view?usp=sharing" target="_blank">Archivo 25</a>     <a href="https://drive.google.com/file/d/1qTRHDpBED9DPx-YMGvouZnz_WzEi9trh/view?usp=sharing" target="_blank">Archivo 26</a></b></div><p><b><br /></b></p><h2>Material Clases - Mate' (Talleres)</h2><div>En esta sección encontrará el <b>Material de las clases de Matemáticas </b>(Talleres) de Sin-Pre, esperando que sea de ayuda para su examen de admisión a la Universidad Nacional de Colombia.</div><div><br /></div><div><b><a href="https://drive.google.com/file/d/12ZH5S-GSjH13xotbT_MAHagsC8ICm5GN/view?usp=sharing" target="_blank">Archivo 1</a>     <a href="https://drive.google.com/file/d/10vd2ywbi-6Opuf9p5ORQOmIn7pOrO1Ot/view?usp=sharing" target="_blank">Archivo 2</a>      <a href="https://drive.google.com/file/d/10vd2ywbi-6Opuf9p5ORQOmIn7pOrO1Ot/view?usp=sharing" target="_blank">Archivo 3</a>     <a href="https://drive.google.com/file/d/10vd2ywbi-6Opuf9p5ORQOmIn7pOrO1Ot/view?usp=sharing" target="_blank">Archivo 4</a>     <a href="https://drive.google.com/file/d/1zVKKaWHvA-6ByBRjg7E3mynGVBYVfhRZ/view?usp=sharing" target="_blank">Archivo 5</a>      <a href="https://drive.google.com/file/d/1hOjUTCHZv29e6jG82vRh7ln_1qauXgwA/view?usp=sharing" target="_blank">Archivo 6</a></b></div><div><a href="https://drive.google.com/file/d/1I85ugutzPzjbgbHPlLYdJpJz5Cgdao6b/view?usp=sharing" target="_blank"><b>Archivo 7</b></a><b>     <a href="https://drive.google.com/file/d/1WaP0t2xcvmjC0WXCu6vA9eY7k6ljOJVA/view?usp=sharing" target="_blank">Archivo 8</a>     <a href="https://drive.google.com/file/d/1JsPJi55A2RRkAETWkKivMSQLFhqH2EKO/view?usp=sharing" target="_blank">Archivo 9</a>     <a href="https://drive.google.com/file/d/1F3YhpqwRFo6o-3OIAU3lxfFNwo00z4C-/view?usp=sharing" target="_blank">Archivo 10</a>     <a href="https://drive.google.com/file/d/1qjZ1RSgunWAnpnzj88TZ4h--oM810W-j/view?usp=sharing" target="_blank">Archivo 11</a>     <a href="https://drive.google.com/file/d/1sbEI_3NkmHSBF1ye29xwKUsNxDA6PW17/view?usp=sharing" target="_blank">Archivo 12</a></b><br /></div><div><br /></div><div><br /></div><div><h2>Material Clases - Textual (Diapositivas)</h2><div>En esta sección encontrará el <b>Material de las clases de Análisis de Textual </b>(Diapositivas) de Sin-Pre, esperando que sea de ayuda para su examen de admisión a la Universidad Nacional de Colombia.</div><div><b><br /></b></div><div><b><a href="https://drive.google.com/file/d/1bSFQ7-GzlBgZNGnSDdfUgtxTBtPb68jS/view?usp=sharing" target="_blank">Archivo 1</a>     <a href="https://drive.google.com/file/d/1hvkbbDt-VW2MjUlU07uyhySV2K-jQhha/view?usp=sharing" target="_blank">Archivo 2</a>     <a href="https://drive.google.com/file/d/10L9PlRIgKAx72yspXAIZsHSBkQOmRby7/view?usp=sharing" target="_blank">Archivo 3</a>      <a href="https://drive.google.com/file/d/1CgqHz5XhmoHLyg3YhYkciH71QNc5MrCO/view?usp=sharing" target="_blank">Archivo 4</a>     <a href="https://drive.google.com/file/d/1caPVyiaHWReZcaboPdt4E18YOQcUdCmE/view?usp=sharing" target="_blank">Archivo 5</a>      <a href="https://drive.google.com/file/d/1r3SKTSQeWN7885ggnpdBtj0LuByC5yda/view?usp=sharing" target="_blank">Archivo 6</a></b></div><div><b><a href="https://drive.google.com/file/d/1NyPqNbW-3JP64GA9DSInPjXvdbTkzNj7/view?usp=sharing" target="_blank">Archivo 7</a>   </b><br /></div><div><br /></div><h2>Material Clases - Ciencias (Diapositivas)</h2><div><div>En esta sección encontrará el <b>Material de las clases de Ciencias </b>(Diapositivas) de Sin-Pre, esperando que sea de ayuda para su examen de admisión a la Universidad Nacional de Colombia.</div><div><br /></div><div><b><a href="https://drive.google.com/file/d/17spa2c8REkw9WYj0hdrgQKB25n9CdqeF/view?usp=sharing" target="_blank">Archivo 1</a>      <a href="https://drive.google.com/file/d/1hF2rQdqDsyGJIxwoWg-bumZ4c5oxqWvU/view?usp=sharing" target="_blank">Archivo 2</a>     <a href="https://drive.google.com/file/d/1cvwVLXThgMGMjebPCs8wG3uNwxSyG7MA/view?usp=sharing" target="_blank">Archivos 3</a>     <a href="https://drive.google.com/file/d/1OtynFDwunMr3q_kxHxVyHOQbyzcgN3PA/view?usp=sharing" target="_blank">Archivo 4</a></b><br /></div><div><br /></div><div><br /></div><h2>Material Clases - Física (Diapositivas)</h2><div>En esta sección encontrará el <b>Material de las clases de Física </b>(Diapositivas) de Sin-Pre, esperando que sea de ayuda para su examen de admisión a la Universidad Nacional de Colombia.</div><div><br /></div><div><b><a href="https://drive.google.com/file/d/14F85zTxSeUfVTQErRKSxXR1aFNtPahYV/view?usp=sharing" target="_blank">Archivo 1</a>     <a href="https://drive.google.com/file/d/1AvyqVGGQkaJgGIIdGIk705Rq2SAB_Tdu/view?usp=sharing" target="_blank">Archivo 2</a>     <a href="https://drive.google.com/file/d/1PO5z8A6WyPqncZd78CvTEVc2kvG0yYzK/view?usp=sharing" target="_blank">Archivo 3</a>     <a href="https://drive.google.com/file/d/1H2wuS5d6KWcIj_-W5F6qpSiIZ4cmJU9a/view?usp=sharing" target="_blank">Archivo 4</a>     <a href="https://drive.google.com/file/d/1TMvScsTO3V-FwhnRzO8_kt2IcDk6pUSx/view?usp=sharing" target="_blank">Archivo 5</a>     <a href="https://drive.google.com/file/d/1_3XJCP1DfIRkQUPf83GAhHkBI5EpmShm/view?usp=sharing" target="_blank">Archivo 6</a></b><br /></div><div><a href="https://drive.google.com/file/d/1l1REN4XjRukpPBuzhwR7o5TxPwEvpZaU/view?usp=sharing" target="_blank"><b>Archivo 7</b></a><br /></div><div><br /></div><div><br /></div><div><h2>Material Clases - Física (Talleres)</h2><div>En esta sección encontrará el <b>Material de las clases de Física </b>(Talleres) de Sin-Pre, esperando que sea de ayuda para su examen de admisión a la Universidad Nacional de Colombia.</div><div><b><br /></b></div><div><b><a href="https://drive.google.com/file/d/1RiBWzoNFzNKG39Wls-x_Q1kSIVgupS_M/view?usp=sharing" target="_blank">Archivo 1</a>     <a href="https://drive.google.com/file/d/1g2XAtpJZ8XxecNosL3rP67i645VgIiyc/view?usp=sharing" target="_blank">Archivo 2</a>     <a href="https://drive.google.com/file/d/1Z_yKnlv8ubczBzRn9TSNSgkdQ3KDWbVn/view?usp=sharing" target="_blank">Archivo 3</a>     <a href="https://drive.google.com/file/d/1gCz6H9wd2UswpK0uiInlQJ6sF4uH75nF/view?usp=sharing" target="_blank">Archivo 4</a>     <a href="https://drive.google.com/file/d/1BITuqphgjCzTlCobCDEKjQrTBx2An5HA/view?usp=sharing" target="_blank">Archivo 5</a></b><br /></div><div><br /></div><div><br /></div></div><h2>Material Clases - Sociales (Lecturas)</h2><div><div>En esta sección encontrará el <b>Material de las clases de Sociales </b>(Lecturas) de Sin-Pre, esperando que sea de ayuda para su examen de admisión a la Universidad Nacional de Colombia.</div><div><br /></div><div><b><a href="https://drive.google.com/file/d/1jeUzhl7O45qayDadndK2u_hBZGX_wf5k/view?usp=sharing" target="_blank">Archivo 1</a>     <a href="https://drive.google.com/file/d/1jeUzhl7O45qayDadndK2u_hBZGX_wf5k/view?usp=sharing" target="_blank">Archivo 2</a>     <a href="https://drive.google.com/file/d/13fNJgZIish9boylmud1p68akEI-9sLi3/view?usp=sharing" target="_blank">Archivo 3</a></b></div><div><br /></div><div><h2>Material Clases - Imagen (Diapositivas)</h2><div>En esta sección encontrará el <b>Material de las clases de Análisis de Imagen </b>(Diapositivas) de Sin-Pre, esperando que sea de ayuda para su examen de admisión a la Universidad Nacional de Colombia.</div><div><br /></div><div><b><a href="https://drive.google.com/file/d/1kvE8O_kgcOYfP0RWHcGA-sFNXiqzaRON/view?usp=sharing" target="_blank">Archivo 1</a>     <a href="https://drive.google.com/file/d/1Ygy4xnDjHuZ2BNKRltQrI0JwkbABTIcE/view?usp=sharing" target="_blank">Archivo 2</a>     <a href="https://drive.google.com/file/d/1dq7L3AkwIdpwyJX5KfxMbrk80up02J7Q/view?usp=sharing" target="_blank">Archivo 3</a>      <a href="https://drive.google.com/file/d/1sFVHf7O0Olt6gdPQivd51YD3AubNi4yN/view?usp=sharing" target="_blank">Archivo 4</a>     <a href="https://drive.google.com/file/d/11AJSVZTxGJMvONiBK8O5Z9EuuJel7DaP/view?usp=sharing" target="_blank">Archivo 5</a>     <a href="https://drive.google.com/file/d/1hRViiUanRnDQW5fY-wD1Nj9lAGXqreqB/view?usp=sharing" target="_blank">Archivo 6</a></b></div><div><br /></div><div><br /></div></div><h2>Material Clases - Imagen (Talleres)</h2><div>En esta sección encontrará el <b>Material de las clases de Análisis de Imagen </b>(Talleres) de Sin-Pre, esperando que sea de ayuda para su examen de admisión a la Universidad Nacional de Colombia.</div><div><br /></div><div><b><a href="https://drive.google.com/file/d/1zFGtizZe1uCJ_-FDl1Wc4X7kXXQDRAAS/view?usp=sharing" target="_blank">Archivo 1</a>     <a href="https://drive.google.com/file/d/1QZPH7i8YXudiO-OdT_deEJ_awU03y39R/view?usp=sharing" target="_blank">Archivo 2</a>      <a href="https://drive.google.com/file/d/1i-pYjRAqZStDPwAhNnUFGzhpuLUQRt7w/view?usp=sharing" target="_blank">Archivo 3</a>     <a href="https://drive.google.com/file/d/1KCJcid88Gms76dwQFLuKVDs46_6vuzgI/view?usp=sharing" target="_blank">Archivo 4</a>     <a href="https://drive.google.com/file/d/1AVYCVJ1YhvedkD1yNE93mS2rH8Gfqp6h/view?usp=sharing" target="_blank">Archivo 5</a>     <a href="https://drive.google.com/file/d/1yCeUMkspTCyy_w1_BTm0fzzJw_UoytYV/view?usp=sharing" target="_blank">Archivo 6</a></b><br /></div></div></div></div>
       </div>
     </main>
-    
     <aside class="sidebar">
       <p class="sidebar-title">Todas las secciones</p>
-      <ul class="sidebar-links"><li><a href="motivacion-guia.html" class="">I. Motivación/Guía</a></li><li><a href="clases-sin-pre.html" class="current">II. Clases Sin-Pre</a></li><li><a href="temarios.html" class="">III. Temarios</a></li><li><a href="admision-y-examenes-un.html" class="">IV. Admisión y Exámenes UN</a></li><li><a href="clases-preu-s-i.html" class="">V. Clases PreU's I</a></li><li><a href="clases-preu-s-ii-libres.html" class="">VI. Clases PreU's II (Libres)</a></li><li><a href="recursos-udea.html" class="">VII. Recursos UdeA</a></li><li><a href="diapositivas-con-todo.html" class="">VIII. Diapositivas con TODO</a></li><li><a href="apuntes-estudio-un.html" class="">IX. Apuntes Estudio UN</a></li><li><a href="textos-varios-practica-textual.html" class="">X. Textos Varios (Práctica Textual)</a></li><li><a href="modulos-teoricos.html" class="">XI. Módulos Teóricos</a></li><li><a href="modulos-especiales.html" class="">XII. Módulos Especiales</a></li><li><a href="ejercicios-practicas.html" class="">XIII. Ejercicios Prácticas</a></li><li><a href="simulacros-un.html" class="">XIV. Simulacros UN</a></li><li><a href="simulacros-calificados-un.html" class="">XV. Simulacros Calificados UN</a></li><li><a href="app-s-estudio-android.html" class="">XVI. App's Estudio (Android)</a></li><li><a href="clases-en-vivo-grabadas-sin-presupuesto-un.html" class="">Clases en vivo/grabadas - Sin-Presupuesto UN</a></li><li><a href="donativos.html" class="">Donativos</a></li><li><a href="formulario-economico-1.html" class="">Formulario Económico 1</a></li><li><a href="medios-de-sin-presupuesto-un.html" class="">Medios de Sin-Presupuesto UN</a></li><li><a href="tomos.html" class="">Tomos</a></li></ul>
+      <ul class="sidebar-links"><li><a href="motivacion-guia.html" class=""><img src="logos/imagen.png" alt="">I. Motivación/Guía</a></li><li><a href="clases-sin-pre.html" class="current"><img src="logos/sociales.png" alt="">II. Clases Sin-Pre</a></li><li><a href="temarios.html" class=""><img src="logos/quimica.png" alt="">III. Temarios</a></li><li><a href="admision-y-examenes-un.html" class=""><img src="logos/ingles.png" alt="">IV. Admisión y Exámenes </a></li><li><a href="clases-preu-s-i.html" class=""><img src="logos/sociales.png" alt="">V. Clases PreU's I</a></li><li><a href="clases-preu-s-ii-libres.html" class=""><img src="logos/sociales.png" alt="">VI. Clases PreU's II (Libres)</a></li><li><a href="recursos-udea.html" class=""><img src="logos/biologia.png" alt="">VII. Recursos UdeA</a></li><li><a href="diapositivas-con-todo.html" class=""><img src="logos/filosofia.png" alt="">VIII. Diapositivas con TODO</a></li><li><a href="apuntes-estudio-un.html" class=""><img src="logos/filosofia.png" alt="">IX. Apuntes Estudio </a></li><li><a href="textos-varios-practica-textual.html" class=""><img src="logos/textual.png" alt="">X. Textos Varios (Práctica Textual)</a></li><li><a href="modulos-teoricos.html" class=""><img src="logos/filosofia.png" alt="">XI. Módulos Teóricos</a></li><li><a href="modulos-especiales.html" class=""><img src="logos/filosofia.png" alt="">XII. Módulos Especiales</a></li><li><a href="ejercicios-practicas.html" class=""><img src="logos/matematicas.png" alt="">XIII. Ejercicios Prácticas</a></li><li><a href="simulacros-un.html" class=""><img src="logos/fisica.png" alt="">XIV. Simulacros </a></li><li><a href="simulacros-calificados-un.html" class=""><img src="logos/fisica.png" alt="">XV. Simulacros Calificados </a></li><li><a href="app-s-estudio-android.html" class=""><img src="logos/matematicas.png" alt="">XVI. App's Estudio (Android)</a></li><li><a href="clases-en-vivo-grabadas-sin-presupuesto-un.html" class=""><img src="logos/sociales.png" alt="">Clases en vivo/grabadas - Sin-Presupuesto</a></li><li><a href="donativos.html" class=""><img src="logos/sociales.png" alt="">Donativos</a></li><li><a href="formulario-economico-1.html" class=""><img src="logos/matematicas.png" alt="">Formulario Económico 1</a></li><li><a href="medios-de-sin-presupuesto-un.html" class=""><img src="logos/imagen.png" alt="">Medios de Sin-Presupuesto</a></li><li><a href="tomos.html" class=""><img src="logos/textual.png" alt="">Tomos</a></li></ul>
     </aside>
   </div>
-  
-    <footer>
-      <p>Sin-Presupuesto UN · PreUniversitario gratuito y popular ❤️</p>
-      <p style="margin-top:0.4rem"><a href="donativos.html">Apoya el proyecto</a> · <a href="medios-de-sin-presupuesto-un.html">Redes sociales</a></p>
-    </footer>
+  <footer>
+    <p>Sin-Presupuesto · PreUniversitario gratuito y popular ❤️</p>
+    <p style="margin-top:0.4rem"><a href="donativos.html">Apoya el proyecto</a> · <a href="medios-de-sin-presupuesto-un.html">Redes sociales</a></p>
+  </footer>
+  <script src="editor.js"></script>
 </body>
 </html>
