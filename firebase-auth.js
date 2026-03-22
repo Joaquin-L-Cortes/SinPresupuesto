@@ -909,7 +909,17 @@ function injectStyles() {
 }
 
 // ─── INIT ─────────────────────────────────────────────────
-document.addEventListener('DOMContentLoaded', () => {
+// Los módulos ES se ejecutan diferidos: cuando este código corre,
+// DOMContentLoaded ya disparó. Hay que verificar readyState.
+function domReady(fn) {
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', fn);
+  } else {
+    fn();
+  }
+}
+
+domReady(() => {
   injectStyles();
   injectModals();
 
