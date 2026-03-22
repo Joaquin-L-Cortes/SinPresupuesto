@@ -709,36 +709,20 @@ render();
 </script>
 
 <footer>
-  <img alt="SinPresupuesto" src="https://blogger.googleusercontent.com/img/a/AVvXsEiEa5FiVygEwh0DUsao4_LCpicY0wHHhLnIFqXV_YvHe0a-rPFCBUswnonFkupI6kFTnOIob3ZWN4l4vLiaL-k-tIIOJ6aXiSA0N1QXjsuuRDIvRQV0Zn0s4zwzqwjIz6t81GvF_wE4bNr766Emlr4gc5oljetBv7moJFVlT8vrc9iuclYwHr8wjby_cQrB" />
-  Un ejercicio de <strong>SinPresupuesto</strong> · <strong>Joaquín L. Cortés</strong>
-  <div style="margin-top:1rem;padding-top:0.75rem;border-top:1px solid var(--border)">
-    <button id="btn-admin-footer" onclick="openAdminModal()"
-      style="background:none;border:none;color:var(--border);font-size:0.72rem;cursor:pointer;transition:color .2s;"
-      onmouseover="this.style.color='var(--muted)'" onmouseout="this.style.color='var(--border)'">
-      ⚙ Admin
-    </button>
-  </div>
-</footer>
+    <p>Sin-Presupuesto · PreUniversitario gratuito y popular ❤️</p>
+    <p style="margin-top:0.4rem"><a href="donativos.html">Apoya el proyecto</a> · <a href="medios-de-sin-presupuesto-un.html">Redes sociales</a></p>
+    <p style="margin-top:0.75rem;padding-top:0.75rem;border-top:1px solid var(--border)">
+      <button id="btn-admin-footer" onclick="openAdminModal()"
+        style="background:none;border:none;color:var(--border);font-size:0.72rem;cursor:pointer;transition:color .2s;font-family:'DM Sans',sans-serif;"
+        onmouseover="this.style.color='var(--muted)'" onmouseout="this.style.color='var(--border)'">Joaquín L. Cortés</button>
+    </p>
+  </footer>
 
-
-        <div class="form-group">
-        <label>Correo</label>
-        <input type="email" id="admin-email" placeholder="sinpreun@gmail.com">
-      </div>
-      <div class="form-group">
-        <label>Contraseña</label>
-        <input type="password" id="admin-pass" placeholder="••••••••">
-      </div>
-      <p style="color:#c0392b;font-size:0.82rem;min-height:1.2em" id="admin-err"></p>
-      <button class="btn-submit" id="admin-submit">Ingresar como admin</button>
-    </div>
-  </div>
-
-  <!-- Modal admin -->
+  <!-- Modal admin COMPLETO -->
   <div class="modal-overlay" id="admin-modal">
     <div class="modal" style="max-width:360px">
       <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:1.25rem">
-        <h2 style="font-family:'Fraunces',serif;color:var(--accent)">Administrador</h2>
+        <h2 style="font-family:'Fraunces',serif;color:var(--accent)">Joaquín L. Cortés</h2>
         <button onclick="closeAdminModal()" style="background:none;border:none;color:var(--muted);font-size:1.2rem;cursor:pointer;">✕</button>
       </div>
       <div class="form-group">
@@ -750,9 +734,12 @@ render();
         <input type="password" id="admin-pass" placeholder="••••••••">
       </div>
       <p style="color:#c0392b;font-size:0.82rem;min-height:1.2em" id="admin-err"></p>
-      <button class="btn-submit" id="admin-submit">Ingresar como admin</button>
+      <button class="btn-submit" id="admin-submit">Ingresar</button>
     </div>
   </div>
+
+  <script src="editor.js"></script>
+  <script type="module" src="firebase-auth.js"></script>
 </body>
 </html>
       </div>
@@ -765,35 +752,18 @@ render();
   <footer>
     <p>Sin-Presupuesto · PreUniversitario gratuito y popular ❤️</p>
     <p style="margin-top:0.4rem"><a href="donativos.html">Apoya el proyecto</a> · <a href="medios-de-sin-presupuesto-un.html">Redes sociales</a></p>
-    <div style="margin-top:1rem;padding-top:0.75rem;border-top:1px solid var(--border)">
-    <button id="btn-admin-footer" onclick="openAdminModal()"
-      style="background:none;border:none;color:var(--border);font-size:0.72rem;cursor:pointer;transition:color .2s;"
-      onmouseover="this.style.color='var(--muted)'" onmouseout="this.style.color='var(--border)'">
-      ⚙ Admin
-    </button>
-  </div>
-</footer>
-  <script src="editor.js"></script>
-  <script type="module" src="firebase-auth.js"></script>
+    <p style="margin-top:0.75rem;padding-top:0.75rem;border-top:1px solid var(--border)">
+      <button id="btn-admin-footer" onclick="openAdminModal()"
+        style="background:none;border:none;color:var(--border);font-size:0.72rem;cursor:pointer;transition:color .2s;font-family:'DM Sans',sans-serif;"
+        onmouseover="this.style.color='var(--muted)'" onmouseout="this.style.color='var(--border)'">Joaquín L. Cortés</button>
+    </p>
+  </footer>
 
-        <div class="form-group">
-        <label>Correo</label>
-        <input type="email" id="admin-email" placeholder="sinpreun@gmail.com">
-      </div>
-      <div class="form-group">
-        <label>Contraseña</label>
-        <input type="password" id="admin-pass" placeholder="••••••••">
-      </div>
-      <p style="color:#c0392b;font-size:0.82rem;min-height:1.2em" id="admin-err"></p>
-      <button class="btn-submit" id="admin-submit">Ingresar como admin</button>
-    </div>
-  </div>
-
-  <!-- Modal admin -->
+  <!-- Modal admin COMPLETO -->
   <div class="modal-overlay" id="admin-modal">
     <div class="modal" style="max-width:360px">
       <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:1.25rem">
-        <h2 style="font-family:'Fraunces',serif;color:var(--accent)">Administrador</h2>
+        <h2 style="font-family:'Fraunces',serif;color:var(--accent)">Joaquín L. Cortés</h2>
         <button onclick="closeAdminModal()" style="background:none;border:none;color:var(--muted);font-size:1.2rem;cursor:pointer;">✕</button>
       </div>
       <div class="form-group">
@@ -805,8 +775,11 @@ render();
         <input type="password" id="admin-pass" placeholder="••••••••">
       </div>
       <p style="color:#c0392b;font-size:0.82rem;min-height:1.2em" id="admin-err"></p>
-      <button class="btn-submit" id="admin-submit">Ingresar como admin</button>
+      <button class="btn-submit" id="admin-submit">Ingresar</button>
     </div>
   </div>
+
+  <script src="editor.js"></script>
+  <script type="module" src="firebase-auth.js"></script>
 </body>
 </html>
