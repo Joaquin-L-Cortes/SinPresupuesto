@@ -427,6 +427,9 @@ function closePerfilModal() {
     document.getElementById('perfil-menu-dropdown').style.display = 'none';
 }
 function renderPerfilView() {
+  // Volver al tamaño normal en vista de perfil
+  const box = document.getElementById('perfil-modal-box');
+  if (box) box.style.maxWidth = '420px';
   const av = getAvatar(userProfile.avatarId || 1);
   document.getElementById('perfil-avatar-display').textContent      = av.emoji;
   document.getElementById('perfil-avatar-display').style.background = av.bg;
@@ -439,6 +442,9 @@ function renderPerfilView() {
   document.getElementById('perfil-edit').style.display = 'none';
 }
 function enterEditMode() {
+  // Ampliar modal para el layout horizontal
+  const box = document.getElementById('perfil-modal-box');
+  if (box) box.style.maxWidth = '620px';
   tempAvatarId = userProfile.avatarId || 1;
   document.getElementById('edit-nombre').value   = userProfile.nombre   || '';
   document.getElementById('edit-apellido').value = userProfile.apellido || '';
@@ -652,7 +658,7 @@ function injectModals() {
 
   <!-- MODAL PERFIL -->
   <div class="modal-overlay" id="perfil-modal">
-    <div class="modal" style="max-width:420px;max-height:90vh;overflow-y:auto">
+    <div class="modal" id="perfil-modal-box" style="max-width:420px;max-height:90vh;overflow-y:auto;transition:max-width .25s ease;">
       <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:1.5rem;position:sticky;top:0;background:var(--bg2);padding-top:.25rem">
         <h2 style="font-family:'Fraunces',serif;color:var(--accent)">Mi perfil</h2>
         <div style="display:flex;align-items:center;gap:.5rem">
@@ -704,7 +710,7 @@ function injectModals() {
           <!-- Columna derecha: picker de avatares -->
           <div class="reg-picker-col">
             <p style="font-size:.72rem;color:var(--muted);margin-bottom:.4rem;font-weight:600;text-transform:uppercase;letter-spacing:.05em;">Avatar</p>
-            <div id="edit-avatar-picker" style="display:grid;grid-template-columns:repeat(3,1fr);gap:.3rem;"></div>
+            <div id="edit-avatar-picker" style="display:grid;grid-template-columns:repeat(3,1fr);gap:.35rem;"></div>
           </div>
         </div>
         <!-- Error y botones debajo del layout -->
