@@ -1,59 +1,34 @@
 // ─── CONFIGURACIÓN ───────────────────────────────────────
-const PASS_HASH  = 'b5225f58be400470ea03729ba17ebf10e4ce131b1c228fdd183ef9083a60ecec';
+const PASS_HASH   = 'b5225f58be400470ea03729ba17ebf10e4ce131b1c228fdd183ef9083a60ecec';
 const SESSION_KEY = 'sinpre_auth';
-// El token ya NO está aquí — vive seguro en el servidor de Netlify
+const ADMIN_EMAIL = 'sinpreun@gmail.com';
+const ADMIN_PASS_HASH = 'b5225f58be400470ea03729ba17ebf10e4ce131b1c228fdd183ef9083a60ecec';
 
 // ─── UTILIDADES ──────────────────────────────────────────
 async function sha256(msg) {
   const buf = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(msg));
   return Array.from(new Uint8Array(buf)).map(b => b.toString(16).padStart(2,'0')).join('');
 }
-
 function isLogged() { return sessionStorage.getItem(SESSION_KEY) === 'ok'; }
 
-function showToast(msg, duration) {
+function showToast(msg, duration, type) {
   duration = duration || 2500;
+  type = type || 'default';
   document.querySelectorAll('.toast').forEach(function(t) { t.remove(); });
   var t = document.createElement('div');
   t.className = 'toast';
   t.textContent = msg;
+  if (type === 'success') t.style.background = '#1a7a4a';
+  if (type === 'error')   t.style.background = '#c0392b';
   document.body.appendChild(t);
   setTimeout(function() { t.remove(); }, duration);
 }
 
-// ─── AUTH ─────────────────────────────────────────────────
+// ─── AUTH EDITOR ─────────────────────────────────────────
 function openModal() {
-  document.getElementById('login-modal').classList.add('open');
-  setTimeout(function() { document.getElementById('inp-pass').focus(); }, 100);
+  // Ya no se usa - login admin reemplaza esto
 }
-
-function closeModal() {
-  document.getElementById('login-modal').classList.remove('open');
-  document.getElementById('login-error').style.display = 'none';
-  document.getElementById('inp-pass').value = '';
-}
-
-async function doLogin() {
-  var pass = document.getElementById('inp-pass').value;
-  if (!pass) return;
-  var hash = await sha256(pass);
-  if (hash === PASS_HASH) {
-    sessionStorage.setItem(SESSION_KEY, 'ok');
-    closeModal();
-    activateEditor();
-    updateLoginBtn();
-  } else {
-    document.getElementById('login-error').style.display = 'block';
-    document.getElementById('inp-pass').select();
-  }
-}
-
-function logout() {
-  sessionStorage.removeItem(SESSION_KEY);
-  deactivateEditor();
-  updateLoginBtn();
-  showToast('Sesión cerrada');
-}
+function closeModal() {}
 
 function updateLoginBtn() {
   var btn = document.getElementById('btn-login');
@@ -61,56 +36,71 @@ function updateLoginBtn() {
   if (isLogged()) {
     btn.textContent = '\u2736 Editor activo';
     btn.classList.add('logged');
-    btn.onclick = logout;
+    btn.onclick = confirmAdminLogout;
   } else {
     btn.innerHTML = '&#128274; Ingresar';
     btn.classList.remove('logged');
-    btn.onclick = openModal;
+    btn.onclick = openAdminModal;
   }
 }
 
-// ─── GUARDAR VÍA NETLIFY FUNCTION (seguro) ───────────────
-function getFileName() {
-  var parts = location.pathname.split('/');
-  var file = parts[parts.length - 1];
-  // Netlify sirve sin .html — normalizar
-  if (!file || file === '') return 'index.html';
-  if (!file.includes('.')) file = file + '.html';
-  return file;
+function logout() {
+  sessionStorage.removeItem(SESSION_KEY);
+  deactivateEditor();
+  updateLoginBtn();
 }
 
-async function saveToGitHub() {
-  var eb = document.getElementById('entry-body');
-  if (!eb) return;
-
-  var filename = getFileName();
-  var saveBtn = document.querySelector('.save-btn');
-
-  if (saveBtn) { saveBtn.textContent = 'Guardando...'; saveBtn.disabled = true; }
-  showToast('\u23f3 Subiendo cambios...', 10000);
-
-  try {
-    // Construir HTML completo de la página con los cambios
-    var fullHTML = '<!DOCTYPE html>\n' + document.documentElement.outerHTML;
-
-    // Llamar a la función serverless de Netlify (el token vive allá, no aquí)
-    var res = await fetch('/.netlify/functions/save', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ filename: filename, content: fullHTML })
-    });
-
-    var data = await res.json();
-
-    if (!res.ok) throw new Error(data.error || 'Error desconocido');
-
-    showToast('\u2713 Guardado en GitHub \u2014 visible en ~1 minuto');
-  } catch(err) {
-    showToast('\u2717 Error: ' + err.message, 4000);
-    console.error('Error al guardar:', err);
-  } finally {
-    if (saveBtn) { saveBtn.textContent = 'Guardar \u2713'; saveBtn.disabled = false; }
+// ─── ADMIN MODAL ──────────────────────────────────────────
+function openAdminModal() {
+  var modal = document.getElementById('admin-modal');
+  if (modal) {
+    modal.classList.add('open');
+    setTimeout(function() {
+      var el = document.getElementById('admin-email');
+      if (el) el.focus();
+    }, 100);
   }
+}
+
+function closeAdminModal() {
+  var modal = document.getElementById('admin-modal');
+  if (modal) modal.classList.remove('open');
+  var err = document.getElementById('admin-err');
+  if (err) err.textContent = '';
+}
+
+async function doAdminLogin() {
+  var email = document.getElementById('admin-email').value.trim();
+  var pass  = document.getElementById('admin-pass').value;
+  var err   = document.getElementById('admin-err');
+
+  if (email !== ADMIN_EMAIL) { err.textContent = 'Correo no autorizado.'; return; }
+  var hash = await sha256(pass);
+  if (hash !== ADMIN_PASS_HASH) { err.textContent = 'Contraseña incorrecta.'; return; }
+
+  sessionStorage.setItem(SESSION_KEY, 'ok');
+  closeAdminModal();
+  activateEditor();
+  updateLoginBtn();
+  showToast('✓ Bienvenido, Joaquín. Modo edición activo.', 3000, 'success');
+}
+
+function confirmAdminLogout() {
+  // Modal de confirmación para salir
+  document.getElementById('admin-logout-modal').classList.add('open');
+}
+function closeAdminLogoutModal() {
+  document.getElementById('admin-logout-modal').classList.remove('open');
+}
+function doAdminLogout() {
+  closeAdminLogoutModal();
+  logout();
+  showToast('Sesión de administrador cerrada.', 2500);
+}
+
+function adminForgotPassword() {
+  // Abrir Gmail para recuperar contraseña
+  window.open('https://accounts.google.com/signin/recovery', '_blank');
 }
 
 // ─── EDITOR ──────────────────────────────────────────────
@@ -126,7 +116,6 @@ function activateEditor() {
   var badge = document.getElementById('editing-badge');
   if (bar)   bar.classList.add('active');
   if (badge) badge.classList.add('show');
-  showToast('\u2736 Modo edición activo \u2014 haz clic en el texto para editar');
 }
 
 function deactivateEditor() {
@@ -146,76 +135,74 @@ function cancelEdit() {
   }
 }
 
+function getFileName() {
+  var parts = location.pathname.split('/');
+  var file  = parts[parts.length - 1];
+  if (!file || file === '') return 'index.html';
+  if (!file.includes('.')) file = file + '.html';
+  return file;
+}
+
+async function saveToGitHub() {
+  var eb = document.getElementById('entry-body');
+  if (!eb) return;
+  var filename = getFileName();
+  var saveBtn  = document.querySelector('.save-btn');
+  if (saveBtn) { saveBtn.textContent = 'Guardando...'; saveBtn.disabled = true; }
+  showToast('\u23f3 Subiendo cambios...', 10000);
+  try {
+    var fullHTML = '<!DOCTYPE html>\n' + document.documentElement.outerHTML;
+    var res = await fetch('/.netlify/functions/save', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ filename: filename, content: fullHTML })
+    });
+    var data = await res.json();
+    if (!res.ok) throw new Error(data.error || 'Error desconocido');
+    showToast('\u2713 Guardado en GitHub \u2014 visible en ~1 minuto', 3000, 'success');
+  } catch(err) {
+    showToast('\u2717 Error: ' + err.message, 4000, 'error');
+  } finally {
+    if (saveBtn) { saveBtn.textContent = 'Guardar \u2713'; saveBtn.disabled = false; }
+  }
+}
+
 // ─── INIT ─────────────────────────────────────────────────
 document.addEventListener('DOMContentLoaded', function() {
   updateLoginBtn();
   if (isLogged()) activateEditor();
 
-  var btnLogin = document.getElementById('btn-login');
-  if (btnLogin && !isLogged()) btnLogin.onclick = openModal;
-
-  document.getElementById('btn-submit')?.addEventListener('click', doLogin);
+  document.getElementById('btn-submit')?.addEventListener('click', doAdminLogin);
   document.querySelector('.save-btn')?.addEventListener('click', saveToGitHub);
   document.querySelector('.cancel-btn')?.addEventListener('click', cancelEdit);
 
   document.getElementById('inp-pass')?.addEventListener('keydown', function(e) {
-    if (e.key === 'Enter')  doLogin();
-    if (e.key === 'Escape') closeModal();
-  });
-
-  document.getElementById('login-modal')?.addEventListener('click', function(e) {
-    if (e.target === e.currentTarget) closeModal();
-  });
-});
-
-// ─── ADMIN MODAL ──────────────────────────────────────────
-const ADMIN_EMAIL = 'sinpreun@gmail.com';
-const ADMIN_PASS_HASH = 'b5225f58be400470ea03729ba17ebf10e4ce131b1c228fdd183ef9083a60ecec';
-
-function openAdminModal() {
-  document.getElementById('admin-modal').classList.add('open');
-  setTimeout(function() { document.getElementById('admin-email').focus(); }, 100);
-}
-function closeAdminModal() {
-  document.getElementById('admin-modal').classList.remove('open');
-  document.getElementById('admin-err').textContent = '';
-}
-
-async function doAdminLogin() {
-  var email = document.getElementById('admin-email').value.trim();
-  var pass  = document.getElementById('admin-pass').value;
-  var err   = document.getElementById('admin-err');
-
-  if (email !== ADMIN_EMAIL) {
-    err.textContent = 'Correo no autorizado.'; return;
-  }
-  var hash = await sha256(pass);
-  if (hash !== ADMIN_PASS_HASH) {
-    err.textContent = 'Contraseña incorrecta.'; return;
-  }
-  sessionStorage.setItem(SESSION_KEY, 'ok');
-  closeAdminModal();
-  activateEditor();
-  updateLoginBtn();
-  // Ocultar botón admin mientras está en modo edición
-  var fab = document.getElementById('btn-admin-float');
-  if (fab) { fab.textContent = '✕'; fab.title = 'Salir del editor'; fab.onclick = function() { logout(); fab.textContent = '⚙️'; fab.title = 'Administrador'; fab.onclick = openAdminModal; }; }
-}
-
-window.openAdminModal  = openAdminModal;
-window.closeAdminModal = closeAdminModal;
-window.doAdminLogin    = doAdminLogin;
-
-document.addEventListener('DOMContentLoaded', function() {
-  var sub = document.getElementById('admin-submit');
-  if (sub) sub.addEventListener('click', doAdminLogin);
-  var adminPass = document.getElementById('admin-pass');
-  if (adminPass) adminPass.addEventListener('keydown', function(e) {
-    if (e.key === 'Enter') doAdminLogin();
+    if (e.key === 'Enter')  doAdminLogin();
     if (e.key === 'Escape') closeAdminModal();
   });
+
+  var adminPass = document.getElementById('admin-pass');
+  if (adminPass) adminPass.addEventListener('keydown', function(e) {
+    if (e.key === 'Enter')  doAdminLogin();
+    if (e.key === 'Escape') closeAdminModal();
+  });
+  var adminSub = document.getElementById('admin-submit');
+  if (adminSub) adminSub.addEventListener('click', doAdminLogin);
+
   var adminModal = document.getElementById('admin-modal');
   if (adminModal) adminModal.addEventListener('click', function(e) {
     if (e.target === adminModal) closeAdminModal();
   });
+  var logoutModal = document.getElementById('admin-logout-modal');
+  if (logoutModal) logoutModal.addEventListener('click', function(e) {
+    if (e.target === logoutModal) closeAdminLogoutModal();
+  });
 });
+
+window.openAdminModal       = openAdminModal;
+window.closeAdminModal      = closeAdminModal;
+window.doAdminLogin         = doAdminLogin;
+window.confirmAdminLogout   = confirmAdminLogout;
+window.closeAdminLogoutModal = closeAdminLogoutModal;
+window.doAdminLogout        = doAdminLogout;
+window.adminForgotPassword  = adminForgotPassword;

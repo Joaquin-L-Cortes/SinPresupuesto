@@ -86,6 +86,22 @@
       </div>
       <p style="color:#c0392b;font-size:0.82rem;min-height:1.2em" id="admin-err"></p>
       <button class="btn-submit" id="admin-submit">Ingresar</button>
+      <p style="text-align:center;margin-top:0.85rem">
+        <button onclick="adminForgotPassword()" style="background:none;border:none;color:var(--muted);font-size:0.8rem;cursor:pointer;text-decoration:underline;">¿Olvidaste tu contraseña?</button>
+      </p>
+    </div>
+  </div>
+
+  <!-- Modal confirmación logout admin -->
+  <div class="modal-overlay" id="admin-logout-modal">
+    <div class="modal" style="max-width:340px;text-align:center">
+      <p style="font-size:1.5rem;margin-bottom:0.5rem">⚙️</p>
+      <h2 style="font-family:'Fraunces',serif;color:var(--accent);margin-bottom:0.5rem">¿Salir del editor?</h2>
+      <p style="color:var(--muted);font-size:0.88rem;margin-bottom:1.5rem">Los cambios no guardados se perderán.</p>
+      <div style="display:flex;gap:0.75rem">
+        <button onclick="closeAdminLogoutModal()" class="btn-submit" style="background:var(--bg3);color:var(--text);flex:1">Cancelar</button>
+        <button onclick="doAdminLogout()" class="btn-submit" style="background:#c0392b;flex:1">Salir</button>
+      </div>
     </div>
   </div>
 
