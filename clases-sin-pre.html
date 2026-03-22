@@ -12,7 +12,7 @@
       <img src="logos/filosofia.png" alt="Sin-Presupuesto logo">
       Sin-Presupuesto
     </a>
-    <ul class="nav-links"><li><a href="index.html" class="">Inicio</a></li><li><a href="motivacion-guia.html" class="">Motivación</a></li><li><a href="clases-sin-pre.html" class="active">Clases</a></li><li><a href="modulos-teoricos.html" class="">Material</a></li><li><a href="ejercicios-practicas.html" class="">Práctica</a></li><li><a href="temarios.html" class="">Recursos</a></li><li><a href="donativos.html" class="">Comunidad</a></li></ul>
+    <ul class="nav-links"><li><a href="index.html" class="">Inicio</a></li><li><a href="clases-sin-pre.html" class="active">Clases</a></li><li><a href="motivacion-guia.html" class="">Motivación</a></li><li><a href="modulos-teoricos.html" class="">Material</a></li><li><a href="ejercicios-practicas.html" class="">Práctica</a></li><li><a href="temarios.html" class="">Recursos</a></li><li><a href="donativos.html" class="">Comunidad</a></li></ul>
     <div class="nav-right" style="display:flex;align-items:center;gap:0.5rem">
       <button class="nav-hamburger" id="nav-hamburger-btn" onclick="openNavDrawer()" aria-label="Menú"><span></span><span></span><span></span></button>
       <button id="btn-avance" style="display:none" onclick="openAvanceModal()">📋 Avance</button>
@@ -51,7 +51,127 @@
           <p class="page-date">2024-08-24</p>
         </div>
       </div>
+
+      <!-- Widget último video YouTube -->
+      <div id="yt-widget" style="margin-bottom:2rem;">
+        <div style="display:flex;align-items:center;gap:.6rem;margin-bottom:.75rem">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="#c0392b"><path d="M23.5 6.2s-.2-1.6-.9-2.3c-.9-.9-1.9-.9-2.3-1C17.2 2.7 12 2.7 12 2.7s-5.2 0-8.3.2c-.5.1-1.5.1-2.3 1-.7.7-.9 2.3-.9 2.3S.2 8 .2 9.8v1.7c0 1.8.3 3.6.3 3.6s.2 1.6.9 2.3c.9.9 2 .9 2.5 1 1.8.2 7.6.2 7.6.2s5.2 0 8.3-.3c.5-.1 1.5-.1 2.3-1 .7-.7.9-2.3.9-2.3s.3-1.8.3-3.6V9.8c0-1.8-.3-3.6-.3-3.6zM9.7 14.8V8.7l6.2 3.1-6.2 3z"/></svg>
+          <span style="font-size:.85rem;font-weight:600;color:var(--accent)">Último video del canal</span>
+        </div>
+        <div id="yt-container" style="position:relative;width:100%;padding-bottom:56.25%;background:var(--bg3);border-radius:14px;overflow:hidden;">
+          <div id="yt-loading" style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;color:var(--muted);font-size:.9rem;gap:.5rem;">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" style="animation:spin 1s linear infinite"><path d="M12 2a10 10 0 1 0 10 10A10 10 0 0 0 12 2zm0 18a8 8 0 1 1 8-8 8 8 0 0 1-8 8z" opacity=".3"/><path d="M12 2a10 10 0 0 1 10 10h-2a8 8 0 0 0-8-8z"/></svg>
+            Cargando último video...
+          </div>
+          <iframe id="yt-iframe" style="position:absolute;top:0;left:0;width:100%;height:100%;border:none;border-radius:14px;display:none;" allowfullscreen allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"></iframe>
+        </div>
+        <p id="yt-title" style="margin-top:.6rem;font-size:.88rem;color:var(--muted);font-style:italic;"></p>
+      </div>
+      <style>
+        @keyframes spin { to { transform: rotate(360deg); } }
+      </style>
+      <script>
+      (async function() {
+        // Canal: @sinpresupuestoun
+        // Usamos el RSS público de YouTube (no requiere API key)
+        // Canal @sinpresupuestoun — probamos dos proxies por si uno falla
+        const CHANNEL_ID = 'UCFThFZNxbHoXyPsEHBwWcDg';
+        const RSS_URL = 'https://www.youtube.com/feeds/videos.xml?channel_id=' + CHANNEL_ID;
+        const proxies = [
+          'https://api.allorigins.win/get?url=' + encodeURIComponent(RSS_URL),
+          'https://corsproxy.io/?' + encodeURIComponent(RSS_URL),
+        ];
+        let loaded = false;
+        for (const proxy of proxies) {
+          if (loaded) break;
+          try {
+            const res  = await fetch(proxy, { signal: AbortSignal.timeout(6000) });
+            const text = proxy.includes('allorigins') ? (await res.json()).contents : await res.text();
+            const xml  = new DOMParser().parseFromString(text, 'text/xml');
+            const entry = xml.querySelector('entry');
+            if (!entry) continue;
+            // YouTube RSS usa yt:videoId o el campo id con formato yt:video:ID
+            const videoId = entry.querySelector('videoId')?.textContent
+              || entry.querySelector('id')?.textContent?.replace('yt:video:', '');
+            const title = entry.querySelector('title')?.textContent || '';
+            if (videoId && videoId.length > 5) {
+              const iframe = document.getElementById('yt-iframe');
+              iframe.src = 'https://www.youtube.com/embed/' + videoId + '?rel=0&modestbranding=1&color=white';
+              iframe.style.display = 'block';
+              document.getElementById('yt-loading').style.display = 'none';
+              document.getElementById('yt-title').textContent = '▶ ' + title;
+              loaded = true;
+            }
+          } catch(e) { continue; }
+        }
+        if (!loaded) {
+          const el = document.getElementById('yt-loading');
+          el.innerHTML = 'No se pudo cargar el video automáticamente. <a href="https://youtube.com/@sinpresupuestoun" target="_blank" style="color:var(--accent2)">Ver canal →</a>';
+        }
+      })();
+      </script>
       <div class="entry-body" id="entry-body">
+
+      <!-- Widget último video YouTube -->
+      <div id="yt-widget" style="margin-bottom:2rem;">
+        <div id="yt-loading" style="width:100%;aspect-ratio:16/9;background:var(--bg3);border-radius:12px;display:flex;align-items:center;justify-content:center;color:var(--muted);font-size:.9rem;">
+          Cargando último video...
+        </div>
+        <div id="yt-container" style="display:none;width:100%;aspect-ratio:16/9;border-radius:12px;overflow:hidden;box-shadow:0 4px 20px rgba(26,58,107,0.15);">
+          <iframe id="yt-iframe"
+            style="width:100%;height:100%;border:none;"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+            allowfullscreen>
+          </iframe>
+        </div>
+        <div id="yt-info" style="display:none;margin-top:.75rem;">
+          <p id="yt-title" style="font-weight:600;color:var(--accent);font-size:.95rem;"></p>
+          <p id="yt-date" style="color:var(--muted);font-size:.78rem;margin-top:.2rem;"></p>
+        </div>
+      </div>
+
+      <script>
+      (async function() {
+        try {
+          // RSS feed pública de YouTube — no requiere API key
+          const CHANNEL_ID = 'UCiIBTAcRbK9FotZ6N7EXGsQ';
+          const RSS_URL = 'https://www.youtube.com/feeds/videos.xml?channel_id=' + CHANNEL_ID;
+          // Usar un proxy CORS gratuito para leer el RSS
+          const PROXY = 'https://api.allorigins.win/get?url=' + encodeURIComponent(RSS_URL);
+
+          const res  = await fetch(PROXY);
+          const data = await res.json();
+          const xml  = new DOMParser().parseFromString(data.contents, 'text/xml');
+
+          // El primer <entry> es el video más reciente
+          const entry = xml.querySelector('entry');
+          if (!entry) throw new Error('Sin videos');
+
+          const videoId = entry.querySelector('videoId')?.textContent
+                       || entry.querySelector('id')?.textContent?.split(':').pop();
+          const title   = entry.querySelector('title')?.textContent || '';
+          const pubDate = entry.querySelector('published')?.textContent || '';
+
+          if (!videoId) throw new Error('Sin ID');
+
+          // Mostrar el iframe
+          document.getElementById('yt-iframe').src =
+            'https://www.youtube.com/embed/' + videoId + '?rel=0&modestbranding=1';
+          document.getElementById('yt-title').textContent = title;
+          document.getElementById('yt-date').textContent  =
+            'Publicado: ' + new Date(pubDate).toLocaleDateString('es-CO', {year:'numeric',month:'long',day:'numeric'});
+
+          document.getElementById('yt-loading').style.display   = 'none';
+          document.getElementById('yt-container').style.display = 'block';
+          document.getElementById('yt-info').style.display      = 'block';
+
+        } catch(e) {
+          // Fallback: mostrar el canal directamente
+          document.getElementById('yt-loading').innerHTML =
+            '<a href="https://youtube.com/@sinpresupuestoun" target="_blank" style="color:var(--accent2);text-decoration:underline;">Ver canal de Sin-Presupuesto en YouTube ↗</a>';
+        }
+      })();
+      </script>
         <div><br /></div><div>En esta sección encontrará las <b>Clases hechas por</b><b> Sin-Presupuesto</b>, esperando que sean de ayuda para su examen de admisión a la Universidad Nacional de Colombia.</div><div><br /></div><div><br /></div><div><b><a href="https://www.youtube.com/@sinpresupuestoun"></a><a href="https://www.youtube.com/@sinpresupuestoun">Clases</a></b></div><div><br /></div><div><br /></div><div><h2>Calculo resultados - DIPA</h2><div>En esta sección encontrará el <b>Material de: Calculo resultados - DIPA</b> creado por mí (Joaquín Caicedo, creador de este PreU) para Sin-Pre, esperando que sea de ayuda para su examen de admisión a la Universidad Nacional de Colombia.</div><div><br /></div></div><div><a href="https://docs.google.com/spreadsheets/d/1D7VJy-4Sf37BPUk-JzzRCU7vfl5-0UyQ/edit?usp=sharing&amp;ouid=107806560525543497146&amp;rtpof=true&amp;sd=true" target="_blank"><b>Calculadora DIPA</b></a><br /></div><div><br /></div><h3></h3><h2>Material Clases - Mate' (Diapositivas)</h2><div>En esta sección encontrará el Material de las clases de Matemáticas (Diapositivas) de Sin-Pre, esperando que sea de ayuda para su examen de admisión a la Universidad Nacional de Colombia.</div><p><b><a href="https://drive.google.com/file/d/1W6kZZt07k-YqJaUaxJfw4TDdCap10pUa/view?usp=sharing" target="_blank">Archivo 1</a>     <a href="https://drive.google.com/file/d/1N3qV40QjIu6ERewDQRQO7QKij2nHSo3T/view?usp=sharing" target="_blank">Archivo 2</a>     <a href="https://drive.google.com/file/d/1E1jL0Bp1UIg33960oDSk6fCrahMrO_TA/view" target="_blank">Archivo 3</a>     <a href="https://drive.google.com/file/d/1ig700nidOcDuL-2t8C6WcMym07VnmYuL/view" target="_blank">Archivo 4</a>     <a href="https://drive.google.com/file/d/1JlldJbLS1Q57IU_rZLrICkbtPW9YcUfU/view?usp=sharing" target="_blank">Archivo 5</a>     <a href="https://drive.google.com/file/d/1rM77FH2IXWq4xSJKjrIt9InVgzlXtquF/view?usp=sharing" target="_blank">Archivo 6</a></b></p><p><b><a href="https://drive.google.com/file/d/1ULZhmMw5MFTFUNL8OrKvrVot-ZIvsOaf/view?usp=sharing" target="_blank">Archivo 7</a>     <a href="https://drive.google.com/file/d/1ULZhmMw5MFTFUNL8OrKvrVot-ZIvsOaf/view?usp=sharing" target="_blank">Archivo 8</a>     <a href="https://drive.google.com/file/d/1ugqqYIuHc2yKewNgsxU0TVrpU1cB13lS/view?usp=sharing" target="_blank">Archivo 9</a>    <a href="https://drive.google.com/file/d/1DjHDLSBnQm1PRY_DltQ3yMEW6TAZxkA7/view?usp=sharing" target="_blank">Archivo 10</a>    <a href="https://drive.google.com/file/d/1zePqd5jIHkLt9mWtfqGp23YFhWoig4aR/view?usp=sharing" target="_blank">Archivo 11</a>     <a href="https://drive.google.com/file/d/10ViHMg0yIYZMIXuH0ty1OUAb8L7MmThN/view?usp=sharing" target="_blank">Archivo 12</a></b></p><p><b><a href="https://drive.google.com/file/d/1XilMhUEtVm4sMpg4YkzWuhTOrVpmbDsW/view?usp=sharing" target="_blank">Archivo 13</a>   <a href="https://drive.google.com/file/d/1XilMhUEtVm4sMpg4YkzWuhTOrVpmbDsW/view?usp=sharing" target="_blank">Archivo 14</a>     <a href="https://drive.google.com/file/d/1fo3SnTmzyr8DCWJmSaMoxLYfJegSgpzl/view?usp=sharing" target="_blank">Archivo 15</a>     <a href="https://drive.google.com/file/d/1WlYikwYQnKg4pj4PsMGu3gOjT2W2PpFa/view?usp=sharing" target="_blank">Archivo 16</a>     <a href="https://drive.google.com/file/d/1GuTBDi4CPl6ICWmt7fxbEVUNOAhg98XT/view?usp=sharing" target="_blank">Archivo 17</a>     <a href="https://drive.google.com/file/d/10h1MQcIowEon_7SmUeJb-qhEEr0cacAL/view?usp=sharing" target="_blank">Archivo 18</a></b><br /></p><p><b><a href="https://drive.google.com/file/d/1S0lTgQipYf_I4oPJl4LCR9NaRJjyUriN/view?usp=sharing" target="_blank">Archivo 19</a>     <a href="https://drive.google.com/file/d/1Psz1oJEMwyf87V7NUXbWnCfHIcg5HM4D/view?usp=sharing" target="_blank">Archivo 20</a>     <a href="https://drive.google.com/file/d/1ievfnbfLfPaAfKWWuAOsBAjPOU6I2sfg/view?usp=sharing" target="_blank">Archivo 21</a>     <a href="https://drive.google.com/file/d/1901nz8uF3CpQP1TrxCLxl4p4Iczcvz-t/view?usp=sharing" target="_blank">Archivo 22</a>     <a href="https://drive.google.com/file/d/1j4PE2ytcqykE8PdicU5hQEugpTSvLUsM/view?usp=sharing" target="_blank">Archivo 23</a>     <a href="https://drive.google.com/file/d/1hpaflRPAqyKFV8j68o-UYWOUCCxtRuUX/view?usp=sharing" target="_blank">Archivo 24</a><br /></b></p><div><b><a href="https://drive.google.com/file/d/1aYHoPcsHwlWXycJYd8g0bgmbYkf4DwBR/view?usp=sharing" target="_blank">Archivo 25</a>     <a href="https://drive.google.com/file/d/1qTRHDpBED9DPx-YMGvouZnz_WzEi9trh/view?usp=sharing" target="_blank">Archivo 26</a></b></div><p><b><br /></b></p><h2>Material Clases - Mate' (Talleres)</h2><div>En esta sección encontrará el <b>Material de las clases de Matemáticas </b>(Talleres) de Sin-Pre, esperando que sea de ayuda para su examen de admisión a la Universidad Nacional de Colombia.</div><div><br /></div><div><b><a href="https://drive.google.com/file/d/12ZH5S-GSjH13xotbT_MAHagsC8ICm5GN/view?usp=sharing" target="_blank">Archivo 1</a>     <a href="https://drive.google.com/file/d/10vd2ywbi-6Opuf9p5ORQOmIn7pOrO1Ot/view?usp=sharing" target="_blank">Archivo 2</a>      <a href="https://drive.google.com/file/d/10vd2ywbi-6Opuf9p5ORQOmIn7pOrO1Ot/view?usp=sharing" target="_blank">Archivo 3</a>     <a href="https://drive.google.com/file/d/10vd2ywbi-6Opuf9p5ORQOmIn7pOrO1Ot/view?usp=sharing" target="_blank">Archivo 4</a>     <a href="https://drive.google.com/file/d/1zVKKaWHvA-6ByBRjg7E3mynGVBYVfhRZ/view?usp=sharing" target="_blank">Archivo 5</a>      <a href="https://drive.google.com/file/d/1hOjUTCHZv29e6jG82vRh7ln_1qauXgwA/view?usp=sharing" target="_blank">Archivo 6</a></b></div><div><a href="https://drive.google.com/file/d/1I85ugutzPzjbgbHPlLYdJpJz5Cgdao6b/view?usp=sharing" target="_blank"><b>Archivo 7</b></a><b>     <a href="https://drive.google.com/file/d/1WaP0t2xcvmjC0WXCu6vA9eY7k6ljOJVA/view?usp=sharing" target="_blank">Archivo 8</a>     <a href="https://drive.google.com/file/d/1JsPJi55A2RRkAETWkKivMSQLFhqH2EKO/view?usp=sharing" target="_blank">Archivo 9</a>     <a href="https://drive.google.com/file/d/1F3YhpqwRFo6o-3OIAU3lxfFNwo00z4C-/view?usp=sharing" target="_blank">Archivo 10</a>     <a href="https://drive.google.com/file/d/1qjZ1RSgunWAnpnzj88TZ4h--oM810W-j/view?usp=sharing" target="_blank">Archivo 11</a>     <a href="https://drive.google.com/file/d/1sbEI_3NkmHSBF1ye29xwKUsNxDA6PW17/view?usp=sharing" target="_blank">Archivo 12</a></b><br /></div><div><br /></div><div><br /></div><div><h2>Material Clases - Textual (Diapositivas)</h2><div>En esta sección encontrará el <b>Material de las clases de Análisis de Textual </b>(Diapositivas) de Sin-Pre, esperando que sea de ayuda para su examen de admisión a la Universidad Nacional de Colombia.</div><div><b><br /></b></div><div><b><a href="https://drive.google.com/file/d/1bSFQ7-GzlBgZNGnSDdfUgtxTBtPb68jS/view?usp=sharing" target="_blank">Archivo 1</a>     <a href="https://drive.google.com/file/d/1hvkbbDt-VW2MjUlU07uyhySV2K-jQhha/view?usp=sharing" target="_blank">Archivo 2</a>     <a href="https://drive.google.com/file/d/10L9PlRIgKAx72yspXAIZsHSBkQOmRby7/view?usp=sharing" target="_blank">Archivo 3</a>      <a href="https://drive.google.com/file/d/1CgqHz5XhmoHLyg3YhYkciH71QNc5MrCO/view?usp=sharing" target="_blank">Archivo 4</a>     <a href="https://drive.google.com/file/d/1caPVyiaHWReZcaboPdt4E18YOQcUdCmE/view?usp=sharing" target="_blank">Archivo 5</a>      <a href="https://drive.google.com/file/d/1r3SKTSQeWN7885ggnpdBtj0LuByC5yda/view?usp=sharing" target="_blank">Archivo 6</a></b></div><div><b><a href="https://drive.google.com/file/d/1NyPqNbW-3JP64GA9DSInPjXvdbTkzNj7/view?usp=sharing" target="_blank">Archivo 7</a>   </b><br /></div><div><br /></div><h2>Material Clases - Ciencias (Diapositivas)</h2><div><div>En esta sección encontrará el <b>Material de las clases de Ciencias </b>(Diapositivas) de Sin-Pre, esperando que sea de ayuda para su examen de admisión a la Universidad Nacional de Colombia.</div><div><br /></div><div><b><a href="https://drive.google.com/file/d/17spa2c8REkw9WYj0hdrgQKB25n9CdqeF/view?usp=sharing" target="_blank">Archivo 1</a>      <a href="https://drive.google.com/file/d/1hF2rQdqDsyGJIxwoWg-bumZ4c5oxqWvU/view?usp=sharing" target="_blank">Archivo 2</a>     <a href="https://drive.google.com/file/d/1cvwVLXThgMGMjebPCs8wG3uNwxSyG7MA/view?usp=sharing" target="_blank">Archivos 3</a>     <a href="https://drive.google.com/file/d/1OtynFDwunMr3q_kxHxVyHOQbyzcgN3PA/view?usp=sharing" target="_blank">Archivo 4</a></b><br /></div><div><br /></div><div><br /></div><h2>Material Clases - Física (Diapositivas)</h2><div>En esta sección encontrará el <b>Material de las clases de Física </b>(Diapositivas) de Sin-Pre, esperando que sea de ayuda para su examen de admisión a la Universidad Nacional de Colombia.</div><div><br /></div><div><b><a href="https://drive.google.com/file/d/14F85zTxSeUfVTQErRKSxXR1aFNtPahYV/view?usp=sharing" target="_blank">Archivo 1</a>     <a href="https://drive.google.com/file/d/1AvyqVGGQkaJgGIIdGIk705Rq2SAB_Tdu/view?usp=sharing" target="_blank">Archivo 2</a>     <a href="https://drive.google.com/file/d/1PO5z8A6WyPqncZd78CvTEVc2kvG0yYzK/view?usp=sharing" target="_blank">Archivo 3</a>     <a href="https://drive.google.com/file/d/1H2wuS5d6KWcIj_-W5F6qpSiIZ4cmJU9a/view?usp=sharing" target="_blank">Archivo 4</a>     <a href="https://drive.google.com/file/d/1TMvScsTO3V-FwhnRzO8_kt2IcDk6pUSx/view?usp=sharing" target="_blank">Archivo 5</a>     <a href="https://drive.google.com/file/d/1_3XJCP1DfIRkQUPf83GAhHkBI5EpmShm/view?usp=sharing" target="_blank">Archivo 6</a></b><br /></div><div><a href="https://drive.google.com/file/d/1l1REN4XjRukpPBuzhwR7o5TxPwEvpZaU/view?usp=sharing" target="_blank"><b>Archivo 7</b></a><br /></div><div><br /></div><div><br /></div><div><h2>Material Clases - Física (Talleres)</h2><div>En esta sección encontrará el <b>Material de las clases de Física </b>(Talleres) de Sin-Pre, esperando que sea de ayuda para su examen de admisión a la Universidad Nacional de Colombia.</div><div><b><br /></b></div><div><b><a href="https://drive.google.com/file/d/1RiBWzoNFzNKG39Wls-x_Q1kSIVgupS_M/view?usp=sharing" target="_blank">Archivo 1</a>     <a href="https://drive.google.com/file/d/1g2XAtpJZ8XxecNosL3rP67i645VgIiyc/view?usp=sharing" target="_blank">Archivo 2</a>     <a href="https://drive.google.com/file/d/1Z_yKnlv8ubczBzRn9TSNSgkdQ3KDWbVn/view?usp=sharing" target="_blank">Archivo 3</a>     <a href="https://drive.google.com/file/d/1gCz6H9wd2UswpK0uiInlQJ6sF4uH75nF/view?usp=sharing" target="_blank">Archivo 4</a>     <a href="https://drive.google.com/file/d/1BITuqphgjCzTlCobCDEKjQrTBx2An5HA/view?usp=sharing" target="_blank">Archivo 5</a></b><br /></div><div><br /></div><div><br /></div></div><h2>Material Clases - Sociales (Lecturas)</h2><div><div>En esta sección encontrará el <b>Material de las clases de Sociales </b>(Lecturas) de Sin-Pre, esperando que sea de ayuda para su examen de admisión a la Universidad Nacional de Colombia.</div><div><br /></div><div><b><a href="https://drive.google.com/file/d/1jeUzhl7O45qayDadndK2u_hBZGX_wf5k/view?usp=sharing" target="_blank">Archivo 1</a>     <a href="https://drive.google.com/file/d/1jeUzhl7O45qayDadndK2u_hBZGX_wf5k/view?usp=sharing" target="_blank">Archivo 2</a>     <a href="https://drive.google.com/file/d/13fNJgZIish9boylmud1p68akEI-9sLi3/view?usp=sharing" target="_blank">Archivo 3</a></b></div><div><br /></div><div><h2>Material Clases - Imagen (Diapositivas)</h2><div>En esta sección encontrará el <b>Material de las clases de Análisis de Imagen </b>(Diapositivas) de Sin-Pre, esperando que sea de ayuda para su examen de admisión a la Universidad Nacional de Colombia.</div><div><br /></div><div><b><a href="https://drive.google.com/file/d/1kvE8O_kgcOYfP0RWHcGA-sFNXiqzaRON/view?usp=sharing" target="_blank">Archivo 1</a>     <a href="https://drive.google.com/file/d/1Ygy4xnDjHuZ2BNKRltQrI0JwkbABTIcE/view?usp=sharing" target="_blank">Archivo 2</a>     <a href="https://drive.google.com/file/d/1dq7L3AkwIdpwyJX5KfxMbrk80up02J7Q/view?usp=sharing" target="_blank">Archivo 3</a>      <a href="https://drive.google.com/file/d/1sFVHf7O0Olt6gdPQivd51YD3AubNi4yN/view?usp=sharing" target="_blank">Archivo 4</a>     <a href="https://drive.google.com/file/d/11AJSVZTxGJMvONiBK8O5Z9EuuJel7DaP/view?usp=sharing" target="_blank">Archivo 5</a>     <a href="https://drive.google.com/file/d/1hRViiUanRnDQW5fY-wD1Nj9lAGXqreqB/view?usp=sharing" target="_blank">Archivo 6</a></b></div><div><br /></div><div><br /></div></div><h2>Material Clases - Imagen (Talleres)</h2><div>En esta sección encontrará el <b>Material de las clases de Análisis de Imagen </b>(Talleres) de Sin-Pre, esperando que sea de ayuda para su examen de admisión a la Universidad Nacional de Colombia.</div><div><br /></div><div><b><a href="https://drive.google.com/file/d/1zFGtizZe1uCJ_-FDl1Wc4X7kXXQDRAAS/view?usp=sharing" target="_blank">Archivo 1</a>     <a href="https://drive.google.com/file/d/1QZPH7i8YXudiO-OdT_deEJ_awU03y39R/view?usp=sharing" target="_blank">Archivo 2</a>      <a href="https://drive.google.com/file/d/1i-pYjRAqZStDPwAhNnUFGzhpuLUQRt7w/view?usp=sharing" target="_blank">Archivo 3</a>     <a href="https://drive.google.com/file/d/1KCJcid88Gms76dwQFLuKVDs46_6vuzgI/view?usp=sharing" target="_blank">Archivo 4</a>     <a href="https://drive.google.com/file/d/1AVYCVJ1YhvedkD1yNE93mS2rH8Gfqp6h/view?usp=sharing" target="_blank">Archivo 5</a>     <a href="https://drive.google.com/file/d/1yCeUMkspTCyy_w1_BTm0fzzJw_UoytYV/view?usp=sharing" target="_blank">Archivo 6</a></b><br /></div></div></div></div>
       </div>
     </main>
@@ -116,15 +236,13 @@
         </div>
         <button class="nav-drawer-close" onclick="closeNavDrawer()">✕</button>
       </div>
-      <ul class="nav-drawer-links">
-        <li><a href="index.html"><span class="link-icon">🏠</span>Inicio</a></li>
-        <li><a href="motivacion-guia.html"><span class="link-icon">💡</span>Motivación</a></li>
+      <ul class="nav-drawer-links">        <li><a href="index.html"><span class="link-icon">🏠</span>Inicio</a></li>
         <li><a href="clases-sin-pre.html"><span class="link-icon">📚</span>Clases</a></li>
+        <li><a href="motivacion-guia.html"><span class="link-icon">💡</span>Motivación</a></li>
         <li><a href="modulos-teoricos.html"><span class="link-icon">📖</span>Material</a></li>
         <li><a href="ejercicios-practicas.html"><span class="link-icon">✏️</span>Práctica</a></li>
         <li><a href="temarios.html"><span class="link-icon">🔎</span>Recursos</a></li>
-        <li><a href="donativos.html"><span class="link-icon">❤️</span>Comunidad</a></li>
-      </ul>
+        <li><a href="donativos.html"><span class="link-icon">❤️</span>Comunidad</a></li></ul>
     </div>
   </div>
 

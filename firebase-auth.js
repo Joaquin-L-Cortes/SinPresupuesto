@@ -739,12 +739,12 @@ function injectModals() {
       </div>
 
       <!-- VISTA EDICIÓN: layout horizontal igual al registro -->
-      <div id="perfil-edit" style="display:none;margin-top:.75rem">
+      <div id="perfil-edit" style="display:none">
         <div class="reg-layout">
           <!-- Columna izquierda: avatar preview grande -->
           <div class="reg-avatar-col">
-            <div id="edit-avatar-preview" style="font-size:3.5rem;width:88px;height:88px;border-radius:50%;display:flex;align-items:center;justify-content:center;background:var(--bg3);border:2px solid var(--border);transition:all .3s;flex-shrink:0;">🦁</div>
-            <p style="font-size:.72rem;color:var(--muted);margin-top:.4rem;text-align:center;">Tu avatar</p>
+            <div id="edit-avatar-preview" style="font-size:4rem;width:100px;height:100px;border-radius:50%;display:flex;align-items:center;justify-content:center;background:var(--bg3);border:2px solid var(--border);transition:all .3s;">🦁</div>
+            <p style="font-size:.75rem;color:var(--muted);margin-top:.5rem;text-align:center;">Tu avatar</p>
           </div>
           <!-- Columna centro: campos -->
           <div class="reg-fields-col">
@@ -762,16 +762,11 @@ function injectModals() {
           </div>
           <!-- Columna derecha: picker de avatares -->
           <div class="reg-picker-col">
-            <p style="font-size:.72rem;color:var(--muted);margin-bottom:.4rem;font-weight:600;text-transform:uppercase;letter-spacing:.05em;">Avatar</p>
+            <p style="font-size:.75rem;color:var(--muted);margin-bottom:.5rem;font-weight:600;text-transform:uppercase;letter-spacing:.05em;">Elige tu avatar</p>
             <div id="edit-avatar-picker" style="display:grid;grid-template-columns:repeat(3,1fr);gap:.35rem;"></div>
           </div>
         </div>
-        <!-- Error y botones debajo del layout -->
-        <p style="font-size:.82rem;min-height:1.2em;margin-top:.75rem;color:#c0392b" id="perfil-edit-err"></p>
-        <div style="display:flex;gap:.6rem;margin-top:.25rem">
-          <button class="btn-submit" style="background:var(--bg3);color:var(--text);flex:1;border:1.5px solid var(--border)" onclick="renderPerfilView()">Cancelar</button>
-          <button id="btn-guardar-cambios" class="btn-submit" style="flex:1" onclick="saveProfileChanges()">Guardar cambios</button>
-        </div>
+        <p style="font-size:.82rem;min-height:1.2em;margin-top:.5rem" id="perfil-edit-err"></p>
       </div>
     </div>
   </div>
