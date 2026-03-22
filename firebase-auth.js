@@ -853,7 +853,6 @@ function injectModals() {
         document.getElementById('perfil-avatar-display').style.background = btn.dataset.bg;
       });
     });
-  };
 
   const first = document.querySelector('#reg-avatar-picker .avatar-opt');
   if (first) {
@@ -920,11 +919,16 @@ function domReady(fn) {
 }
 
 domReady(() => {
+  console.log('[SP] domReady ejecutado. readyState:', document.readyState);
   injectStyles();
   injectModals();
+  console.log('[SP] injectModals completado. student-modal existe:', !!document.getElementById('student-modal'));
 
   // ── Botones de nav: listeners directos (evita race condition con onclick="" + type="module") ──
-  document.getElementById('btn-student-login')?.addEventListener('click', () => {
+  const btnLogin = document.getElementById('btn-student-login');
+  console.log('[SP] btn-student-login encontrado:', !!btnLogin);
+  btnLogin?.addEventListener('click', () => {
+    console.log('[SP] clic en btn-student-login. currentUser:', currentUser);
     if (currentUser && userProfile && !isAdmin(currentUser, userProfile)) {
       openPerfilModal();
     } else if (!currentUser) {
