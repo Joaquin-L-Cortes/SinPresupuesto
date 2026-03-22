@@ -3,12 +3,10 @@ const GITHUB_REPO  = 'SinPresupuesto';
 const GITHUB_API   = 'https://api.github.com';
 
 exports.handler = async function(event) {
-  // Solo aceptar POST
   if (event.httpMethod !== 'POST') {
     return { statusCode: 405, body: JSON.stringify({ error: 'Método no permitido' }) };
   }
 
-  // Leer token desde variable de entorno (nunca llega al navegador)
   const token = process.env.GITHUB_TOKEN;
   if (!token) {
     return { statusCode: 500, body: JSON.stringify({ error: 'Token no configurado' }) };
@@ -21,11 +19,23 @@ exports.handler = async function(event) {
     return { statusCode: 400, body: JSON.stringify({ error: 'JSON inválido' }) };
   }
 
-  const { filename, content } = body;
+  let { filename, content } = body;
 
-  // Validar que el filename sea un .html del sitio (seguridad básica)
-  if (!filename || !filename.match(/^[\w\-]+\.html$/) ) {
-    return { statusCode: 400, body: JSON.stringify({ error: 'Archivo no válido' }) };
+  // Netlify sirve URLs sin .html — agregarlo si falta
+  if (!filename) {
+    return { statusCode: 400, body: JSON.stringify({ error: 'Falta el nombre del archivo' }) };
+  }
+  if (!filename.endsWith('.html')) {
+    filename = filename + '.html';
+  }
+  // Si es raíz o vacío, asumir index
+  if (filename === '.html' || filename === '') {
+    filename = 'index.html';
+  }
+
+  // Validar que sea un archivo html válido del sitio
+  if (!filename.match(/^[\w\-\.]+\.html$/)) {
+    return { statusCode: 400, body: JSON.stringify({ error: 'Archivo no válido: ' + filename }) };
   }
 
   try {
@@ -39,7 +49,7 @@ exports.handler = async function(event) {
 
     if (!getRes.ok) {
       const err = await getRes.json();
-      return { statusCode: 404, body: JSON.stringify({ error: 'Archivo no encontrado: ' + err.message }) };
+      return { statusCode: 404, body: JSON.stringify({ error: 'Archivo no encontrado en GitHub: ' + filename }) };
     }
 
     const fileData = await getRes.json();
