@@ -171,9 +171,15 @@ function updateNav(user, profile) {
     } else {
       // Estudiante normal
       const av = getAvatar(profile.avatarId || 1);
+      const isMobile = 'ontouchstart' in window;
+      const inicial1 = (profile.nombre  || '').charAt(0).toUpperCase();
+      const inicial2 = (profile.apellido || '').charAt(0).toUpperCase();
+      const label = isMobile
+        ? `<span style="font-size:1rem;line-height:1;flex-shrink:0">${av.emoji}</span><span style="font-weight:600;letter-spacing:.03em">${inicial1}${inicial2}</span>`
+        : `<span style="font-size:1rem;line-height:1;flex-shrink:0">${av.emoji}</span> ${profile.nombre}`;
       btnIn.style.display = '';
-      btnIn.innerHTML = `<span style="font-size:1rem;line-height:1;flex-shrink:0">${av.emoji}</span> ${profile.nombre}`;
-      btnIn.style.cssText = `background:${av.bg};border:1.5px solid ${av.color};color:${av.color};font-family:'DM Sans',sans-serif;font-size:0.8rem;padding:0.35rem 0.75rem;border-radius:20px;cursor:pointer;display:flex;align-items:center;gap:0.3rem;white-space:nowrap;max-width:130px;overflow:hidden;height:2rem;line-height:1;flex-shrink:0;`;
+      btnIn.innerHTML = label;
+      btnIn.style.cssText = `background:${av.bg};border:1.5px solid ${av.color};color:${av.color};font-family:'DM Sans',sans-serif;font-size:0.8rem;padding:0.35rem 0.75rem;border-radius:20px;cursor:pointer;display:flex;align-items:center;gap:0.3rem;white-space:nowrap;${isMobile ? 'max-width:72px;' : 'max-width:130px;'}overflow:hidden;height:2rem;line-height:1;flex-shrink:0;`;
       btnIn.onclick = openPerfilModal;
       if (btnAv)  btnAv.style.display = 'flex';
     }
