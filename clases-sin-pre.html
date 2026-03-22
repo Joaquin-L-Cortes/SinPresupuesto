@@ -51,124 +51,87 @@
           <p class="page-date">2024-08-24</p>
         </div>
       </div>
-
+      <div class="entry-body" id="entry-body">
       <!-- Widget último video YouTube -->
       <div id="yt-widget" style="margin-bottom:2rem;">
         <div style="display:flex;align-items:center;gap:.6rem;margin-bottom:.75rem">
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="#c0392b"><path d="M23.5 6.2s-.2-1.6-.9-2.3c-.9-.9-1.9-.9-2.3-1C17.2 2.7 12 2.7 12 2.7s-5.2 0-8.3.2c-.5.1-1.5.1-2.3 1-.7.7-.9 2.3-.9 2.3S.2 8 .2 9.8v1.7c0 1.8.3 3.6.3 3.6s.2 1.6.9 2.3c.9.9 2 .9 2.5 1 1.8.2 7.6.2 7.6.2s5.2 0 8.3-.3c.5-.1 1.5-.1 2.3-1 .7-.7.9-2.3.9-2.3s.3-1.8.3-3.6V9.8c0-1.8-.3-3.6-.3-3.6zM9.7 14.8V8.7l6.2 3.1-6.2 3z"/></svg>
-          <span style="font-size:.85rem;font-weight:600;color:var(--accent)">Último video del canal</span>
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="#c0392b"><path d="M23.5 6.2s-.2-1.6-.9-2.3c-.9-.9-1.9-.9-2.3-1C17.2 2.7 12 2.7 12 2.7s-5.2 0-8.3.3c-.5.1-1.5.1-2.3 1-.7.7-.9 2.3-.9 2.3S.2 7.9.2 9.7v1.6c0 1.7.3 3.5.3 3.5s.2 1.6.9 2.3c.9.9 2 .9 2.5 1 1.8.2 7.6.2 7.6.2s5.2 0 8.3-.3c.5-.1 1.5-.1 2.3-1 .7-.7.9-2.3.9-2.3s.3-1.7.3-3.5V9.7c0-1.8-.3-3.5-.3-3.5zM9.7 14.7V8.5l6.3 3.1-6.3 3.1z"/></svg>
+          <span style="font-weight:600;color:var(--accent);font-size:.9rem;">Último video del canal</span>
         </div>
-        <div id="yt-container" style="position:relative;width:100%;padding-bottom:56.25%;background:var(--bg3);border-radius:14px;overflow:hidden;">
-          <div id="yt-loading" style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;color:var(--muted);font-size:.9rem;gap:.5rem;">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" style="animation:spin 1s linear infinite"><path d="M12 2a10 10 0 1 0 10 10A10 10 0 0 0 12 2zm0 18a8 8 0 1 1 8-8 8 8 0 0 1-8 8z" opacity=".3"/><path d="M12 2a10 10 0 0 1 10 10h-2a8 8 0 0 0-8-8z"/></svg>
-            Cargando último video...
-          </div>
-          <iframe id="yt-iframe" style="position:absolute;top:0;left:0;width:100%;height:100%;border:none;border-radius:14px;display:none;" allowfullscreen allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"></iframe>
-        </div>
-        <p id="yt-title" style="margin-top:.6rem;font-size:.88rem;color:var(--muted);font-style:italic;"></p>
-      </div>
-      <style>
-        @keyframes spin { to { transform: rotate(360deg); } }
-      </style>
-      <script>
-      (async function() {
-        // Canal: @sinpresupuestoun
-        // Usamos el RSS público de YouTube (no requiere API key)
-        // Canal @sinpresupuestoun — probamos dos proxies por si uno falla
-        const CHANNEL_ID = 'UCFThFZNxbHoXyPsEHBwWcDg';
-        const RSS_URL = 'https://www.youtube.com/feeds/videos.xml?channel_id=' + CHANNEL_ID;
-        const proxies = [
-          'https://api.allorigins.win/get?url=' + encodeURIComponent(RSS_URL),
-          'https://corsproxy.io/?' + encodeURIComponent(RSS_URL),
-        ];
-        let loaded = false;
-        for (const proxy of proxies) {
-          if (loaded) break;
-          try {
-            const res  = await fetch(proxy, { signal: AbortSignal.timeout(6000) });
-            const text = proxy.includes('allorigins') ? (await res.json()).contents : await res.text();
-            const xml  = new DOMParser().parseFromString(text, 'text/xml');
-            const entry = xml.querySelector('entry');
-            if (!entry) continue;
-            // YouTube RSS usa yt:videoId o el campo id con formato yt:video:ID
-            const videoId = entry.querySelector('videoId')?.textContent
-              || entry.querySelector('id')?.textContent?.replace('yt:video:', '');
-            const title = entry.querySelector('title')?.textContent || '';
-            if (videoId && videoId.length > 5) {
-              const iframe = document.getElementById('yt-iframe');
-              iframe.src = 'https://www.youtube.com/embed/' + videoId + '?rel=0&modestbranding=1&color=white';
-              iframe.style.display = 'block';
-              document.getElementById('yt-loading').style.display = 'none';
-              document.getElementById('yt-title').textContent = '▶ ' + title;
-              loaded = true;
-            }
-          } catch(e) { continue; }
-        }
-        if (!loaded) {
-          const el = document.getElementById('yt-loading');
-          el.innerHTML = 'No se pudo cargar el video automáticamente. <a href="https://youtube.com/@sinpresupuestoun" target="_blank" style="color:var(--accent2)">Ver canal →</a>';
-        }
-      })();
-      </script>
-      <div class="entry-body" id="entry-body">
-
-      <!-- Widget último video YouTube -->
-      <div id="yt-widget" style="margin-bottom:2rem;">
         <div id="yt-loading" style="width:100%;aspect-ratio:16/9;background:var(--bg3);border-radius:12px;display:flex;align-items:center;justify-content:center;color:var(--muted);font-size:.9rem;">
-          Cargando último video...
+          ⏳ Cargando video...
         </div>
         <div id="yt-container" style="display:none;width:100%;aspect-ratio:16/9;border-radius:12px;overflow:hidden;box-shadow:0 4px 20px rgba(26,58,107,0.15);">
-          <iframe id="yt-iframe"
-            style="width:100%;height:100%;border:none;"
+          <iframe id="yt-iframe" style="width:100%;height:100%;border:none;"
             allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-            allowfullscreen>
+            allowfullscreen loading="lazy">
           </iframe>
         </div>
-        <div id="yt-info" style="display:none;margin-top:.75rem;">
-          <p id="yt-title" style="font-weight:600;color:var(--accent);font-size:.95rem;"></p>
-          <p id="yt-date" style="color:var(--muted);font-size:.78rem;margin-top:.2rem;"></p>
+        <div id="yt-meta" style="display:none;margin-top:.6rem;">
+          <p id="yt-title" style="font-weight:600;color:var(--accent);font-size:.9rem;"></p>
+          <p id="yt-date" style="color:var(--muted);font-size:.78rem;margin-top:.15rem;"></p>
         </div>
       </div>
-
       <script>
-      (async function() {
+      (async function loadLatestVideo() {
+        const CHANNEL = 'UCiIBTAcRbK9FotZ6N7EXGsQ';
+        const RSS     = 'https://www.youtube.com/feeds/videos.xml?channel_id=' + CHANNEL;
+        // Varios proxies CORS como fallback
+        const PROXIES = [
+          'https://api.allorigins.win/get?url=',
+          'https://corsproxy.io/?',
+          'https://api.codetabs.com/v1/proxy?quest='
+        ];
+
+        async function tryProxy(proxyUrl) {
+          const res  = await fetch(proxyUrl + encodeURIComponent(RSS), { signal: AbortSignal.timeout(5000) });
+          if (!res.ok) throw new Error('HTTP ' + res.status);
+          const text = await res.text();
+          // allorigins devuelve JSON con .contents, otros devuelven XML directo
+          let xmlText = text;
+          try { xmlText = JSON.parse(text).contents || text; } catch(e) {}
+          return xmlText;
+        }
+
+        let xmlText = null;
+        for (const proxy of PROXIES) {
+          try { xmlText = await tryProxy(proxy); break; }
+          catch(e) { continue; }
+        }
+
+        if (!xmlText) {
+          document.getElementById('yt-loading').innerHTML =
+            '<a href="https://youtube.com/@sinpresupuestoun" target="_blank" rel="noopener" style="color:var(--accent2);text-decoration:underline;font-size:.9rem;">▶ Ver canal en YouTube ↗</a>';
+          return;
+        }
+
         try {
-          // RSS feed pública de YouTube — no requiere API key
-          const CHANNEL_ID = 'UCiIBTAcRbK9FotZ6N7EXGsQ';
-          const RSS_URL = 'https://www.youtube.com/feeds/videos.xml?channel_id=' + CHANNEL_ID;
-          // Usar un proxy CORS gratuito para leer el RSS
-          const PROXY = 'https://api.allorigins.win/get?url=' + encodeURIComponent(RSS_URL);
-
-          const res  = await fetch(PROXY);
-          const data = await res.json();
-          const xml  = new DOMParser().parseFromString(data.contents, 'text/xml');
-
-          // El primer <entry> es el video más reciente
+          const xml   = new DOMParser().parseFromString(xmlText, 'text/xml');
           const entry = xml.querySelector('entry');
-          if (!entry) throw new Error('Sin videos');
+          if (!entry) throw new Error('Sin entradas');
 
-          const videoId = entry.querySelector('videoId')?.textContent
-                       || entry.querySelector('id')?.textContent?.split(':').pop();
+          // El ID del video está en <yt:videoId> o al final del <id>
+          const ns      = 'http://www.youtube.com/xml/schemas/2015';
+          let videoId   = entry.getElementsByTagNameNS(ns, 'videoId')[0]?.textContent;
+          if (!videoId) videoId = entry.querySelector('id')?.textContent?.split(':').pop();
+          if (!videoId || videoId.length < 5) throw new Error('ID inválido');
+
           const title   = entry.querySelector('title')?.textContent || '';
           const pubDate = entry.querySelector('published')?.textContent || '';
 
-          if (!videoId) throw new Error('Sin ID');
-
-          // Mostrar el iframe
           document.getElementById('yt-iframe').src =
             'https://www.youtube.com/embed/' + videoId + '?rel=0&modestbranding=1';
           document.getElementById('yt-title').textContent = title;
-          document.getElementById('yt-date').textContent  =
-            'Publicado: ' + new Date(pubDate).toLocaleDateString('es-CO', {year:'numeric',month:'long',day:'numeric'});
+          document.getElementById('yt-date').textContent  = pubDate
+            ? 'Publicado: ' + new Date(pubDate).toLocaleDateString('es-CO',{year:'numeric',month:'long',day:'numeric'})
+            : '';
 
           document.getElementById('yt-loading').style.display   = 'none';
           document.getElementById('yt-container').style.display = 'block';
-          document.getElementById('yt-info').style.display      = 'block';
-
+          document.getElementById('yt-meta').style.display      = 'block';
         } catch(e) {
-          // Fallback: mostrar el canal directamente
           document.getElementById('yt-loading').innerHTML =
-            '<a href="https://youtube.com/@sinpresupuestoun" target="_blank" style="color:var(--accent2);text-decoration:underline;">Ver canal de Sin-Presupuesto en YouTube ↗</a>';
+            '<a href="https://youtube.com/@sinpresupuestoun" target="_blank" rel="noopener" style="color:var(--accent2);text-decoration:underline;font-size:.9rem;">▶ Ver canal en YouTube ↗</a>';
         }
       })();
       </script>
