@@ -73,7 +73,9 @@ function updateLoginBtn() {
 function getFileName() {
   var parts = location.pathname.split('/');
   var file = parts[parts.length - 1];
-  if (!file || file === '') file = 'index.html';
+  // Netlify sirve sin .html — normalizar
+  if (!file || file === '') return 'index.html';
+  if (!file.includes('.')) file = file + '.html';
   return file;
 }
 
