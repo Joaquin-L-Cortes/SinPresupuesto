@@ -741,11 +741,6 @@ function injectModals() {
         <button id="btn-realizar-cambios" class="btn-submit" style="background:var(--accent2)" onclick="enterEditMode()">Realizar cambios</button>
         <button class="btn-submit" style="background:#e74c3c" onclick="doLogout()">Cerrar sesión</button>
       </div>
-      <!-- BOTÓN GUARDAR (fuera de perfil-edit para que siempre esté visible en modo edición) -->
-      <div id="perfil-edit-btns" style="display:none;flex-direction:column;gap:.6rem;margin-top:.75rem">
-        <button id="btn-guardar-cambios" class="btn-submit" onclick="saveProfileChanges()">Guardar cambios</button>
-        <button class="btn-submit" style="background:#e74c3c" onclick="doLogout()">Cerrar sesión</button>
-      </div>
 
       <!-- VISTA EDICIÓN: layout horizontal igual al registro -->
       <div id="perfil-edit" style="display:none">
@@ -776,6 +771,11 @@ function injectModals() {
           </div>
         </div>
         <p style="font-size:.82rem;min-height:1.2em;margin-top:.5rem" id="perfil-edit-err"></p>
+      </div>
+      <!-- Botones: se muestran según el modo -->
+      <div id="perfil-edit-btns" style="display:none;flex-direction:column;gap:.6rem;margin-top:.75rem;">
+        <button id="btn-guardar-cambios" class="btn-submit" onclick="saveProfileChanges()">Guardar cambios</button>
+        <button class="btn-submit" style="background:#e74c3c" onclick="doLogout()">Cerrar sesión</button>
       </div>
     </div>
   </div>
