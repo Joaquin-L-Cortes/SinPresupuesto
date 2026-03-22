@@ -126,18 +126,29 @@
   <footer>
     <p>Sin-Presupuesto · PreUniversitario gratuito y popular ❤️</p>
     <p style="margin-top:0.4rem"><a href="donativos.html">Apoya el proyecto</a> · <a href="medios-de-sin-presupuesto-un.html">Redes sociales</a></p>
-  </footer>
+    <div style="margin-top:1rem;padding-top:0.75rem;border-top:1px solid var(--border)">
+    <button id="btn-admin-footer" onclick="openAdminModal()"
+      style="background:none;border:none;color:var(--border);font-size:0.72rem;cursor:pointer;transition:color .2s;"
+      onmouseover="this.style.color='var(--muted)'" onmouseout="this.style.color='var(--border)'">
+      ⚙ Admin
+    </button>
+  </div>
+</footer>
   <script src="editor.js"></script>
   <script type="module" src="firebase-auth.js"></script>
 
-  <!-- Botón admin flotante -->
-  <button id="btn-admin-float" onclick="openAdminModal()"
-    style="position:fixed;bottom:1.5rem;right:1.5rem;z-index:300;
-           background:var(--accent);color:#fff;border:none;
-           border-radius:50%;width:44px;height:44px;font-size:1.1rem;
-           cursor:pointer;box-shadow:0 4px 16px rgba(26,58,107,0.3);
-           transition:all .2s;display:flex;align-items:center;justify-content:center;"
-    title="Administrador">⚙️</button>
+        <div class="form-group">
+        <label>Correo</label>
+        <input type="email" id="admin-email" placeholder="sinpreun@gmail.com">
+      </div>
+      <div class="form-group">
+        <label>Contraseña</label>
+        <input type="password" id="admin-pass" placeholder="••••••••">
+      </div>
+      <p style="color:#c0392b;font-size:0.82rem;min-height:1.2em" id="admin-err"></p>
+      <button class="btn-submit" id="admin-submit">Ingresar como admin</button>
+    </div>
+  </div>
 
   <!-- Modal admin -->
   <div class="modal-overlay" id="admin-modal">
@@ -148,7 +159,7 @@
       </div>
       <div class="form-group">
         <label>Correo</label>
-        <input type="email" id="admin-email" placeholder="sinpreun@gmail.com">
+        <input type="email" id="admin-email" placeholder="tucorreo@gmail.com">
       </div>
       <div class="form-group">
         <label>Contraseña</label>
