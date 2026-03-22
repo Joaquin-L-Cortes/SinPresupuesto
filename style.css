@@ -454,16 +454,19 @@ footer a:hover { text-decoration: underline; }
   color: var(--muted);
   font-family: 'DM Sans', sans-serif;
   font-size: .8rem;
-  padding: .4rem .85rem;
+  padding: .35rem .75rem;
   border-radius: 20px;
   cursor: pointer;
   transition: all .2s;
   display: flex;
   align-items: center;
-  gap: .35rem;
+  gap: .3rem;
   white-space: nowrap;
   max-width: 140px;
+  height: 2rem;
   overflow: hidden;
+  flex-shrink: 0;
+  line-height: 1;
 }
 #btn-student-login:hover { border-color: var(--accent2); color: var(--accent2); }
 

@@ -172,8 +172,8 @@ function updateNav(user, profile) {
       // Estudiante normal
       const av = getAvatar(profile.avatarId || 1);
       btnIn.style.display = '';
-      btnIn.innerHTML = `<span style="font-size:1.1rem">${av.emoji}</span> ${profile.nombre}`;
-      btnIn.style.cssText = `background:${av.bg};border:1.5px solid ${av.color};color:${av.color};font-family:'DM Sans',sans-serif;font-size:0.8rem;padding:0.4rem 0.85rem;border-radius:20px;cursor:pointer;display:flex;align-items:center;gap:0.35rem;white-space:nowrap;max-width:140px;overflow:hidden;`;
+      btnIn.innerHTML = `<span style="font-size:1rem;line-height:1;flex-shrink:0">${av.emoji}</span> ${profile.nombre}`;
+      btnIn.style.cssText = `background:${av.bg};border:1.5px solid ${av.color};color:${av.color};font-family:'DM Sans',sans-serif;font-size:0.8rem;padding:0.35rem 0.75rem;border-radius:20px;cursor:pointer;display:flex;align-items:center;gap:0.3rem;white-space:nowrap;max-width:130px;overflow:hidden;height:2rem;line-height:1;flex-shrink:0;`;
       btnIn.onclick = openPerfilModal;
       if (btnAv)  btnAv.style.display = 'flex';
     }
