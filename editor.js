@@ -167,3 +167,55 @@ document.addEventListener('DOMContentLoaded', function() {
     if (e.target === e.currentTarget) closeModal();
   });
 });
+
+// ─── ADMIN MODAL ──────────────────────────────────────────
+const ADMIN_EMAIL = 'sinpreun@gmail.com';
+const ADMIN_PASS_HASH = 'b5225f58be400470ea03729ba17ebf10e4ce131b1c228fdd183ef9083a60ecec';
+
+function openAdminModal() {
+  document.getElementById('admin-modal').classList.add('open');
+  setTimeout(function() { document.getElementById('admin-email').focus(); }, 100);
+}
+function closeAdminModal() {
+  document.getElementById('admin-modal').classList.remove('open');
+  document.getElementById('admin-err').textContent = '';
+}
+
+async function doAdminLogin() {
+  var email = document.getElementById('admin-email').value.trim();
+  var pass  = document.getElementById('admin-pass').value;
+  var err   = document.getElementById('admin-err');
+
+  if (email !== ADMIN_EMAIL) {
+    err.textContent = 'Correo no autorizado.'; return;
+  }
+  var hash = await sha256(pass);
+  if (hash !== ADMIN_PASS_HASH) {
+    err.textContent = 'Contraseña incorrecta.'; return;
+  }
+  sessionStorage.setItem(SESSION_KEY, 'ok');
+  closeAdminModal();
+  activateEditor();
+  updateLoginBtn();
+  // Ocultar botón admin mientras está en modo edición
+  var fab = document.getElementById('btn-admin-float');
+  if (fab) { fab.textContent = '✕'; fab.title = 'Salir del editor'; fab.onclick = function() { logout(); fab.textContent = '⚙️'; fab.title = 'Administrador'; fab.onclick = openAdminModal; }; }
+}
+
+window.openAdminModal  = openAdminModal;
+window.closeAdminModal = closeAdminModal;
+window.doAdminLogin    = doAdminLogin;
+
+document.addEventListener('DOMContentLoaded', function() {
+  var sub = document.getElementById('admin-submit');
+  if (sub) sub.addEventListener('click', doAdminLogin);
+  var adminPass = document.getElementById('admin-pass');
+  if (adminPass) adminPass.addEventListener('keydown', function(e) {
+    if (e.key === 'Enter') doAdminLogin();
+    if (e.key === 'Escape') closeAdminModal();
+  });
+  var adminModal = document.getElementById('admin-modal');
+  if (adminModal) adminModal.addEventListener('click', function(e) {
+    if (e.target === adminModal) closeAdminModal();
+  });
+});

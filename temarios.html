@@ -13,8 +13,10 @@
       Sin-Presupuesto
     </a>
     <ul class="nav-links"><li><a href="index.html" class="">Inicio</a></li><li><a href="motivacion-guia.html" class="">Motivación</a></li><li><a href="clases-sin-pre.html" class="">Clases</a></li><li><a href="modulos-teoricos.html" class="">Material</a></li><li><a href="ejercicios-practicas.html" class="">Práctica</a></li><li><a href="temarios.html" class="active">Recursos</a></li><li><a href="donativos.html" class="">Comunidad</a></li></ul>
-    <div class="nav-right">
-      <button class="btn-login" id="btn-login">&#128274; Ingresar</button>
+    <div class="nav-right" style="display:flex;align-items:center;gap:0.5rem">
+      <button id="btn-avance" style="display:none" onclick="openAvanceModal()">📋 Avance</button>
+      <button id="btn-perfil" style="display:none" onclick="openPerfilModal()">✦ Perfil</button>
+      <button id="btn-student-login" onclick="openStudentModal()">👤 Ingresar</button>
     </div>
   </nav>
   <div class="modal-overlay" id="login-modal">
@@ -62,5 +64,35 @@
     <p style="margin-top:0.4rem"><a href="donativos.html">Apoya el proyecto</a> · <a href="medios-de-sin-presupuesto-un.html">Redes sociales</a></p>
   </footer>
   <script src="editor.js"></script>
+  <script type="module" src="firebase-auth.js"></script>
+
+  <!-- Botón admin flotante -->
+  <button id="btn-admin-float" onclick="openAdminModal()"
+    style="position:fixed;bottom:1.5rem;right:1.5rem;z-index:300;
+           background:var(--accent);color:#fff;border:none;
+           border-radius:50%;width:44px;height:44px;font-size:1.1rem;
+           cursor:pointer;box-shadow:0 4px 16px rgba(26,58,107,0.3);
+           transition:all .2s;display:flex;align-items:center;justify-content:center;"
+    title="Administrador">⚙️</button>
+
+  <!-- Modal admin -->
+  <div class="modal-overlay" id="admin-modal">
+    <div class="modal" style="max-width:360px">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:1.25rem">
+        <h2 style="font-family:'Fraunces',serif;color:var(--accent)">Administrador</h2>
+        <button onclick="closeAdminModal()" style="background:none;border:none;color:var(--muted);font-size:1.2rem;cursor:pointer;">✕</button>
+      </div>
+      <div class="form-group">
+        <label>Correo</label>
+        <input type="email" id="admin-email" placeholder="sinpreun@gmail.com">
+      </div>
+      <div class="form-group">
+        <label>Contraseña</label>
+        <input type="password" id="admin-pass" placeholder="••••••••">
+      </div>
+      <p style="color:#c0392b;font-size:0.82rem;min-height:1.2em" id="admin-err"></p>
+      <button class="btn-submit" id="admin-submit">Ingresar como admin</button>
+    </div>
+  </div>
 </body>
 </html>
