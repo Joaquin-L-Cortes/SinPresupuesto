@@ -445,6 +445,16 @@ function enterEditMode() {
   document.getElementById('edit-apellido').value = userProfile.apellido || '';
   document.getElementById('edit-email').value    = userProfile.email    || '';
   document.getElementById('edit-genero').value   = userProfile.genero   || 'NR';
+
+  // Actualizar preview grande con el avatar actual
+  const currentAv = getAvatar(tempAvatarId);
+  const editPreview = document.getElementById('edit-avatar-preview');
+  if (editPreview) {
+    editPreview.textContent = currentAv.emoji;
+    editPreview.style.background   = currentAv.bg;
+    editPreview.style.borderColor  = currentAv.color;
+  }
+
   document.getElementById('edit-avatar-picker').innerHTML = renderAvatarPicker(tempAvatarId);
   document.querySelectorAll('#edit-avatar-picker .avatar-opt').forEach(btn => {
     btn.addEventListener('click', () => {
@@ -454,10 +464,17 @@ function enterEditMode() {
       btn.classList.add('av-selected'); btn.style.borderColor = btn.dataset.color;
       tempAvatarId = parseInt(btn.dataset.id);
       const av = getAvatar(tempAvatarId);
+      // Actualizar preview del editor Y la tarjeta de perfil
+      if (editPreview) {
+        editPreview.textContent = av.emoji;
+        editPreview.style.background  = av.bg;
+        editPreview.style.borderColor = av.color;
+      }
       document.getElementById('perfil-avatar-display').textContent      = av.emoji;
       document.getElementById('perfil-avatar-display').style.background = av.bg;
     });
   });
+
   document.getElementById('perfil-view').style.display = 'none';
   document.getElementById('perfil-edit').style.display = 'block';
   document.getElementById('btn-realizar-cambios').style.display = 'none';
@@ -563,8 +580,8 @@ function injectModals() {
 
       <!-- LOGIN -->
       <div id="pane-login">
-        <div class="form-group"><label>Correo</label><input type="email" id="st-email" placeholder="tucorreo@gmail.com"></div>
-        <div class="form-group"><label>Contraseña</label><input type="password" id="st-pass" placeholder="••••••••"></div>
+        <div class="form-group"><label>Correo</label><input type="email" id="st-email" placeholder="tucorreo@gmail.com" inputmode="email"></div>
+        <div class="form-group"><label>Contraseña</label><input type="password" id="st-pass" placeholder="••••••••" inputmode="none"></div>
         <p style="font-size:.82rem;min-height:1.2em" id="st-login-err"></p>
         <button class="btn-submit" onclick="doStudentLogin()">Ingresar</button>
         <p style="text-align:center;margin-top:.75rem"><button onclick="doForgotPassword()" style="background:none;border:none;color:var(--muted);font-size:.8rem;cursor:pointer;text-decoration:underline;">¿Olvidaste tu contraseña?</button></p>
@@ -661,14 +678,33 @@ function injectModals() {
       </div>
       <div id="perfil-view"></div>
       <div id="perfil-edit" style="display:none">
-        <div style="display:grid;grid-template-columns:1fr 1fr;gap:.75rem">
-          <div class="form-group"><label>Nombre</label><input type="text" id="edit-nombre"></div>
-          <div class="form-group"><label>Apellido</label><input type="text" id="edit-apellido"></div>
+        <div class="reg-layout">
+          <!-- Avatar preview grande -->
+          <div class="reg-avatar-col">
+            <div id="edit-avatar-preview" style="font-size:3.5rem;width:88px;height:88px;border-radius:50%;display:flex;align-items:center;justify-content:center;background:var(--bg3);border:2px solid var(--border);transition:all .3s;">🦁</div>
+            <p style="font-size:.72rem;color:var(--muted);margin-top:.4rem;text-align:center;">Tu avatar</p>
+          </div>
+          <!-- Campos -->
+          <div class="reg-fields-col">
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:.6rem">
+              <div class="form-group"><label>Nombre</label><input type="text" id="edit-nombre" inputmode="text"></div>
+              <div class="form-group"><label>Apellido</label><input type="text" id="edit-apellido" inputmode="text"></div>
+            </div>
+            <div class="form-group"><label>Correo</label><input type="email" id="edit-email" inputmode="email"></div>
+            <div class="form-group"><label>Género</label>
+              <select id="edit-genero" style="width:100%;background:var(--bg3);border:1.5px solid var(--border);border-radius:10px;padding:.65rem .9rem;color:var(--text);font-family:'DM Sans',sans-serif;font-size:.9rem;outline:none;">
+                <option value="M">Masculino</option><option value="F">Femenino</option>
+                <option value="NB">No binario</option><option value="NR">Prefiero no responder</option>
+              </select>
+            </div>
+          </div>
+          <!-- Picker avatares -->
+          <div class="reg-picker-col">
+            <p style="font-size:.72rem;color:var(--muted);margin-bottom:.4rem;font-weight:600;text-transform:uppercase;letter-spacing:.05em;">Avatar</p>
+            <div id="edit-avatar-picker" style="display:grid;grid-template-columns:repeat(3,1fr);gap:.3rem;"></div>
+          </div>
         </div>
-        <div class="form-group"><label>Correo</label><input type="email" id="edit-email"></div>
-        <div class="form-group"><label>Género</label><select id="edit-genero" style="width:100%;background:var(--bg3);border:1.5px solid var(--border);border-radius:10px;padding:.65rem .9rem;color:var(--text);font-family:'DM Sans',sans-serif;font-size:.9rem;outline:none;"><option value="M">Masculino</option><option value="F">Femenino</option><option value="NB">No binario</option><option value="NR">Prefiero no responder</option></select></div>
-        <div class="form-group"><label>Avatar</label><div id="edit-avatar-picker" style="display:flex;flex-wrap:wrap;gap:.4rem;margin-top:.3rem"></div></div>
-        <p style="font-size:.82rem;min-height:1.2em" id="perfil-edit-err"></p>
+        <p style="font-size:.82rem;min-height:1.2em;margin-top:.5rem" id="perfil-edit-err"></p>
       </div>
       <div style="display:flex;flex-direction:column;gap:.6rem;margin-top:.75rem">
         <button id="btn-realizar-cambios" class="btn-submit" style="background:var(--accent2)" onclick="enterEditMode()">Realizar cambios</button>
