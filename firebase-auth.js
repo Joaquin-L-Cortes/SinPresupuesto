@@ -627,8 +627,8 @@ function injectModals() {
 
   <!-- MODAL ESTUDIANTE -->
   <div class="modal-overlay" id="student-modal">
-    <div class="modal" id="student-modal-box" style="max-width:600px;max-height:92vh;overflow-y:auto">
-      <div style="display:flex;gap:0;margin-bottom:1.5rem;border-bottom:2px solid var(--border);position:sticky;top:0;background:var(--bg2);z-index:1;padding-top:.25rem">
+    <div class="modal" id="student-modal-box" style="max-width:500px">
+      <div style="display:flex;gap:0;margin-bottom:1.5rem;border-bottom:2px solid var(--border);position:sticky;top:0;background:var(--bg2);z-index:50;padding-top:.25rem;margin-left:-2rem;margin-right:-2rem;padding-left:2rem;padding-right:2rem">
         <button id="tab-login" class="tab-btn active" onclick="showStudentTab('login')">Ingresar</button>
         <button id="tab-reg"   class="tab-btn"        onclick="showStudentTab('reg')">Registrarse</button>
         <button onclick="closeStudentModal()" style="margin-left:auto;background:none;border:none;color:var(--muted);font-size:1.2rem;cursor:pointer;padding:.5rem;">✕</button>
@@ -658,37 +658,27 @@ function injectModals() {
         <button class="btn-submit" onclick="verifyPhoneOTP()">Verificar</button>
       </div>
 
-      <!-- REGISTRO HORIZONTAL -->
+      <!-- REGISTRO COMPACTO -->
       <div id="pane-reg" style="display:none">
-        <div class="reg-layout">
-          <!-- Columna izquierda: avatar preview grande -->
-          <div class="reg-avatar-col">
-            <div id="reg-avatar-preview" style="font-size:4rem;width:100px;height:100px;border-radius:50%;display:flex;align-items:center;justify-content:center;background:var(--bg3);border:2px solid var(--border);transition:all .3s;">🦁</div>
-            <p style="font-size:.75rem;color:var(--muted);margin-top:.5rem;text-align:center;">Tu avatar</p>
-          </div>
-          <!-- Columna centro: campos -->
-          <div class="reg-fields-col">
-            <div style="display:grid;grid-template-columns:1fr 1fr;gap:.6rem">
-              <div class="form-group"><label>Nombre</label><input type="text" id="st-nombre" placeholder="Joaquín"></div>
-              <div class="form-group"><label>Apellido</label><input type="text" id="st-apellido" placeholder="Cortés"></div>
-            </div>
-            <div class="form-group"><label>Correo</label><input type="email" id="st-remail" placeholder="tucorreo@gmail.com"></div>
-            <div class="form-group"><label>Contraseña</label><input type="password" id="st-rpass" placeholder="Mínimo 6 caracteres"></div>
-            <div class="form-group"><label>Género</label>
-              <select id="st-genero" style="width:100%;background:var(--bg3);border:1.5px solid var(--border);border-radius:10px;padding:.65rem .9rem;color:var(--text);font-family:'DM Sans',sans-serif;font-size:.9rem;outline:none;">
-                <option value="M">Masculino</option><option value="F">Femenino</option>
-                <option value="NB">No binario</option><option value="NR">Prefiero no responder</option>
-              </select>
-            </div>
-          </div>
-          <!-- Columna derecha: picker de avatares -->
-          <div class="reg-picker-col">
-            <p style="font-size:.75rem;color:var(--muted);margin-bottom:.5rem;font-weight:600;text-transform:uppercase;letter-spacing:.05em;">Elige tu avatar</p>
-            <div id="reg-avatar-picker" style="display:grid;grid-template-columns:repeat(3,1fr);gap:.35rem;"></div>
-          </div>
+        <!-- Avatar picker compacto + preview en línea -->
+        <div style="display:flex;align-items:center;gap:.75rem;margin-bottom:.75rem">
+          <div id="reg-avatar-preview" style="font-size:2.2rem;width:52px;height:52px;border-radius:50%;display:flex;align-items:center;justify-content:center;background:var(--bg3);border:2px solid var(--border);flex-shrink:0;transition:all .3s;">🦁</div>
+          <div id="reg-avatar-picker" style="display:grid;grid-template-columns:repeat(9,1fr);gap:.2rem;flex:1;"></div>
         </div>
-        <!-- Botón debajo de todo -->
-        <p style="color:#c0392b;font-size:.82rem;min-height:1.2em;margin-top:.75rem" id="st-reg-err"></p>
+        <!-- Campos en dos columnas -->
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:.5rem;margin-bottom:.5rem">
+          <div class="form-group" style="margin-bottom:0"><label>Nombre</label><input type="text" id="st-nombre" placeholder="Joaquín"></div>
+          <div class="form-group" style="margin-bottom:0"><label>Apellido</label><input type="text" id="st-apellido" placeholder="Cortés"></div>
+        </div>
+        <div class="form-group"><label>Correo</label><input type="email" id="st-remail" placeholder="tucorreo@gmail.com"></div>
+        <div class="form-group"><label>Contraseña</label><input type="password" id="st-rpass" placeholder="Mínimo 6 caracteres"></div>
+        <div class="form-group"><label>Género</label>
+          <select id="st-genero" style="width:100%;background:var(--bg3);border:1.5px solid var(--border);border-radius:10px;padding:.55rem .9rem;color:var(--text);font-family:'DM Sans',sans-serif;font-size:.9rem;outline:none;">
+            <option value="M">Masculino</option><option value="F">Femenino</option>
+            <option value="NB">No binario</option><option value="NR">Prefiero no responder</option>
+          </select>
+        </div>
+        <p style="color:#c0392b;font-size:.82rem;min-height:1.2em" id="st-reg-err"></p>
         <button class="btn-submit" onclick="doStudentRegister()">Crear cuenta</button>
       </div>
     </div>
@@ -696,8 +686,8 @@ function injectModals() {
 
   <!-- MODAL AVANCE --><!-- MODAL AVANCE -->
   <div class="modal-overlay" id="avance-modal">
-    <div class="modal" style="max-width:480px;max-height:85vh;overflow-y:auto">
-      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:1.25rem;position:sticky;top:0;background:var(--bg2);padding-top:.25rem">
+    <div class="modal" style="max-width:480px">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:1.25rem;position:sticky;top:0;background:var(--bg2);z-index:50;padding-top:.25rem;margin-left:-2rem;margin-right:-2rem;padding-left:2rem;padding-right:2rem">
         <h2 style="font-family:'Fraunces',serif;color:var(--accent)">Mi avance</h2>
         <button onclick="closeAvanceModal()" style="background:none;border:none;color:var(--muted);font-size:1.2rem;cursor:pointer;">✕</button>
       </div>
@@ -711,8 +701,8 @@ function injectModals() {
 
   <!-- MODAL PERFIL -->
   <div class="modal-overlay" id="perfil-modal">
-    <div class="modal" id="perfil-modal-box" style="max-width:420px;max-height:92vh;overflow-y:auto;transition:max-width .28s cubic-bezier(.4,0,.2,1);">
-      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:1.5rem;position:sticky;top:0;background:var(--bg2);padding-top:.25rem">
+    <div class="modal" id="perfil-modal-box" style="max-width:420px;transition:max-width .28s cubic-bezier(.4,0,.2,1);">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:1.5rem;position:sticky;top:0;background:var(--bg2);z-index:50;padding-top:.25rem;margin-left:-2rem;margin-right:-2rem;padding-left:2rem;padding-right:2rem">
         <h2 style="font-family:'Fraunces',serif;color:var(--accent)">Mi perfil</h2>
         <div style="display:flex;align-items:center;gap:.5rem">
           <div style="position:relative">
@@ -739,35 +729,24 @@ function injectModals() {
         <button class="btn-submit" style="background:#e74c3c" onclick="doLogout()">Cerrar sesión</button>
       </div>
 
-      <!-- VISTA EDICIÓN: layout horizontal igual al registro -->
+      <!-- VISTA EDICIÓN COMPACTA -->
       <div id="perfil-edit" style="display:none">
-        <div class="reg-layout">
-          <!-- Columna izquierda: avatar preview grande -->
-          <div class="reg-avatar-col">
-            <div id="edit-avatar-preview" style="font-size:4rem;width:100px;height:100px;border-radius:50%;display:flex;align-items:center;justify-content:center;background:var(--bg3);border:2px solid var(--border);transition:all .3s;">🦁</div>
-            <p style="font-size:.75rem;color:var(--muted);margin-top:.5rem;text-align:center;">Tu avatar</p>
-          </div>
-          <!-- Columna centro: campos -->
-          <div class="reg-fields-col">
-            <div style="display:grid;grid-template-columns:1fr 1fr;gap:.6rem">
-              <div class="form-group"><label>Nombre</label><input type="text" id="edit-nombre" inputmode="text"></div>
-              <div class="form-group"><label>Apellido</label><input type="text" id="edit-apellido" inputmode="text"></div>
-            </div>
-            <div class="form-group"><label>Correo</label><input type="email" id="edit-email" inputmode="email"></div>
-            <div class="form-group"><label>Género</label>
-              <select id="edit-genero" style="width:100%;background:var(--bg3);border:1.5px solid var(--border);border-radius:10px;padding:.65rem .9rem;color:var(--text);font-family:'DM Sans',sans-serif;font-size:.9rem;outline:none;">
-                <option value="M">Masculino</option><option value="F">Femenino</option>
-                <option value="NB">No binario</option><option value="NR">Prefiero no responder</option>
-              </select>
-            </div>
-          </div>
-          <!-- Columna derecha: picker de avatares -->
-          <div class="reg-picker-col">
-            <p style="font-size:.75rem;color:var(--muted);margin-bottom:.5rem;font-weight:600;text-transform:uppercase;letter-spacing:.05em;">Elige tu avatar</p>
-            <div id="edit-avatar-picker" style="display:grid;grid-template-columns:repeat(3,1fr);gap:.35rem;"></div>
-          </div>
+        <div style="display:flex;align-items:center;gap:.75rem;margin-bottom:.75rem">
+          <div id="edit-avatar-preview" style="font-size:2.2rem;width:52px;height:52px;border-radius:50%;display:flex;align-items:center;justify-content:center;background:var(--bg3);border:2px solid var(--border);flex-shrink:0;transition:all .3s;">🦁</div>
+          <div id="edit-avatar-picker" style="display:grid;grid-template-columns:repeat(9,1fr);gap:.2rem;flex:1;"></div>
         </div>
-        <p style="font-size:.82rem;min-height:1.2em;margin-top:.5rem" id="perfil-edit-err"></p>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:.5rem;margin-bottom:.5rem">
+          <div class="form-group" style="margin-bottom:0"><label>Nombre</label><input type="text" id="edit-nombre" inputmode="text"></div>
+          <div class="form-group" style="margin-bottom:0"><label>Apellido</label><input type="text" id="edit-apellido" inputmode="text"></div>
+        </div>
+        <div class="form-group"><label>Correo</label><input type="email" id="edit-email" inputmode="email"></div>
+        <div class="form-group"><label>Género</label>
+          <select id="edit-genero" style="width:100%;background:var(--bg3);border:1.5px solid var(--border);border-radius:10px;padding:.55rem .9rem;color:var(--text);font-family:'DM Sans',sans-serif;font-size:.9rem;outline:none;">
+            <option value="M">Masculino</option><option value="F">Femenino</option>
+            <option value="NB">No binario</option><option value="NR">Prefiero no responder</option>
+          </select>
+        </div>
+        <p style="font-size:.82rem;min-height:1.2em" id="perfil-edit-err"></p>
       </div>
       <!-- Botones: se muestran según el modo -->
       <div id="perfil-edit-btns" style="display:none;flex-direction:column;gap:.6rem;margin-top:.75rem;">
@@ -911,14 +890,15 @@ function injectModals() {
 
 // ─── MODAL CAMBIAR CONTRASEÑA ─────────────────────────────
 function openChangePasswordModal() {
-  document.getElementById('perfil-modal')?.classList.remove('open');
   ['cp-current','cp-new1','cp-new2'].forEach(id => { const el = document.getElementById(id); if(el) el.value = ''; });
   const err = document.getElementById('cp-err'); if(err) err.textContent = '';
+  document.getElementById('perfil-modal')?.classList.remove('open');
   document.getElementById('change-pass-modal')?.classList.add('open');
   if (!('ontouchstart' in window)) setTimeout(() => document.getElementById('cp-current')?.focus(), 100);
 }
 function closeChangePasswordModal() {
   document.getElementById('change-pass-modal')?.classList.remove('open');
+  document.getElementById('perfil-modal')?.classList.add('open');
 }
 async function doChangePassword() {
   const current = document.getElementById('cp-current').value;

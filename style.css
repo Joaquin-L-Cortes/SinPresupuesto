@@ -552,18 +552,114 @@ footer a:hover { text-decoration: underline; }
 }
 
 /* 4. Modales con scroll interno: contenido cabe en pantalla sin scroll externo */
+/* Tabs sticky siempre visibles sobre contenido scrolleable */
+#student-modal-box > div:first-child,
+#perfil-modal-box > div:first-child {
+  position: sticky !important;
+  top: 0 !important;
+  z-index: 50;
+  background: var(--bg2) !important;
+}
+
+/* ── z-index stack de modales: overlay=1000, modal apilado=1100 ── */
+/* Avance es lista larga — mantiene scroll propio */
+#avance-modal > .modal {
+  overflow-y: auto;
+  max-height: 88vh;
+}
+
+/* ═══════════════════════════════════════════════════════════
+   SIN SCROLL EN MODALES — todo cabe en pantalla
+   ═══════════════════════════════════════════════════════════ */
+
+/* Todos los modales: altura ajustada al contenido, sin scroll */
+.modal {
+  max-height: 92vh;
+  overflow: visible;
+}
+
+/* Los scroll containers previos los desactivamos */
+#student-modal-box,
+#perfil-modal-box {
+  overflow: visible !important;
+  max-height: none !important;
+}
+
+/* Reducir espacios internos en móvil para que todo quepa */
 @media (max-width: 600px) {
-  #student-modal-box,
-  #perfil-modal-box {
-    max-height: 88vh !important;
-    overflow-y: auto !important;
+  .modal {
+    padding: 1.25rem !important;
   }
-  /* Tabs sticky funcionan bien con scroll interno */
+  .form-group {
+    margin-bottom: 0.5rem !important;
+  }
+  .form-group label {
+    font-size: 0.78rem !important;
+    margin-bottom: 0.2rem !important;
+  }
+  .form-group input,
+  .form-group select {
+    padding: 0.5rem 0.75rem !important;
+    font-size: 0.88rem !important;
+  }
+  .btn-submit {
+    padding: 0.55rem 1rem !important;
+    font-size: 0.88rem !important;
+  }
+  /* Tab bar sticky: reducir padding vertical */
+  .tab-btn {
+    padding: 0.45rem 0.85rem !important;
+    font-size: 0.85rem !important;
+  }
+  /* Avatar preview más pequeño en registro */
+  #reg-avatar-preview,
+  #edit-avatar-preview {
+    width: 44px !important;
+    height: 44px !important;
+    font-size: 1.6rem !important;
+  }
+  /* Avatar picker: 9 columnas en línea */
+  #reg-avatar-picker,
+  #edit-avatar-picker {
+    grid-template-columns: repeat(9, 1fr) !important;
+    gap: 0.15rem !important;
+  }
+  .reg-picker-col .avatar-opt,
+  #reg-avatar-picker .avatar-opt,
+  #edit-avatar-picker .avatar-opt {
+    width: 30px !important;
+    height: 30px !important;
+    font-size: 0.85rem !important;
+  }
+  /* Nombre y apellido lado a lado siempre */
+  #st-nombre,
+  #st-apellido,
+  #edit-nombre,
+  #edit-apellido {
+    font-size: 0.88rem !important;
+  }
+  /* Reducir margen del sticky header */
   #student-modal-box > div:first-child,
   #perfil-modal-box > div:first-child {
-    position: sticky !important;
-    top: 0 !important;
-    z-index: 2;
-    background: var(--bg2) !important;
+    margin-left: -1.25rem !important;
+    margin-right: -1.25rem !important;
+    padding-left: 1.25rem !important;
+    padding-right: 1.25rem !important;
+    margin-bottom: 0.85rem !important;
+  }
+  /* Tarjeta de avatar en perfil más compacta */
+  #perfil-avatar-display {
+    width: 48px !important;
+    height: 48px !important;
+    font-size: 1.5rem !important;
+  }
+  /* Avance: lista con scroll propio si es muy larga */
+  #avance-modal > .modal {
+    max-height: 88vh !important;
+    overflow: hidden !important;
+  }
+  #avance-list {
+    max-height: 60vh;
+    overflow-y: auto;
   }
 }
