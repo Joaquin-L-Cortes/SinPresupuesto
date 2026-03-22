@@ -637,7 +637,7 @@ function injectModals() {
       <!-- LOGIN -->
       <div id="pane-login">
         <div class="form-group"><label>Correo</label><input type="email" id="st-email" placeholder="tucorreo@gmail.com" inputmode="email"></div>
-        <div class="form-group"><label>Contraseña</label><input type="password" id="st-pass" placeholder="••••••••" inputmode="none"></div>
+        <div class="form-group"><label>Contraseña</label><input type="password" id="st-pass" placeholder="••••••••"></div>
         <p style="font-size:.82rem;min-height:1.2em" id="st-login-err"></p>
         <button class="btn-submit" onclick="doStudentLogin()">Ingresar</button>
         <p style="text-align:center;margin-top:.75rem"><button onclick="doForgotPassword()" style="background:none;border:none;color:var(--muted);font-size:.8rem;cursor:pointer;text-decoration:underline;">¿Olvidaste tu contraseña?</button></p>
