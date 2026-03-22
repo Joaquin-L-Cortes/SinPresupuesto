@@ -169,6 +169,38 @@
     </div>
   </div>
 
+  
+  <!-- Drawer menú móvil -->
+  <div class="nav-drawer-overlay" id="nav-drawer-overlay" onclick="closeNavDrawer()">
+    <div class="nav-drawer" onclick="event.stopPropagation()">
+      <div class="nav-drawer-header">
+        <div class="nav-drawer-title">
+          <img src="logos/filosofia.png" style="width:28px;height:28px;border-radius:50%"> Sin-Presupuesto
+        </div>
+        <button class="nav-drawer-close" onclick="closeNavDrawer()">✕</button>
+      </div>
+      <ul class="nav-drawer-links">
+        <li><a href="index.html"><span class="link-icon">🏠</span>Inicio</a></li>
+        <li><a href="motivacion-guia.html"><span class="link-icon">💡</span>Motivación</a></li>
+        <li><a href="clases-sin-pre.html"><span class="link-icon">📚</span>Clases</a></li>
+        <li><a href="modulos-teoricos.html"><span class="link-icon">📖</span>Material</a></li>
+        <li><a href="ejercicios-practicas.html"><span class="link-icon">✏️</span>Práctica</a></li>
+        <li><a href="temarios.html"><span class="link-icon">🔎</span>Recursos</a></li>
+        <li><a href="donativos.html"><span class="link-icon">❤️</span>Comunidad</a></li>
+      </ul>
+    </div>
+  </div>
+
+  <script>
+  function openNavDrawer() {
+    document.getElementById('nav-drawer-overlay').classList.add('open');
+    document.body.style.overflow = 'hidden';
+  }
+  function closeNavDrawer() {
+    document.getElementById('nav-drawer-overlay').classList.remove('open');
+    document.body.style.overflow = '';
+  }
+  </script>
   <script src="editor.js"></script>
   <script type="module" src="firebase-auth.js"></script>
 </body>

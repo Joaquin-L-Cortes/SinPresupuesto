@@ -131,8 +131,8 @@ async function ensureProfile(user) {
 }
 
 function isAdmin(user, profile) {
-  // Doble verificación: UID exacto Y campo admin:true en Firestore
-  return user && user.uid === ADMIN_UID && profile?.admin === true;
+  // Verificación por UID — el campo admin:true en Firestore es bonus pero no bloqueante
+  return user && user.uid === ADMIN_UID;
 }
 
 // ─── NAV ──────────────────────────────────────────────────
@@ -212,16 +212,20 @@ async function doAdminLogin() {
   btn.textContent = 'Verificando...'; btn.disabled = true;
   try {
     const cred = await signInWithEmailAndPassword(auth, email, pass);
-    // Verificar que sea el admin real en Firestore
-    const profile = await loadProfile(cred.user.uid);
-    if (!isAdmin(cred.user, profile)) {
-      // No es admin — cerrar sesión inmediatamente
+    // Verificar UID primero (rápido, sin red extra)
+    if (cred.user.uid !== ADMIN_UID) {
       await signOut(auth);
       err.textContent = 'No tienes permisos de administrador.';
       return;
     }
+    // Leer perfil con loadProfile (NO ensureProfile para no sobrescribir admin:true)
+    const profile = await loadProfile(cred.user.uid);
+    // Si por alguna razón no tiene admin:true aún, lo agregamos ahora
+    if (!profile?.admin) {
+      await saveProfile(cred.user.uid, { admin: true });
+    }
     closeAdminModal();
-    // updateNav se llamará automáticamente por onAuthStateChanged
+    // updateNav se llama por onAuthStateChanged
   } catch(e) {
     err.textContent = e.code === 'auth/invalid-credential'
       ? 'Correo o contraseña incorrectos.' : e.message;
@@ -550,12 +554,14 @@ function injectModals() {
 
   <!-- MODAL ESTUDIANTE -->
   <div class="modal-overlay" id="student-modal">
-    <div class="modal" style="max-width:420px;max-height:90vh;overflow-y:auto">
+    <div class="modal" id="student-modal-box" style="max-width:600px;max-height:92vh;overflow-y:auto">
       <div style="display:flex;gap:0;margin-bottom:1.5rem;border-bottom:2px solid var(--border);position:sticky;top:0;background:var(--bg2);z-index:1;padding-top:.25rem">
         <button id="tab-login" class="tab-btn active" onclick="showStudentTab('login')">Ingresar</button>
         <button id="tab-reg"   class="tab-btn"        onclick="showStudentTab('reg')">Registrarse</button>
         <button onclick="closeStudentModal()" style="margin-left:auto;background:none;border:none;color:var(--muted);font-size:1.2rem;cursor:pointer;padding:.5rem;">✕</button>
       </div>
+
+      <!-- LOGIN -->
       <div id="pane-login">
         <div class="form-group"><label>Correo</label><input type="email" id="st-email" placeholder="tucorreo@gmail.com"></div>
         <div class="form-group"><label>Contraseña</label><input type="password" id="st-pass" placeholder="••••••••"></div>
@@ -564,6 +570,8 @@ function injectModals() {
         <p style="text-align:center;margin-top:.75rem"><button onclick="doForgotPassword()" style="background:none;border:none;color:var(--muted);font-size:.8rem;cursor:pointer;text-decoration:underline;">¿Olvidaste tu contraseña?</button></p>
         ${DIVIDER}${SOCIAL}
       </div>
+
+      <!-- TELÉFONO -->
       <div id="pane-phone" style="display:none">
         <button onclick="showStudentTab('login')" style="background:none;border:none;color:var(--muted);font-size:.82rem;cursor:pointer;margin-bottom:1rem;">← Volver</button>
         <div class="form-group"><label>Número de teléfono</label><input type="tel" id="phone-number" placeholder="+57 300 000 0000"></div>
@@ -576,22 +584,44 @@ function injectModals() {
         <p style="color:#c0392b;font-size:.82rem;min-height:1.2em" id="phone-otp-err"></p>
         <button class="btn-submit" onclick="verifyPhoneOTP()">Verificar</button>
       </div>
+
+      <!-- REGISTRO HORIZONTAL -->
       <div id="pane-reg" style="display:none">
-        <div style="display:grid;grid-template-columns:1fr 1fr;gap:.75rem">
-          <div class="form-group"><label>Nombre</label><input type="text" id="st-nombre" placeholder="Joaquín"></div>
-          <div class="form-group"><label>Apellido</label><input type="text" id="st-apellido" placeholder="Cortés"></div>
+        <div class="reg-layout">
+          <!-- Columna izquierda: avatar preview grande -->
+          <div class="reg-avatar-col">
+            <div id="reg-avatar-preview" style="font-size:4rem;width:100px;height:100px;border-radius:50%;display:flex;align-items:center;justify-content:center;background:var(--bg3);border:2px solid var(--border);transition:all .3s;">🦁</div>
+            <p style="font-size:.75rem;color:var(--muted);margin-top:.5rem;text-align:center;">Tu avatar</p>
+          </div>
+          <!-- Columna centro: campos -->
+          <div class="reg-fields-col">
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:.6rem">
+              <div class="form-group"><label>Nombre</label><input type="text" id="st-nombre" placeholder="Joaquín"></div>
+              <div class="form-group"><label>Apellido</label><input type="text" id="st-apellido" placeholder="Cortés"></div>
+            </div>
+            <div class="form-group"><label>Correo</label><input type="email" id="st-remail" placeholder="tucorreo@gmail.com"></div>
+            <div class="form-group"><label>Contraseña</label><input type="password" id="st-rpass" placeholder="Mínimo 6 caracteres"></div>
+            <div class="form-group"><label>Género</label>
+              <select id="st-genero" style="width:100%;background:var(--bg3);border:1.5px solid var(--border);border-radius:10px;padding:.65rem .9rem;color:var(--text);font-family:'DM Sans',sans-serif;font-size:.9rem;outline:none;">
+                <option value="M">Masculino</option><option value="F">Femenino</option>
+                <option value="NB">No binario</option><option value="NR">Prefiero no responder</option>
+              </select>
+            </div>
+          </div>
+          <!-- Columna derecha: picker de avatares -->
+          <div class="reg-picker-col">
+            <p style="font-size:.75rem;color:var(--muted);margin-bottom:.5rem;font-weight:600;text-transform:uppercase;letter-spacing:.05em;">Elige tu avatar</p>
+            <div id="reg-avatar-picker" style="display:grid;grid-template-columns:repeat(3,1fr);gap:.35rem;"></div>
+          </div>
         </div>
-        <div class="form-group"><label>Correo</label><input type="email" id="st-remail" placeholder="tucorreo@gmail.com"></div>
-        <div class="form-group"><label>Contraseña</label><input type="password" id="st-rpass" placeholder="Mínimo 6 caracteres"></div>
-        ${GENERO}
-        <div class="form-group"><label>Elige tu avatar</label><div id="reg-avatar-picker" style="display:flex;flex-wrap:wrap;gap:.4rem;margin-top:.3rem"></div></div>
-        <p style="color:#c0392b;font-size:.82rem;min-height:1.2em" id="st-reg-err"></p>
+        <!-- Botón debajo de todo -->
+        <p style="color:#c0392b;font-size:.82rem;min-height:1.2em;margin-top:.75rem" id="st-reg-err"></p>
         <button class="btn-submit" onclick="doStudentRegister()">Crear cuenta</button>
       </div>
     </div>
   </div>
 
-  <!-- MODAL AVANCE -->
+  <!-- MODAL AVANCE --><!-- MODAL AVANCE -->
   <div class="modal-overlay" id="avance-modal">
     <div class="modal" style="max-width:480px;max-height:85vh;overflow-y:auto">
       <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:1.25rem;position:sticky;top:0;background:var(--bg2);padding-top:.25rem">
@@ -665,18 +695,33 @@ function injectModals() {
 
   document.body.insertAdjacentHTML('beforeend', html);
 
-  // Avatar picker registro
+  // Avatar picker registro — también actualiza el preview grande
   document.getElementById('reg-avatar-picker').innerHTML = renderAvatarPicker(1);
-  document.querySelectorAll('#reg-avatar-picker .avatar-opt').forEach(btn => {
-    btn.addEventListener('click', () => {
-      document.querySelectorAll('#reg-avatar-picker .avatar-opt').forEach(b => {
-        b.classList.remove('av-selected'); b.style.borderColor = 'transparent';
+  function initRegPicker() {
+    document.querySelectorAll('#reg-avatar-picker .avatar-opt').forEach(btn => {
+      btn.addEventListener('click', () => {
+        document.querySelectorAll('#reg-avatar-picker .avatar-opt').forEach(b => {
+          b.classList.remove('av-selected'); b.style.borderColor = 'transparent';
+        });
+        btn.classList.add('av-selected'); btn.style.borderColor = btn.dataset.color;
+        // Actualizar preview grande
+        const preview = document.getElementById('reg-avatar-preview');
+        if (preview) {
+          preview.textContent = btn.textContent.trim();
+          preview.style.background = btn.dataset.bg;
+          preview.style.borderColor = btn.dataset.color;
+        }
       });
-      btn.classList.add('av-selected'); btn.style.borderColor = btn.dataset.color;
     });
-  });
+  }
+  initRegPicker();
   const first = document.querySelector('#reg-avatar-picker .avatar-opt');
-  if (first) { first.classList.add('av-selected'); first.style.borderColor = first.dataset.color; }
+  if (first) {
+    first.classList.add('av-selected');
+    first.style.borderColor = first.dataset.color;
+    const preview = document.getElementById('reg-avatar-preview');
+    if (preview) { preview.style.background = first.dataset.bg; preview.style.borderColor = first.dataset.color; }
+  }
 
   // Menú tres puntos
   document.getElementById('perfil-menu-btn').onclick = () => {

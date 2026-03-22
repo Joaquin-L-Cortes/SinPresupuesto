@@ -201,3 +201,182 @@ footer a:hover { text-decoration: underline; }
   nav { padding: 0 0.5rem; }
   footer { padding: 1.5rem 1rem; font-size: 0.78rem; }
 }
+
+/* ── ANIMACIONES GENERALES ── */
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(18px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+@keyframes slideInRight {
+  from { opacity: 0; transform: translateX(24px); }
+  to   { opacity: 1; transform: translateX(0); }
+}
+@keyframes scaleIn {
+  from { opacity: 0; transform: scale(0.94); }
+  to   { opacity: 1; transform: scale(1); }
+}
+
+/* Entrada del hero */
+.hero-text { animation: fadeInUp 0.55s ease both; }
+.hero-logo  { animation: scaleIn  0.55s ease 0.1s both; }
+
+/* Entrada de las tarjetas del grid con stagger */
+.section-card { animation: fadeInUp 0.4s ease both; }
+.section-card:nth-child(1)  { animation-delay: 0.04s; }
+.section-card:nth-child(2)  { animation-delay: 0.08s; }
+.section-card:nth-child(3)  { animation-delay: 0.12s; }
+.section-card:nth-child(4)  { animation-delay: 0.16s; }
+.section-card:nth-child(5)  { animation-delay: 0.20s; }
+.section-card:nth-child(6)  { animation-delay: 0.24s; }
+.section-card:nth-child(7)  { animation-delay: 0.28s; }
+.section-card:nth-child(8)  { animation-delay: 0.32s; }
+.section-card:nth-child(9)  { animation-delay: 0.36s; }
+.section-card:nth-child(10) { animation-delay: 0.40s; }
+.section-card:nth-child(n+11) { animation-delay: 0.44s; }
+
+/* Entrada del contenido de página */
+.page-header  { animation: fadeInUp 0.45s ease both; }
+.entry-body   { animation: fadeInUp 0.45s ease 0.1s both; }
+
+/* Animación de modales */
+.modal-overlay.open .modal {
+  animation: scaleIn 0.22s cubic-bezier(0.34,1.56,0.64,1) both;
+}
+@media (max-width: 600px) {
+  .modal-overlay.open .modal {
+    animation: slideInUp 0.28s cubic-bezier(0.34,1.2,0.64,1) both;
+  }
+}
+@keyframes slideInUp {
+  from { transform: translateY(100%); opacity: 0; }
+  to   { transform: translateY(0);    opacity: 1; }
+}
+
+/* Hover en nav links */
+.nav-links a { position: relative; }
+.nav-links a::after {
+  content: '';
+  position: absolute;
+  bottom: 0; left: 0.85rem; right: 0.85rem;
+  height: 2px;
+  background: var(--accent2);
+  transform: scaleX(0);
+  transition: transform 0.2s ease;
+  border-radius: 2px;
+}
+.nav-links a:hover::after, .nav-links a.active::after { transform: scaleX(1); }
+
+/* Hover en logo del nav */
+.nav-logo { transition: opacity 0.2s; }
+.nav-logo:hover { opacity: 0.8; }
+
+/* Transición suave en tarjetas */
+.section-card { transition: box-shadow 0.2s, border-color 0.2s, transform 0.2s; }
+
+/* ── MENÚ HAMBURGUESA ── */
+.nav-hamburger {
+  display: none;
+  background: none;
+  border: 1.5px solid var(--border);
+  border-radius: 8px;
+  padding: 0.4rem 0.55rem;
+  cursor: pointer;
+  flex-direction: column;
+  gap: 4px;
+  transition: border-color 0.2s;
+  margin-left: 0.5rem;
+}
+.nav-hamburger:hover { border-color: var(--accent2); }
+.nav-hamburger span {
+  display: block;
+  width: 18px; height: 2px;
+  background: var(--muted);
+  border-radius: 2px;
+  transition: background 0.2s;
+}
+.nav-hamburger:hover span { background: var(--accent2); }
+
+/* Drawer del menú móvil */
+.nav-drawer-overlay {
+  display: none;
+  position: fixed; inset: 0;
+  background: rgba(26,38,64,0.5);
+  backdrop-filter: blur(4px);
+  z-index: 200;
+}
+.nav-drawer-overlay.open { display: block; animation: fadeIn 0.2s ease both; }
+.nav-drawer {
+  position: fixed;
+  top: 0; right: 0;
+  width: min(280px, 85vw);
+  height: 100vh;
+  background: var(--bg2);
+  border-left: 1px solid var(--border);
+  padding: 1.5rem 1.25rem;
+  z-index: 201;
+  display: flex; flex-direction: column; gap: 0;
+  transform: translateX(100%);
+  transition: transform 0.28s cubic-bezier(0.4,0,0.2,1);
+}
+.nav-drawer-overlay.open .nav-drawer { transform: translateX(0); }
+.nav-drawer-header {
+  display: flex; align-items: center; justify-content: space-between;
+  margin-bottom: 1.5rem; padding-bottom: 1rem;
+  border-bottom: 1px solid var(--border);
+}
+.nav-drawer-title {
+  font-family: 'Fraunces', serif;
+  font-size: 1.1rem; font-weight: 700;
+  color: var(--accent);
+  display: flex; align-items: center; gap: 0.5rem;
+}
+.nav-drawer-close {
+  background: none; border: none;
+  color: var(--muted); font-size: 1.2rem;
+  cursor: pointer; padding: 0.2rem;
+  border-radius: 6px; transition: background 0.15s;
+}
+.nav-drawer-close:hover { background: var(--bg3); }
+.nav-drawer-links { list-style: none; display: flex; flex-direction: column; gap: 2px; flex: 1; }
+.nav-drawer-links a {
+  display: flex; align-items: center; gap: 0.75rem;
+  padding: 0.75rem 0.75rem;
+  color: var(--text); text-decoration: none;
+  font-size: 0.95rem; font-weight: 500;
+  border-radius: 10px;
+  transition: background 0.15s, color 0.15s;
+}
+.nav-drawer-links a:hover, .nav-drawer-links a.active {
+  background: var(--bg3); color: var(--accent2);
+}
+.nav-drawer-links a .link-icon { font-size: 1.1rem; width: 24px; text-align: center; }
+
+/* ── REGISTRO HORIZONTAL ── */
+.reg-layout {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  gap: 1.25rem;
+  align-items: start;
+}
+.reg-avatar-col {
+  display: flex; flex-direction: column; align-items: center;
+  padding-top: 1.5rem;
+}
+.reg-fields-col { min-width: 0; }
+.reg-picker-col { min-width: 0; }
+.reg-picker-col .avatar-opt { width: 42px !important; height: 42px !important; font-size: 1.3rem !important; }
+
+@media (max-width: 600px) {
+  .reg-layout { grid-template-columns: 1fr; }
+  .reg-avatar-col { flex-direction: row; gap: 1rem; padding-top: 0; }
+  .reg-picker-col .avatar-opt { width: 38px !important; height: 38px !important; font-size: 1.1rem !important; }
+  #reg-avatar-picker { grid-template-columns: repeat(4,1fr) !important; }
+}
+
+@media (max-width: 768px) {
+  .nav-hamburger { display: flex; }
+}
