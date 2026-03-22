@@ -15,23 +15,11 @@
     <ul class="nav-links"><li><a href="index.html" class="">Inicio</a></li><li><a href="clases-sin-pre.html" class="">Clases</a></li><li><a href="motivacion-guia.html" class="">Motivación</a></li><li><a href="modulos-teoricos.html" class="">Material</a></li><li><a href="ejercicios-practicas.html" class="">Práctica</a></li><li><a href="temarios.html" class="">Recursos</a></li><li><a href="donativos.html" class="active">Comunidad</a></li></ul>
     <div class="nav-right" style="display:flex;align-items:center;gap:0.5rem">
       <button class="nav-hamburger" id="nav-hamburger-btn" onclick="openNavDrawer()" aria-label="Menú"><span></span><span></span><span></span></button>
-      <button id="btn-avance" style="display:none" onclick="openAvanceModal()">📋 Avance</button>
-      <button id="btn-perfil" style="display:none" onclick="openPerfilModal()">✦ Perfil</button>
-      <button id="btn-student-login" onclick="openStudentModal()">👤 Ingresar</button>
+      <button id="btn-avance" style="display:none">📋 Avance</button>
+      <button id="btn-perfil" style="display:none">✦ Perfil</button>
+      <button id="btn-student-login">👤 Ingresar</button>
     </div>
   </nav>
-  <div class="modal-overlay" id="login-modal">
-    <div class="modal">
-      <h2>Acceso editor</h2>
-      <p>Ingresa la contraseña para editar esta página.</p>
-      <div class="form-group">
-        <label>Contraseña</label>
-        <input type="password" id="inp-pass" placeholder="••••••••••••">
-      </div>
-      <p class="login-error" id="login-error">Contraseña incorrecta.</p>
-      <button class="btn-submit" id="btn-submit">Ingresar</button>
-    </div>
-  </div>
   <div class="editing-badge" id="editing-badge">✦ Modo edición activo</div>
   <div class="editor-bar" id="editor-bar">
     <span>Editar:</span>
@@ -64,7 +52,7 @@
     <p>Sin-Presupuesto · PreUniversitario gratuito y popular ❤️</p>
     <p style="margin-top:0.4rem"><a href="donativos.html">Apoya el proyecto</a> · <a href="medios-de-sin-presupuesto-un.html">Redes sociales</a></p>
     <p style="margin-top:0.75rem;padding-top:0.75rem;border-top:1px solid var(--border)">
-      <button id="btn-admin-footer" onclick="openAdminModal()"
+      <button id="btn-admin-footer"
         style="background:none;border:none;color:var(--border);font-size:0.72rem;cursor:pointer;transition:color .2s;font-family:'DM Sans',sans-serif;"
         onmouseover="this.style.color='var(--muted)'" onmouseout="this.style.color='var(--border)'">Joaquín L. Cortés</button>
     </p>

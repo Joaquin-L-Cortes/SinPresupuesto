@@ -895,28 +895,14 @@ function injectModals() {
 }
 
 function injectStyles() {
+  // Los estilos de botones nav y clases de auth están en style.css.
+  // Solo inyectamos aquí overrides de modal para móvil que dependen
+  // de las clases dinámicas generadas por injectModals().
   const s = document.createElement('style');
   s.textContent = `
-    .tab-btn{background:none;border:none;padding:.6rem 1.1rem;font-family:'DM Sans',sans-serif;font-size:.9rem;color:var(--muted);cursor:pointer;border-bottom:2px solid transparent;margin-bottom:-2px;transition:all .2s}
-    .tab-btn.active{color:var(--accent2);border-bottom-color:var(--accent2);font-weight:600}
-    .avance-item{display:flex;align-items:center;gap:.75rem;padding:.55rem .75rem;border-radius:10px;cursor:pointer;transition:background .15s;border:1.5px solid var(--border);background:var(--bg2)}
-    .avance-item:hover{background:var(--bg3)}
-    .avance-item.done{background:rgba(46,111,196,.07);border-color:var(--accent3)}
-    .avance-item input{width:18px;height:18px;accent-color:var(--accent2);cursor:pointer;flex-shrink:0}
-    .avance-item span{font-size:.88rem;color:var(--text)}
-    .avance-item.done span{color:var(--accent2)}
-    .social-btn{display:flex;align-items:center;justify-content:center;gap:.4rem;padding:.55rem;border:1.5px solid var(--border);border-radius:10px;background:var(--bg2);cursor:pointer;font-family:'DM Sans',sans-serif;font-size:.82rem;color:var(--text);transition:background .2s;width:100%}
-    .social-btn:hover{background:var(--bg3)}
-    #btn-student-login{background:none;border:1.5px solid var(--border);color:var(--muted);font-family:'DM Sans',sans-serif;font-size:.8rem;padding:.4rem .85rem;border-radius:20px;cursor:pointer;transition:all .2s;display:flex;align-items:center;gap:.35rem;white-space:nowrap;max-width:140px;overflow:hidden}
-    #btn-student-login:hover{border-color:var(--accent2);color:var(--accent2)}
-    #btn-avance,#btn-perfil{background:none;border:1.5px solid var(--border);color:var(--muted);font-family:'DM Sans',sans-serif;font-size:.8rem;padding:.4rem .85rem;border-radius:20px;cursor:pointer;transition:all .2s;white-space:nowrap}
-    #btn-avance:hover,#btn-perfil:hover{border-color:var(--accent2);color:var(--accent2)}
     @media(max-width:600px){
       .modal{padding:1.25rem;border-radius:14px 14px 0 0;position:fixed;bottom:0;left:0;right:0;max-width:100%!important;max-height:92vh;overflow-y:auto}
       .modal-overlay{align-items:flex-end}
-      .nav-links{display:none}
-      #btn-student-login{max-width:110px;font-size:.75rem;padding:.35rem .6rem}
-      #btn-avance,#btn-perfil{font-size:.75rem;padding:.35rem .6rem}
     }
   `;
   document.head.appendChild(s);
@@ -926,6 +912,24 @@ function injectStyles() {
 document.addEventListener('DOMContentLoaded', () => {
   injectStyles();
   injectModals();
+
+  // ── Botones de nav: listeners directos (evita race condition con onclick="" + type="module") ──
+  document.getElementById('btn-student-login')?.addEventListener('click', () => {
+    if (currentUser && userProfile && !isAdmin(currentUser, userProfile)) {
+      openPerfilModal();
+    } else if (!currentUser) {
+      openStudentModal();
+    }
+  });
+  document.getElementById('btn-avance')?.addEventListener('click', openAvanceModal);
+  document.getElementById('btn-perfil')?.addEventListener('click', openPerfilModal);
+  document.getElementById('btn-admin-footer')?.addEventListener('click', () => {
+    if (currentUser && isAdmin(currentUser, userProfile)) {
+      confirmAdminLogout();
+    } else {
+      openAdminModal();
+    }
+  });
 
   onAuthStateChanged(auth, async user => {
     currentUser = user;
