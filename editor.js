@@ -1,5 +1,6 @@
-// editor.js — solo maneja la barra de edición visual
-// El login del admin ahora lo maneja firebase-auth.js
+// ─── URL del Cloudflare Worker ────────────────────────────
+// Reemplaza esto con la URL de tu Worker cuando lo tengas
+const WORKER_URL = 'https://sinpresupuesto-save01.jocortesca.workers.dev';
 
 function showToast(msg, duration, type) {
   duration = duration || 2500;
@@ -41,6 +42,7 @@ function cancelEdit() {
 function getFileName() {
   const parts = location.pathname.split('/');
   let file = parts[parts.length - 1];
+  // GitHub Pages puede servir con o sin .html
   if (!file || file === '') return 'index.html';
   if (!file.includes('.')) file = file + '.html';
   return file;
@@ -54,14 +56,14 @@ async function saveToGitHub() {
   showToast('⏳ Subiendo cambios...', 10000);
   try {
     const fullHTML = '<!DOCTYPE html>\n' + document.documentElement.outerHTML;
-    const res  = await fetch('/.netlify/functions/save', {
+    const res = await fetch(WORKER_URL, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ filename: getFileName(), content: fullHTML })
     });
     const data = await res.json();
     if (!res.ok) throw new Error(data.error || 'Error desconocido');
-    showToast('✓ Guardado en GitHub — visible en ~1 minuto', 3000, 'success');
+    showToast('✓ Guardado — visible en ~1 minuto', 3000, 'success');
   } catch(err) {
     showToast('✗ Error: ' + err.message, 4000, 'error');
   } finally {
