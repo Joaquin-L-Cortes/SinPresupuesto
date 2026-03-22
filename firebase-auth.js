@@ -434,10 +434,9 @@ function renderPerfilView() {
   document.getElementById('perfil-email').textContent  = userProfile.email || '';
   document.getElementById('perfil-desde').textContent  = userProfile.creadoEn
     ? 'Desde ' + new Date(userProfile.creadoEn).toLocaleDateString('es-CO', {year:'numeric', month:'long'}) : '';
+  // Mostrar vista normal, ocultar edición
   document.getElementById('perfil-view').style.display = 'block';
   document.getElementById('perfil-edit').style.display = 'none';
-  document.getElementById('btn-realizar-cambios').style.display = 'block';
-  document.getElementById('btn-guardar-cambios').style.display  = 'none';
 }
 function enterEditMode() {
   tempAvatarId = userProfile.avatarId || 1;
@@ -477,8 +476,6 @@ function enterEditMode() {
 
   document.getElementById('perfil-view').style.display = 'none';
   document.getElementById('perfil-edit').style.display = 'block';
-  document.getElementById('btn-realizar-cambios').style.display = 'none';
-  document.getElementById('btn-guardar-cambios').style.display  = 'block';
 }
 async function saveProfileChanges() {
   const nombre   = document.getElementById('edit-nombre').value.trim();
@@ -676,15 +673,21 @@ function injectModals() {
           <div id="perfil-desde"  style="font-size:.78rem;color:var(--muted);margin-top:.2rem"></div>
         </div>
       </div>
-      <div id="perfil-view"></div>
-      <div id="perfil-edit" style="display:none">
+      <!-- VISTA NORMAL: solo botones -->
+      <div id="perfil-view" style="display:flex;flex-direction:column;gap:.6rem;margin-top:.5rem">
+        <button class="btn-submit" style="background:var(--accent2)" onclick="enterEditMode()">Realizar cambios</button>
+        <button class="btn-submit" style="background:#e74c3c" onclick="doLogout()">Cerrar sesión</button>
+      </div>
+
+      <!-- VISTA EDICIÓN: layout horizontal igual al registro -->
+      <div id="perfil-edit" style="display:none;margin-top:.75rem">
         <div class="reg-layout">
-          <!-- Avatar preview grande -->
+          <!-- Columna izquierda: avatar preview grande -->
           <div class="reg-avatar-col">
-            <div id="edit-avatar-preview" style="font-size:3.5rem;width:88px;height:88px;border-radius:50%;display:flex;align-items:center;justify-content:center;background:var(--bg3);border:2px solid var(--border);transition:all .3s;">🦁</div>
+            <div id="edit-avatar-preview" style="font-size:3.5rem;width:88px;height:88px;border-radius:50%;display:flex;align-items:center;justify-content:center;background:var(--bg3);border:2px solid var(--border);transition:all .3s;flex-shrink:0;">🦁</div>
             <p style="font-size:.72rem;color:var(--muted);margin-top:.4rem;text-align:center;">Tu avatar</p>
           </div>
-          <!-- Campos -->
+          <!-- Columna centro: campos -->
           <div class="reg-fields-col">
             <div style="display:grid;grid-template-columns:1fr 1fr;gap:.6rem">
               <div class="form-group"><label>Nombre</label><input type="text" id="edit-nombre" inputmode="text"></div>
@@ -698,18 +701,18 @@ function injectModals() {
               </select>
             </div>
           </div>
-          <!-- Picker avatares -->
+          <!-- Columna derecha: picker de avatares -->
           <div class="reg-picker-col">
             <p style="font-size:.72rem;color:var(--muted);margin-bottom:.4rem;font-weight:600;text-transform:uppercase;letter-spacing:.05em;">Avatar</p>
             <div id="edit-avatar-picker" style="display:grid;grid-template-columns:repeat(3,1fr);gap:.3rem;"></div>
           </div>
         </div>
-        <p style="font-size:.82rem;min-height:1.2em;margin-top:.5rem" id="perfil-edit-err"></p>
-      </div>
-      <div style="display:flex;flex-direction:column;gap:.6rem;margin-top:.75rem">
-        <button id="btn-realizar-cambios" class="btn-submit" style="background:var(--accent2)" onclick="enterEditMode()">Realizar cambios</button>
-        <button id="btn-guardar-cambios"  class="btn-submit" style="display:none"              onclick="saveProfileChanges()">Guardar cambios</button>
-        <button class="btn-submit" style="background:#e74c3c" onclick="doLogout()">Cerrar sesión</button>
+        <!-- Error y botones debajo del layout -->
+        <p style="font-size:.82rem;min-height:1.2em;margin-top:.75rem;color:#c0392b" id="perfil-edit-err"></p>
+        <div style="display:flex;gap:.6rem;margin-top:.25rem">
+          <button class="btn-submit" style="background:var(--bg3);color:var(--text);flex:1;border:1.5px solid var(--border)" onclick="renderPerfilView()">Cancelar</button>
+          <button id="btn-guardar-cambios" class="btn-submit" style="flex:1" onclick="saveProfileChanges()">Guardar cambios</button>
+        </div>
       </div>
     </div>
   </div>
