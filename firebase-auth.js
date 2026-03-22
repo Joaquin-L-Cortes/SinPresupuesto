@@ -2,7 +2,7 @@ import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/fireba
 import {
   getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword,
   signOut, onAuthStateChanged, deleteUser, EmailAuthProvider,
-  reauthenticateWithCredential, updateEmail, sendPasswordResetEmail,
+  reauthenticateWithCredential, updateEmail, updatePassword, sendPasswordResetEmail,
   GoogleAuthProvider, OAuthProvider, signInWithPopup, RecaptchaVerifier, signInWithPhoneNumber
 } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
 import {
@@ -139,7 +139,6 @@ function isAdmin(user, profile) {
 function updateNav(user, profile) {
   const btnIn  = document.getElementById('btn-student-login');
   const btnAv  = document.getElementById('btn-avance');
-  const btnPer = document.getElementById('btn-perfil');
   const btnAdm = document.getElementById('btn-admin-footer');
 
   // Botón del footer admin
@@ -166,7 +165,6 @@ function updateNav(user, profile) {
       // Admin logueado — no mostrar botones de estudiante
       btnIn.style.display = 'none';
       if (btnAv)  btnAv.style.display = 'none';
-      if (btnPer) btnPer.style.display = 'none';
       // Activar editor
       window.activateEditor && window.activateEditor();
       toast('✓ Bienvenido, Joaquín. Modo edición activo.', 'success');
@@ -178,7 +176,6 @@ function updateNav(user, profile) {
       btnIn.style.cssText = `background:${av.bg};border:1.5px solid ${av.color};color:${av.color};font-family:'DM Sans',sans-serif;font-size:0.8rem;padding:0.4rem 0.85rem;border-radius:20px;cursor:pointer;display:flex;align-items:center;gap:0.35rem;white-space:nowrap;max-width:140px;overflow:hidden;`;
       btnIn.onclick = openPerfilModal;
       if (btnAv)  btnAv.style.display = 'flex';
-      if (btnPer) btnPer.style.display = 'flex';
     }
   } else {
     // No logueado
@@ -187,7 +184,6 @@ function updateNav(user, profile) {
     btnIn.removeAttribute('style');
     btnIn.onclick = openStudentModal;
     if (btnAv)  btnAv.style.display = 'none';
-    if (btnPer) btnPer.style.display = 'none';
     window.deactivateEditor && window.deactivateEditor();
   }
 }
@@ -195,7 +191,7 @@ function updateNav(user, profile) {
 // ─── MODAL ADMIN ──────────────────────────────────────────
 function openAdminModal() {
   document.getElementById('admin-modal')?.classList.add('open');
-  setTimeout(() => document.getElementById('admin-email')?.focus(), 100);
+  if (!('ontouchstart' in window)) setTimeout(() => document.getElementById('admin-email')?.focus(), 100);
 }
 function closeAdminModal() {
   document.getElementById('admin-modal')?.classList.remove('open');
@@ -252,7 +248,7 @@ function adminForgotPassword() {
 function openStudentModal() {
   document.getElementById('student-modal')?.classList.add('open');
   showStudentTab('login');
-  setTimeout(() => document.getElementById('st-email')?.focus(), 100);
+  if (!('ontouchstart' in window)) setTimeout(() => document.getElementById('st-email')?.focus(), 100);
 }
 function closeStudentModal() {
   document.getElementById('student-modal')?.classList.remove('open');
@@ -540,7 +536,7 @@ function openReauthModal(newEmail) {
   document.getElementById('reauth-modal').classList.add('open');
   document.getElementById('reauth-err').textContent = '';
   document.getElementById('reauth-pass').value = '';
-  setTimeout(() => document.getElementById('reauth-pass')?.focus(), 100);
+  if (!('ontouchstart' in window)) setTimeout(() => document.getElementById('reauth-pass')?.focus(), 100);
 }
 function closeReauthModal() {
   document.getElementById('reauth-modal').classList.remove('open');
@@ -579,7 +575,7 @@ function openDeleteModal() {
   document.getElementById('delete-modal').classList.add('open');
   if(document.getElementById('delete-pass')) document.getElementById('delete-pass').value = '';
   if(document.getElementById('delete-err'))  document.getElementById('delete-err').textContent = '';
-  setTimeout(() => document.getElementById('delete-pass')?.focus(), 100);
+  if (!('ontouchstart' in window)) setTimeout(() => document.getElementById('delete-pass')?.focus(), 100);
 }
 function closeDeleteModal() { document.getElementById('delete-modal').classList.remove('open'); }
 async function doDeleteAccount() {
@@ -739,6 +735,7 @@ function injectModals() {
       <!-- VISTA NORMAL: botones -->
       <div id="perfil-view" style="display:flex;flex-direction:column;gap:.6rem;margin-top:.5rem">
         <button id="btn-realizar-cambios" class="btn-submit" style="background:var(--accent2)" onclick="enterEditMode()">Realizar cambios</button>
+        <button class="btn-submit" style="background:var(--bg3);color:var(--text);border:1.5px solid var(--border)" onclick="openChangePasswordModal()">🔑 Cambiar contraseña</button>
         <button class="btn-submit" style="background:#e74c3c" onclick="doLogout()">Cerrar sesión</button>
       </div>
 
@@ -807,6 +804,24 @@ function injectModals() {
       <p style="font-size:.82rem;min-height:1.2em" id="delete-err"></p>
       <button id="btn-confirm-delete" class="btn-submit" style="background:#c0392b" onclick="doDeleteAccount()">Sí, eliminar mi cuenta</button>
       <p style="text-align:center;margin-top:.75rem"><button onclick="forgotPasswordDelete()" style="background:none;border:none;color:var(--muted);font-size:.8rem;cursor:pointer;text-decoration:underline;">¿Olvidaste tu contraseña?</button></p>
+    </div>
+  </div>
+
+  <!-- MODAL CAMBIAR CONTRASEÑA -->
+  <div class="modal-overlay" id="change-pass-modal">
+    <div class="modal" style="max-width:360px">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:1.25rem">
+        <h2 style="font-family:'Fraunces',serif;color:var(--accent)">Cambiar contraseña</h2>
+        <button onclick="closeChangePasswordModal()" style="background:none;border:none;color:var(--muted);font-size:1.2rem;cursor:pointer;">✕</button>
+      </div>
+      <div class="form-group"><label>Contraseña actual</label><input type="password" id="cp-current" placeholder="••••••••"></div>
+      <div class="form-group"><label>Nueva contraseña</label><input type="password" id="cp-new1" placeholder="••••••••"></div>
+      <div class="form-group"><label>Repite la nueva contraseña</label><input type="password" id="cp-new2" placeholder="••••••••"></div>
+      <p style="color:#c0392b;font-size:.82rem;min-height:1.2em" id="cp-err"></p>
+      <button class="btn-submit" onclick="doChangePassword()">Confirmar cambio</button>
+      <p style="text-align:center;margin-top:.75rem">
+        <button onclick="doForgotPasswordFromProfile()" style="background:none;border:none;color:var(--muted);font-size:.8rem;cursor:pointer;text-decoration:underline;">¿Olvidaste tu contraseña?</button>
+      </p>
     </div>
   </div>`;
 
@@ -880,31 +895,70 @@ function injectModals() {
   document.getElementById('phone-otp')?.addEventListener('keydown',   e => { if(e.key==='Enter') verifyPhoneOTP(); });
 
   // Cerrar modales con mousedown en overlay
-  ['student-modal','avance-modal','perfil-modal','delete-modal','reauth-modal'].forEach(id => {
+  ['student-modal','avance-modal','perfil-modal','delete-modal','reauth-modal','change-pass-modal'].forEach(id => {
     document.getElementById(id)?.addEventListener('mousedown', e => {
       if (e.target.id === id) {
-        if (id==='student-modal') closeStudentModal();
-        if (id==='avance-modal')  closeAvanceModal();
-        if (id==='perfil-modal')  closePerfilModal();
-        if (id==='delete-modal')  closeDeleteModal();
-        if (id==='reauth-modal')   closeReauthModal();
+        if (id==='student-modal')     closeStudentModal();
+        if (id==='avance-modal')      closeAvanceModal();
+        if (id==='perfil-modal')      closePerfilModal();
+        if (id==='delete-modal')      closeDeleteModal();
+        if (id==='reauth-modal')      closeReauthModal();
+        if (id==='change-pass-modal') closeChangePasswordModal();
       }
     });
   });
 }
 
-function injectStyles() {
-  // Los estilos de botones nav y clases de auth están en style.css.
-  // Solo inyectamos aquí overrides de modal para móvil que dependen
-  // de las clases dinámicas generadas por injectModals().
-  const s = document.createElement('style');
-  s.textContent = `
-    @media(max-width:600px){
-      .modal{padding:1.25rem;border-radius:14px 14px 0 0;position:fixed;bottom:0;left:0;right:0;max-width:100%!important;max-height:92vh;overflow-y:auto}
-      .modal-overlay{align-items:flex-end}
+// ─── MODAL CAMBIAR CONTRASEÑA ─────────────────────────────
+function openChangePasswordModal() {
+  document.getElementById('perfil-modal')?.classList.remove('open');
+  ['cp-current','cp-new1','cp-new2'].forEach(id => { const el = document.getElementById(id); if(el) el.value = ''; });
+  const err = document.getElementById('cp-err'); if(err) err.textContent = '';
+  document.getElementById('change-pass-modal')?.classList.add('open');
+  if (!('ontouchstart' in window)) setTimeout(() => document.getElementById('cp-current')?.focus(), 100);
+}
+function closeChangePasswordModal() {
+  document.getElementById('change-pass-modal')?.classList.remove('open');
+}
+async function doChangePassword() {
+  const current = document.getElementById('cp-current').value;
+  const new1    = document.getElementById('cp-new1').value;
+  const new2    = document.getElementById('cp-new2').value;
+  const err     = document.getElementById('cp-err');
+  err.textContent = '';
+  if (!current || !new1 || !new2) { err.textContent = 'Completa todos los campos.'; return; }
+  if (new1.length < 6) { err.textContent = 'La nueva contraseña debe tener al menos 6 caracteres.'; return; }
+  if (new1 !== new2)   { err.textContent = 'Las contraseñas nuevas no coinciden.'; return; }
+  try {
+    const credential = EmailAuthProvider.credential(currentUser.email, current);
+    await reauthenticateWithCredential(currentUser, credential);
+    await updatePassword(currentUser, new1);
+    closeChangePasswordModal();
+    toast('✓ Contraseña actualizada correctamente.', 'success');
+  } catch(e) {
+    if (e.code === 'auth/wrong-password' || e.code === 'auth/invalid-credential') {
+      err.textContent = 'La contraseña actual es incorrecta.';
+    } else {
+      err.textContent = 'Error: ' + (e.message || e.code);
     }
-  `;
-  document.head.appendChild(s);
+  }
+}
+async function doForgotPasswordFromProfile() {
+  const email = currentUser?.email;
+  if (!email) return;
+  try {
+    await sendPasswordResetEmail(auth, email);
+    const err = document.getElementById('cp-err');
+    if(err) { err.style.color = '#1a7a4a'; err.textContent = `✓ Correo de recuperación enviado a ${email}.`; }
+  } catch(e) {
+    const err = document.getElementById('cp-err');
+    if(err) { err.style.color = '#c0392b'; err.textContent = 'No se pudo enviar el correo.'; }
+  }
+}
+
+function injectStyles() {
+  // Estilos de auth en style.css. injectStyles ya no necesita inyectar nada.
+  // Se mantiene la función por compatibilidad.
 }
 
 // ─── INIT ─────────────────────────────────────────────────
@@ -936,7 +990,6 @@ domReady(() => {
     }
   });
   document.getElementById('btn-avance')?.addEventListener('click', openAvanceModal);
-  document.getElementById('btn-perfil')?.addEventListener('click', openPerfilModal);
   document.getElementById('btn-admin-footer')?.addEventListener('click', () => {
     if (currentUser && isAdmin(currentUser, userProfile)) {
       confirmAdminLogout();
@@ -1006,3 +1059,7 @@ window.forgotPasswordDelete  = forgotPasswordDelete;
 window.openReauthModal       = openReauthModal;
 window.closeReauthModal      = closeReauthModal;
 window.doReauth              = doReauth;
+window.openChangePasswordModal  = openChangePasswordModal;
+window.closeChangePasswordModal = closeChangePasswordModal;
+window.doChangePassword         = doChangePassword;
+window.doForgotPasswordFromProfile = doForgotPasswordFromProfile;
