@@ -180,13 +180,24 @@ footer a:hover { text-decoration: underline; }
 @media (max-width: 768px) {
   .layout { grid-template-columns: 1fr; padding: 1.5rem 1rem 4rem; }
   .sidebar { display: none; }
-  nav { padding: 0 1rem; }
-  .nav-logo { font-size: 1rem; padding-right: 1rem; }
+  nav { padding: 0 0.75rem; flex-wrap: nowrap; }
+  .nav-logo { font-size: 0.95rem; padding: 0.75rem 0.75rem 0.75rem 0; margin-right: 0.5rem; }
+  .nav-logo img { width: 28px; height: 28px; }
+  .nav-links { display: none; }
+  .nav-right { gap: 0.3rem; }
   .sections-wrap { padding: 0 1rem 3rem; }
   .sections-grid { grid-template-columns: 1fr 1fr; gap: 0.75rem; }
+  .section-card { padding: 1rem 0.75rem; }
+  .section-card img { width: 44px; height: 44px; }
   .page-header { flex-direction: column; gap: 0.75rem; }
   .page-header-logo { width: 60px; height: 60px; }
+  h1 { font-size: 1.5rem; }
+  .hero h1 { font-size: clamp(1.8rem, 7vw, 3rem); }
+  .hero-desc { font-size: 0.95rem; }
 }
 @media (max-width: 480px) {
   .sections-grid { grid-template-columns: 1fr; }
+  .hero { padding: 2rem 1rem 1.5rem; }
+  nav { padding: 0 0.5rem; }
+  footer { padding: 1.5rem 1rem; font-size: 0.78rem; }
 }
