@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>XVI. App's Estudio (Android) · Sin-Presupuesto UN</title>
+  <meta name="description" content="PreUniversitario gratuito y popular - XVI. App's Estudio (Android)">
+  <style>
+  @import url('https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,600;1,9..144,300&family=DM+Sans:wght@400;500&display=swap');
+  
+  :root {
+    --bg: #0d0f14;
+    --bg2: #13161d;
+    --bg3: #1a1e28;
+    --border: #252a38;
+    --accent: #f5c842;
+    --accent2: #e8854a;
+    --text: #e8e6df;
+    --muted: #7a7d8a;
+    --card: #161a24;
+  }
+  
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 16px;
+    line-height: 1.75;
+    min-height: 100vh;
+  }
+
+  /* NAVBAR */
+  nav {
+    position: sticky; top: 0; z-index: 100;
+    background: rgba(13,15,20,0.92);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--border);
+    padding: 0 2rem;
+    display: flex; align-items: center; gap: 0;
+  }
+
+  .nav-logo {
+    font-family: 'Fraunces', serif;
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: var(--accent);
+    text-decoration: none;
+    padding: 1rem 1.5rem 1rem 0;
+    border-right: 1px solid var(--border);
+    margin-right: 1rem;
+    white-space: nowrap;
+  }
+
+  .nav-links {
+    display: flex; flex-wrap: wrap; gap: 0;
+    list-style: none; flex: 1;
+  }
+
+  .nav-links a {
+    display: block;
+    padding: 1rem 0.85rem;
+    color: var(--muted);
+    text-decoration: none;
+    font-size: 0.875rem;
+    font-weight: 500;
+    transition: color 0.2s;
+    white-space: nowrap;
+  }
+
+  .nav-links a:hover, .nav-links a.active {
+    color: var(--accent);
+  }
+
+  /* CONTENIDO */
+  main {
+    max-width: 860px;
+    margin: 0 auto;
+    padding: 3rem 2rem 5rem;
+  }
+
+  .page-header {
+    margin-bottom: 2.5rem;
+    padding-bottom: 1.5rem;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .page-label {
+    font-size: 0.75rem;
+    font-weight: 500;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--accent2);
+    margin-bottom: 0.75rem;
+  }
+
+  h1 {
+    font-family: 'Fraunces', serif;
+    font-weight: 600;
+    font-size: clamp(1.75rem, 4vw, 2.5rem);
+    line-height: 1.2;
+    color: var(--text);
+  }
+
+  .page-date {
+    color: var(--muted);
+    font-size: 0.8rem;
+    margin-top: 0.5rem;
+  }
+
+  /* CONTENIDO BLOGGER limpiado */
+  .entry-body {
+    color: var(--text);
+  }
+
+  .entry-body h2, .entry-body h3, .entry-body h4 {
+    font-family: 'Fraunces', serif;
+    font-weight: 600;
+    color: var(--text);
+    margin: 2rem 0 0.75rem;
+    line-height: 1.3;
+  }
+  .entry-body h2 { font-size: 1.5rem; }
+  .entry-body h3 { font-size: 1.2rem; }
+
+  .entry-body p {
+    margin-bottom: 1rem;
+  }
+
+  .entry-body a {
+    color: var(--accent);
+    text-decoration: underline;
+    text-decoration-color: rgba(245,200,66,0.3);
+    transition: text-decoration-color 0.2s;
+  }
+  .entry-body a:hover {
+    text-decoration-color: var(--accent);
+  }
+
+  .entry-body b, .entry-body strong {
+    color: var(--text);
+    font-weight: 500;
+  }
+
+  .entry-body img {
+    max-width: 100%;
+    border-radius: 8px;
+    margin: 1rem 0;
+  }
+
+  .entry-body table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 1.5rem 0;
+    font-size: 0.9rem;
+  }
+
+  .entry-body th, .entry-body td {
+    padding: 0.6rem 0.9rem;
+    border: 1px solid var(--border);
+    text-align: left;
+  }
+
+  .entry-body th {
+    background: var(--bg3);
+    color: var(--accent);
+    font-weight: 500;
+  }
+
+  .entry-body tr:hover td {
+    background: var(--bg3);
+  }
+
+  /* SIDEBAR */
+  .layout {
+    display: grid;
+    grid-template-columns: 1fr 240px;
+    gap: 3rem;
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 3rem 2rem 5rem;
+    align-items: start;
+  }
+
+  .sidebar {
+    position: sticky;
+    top: 80px;
+  }
+
+  .sidebar-title {
+    font-size: 0.7rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 0.75rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .sidebar-links {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+  }
+
+  .sidebar-links a {
+    display: block;
+    padding: 0.4rem 0.5rem;
+    border-radius: 5px;
+    color: var(--muted);
+    text-decoration: none;
+    font-size: 0.82rem;
+    line-height: 1.4;
+    transition: background 0.15s, color 0.15s;
+  }
+
+  .sidebar-links a:hover {
+    background: var(--bg3);
+    color: var(--text);
+  }
+
+  .sidebar-links a.current {
+    background: rgba(245,200,66,0.12);
+    color: var(--accent);
+  }
+
+  /* FOOTER */
+  footer {
+    border-top: 1px solid var(--border);
+    padding: 2rem;
+    text-align: center;
+    color: var(--muted);
+    font-size: 0.82rem;
+  }
+
+  footer a { color: var(--accent); text-decoration: none; }
+
+  @media (max-width: 768px) {
+    .layout { grid-template-columns: 1fr; }
+    .sidebar { display: none; }
+    nav { padding: 0 1rem; }
+    .nav-logo { font-size: 1rem; padding-right: 1rem; }
+    main, .layout { padding: 1.5rem 1rem 4rem; }
+  }
+</style>
+</head>
+<body>
+  
+    <nav>
+      <a class="nav-logo" href="index.html">Sin-Presupuesto UN</a>
+      <ul class="nav-links"><li><a href="index.html" class="">Inicio</a></li><li><a href="motivacion-guia.html" class="">Motivación</a></li><li><a href="clases-sin-pre.html" class="">Clases</a></li><li><a href="modulos-teoricos.html" class="">Material</a></li><li><a href="ejercicios-practicas.html" class="">Práctica</a></li><li><a href="temarios.html" class="">Recursos</a></li><li><a href="donativos.html" class="">Comunidad</a></li></ul>
+    </nav>
+  <div class="layout">
+    <main>
+      <div class="page-header">
+        <p class="page-label">Sección</p>
+        <h1>XVI. App's Estudio (Android)</h1>
+        <p class="page-date">2024-08-25</p>
+      </div>
+      <div class="entry-body">
+        <p><br /></p><p>En esta sección encontrará los <b>Apps' Estudio (Android) por</b><b> Sin-Presupuesto UN</b>, esperando que sean de ayuda para su examen de admisión a la Universidad Nacional de Colombia.</p><p><br /></p><p></p><h2>App's - Textual</h2><div>En esta sección encontrará la(s) app's de Android en Análisis Textual; para el examen de admisión para la Universidad Nacional de Colombia.</div><div><br /></div><div><a href="https://drive.google.com/file/d/1X3yQaFBN4MkOvmvX89ejZrH4EgJ-hqTT/view?usp=sharing" target="_blank"><b>App 1</b></a><br /></div><div><br /></div><div><br /></div><div><h1 class="fOvfyc B7SYid VnOHwf-Tvm9db">App's - Matemáticas</h1><div>En esta sección encontrará la(s) app's de Android en Matemáticas; para el examen de admisión para la Universidad Nacional de Colombia.</div><div><br /></div><div><b><a href="https://drive.google.com/file/d/1dygwkucdKeq1Hn6EC_FPsoiENqgCzwPW/view?usp=sharing" target="_blank">App 1</a>     <a href="https://drive.google.com/file/d/1AGSw5-bUXLHxnOIhwtwaE6xEXW9WTqjl/view?usp=sharing" target="_blank">App 2</a>     <a href="https://drive.google.com/file/d/1ou6JIVjsnCchZwaXP-Wa7z47y0rNvIPv/view?usp=sharing" target="_blank">App 3</a>     <a href="https://drive.google.com/file/d/1jzKZAJdsLNWWK8RzA2sLuLKN4cy3lXVh/view?usp=sharing" target="_blank">App 4</a>     <a href="https://drive.google.com/file/d/14f70co07i03pdL9nqFXQxhmj0d0pJ86G/view?usp=sharing" target="_blank">App 5</a>     <a href="https://drive.google.com/file/d/14JBZrOAxnh061tsy1SgMR4cJYbvtBtJE/view?usp=sharing" target="_blank">App 6</a><br /></b></div><div><b><a href="https://drive.google.com/file/d/1Hl2e4Q5UHxyvY1iFuQK36lKVFI0SI9Td/view?usp=sharing" target="_blank">App 7</a>    <a href="https://drive.google.com/file/d/1WucTjrLq65N2AZjvBHPZVRxG7QFbPM9Y/view?usp=sharing" target="_blank">App 8</a></b><br /></div><div><br /></div><div><br /></div><div><h2>App's - Ciencias (Física)</h2></div><div>En esta sección encontrará la(s) app's de Android en Física; para el examen de admisión para la Universidad Nacional de Colombia.</div><div><b><br /></b></div><div><b><a href="https://drive.google.com/file/d/1UDiG95MjGOq8wACyYKL3VK2XfIuBRaJl/view?usp=sharing" target="_blank">App 1</a>     <a href="https://drive.google.com/file/d/1CM3d-ZTaJk78Up5RiAfPkIyF7UIIa0dh/view?usp=sharing" target="_blank">App 2</a>      <a href="https://drive.google.com/file/d/1I04c0SGAMfC7LBUX78DH9Bpd-pZGNXk_/view?usp=sharing" target="_blank">App 3</a></b><br /></div><div><br /></div><div><br /></div><div><h1 class="fOvfyc B7SYid VnOHwf-Tvm9db">App's - Ciencias (Biología)</h1><div>En esta sección encontrará la(s) app's de Android en Biología; para el examen de admisión para la Universidad Nacional de Colombia.</div><div><br /></div><div><b><a href="https://drive.google.com/file/d/1wwXITnOd41vaYgJlmktFpBZg_X_w3J9k/view?usp=sharing" target="_blank">App 1</a>      <a href="https://drive.google.com/file/d/1zXYiQ64aivpV5QaIcSvcLe_wx8ha7E-n/view?usp=sharing" target="_blank">App 2</a>     <a href="https://drive.google.com/file/d/1U7gn8N-CKVdmduDWj4_eEz6zGtl1DLlc/view?usp=sharing" target="_blank">App 3</a></b><br /></div><div><br /></div><div><br /></div><div><h2>App's - Ciencias (Química)</h2><div>En esta sección encontrará la(s) app's de Android en Química; para el examen de admisión para la Universidad Nacional de Colombia.</div><div><br /></div><div><b><a href="https://drive.google.com/file/d/1Trjg6iFnB5fciMCc5iAPH6hhuR1YU7M_/view?usp=sharing" target="_blank">App 1</a>     <a href="https://drive.google.com/file/d/1b84mVmwD8Y4IL-eB_xcJ_WPCZ-XLTDVg/view?usp=sharing" target="_blank">App 2</a>     <a href="https://drive.google.com/file/d/1Au7uUC5RcBvZiB5rpS6GROoHSsOioDsI/view?usp=sharing" target="_blank">App 3</a>     <a href="https://drive.google.com/file/d/1tR2UQ99vARUM9WSsXJl-0g5SOz7c6omK/view?usp=sharing" target="_blank">App 4</a></b><br /></div><div><br /></div><div><br /></div><div><h1 class="fOvfyc B7SYid VnOHwf-Tvm9db">App's - Sociales</h1><div>En esta sección encontrará la(s) app's de Android en Sociales; para el examen de admisión para la Universidad Nacional de Colombia.</div><div><br /></div><div><b><a href="https://drive.google.com/file/d/1Di0_12MDvVBIhmwCCuqJpmgAYbGoQIzA/view?usp=sharing" target="_blank">App 1</a>     <a href="https://drive.google.com/file/d/1q0RDHsu7m5LxpJAYitrqFwdCnvUc_iZ0/view?usp=sharing" target="_blank">App 2</a>     <a href="https://drive.google.com/file/d/1eRHo4Mya7eEJR7oUrOI4zlqwhAeJpBFz/view?usp=sharing" target="_blank">App 3</a>     <a href="https://drive.google.com/file/d/1l_DNlIpHo2qgazIzoxZW5kZhu9NUQen3/view?usp=sharing" target="_blank">App 4</a>     <a href="https://drive.google.com/file/d/18N92Lb_ht4vHEf_pN--_PBUhKRs_AfpB/view?usp=sharing" target="_blank">App 5</a></b><br /></div><div><br /></div><div><br /></div><div><h2>App's - Imagen</h2><div>En esta sección encontrará la(s) app's de Android en Análisis de Imagen; para el examen de admisión para la Universidad Nacional de Colombia.</div><div><br /></div><div><b><a href="http://www.educacionplastica.net/MenuDie.htm" target="_blank">Link 1</a>     <a href="https://drive.google.com/file/d/1SIRnTua1MEw2HCJwz1Jg9ZPbOTR2KkYj/view?usp=sharing" target="_blank">App 1</a>     <a href="https://drive.google.com/file/d/1S5vA0iMBWUjm6IeptG8I099CBaHB5e0k/view?usp=sharing" target="_blank">App 2</a></b><br /></div></div></div></div></div></div>
+      </div>
+    </main>
+    
+    <aside class="sidebar">
+      <p class="sidebar-title">Todas las secciones</p>
+      <ul class="sidebar-links"><li><a href="motivacion-guia.html" class="">I. Motivación/Guía</a></li><li><a href="clases-sin-pre.html" class="">II. Clases Sin-Pre</a></li><li><a href="temarios.html" class="">III. Temarios</a></li><li><a href="admision-y-examenes-un.html" class="">IV. Admisión y Exámenes UN</a></li><li><a href="clases-preu-s-i.html" class="">V. Clases PreU's I</a></li><li><a href="clases-preu-s-ii-libres.html" class="">VI. Clases PreU's II (Libres)</a></li><li><a href="recursos-udea.html" class="">VII. Recursos UdeA</a></li><li><a href="diapositivas-con-todo.html" class="">VIII. Diapositivas con TODO</a></li><li><a href="apuntes-estudio-un.html" class="">IX. Apuntes Estudio UN</a></li><li><a href="textos-varios-practica-textual.html" class="">X. Textos Varios (Práctica Textual)</a></li><li><a href="modulos-teoricos.html" class="">XI. Módulos Teóricos</a></li><li><a href="modulos-especiales.html" class="">XII. Módulos Especiales</a></li><li><a href="ejercicios-practicas.html" class="">XIII. Ejercicios Prácticas</a></li><li><a href="simulacros-un.html" class="">XIV. Simulacros UN</a></li><li><a href="simulacros-calificados-un.html" class="">XV. Simulacros Calificados UN</a></li><li><a href="app-s-estudio-android.html" class="current">XVI. App's Estudio (Android)</a></li><li><a href="clases-en-vivo-grabadas-sin-presupuesto-un.html" class="">Clases en vivo/grabadas - Sin-Presupuesto UN</a></li><li><a href="donativos.html" class="">Donativos</a></li><li><a href="formulario-economico-1.html" class="">Formulario Económico 1</a></li><li><a href="medios-de-sin-presupuesto-un.html" class="">Medios de Sin-Presupuesto UN</a></li><li><a href="tomos.html" class="">Tomos</a></li></ul>
+    </aside>
+  </div>
+  
+    <footer>
+      <p>Sin-Presupuesto UN · PreUniversitario gratuito y popular ❤️</p>
+      <p style="margin-top:0.4rem"><a href="donativos.html">Apoya el proyecto</a> · <a href="medios-de-sin-presupuesto-un.html">Redes sociales</a></p>
+    </footer>
+</body>
+</html>

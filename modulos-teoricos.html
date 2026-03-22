@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>XI. Módulos Teóricos · Sin-Presupuesto UN</title>
+  <meta name="description" content="PreUniversitario gratuito y popular - XI. Módulos Teóricos">
+  <style>
+  @import url('https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,600;1,9..144,300&family=DM+Sans:wght@400;500&display=swap');
+  
+  :root {
+    --bg: #0d0f14;
+    --bg2: #13161d;
+    --bg3: #1a1e28;
+    --border: #252a38;
+    --accent: #f5c842;
+    --accent2: #e8854a;
+    --text: #e8e6df;
+    --muted: #7a7d8a;
+    --card: #161a24;
+  }
+  
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 16px;
+    line-height: 1.75;
+    min-height: 100vh;
+  }
+
+  /* NAVBAR */
+  nav {
+    position: sticky; top: 0; z-index: 100;
+    background: rgba(13,15,20,0.92);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--border);
+    padding: 0 2rem;
+    display: flex; align-items: center; gap: 0;
+  }
+
+  .nav-logo {
+    font-family: 'Fraunces', serif;
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: var(--accent);
+    text-decoration: none;
+    padding: 1rem 1.5rem 1rem 0;
+    border-right: 1px solid var(--border);
+    margin-right: 1rem;
+    white-space: nowrap;
+  }
+
+  .nav-links {
+    display: flex; flex-wrap: wrap; gap: 0;
+    list-style: none; flex: 1;
+  }
+
+  .nav-links a {
+    display: block;
+    padding: 1rem 0.85rem;
+    color: var(--muted);
+    text-decoration: none;
+    font-size: 0.875rem;
+    font-weight: 500;
+    transition: color 0.2s;
+    white-space: nowrap;
+  }
+
+  .nav-links a:hover, .nav-links a.active {
+    color: var(--accent);
+  }
+
+  /* CONTENIDO */
+  main {
+    max-width: 860px;
+    margin: 0 auto;
+    padding: 3rem 2rem 5rem;
+  }
+
+  .page-header {
+    margin-bottom: 2.5rem;
+    padding-bottom: 1.5rem;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .page-label {
+    font-size: 0.75rem;
+    font-weight: 500;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--accent2);
+    margin-bottom: 0.75rem;
+  }
+
+  h1 {
+    font-family: 'Fraunces', serif;
+    font-weight: 600;
+    font-size: clamp(1.75rem, 4vw, 2.5rem);
+    line-height: 1.2;
+    color: var(--text);
+  }
+
+  .page-date {
+    color: var(--muted);
+    font-size: 0.8rem;
+    margin-top: 0.5rem;
+  }
+
+  /* CONTENIDO BLOGGER limpiado */
+  .entry-body {
+    color: var(--text);
+  }
+
+  .entry-body h2, .entry-body h3, .entry-body h4 {
+    font-family: 'Fraunces', serif;
+    font-weight: 600;
+    color: var(--text);
+    margin: 2rem 0 0.75rem;
+    line-height: 1.3;
+  }
+  .entry-body h2 { font-size: 1.5rem; }
+  .entry-body h3 { font-size: 1.2rem; }
+
+  .entry-body p {
+    margin-bottom: 1rem;
+  }
+
+  .entry-body a {
+    color: var(--accent);
+    text-decoration: underline;
+    text-decoration-color: rgba(245,200,66,0.3);
+    transition: text-decoration-color 0.2s;
+  }
+  .entry-body a:hover {
+    text-decoration-color: var(--accent);
+  }
+
+  .entry-body b, .entry-body strong {
+    color: var(--text);
+    font-weight: 500;
+  }
+
+  .entry-body img {
+    max-width: 100%;
+    border-radius: 8px;
+    margin: 1rem 0;
+  }
+
+  .entry-body table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 1.5rem 0;
+    font-size: 0.9rem;
+  }
+
+  .entry-body th, .entry-body td {
+    padding: 0.6rem 0.9rem;
+    border: 1px solid var(--border);
+    text-align: left;
+  }
+
+  .entry-body th {
+    background: var(--bg3);
+    color: var(--accent);
+    font-weight: 500;
+  }
+
+  .entry-body tr:hover td {
+    background: var(--bg3);
+  }
+
+  /* SIDEBAR */
+  .layout {
+    display: grid;
+    grid-template-columns: 1fr 240px;
+    gap: 3rem;
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 3rem 2rem 5rem;
+    align-items: start;
+  }
+
+  .sidebar {
+    position: sticky;
+    top: 80px;
+  }
+
+  .sidebar-title {
+    font-size: 0.7rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 0.75rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .sidebar-links {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+  }
+
+  .sidebar-links a {
+    display: block;
+    padding: 0.4rem 0.5rem;
+    border-radius: 5px;
+    color: var(--muted);
+    text-decoration: none;
+    font-size: 0.82rem;
+    line-height: 1.4;
+    transition: background 0.15s, color 0.15s;
+  }
+
+  .sidebar-links a:hover {
+    background: var(--bg3);
+    color: var(--text);
+  }
+
+  .sidebar-links a.current {
+    background: rgba(245,200,66,0.12);
+    color: var(--accent);
+  }
+
+  /* FOOTER */
+  footer {
+    border-top: 1px solid var(--border);
+    padding: 2rem;
+    text-align: center;
+    color: var(--muted);
+    font-size: 0.82rem;
+  }
+
+  footer a { color: var(--accent); text-decoration: none; }
+
+  @media (max-width: 768px) {
+    .layout { grid-template-columns: 1fr; }
+    .sidebar { display: none; }
+    nav { padding: 0 1rem; }
+    .nav-logo { font-size: 1rem; padding-right: 1rem; }
+    main, .layout { padding: 1.5rem 1rem 4rem; }
+  }
+</style>
+</head>
+<body>
+  
+    <nav>
+      <a class="nav-logo" href="index.html">Sin-Presupuesto UN</a>
+      <ul class="nav-links"><li><a href="index.html" class="">Inicio</a></li><li><a href="motivacion-guia.html" class="">Motivación</a></li><li><a href="clases-sin-pre.html" class="">Clases</a></li><li><a href="modulos-teoricos.html" class="active">Material</a></li><li><a href="ejercicios-practicas.html" class="">Práctica</a></li><li><a href="temarios.html" class="">Recursos</a></li><li><a href="donativos.html" class="">Comunidad</a></li></ul>
+    </nav>
+  <div class="layout">
+    <main>
+      <div class="page-header">
+        <p class="page-label">Sección</p>
+        <h1>XI. Módulos Teóricos</h1>
+        <p class="page-date">2024-08-29</p>
+      </div>
+      <div class="entry-body">
+        <p><br /></p>En esta sección encontrará los <b>Módulos Teóricos por</b><b> Sin-Presupuesto UN</b>, esperando que sean de ayuda para su examen de admisión a la Universidad Nacional de Colombia.<div><br /></div><div><br /></div><div><h2>I. Módulo - Análisis Textual</h2><div>En esta sección encontrará material de estudio relacionado al Análisis Textual; para el examen de admisión para la Universidad Nacional de Colombia.</div><div><br /></div></div><div><b><a href="https://drive.google.com/file/d/1YnrGy1npnh9QFZr3t_HzaGSZ8fXKSnWA/view?usp=classroom_web&amp;authuser=0" target="_blank">Archivo 1</a>     <a href="https://drive.google.com/file/d/1iK2Vpz7pGXckSAMS4FMpA3YsYYmqAoo_/view?usp=classroom_web&amp;authuser=0" target="_blank">Archivo 2</a>     <a href="https://drive.google.com/file/d/1kaeIg7MtCWbl9sAYweQb3YdtMugOlmwK/view?usp=classroom_web&amp;authuser=0" target="_blank">Archivo 3</a>     <a href="https://drive.google.com/file/d/1zyk90_Og4ExJJHRiJUVNPw09TtQDMbDV/view?usp=classroom_web&amp;authuser=0" target="_blank">Archivo 4</a>     <a href="https://drive.google.com/file/d/1I03r9-VZtZhVIVHPwcN0DVu4W7s4UK_3/view?usp=classroom_web&amp;authuser=0" target="_blank">Archivo 5</a></b><br /></div><div><br /></div><div><br /></div><div><h1 class="fOvfyc B7SYid VnOHwf-Tvm9db">II. Módulo - Matemáticas</h1></div><div>En esta sección encontrará material de estudio relacionado a Matemática; para el examen de admisión para la Universidad Nacional de Colombia.</div><div><br /></div><div><b><a href="https://drive.google.com/file/d/1d9X8cR_Ssi7702NFRe1fLxAQkNzZoMcg/view?usp=classroom_web&amp;authuser=0" target="_blank">Archivo 1</a>     <a href="https://drive.google.com/file/d/1ICb2gZYA4Vc2issfoMSYtMFnXToP-kxR/view?usp=classroom_web&amp;authuser=0" target="_blank">Archivo 2</a>     <a href="https://drive.google.com/file/d/15oC7ouXCQX4ljDprzz7hTdtGHKnkLZQ_/view?usp=classroom_web&amp;authuser=0" target="_blank">Archivo 3</a>     <a href="https://drive.google.com/file/d/1j38qlI7HTH7_9TJSzD0rd59R2FfOhgR8/view?usp=classroom_web&amp;authuser=0" target="_blank">Archivo 4</a>     <a href="https://drive.google.com/file/d/1z-QjGPyL4r3lClGZ1gM9gdCul5Drn84k/view?usp=classroom_web&amp;authuser=0" target="_blank">Archivo 5</a>     <a href="https://drive.google.com/file/d/1PwNuRLRWuUeAf2K7C39inf8Knq0UQPwl/view?usp=classroom_web&amp;authuser=0" target="_blank">Archivo 6</a><br /></b></div><div><b><a href="https://drive.google.com/file/d/1tchWsq2wrvgIWUVTHvG2sVjIW1Z09sTT/view?usp=classroom_web&amp;authuser=0" target="_blank">Archivo 7</a>     <a href="https://drive.google.com/file/d/1rbrY3Zd7PMrD25LNs5SPcQTTDB7W_otC/view?usp=classroom_web&amp;authuser=0" target="_blank">Archivo 8</a>     <a href="https://drive.google.com/file/d/1gTzuql1rzngslUi3uFtZmgBFNYwaDOdO/view?usp=classroom_web&amp;authuser=0" target="_blank">Archivo 9</a>     <a href="https://drive.google.com/file/d/1ajwzsWTqDP05pHqj0dAHlI3vt2JNp14L/view?usp=classroom_web&amp;authuser=0" target="_blank">Archivo 10</a>     <a href="https://drive.google.com/file/d/1883yBQKbX4NsHj0P_Cnoyg-j8WXctX2R/view?usp=classroom_web&amp;authuser=0" target="_blank">Archivo 11</a>     <a href="https://drive.google.com/file/d/1xQ9dcA2yfoWen5FCda2Bhza2ooiHqp9C/view?usp=classroom_web&amp;authuser=0" target="_blank">Archivo 12</a><br /></b></div><div><b><a href="https://drive.google.com/file/d/1oPFpUu7Qnp97C4zyLRlfkYFC_VQpfUxo/view?usp=classroom_web&amp;authuser=0" target="_blank">Archivo 13</a>     <a href="https://drive.google.com/file/d/1RqBjAcJN3b_kEycx0xKfmDPkJSHKPecv/view?usp=classroom_web&amp;authuser=0" target="_blank">Archivo 14</a></b><br /></div><div><br /></div><div><br /></div><div><h2>III. Módulo - Ciencias (Física)</h2></div><div>En esta sección encontrará material de estudio relacionado a Física; para el examen de admisión para la Universidad Nacional de Colombia.</div><div><b><br /></b></div><div><b><a href="https://drive.google.com/file/d/1xlZK0P2nS4fRLaeAEPtmk4chG_4AU-Ir/view?usp=classroom_web&amp;authuser=0" target="_blank">Archivo 1</a>     <a href="https://drive.google.com/file/d/1PzkcvbYRwP0lnaatdeG5DCUwsLJ0Hlob/view?usp=classroom_web&amp;authuser=0" target="_blank">Archivo 2</a>     <a href="https://drive.google.com/file/d/1hHkv10dJg1GAZTt8hXzjpdPKuqF-GG7s/view?usp=classroom_web&amp;authuser=0" target="_blank">Archivo 3</a>     <a href="https://drive.google.com/file/d/1lH-CE-B4wD0Adm3u2-yn91F50C6ejHB2/view?usp=classroom_web&amp;authuser=0" target="_blank">Archivo 4</a>     <a href="https://drive.google.com/file/d/1zfuRtttJKhucUEcuqNnY4YcnRaZ3HiCV/view?usp=classroom_web&amp;authuser=0" target="_blank">Archivo 5</a>     <a href="https://drive.google.com/file/d/1OxlTynbNHbw6f4-PvYX_p4KfUL7-uph-/view?usp=classroom_web&amp;authuser=0" target="_blank">Archivo 6</a></b><br /></div><div><br /></div><div><br /></div><div><h2>IV. Módulo - Ciencias (Biología)</h2></div><div>En esta sección encontrará material de estudio relacionado a Biología; para el examen de admisión para la Universidad Nacional de Colombia.</div><div><br /></div><div><b><a href="https://drive.google.com/file/d/1MWWPobf4Of_Cr3MpaCXu2FH7BYSFOPcz/view?usp=classroom_web&amp;authuser=0" target="_blank">Archivo 1</a>     <a href="https://drive.google.com/file/d/1psU_UL8NdhsoFA-iBgJEfUy-MAzvjz0_/view?usp=classroom_web&amp;authuser=0" target="_blank">Archivo 2</a>     <a href="https://drive.google.com/file/d/1_Q8_4Af1xgDuUouUinKDuSA7SmuqM_PF/view?usp=classroom_web&amp;authuser=0" target="_blank">Archivo 3</a>     <a href="https://drive.google.com/file/d/1HZOvdTgzU8ddLYuBEo7NrPM3eF-GJgYu/view?usp=classroom_web&amp;authuser=0" target="_blank">Archivo 4</a>     <a href="https://drive.google.com/file/d/1RqEiMD0pDfPOfm-hccesmePCr7Lj2-8A/view?usp=classroom_web&amp;authuser=0" target="_blank">Archivo 5</a></b><br /></div><div><br /></div><div><br /></div><div><h1 class="fOvfyc B7SYid VnOHwf-Tvm9db">V. Módulo - Ciencias (Química)</h1></div><div>En esta sección encontrará material de estudio relacionado a Química; para el examen de admisión para la Universidad Nacional de Colombia.</div><div><br /></div><div><b><a href="https://drive.google.com/file/d/1XIAiCwuaXhlu4JCIndhnKnQatkUKNawN/view?usp=classroom_web&amp;authuser=0" target="_blank">Archivo 1</a>     <a href="https://drive.google.com/file/d/1CDTW-WBdPW5mx1qxsJtdBUyLYOIcoZJU/view?usp=classroom_web&amp;authuser=0" target="_blank">Archivo 2</a>     <a href="https://drive.google.com/file/d/1Py0xJ67aQEYJ-edaH7S_Ekp-lvf-LM3g/view?usp=classroom_web&amp;authuser=0" target="_blank">Archivo 3</a>     <a href="https://drive.google.com/file/d/1rgHYUspMijy09qLMztunzPRXvb3AIgax/view?usp=classroom_web&amp;authuser=0" target="_blank">Archivo 4</a>     <a href="https://drive.google.com/file/d/1USctFNWJ7zkmbz-JWwfqdhv2YesbIsfT/view?usp=classroom_web&amp;authuser=0" target="_blank">Archivo 5</a></b><br /></div><div><br /></div><div><br /></div><div><h2>VI. Módulo - Sociales</h2></div><div>En esta sección encontrará material de estudio relacionado a Sociales; para el examen de admisión para la Universidad Nacional de Colombia.</div><div><br /></div><div><b><a href="https://drive.google.com/file/d/1v31-1459yVn-1pxr381sx1K6Cgo1PcfJ/view?usp=classroom_web&amp;authuser=0" target="_blank">Archivo 1</a>     <a href="https://drive.google.com/file/d/1EtqLIjmUP97DjnJjmuzi71G3QCiyebQt/view?usp=classroom_web&amp;authuser=0" target="_blank">Archivo 2</a>     <a href="https://drive.google.com/file/d/1ZT-QZ3Fpug80FtNeM9mJasPi5QoXLgh6/view?usp=classroom_web&amp;authuser=0" target="_blank">Archivo 3</a>     <a href="https://drive.google.com/file/d/1GE2A5beChhnNdXL_abXB--OMvTq-hiU7/view?usp=classroom_web&amp;authuser=0" target="_blank">Archivo 4</a>     <a href="https://drive.google.com/file/d/1QC92yQvHQKIJbHQWKtj8uJ8I969BvPTM/view?usp=classroom_web&amp;authuser=0" target="_blank">Archivo 5</a>     <a href="https://drive.google.com/file/d/11ZqndHyNQQtctK4JBCWa-S5aiYu8dPBM/view?usp=classroom_web&amp;authuser=0" target="_blank">Archivo 6</a><br /></b></div><div><b><a href="https://drive.google.com/file/d/1M5gqkT-kLRvb1UcwrLFp5qksy1OMZ55l/view?usp=classroom_web&amp;authuser=0" target="_blank">Archivo 7</a>     <a href="https://drive.google.com/file/d/1hu8XP4hk-DoMhChI3vYxW1Ul5Aw-XEZx/view?usp=classroom_web&amp;authuser=0" target="_blank">Archivo 8</a>     <a href="https://drive.google.com/file/d/105mVQH16km3ABxOn1-XvRVd9VQHjpTAE/view?usp=classroom_web&amp;authuser=0" target="_blank">Archivo 9</a>     <a href="https://drive.google.com/file/d/1NUkmwFYlEfkzZ12lITRLr295x9iALYW8/view?usp=classroom_web&amp;authuser=0" target="_blank">Archivo 10</a>     <a href="https://drive.google.com/file/d/1Dg4ndguPvqhdUEL6NlZaiaZO_C_RTNqH/view?usp=classroom_web&amp;authuser=0" target="_blank">Archivo 11</a>     <a href="https://drive.google.com/file/d/1SZ41F4APiWMDxj1Nz7QVeYYdzVLSEcQN/view?usp=classroom_web&amp;authuser=0" target="_blank">Archivo 12</a><br /></b></div><div><a href="https://drive.google.com/file/d/1C4MWWj-vLDIZHMWD0Z-auw2wOsLEL5JW/view?usp=classroom_web&amp;authuser=0" target="_blank"><b>Archivo 13</b></a><br /></div><div><br /></div><div><br /></div><div><h1 class="fOvfyc B7SYid VnOHwf-Tvm9db">VII. Módulo - Análisis de Imagen</h1></div><div>En esta sección encontrará material de estudio relacionado al Análisis de Imagen; para el examen de admisión para la Universidad Nacional de Colombia.</div><div><br /></div><div><b><a href="https://drive.google.com/file/d/1Wj4tZpFUy3cZHRDpcReG8SkoMYV0TA5I/view?usp=classroom_web&amp;authuser=0" target="_blank">Archivo 1</a>     <a href="https://drive.google.com/file/d/1C776DTsVK4vHJ1liBPaBu3itUo0ICAdu/view?usp=classroom_web&amp;authuser=0" target="_blank">Archivo 2</a>     <a href="https://drive.google.com/file/d/1U8bqvlYkQ1Q3kP-JrV7Y5YN69C8628h1/view?usp=classroom_web&amp;authuser=0" target="_blank">Archivo 3</a>     <a href="https://drive.google.com/file/d/1gE_eJzy3g-HP2j5uKSJcp9o8hthYzKz2/view?usp=classroom_web&amp;authuser=0" target="_blank">Archivo 4</a>     <a href="https://drive.google.com/file/d/1tq6FJmcpbohxMHmzjunWS4R2UODwDI3j/view?usp=classroom_web&amp;authuser=0" target="_blank">Archivo 5</a>     <a href="https://drive.google.com/file/d/1bZpB5X86_fZQiw8Uz8YWIe31xy0Q1KvX/view?usp=classroom_web&amp;authuser=0" target="_blank">Archivo 6</a><br /></b></div><div><a href="https://drive.google.com/file/d/163MvMgxT31oDqyGG0StQRXuliMEuCwn1/view?usp=classroom_web&amp;authuser=0" target="_blank"><b>Archivo 7</b></a><br /></div><div><br /></div><div><br /></div><div><h2>VIII. Módulo - UdeA</h2></div><div>En esta sección encontrará material de estudio relacionado a la Universidad de Antioquía; para el examen de admisión para la Universidad Nacional de Colombia.</div><div><br /></div><div><a href="https://drive.google.com/file/d/1zqsWJsscGK6-pVb5ILL0oOgB-ZwNrvRU/view?usp=classroom_web&amp;authuser=0" target="_blank"><b>Archivo 1</b></a><br /></div>
+      </div>
+    </main>
+    
+    <aside class="sidebar">
+      <p class="sidebar-title">Todas las secciones</p>
+      <ul class="sidebar-links"><li><a href="motivacion-guia.html" class="">I. Motivación/Guía</a></li><li><a href="clases-sin-pre.html" class="">II. Clases Sin-Pre</a></li><li><a href="temarios.html" class="">III. Temarios</a></li><li><a href="admision-y-examenes-un.html" class="">IV. Admisión y Exámenes UN</a></li><li><a href="clases-preu-s-i.html" class="">V. Clases PreU's I</a></li><li><a href="clases-preu-s-ii-libres.html" class="">VI. Clases PreU's II (Libres)</a></li><li><a href="recursos-udea.html" class="">VII. Recursos UdeA</a></li><li><a href="diapositivas-con-todo.html" class="">VIII. Diapositivas con TODO</a></li><li><a href="apuntes-estudio-un.html" class="">IX. Apuntes Estudio UN</a></li><li><a href="textos-varios-practica-textual.html" class="">X. Textos Varios (Práctica Textual)</a></li><li><a href="modulos-teoricos.html" class="current">XI. Módulos Teóricos</a></li><li><a href="modulos-especiales.html" class="">XII. Módulos Especiales</a></li><li><a href="ejercicios-practicas.html" class="">XIII. Ejercicios Prácticas</a></li><li><a href="simulacros-un.html" class="">XIV. Simulacros UN</a></li><li><a href="simulacros-calificados-un.html" class="">XV. Simulacros Calificados UN</a></li><li><a href="app-s-estudio-android.html" class="">XVI. App's Estudio (Android)</a></li><li><a href="clases-en-vivo-grabadas-sin-presupuesto-un.html" class="">Clases en vivo/grabadas - Sin-Presupuesto UN</a></li><li><a href="donativos.html" class="">Donativos</a></li><li><a href="formulario-economico-1.html" class="">Formulario Económico 1</a></li><li><a href="medios-de-sin-presupuesto-un.html" class="">Medios de Sin-Presupuesto UN</a></li><li><a href="tomos.html" class="">Tomos</a></li></ul>
+    </aside>
+  </div>
+  
+    <footer>
+      <p>Sin-Presupuesto UN · PreUniversitario gratuito y popular ❤️</p>
+      <p style="margin-top:0.4rem"><a href="donativos.html">Apoya el proyecto</a> · <a href="medios-de-sin-presupuesto-un.html">Redes sociales</a></p>
+    </footer>
+</body>
+</html>
