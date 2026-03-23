@@ -160,7 +160,7 @@ function deactivateEditor() {
     el.style.outline = '';
   });
 
-  showToast('Editor desactivado');
+
 }
 
 // ─── HACER ELEMENTO EDITABLE ───────────────────────────────────────────────
