@@ -403,96 +403,137 @@
     input.focus();
   }
 
+  // ── Búsqueda local por relevancia (pre-filtra catálogo antes de enviar al AI) ──
+  function localSearch(query, maxResults) {
+    const normalize = s => s.toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '');
+    const words = normalize(query).split(/s+/).filter(w => w.length > 2);
+    if (words.length === 0) return [];
+    return CATALOG.map((f, i) => {
+      const name = normalize(f.n);
+      const sect = normalize(f.s);
+      let score = 0;
+      words.forEach(w => {
+        if (name.includes(w)) score += 3;
+        else if (sect.includes(w)) score += 1;
+        if (name.indexOf(w) <= 6) score += 1;
+      });
+      return { f, i, score };
+    })
+    .filter(x => x.score > 0)
+    .sort((a, b) => b.score - a.score)
+    .slice(0, maxResults || 20);
+  }
+
   async function askAI(query) {
-    // Usando Cloudflare Workers AI
+    // Pre-filtrar: enviar solo los archivos más relevantes al AI
+    // para NO desbordar el contexto del modelo (~8k tokens).
+    const candidates = localSearch(query, 20);
 
-    // Build catalog context (just names + sections, compact)
-    const catalogText = CATALOG.map((f,i) => `${i+1}. [${f.s}] ${f.n}`).join('\n');
+    const catalogText = candidates.length > 0
+      ? candidates.map(({ f, i }) => (i + 1) + '. [' + f.s + '] ' + f.n).join('
+')
+      : CATALOG.slice(0, 20).map((f, i) => (i + 1) + '. [' + f.s + '] ' + f.n).join('
+');
 
-    const systemPrompt = `Eres SinPesito, el asistente académico de SinPresupuesto — un preuniversitario colombiano gratuito para el examen de admisión a la Universidad Nacional y otras universidades públicas.
+    const systemPrompt = 'Eres SinPesito, asistente de SinPresupuesto, preuniversitario colombiano gratuito para la prueba de admision a universidades publicas (UNAL, UdeA, etc.).
 
-TIENES CUATRO CAPACIDADES — úsalas según lo que pida el estudiante:
+' +
+      'CAPACIDADES:
 
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-1. RESPONDER PREGUNTAS ACADÉMICAS
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-Si el estudiante pregunta sobre un tema (matemáticas, física, biología, química, sociales, lectura crítica, imagen, etc.):
-- Explica de forma clara, directa y precisa. Puedes usar ejemplos, fórmulas o pasos.
-- Responde como un buen tutor: sin rodeos, con profundidad suficiente.
-- Al final, si hay materiales del catálogo relacionados, agrégalos con ARCHIVOS:
+' +
+      '1. RESPONDER PREGUNTAS ACADEMICAS
+' +
+      'Si pregunta sobre un tema (matematicas, fisica, biologia, quimica, sociales, lectura critica, imagen, etc.):
+' +
+      '- Explica claro y preciso. Usa ejemplos, formulas o pasos.
+' +
+      '- Al final agrega materiales relacionados con ARCHIVOS: si los hay.
 
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-2. CITAR MATERIALES DEL CATÁLOGO
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-Si el estudiante pide material, recursos, archivos o documentos sobre un tema:
-- Identifica cuáles son los más relevantes según el nombre y la sección.
-- Responde con una línea breve y luego la línea ARCHIVOS obligatoriamente.
-- FORMATO OBLIGATORIO cuando hay archivos:
+' +
+      '2. RECOMENDAR MATERIAL
+' +
+      'Si pide archivos, recursos o documentos, escribe al final de tu respuesta exactamente:
+' +
+      'ARCHIVOS: 12,45,78
+' +
+      '(solo numeros separados por coma)
 
-[Texto explicativo breve]
+' +
+      'CATALOGO DISPONIBLE (' + (candidates.length > 0 ? candidates.length : 20) + ' archivos relevantes):
+' +
+      catalogText + '
 
-ARCHIVOS: 12,45,78,103
+' +
+      '3. SUGERIR CLASES DE YOUTUBE
+' +
+      'Si pide clases o videos, escribe al final:
+' +
+      'YOUTUBE: https://www.youtube.com/@sinpresupuestoun/search?query=TEMA
 
-CATÁLOGO (${CATALOG.length} archivos — formato "N. [Sección] Nombre"):
-${catalogText}
+' +
+      'REGLAS:
+' +
+      '- Responde en espanol colombiano, amigable y motivador.
+' +
+      '- USA SOLO los numeros del catalogo de arriba. Nunca inventes archivos.
+' +
+      '- NUNCA digas ICFES ni Saber 11.
+' +
+      '- Si no hay materiales relevantes, responde la pregunta de todas formas.
+' +
+      '- Respuestas concisas, maximo 3 parrafos.';
 
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-3. SUGERIR CLASES DE YOUTUBE
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-Si el estudiante pide clases, videos o quiere ver explicaciones en video:
-- Dirígelo al canal: https://youtube.com/@sinpresupuestoun
-- Sugiere buscar en el canal por el tema específico que necesita.
-- Formato de respuesta:
-  "Para clases en video sobre [tema], búscalo en el canal de YouTube de SinPresupuesto:"
-  YOUTUBE: https://www.youtube.com/@sinpresupuestoun/search?query=[tema-en-url]
-
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-4. REGLAS GENERALES
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-- NUNCA menciones el ICFES, Saber 11 ni pruebas ICFES. Si el contexto lo requiere, di simplemente "el examen" o "la prueba de admisión a la universidad".
-- Responde SIEMPRE en español colombiano, amigable y motivador.
-- Usa SOLO números del catálogo que existan. Nunca inventes archivos.
-- Si el estudiante pide más archivos o dice que no le mostraste, muéstralos con ARCHIVOS:
-- maxOutputTokens permite respuestas largas — úsalos bien para explicaciones académicas.`;
-
-    // Formato OpenAI-compatible que acepta Cloudflare Workers AI
     const messages = [
       { role: 'system', content: systemPrompt },
-      ...history.slice(-8).map(m => ({
+      ...history.slice(-4).map(m => ({
         role: m.role === 'model' ? 'assistant' : 'user',
         content: m.parts[0].text
       })),
       { role: 'user', content: query }
     ];
-    const body = { messages, max_tokens: 1200, temperature: 0.5 };
 
     const res = await fetch(CF_AI_URL, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(body)
+      body: JSON.stringify({ messages, max_tokens: 800, temperature: 0.4 })
     });
 
     if (!res.ok) {
       const errBody = await res.json().catch(() => ({}));
-      const msg = errBody?.error?.message || `HTTP ${res.status}`;
-      const code = errBody?.error?.code || res.status;
-      throw new Error(`[${code}] ${msg}`);
+      const msg = errBody?.error?.message || errBody?.error || ('HTTP ' + res.status);
+      throw new Error(String(msg));
     }
 
     const data = await res.json();
-    const raw = data.result?.response || data.choices?.[0]?.message?.content || 'No obtuve respuesta.';
 
-    // Parse ARCHIVOS: tag
-    const archivosMatch = raw.match(/ARCHIVOS:\s*([\d,\s]+)/i);
+    // El Worker devuelve { result: { response: '...' } }
+    // También soportamos formato OpenAI por compatibilidad
+    const raw = (
+      data?.result?.response ||
+      data?.choices?.[0]?.message?.content ||
+      data?.response ||
+      ''
+    ).trim();
+
+    if (!raw) throw new Error('El modelo devolvio una respuesta vacia. Intenta de nuevo.');
+
+    // Parsear ARCHIVOS:
+    const archivosMatch = raw.match(/ARCHIVOS:s*([d,s]+)/i);
     let matched = [];
-    // Parse YOUTUBE: tag
-    const youtubeMatch = raw.match(/YOUTUBE:\s*(https?:\/\/[^\s\n]+)/i);
-    let youtubeUrl = youtubeMatch ? youtubeMatch[1].trim() : null;
+
+    // Parsear YOUTUBE:
+    const youtubeMatch = raw.match(/YOUTUBE:s*(https?://[^s
+]+)/i);
+    const youtubeUrl = youtubeMatch ? youtubeMatch[1].trim() : null;
 
     let text = raw
-      .replace(/ARCHIVOS:[\s\d,]+/gi, '')
-      .replace(/YOUTUBE:\s*https?:\/\/[^\s\n]+/gi, '')
-      .replace(/\n{3,}/g, '\n\n')
+      .replace(/ARCHIVOS:[sd,]+/gi, '')
+      .replace(/YOUTUBE:s*https?://[^s
+]+/gi, '')
+      .replace(/
+{3,}/g, '
+
+')
       .trim();
 
     if (archivosMatch) {
@@ -503,26 +544,9 @@ Si el estudiante pide clases, videos o quiere ver explicaciones en video:
       matched = [...new Set(indices)].map(i => CATALOG[i]);
     }
 
-    // Fallback por relevancia si no hubo ARCHIVOS
-    if (matched.length === 0 && !youtubeUrl) {
-      const normalize = s => s.toLowerCase()
-        .normalize('NFD').replace(/[\u0300-\u036f]/g, '');
-      const words = normalize(query).split(/\s+/).filter(w => w.length > 3);
-      const scored = CATALOG.map(f => {
-        const name = normalize(f.n);
-        const sect = normalize(f.s);
-        let score = 0;
-        words.forEach(w => {
-          if (name.includes(w)) score += 2;
-          if (sect.includes(w)) score += 1;
-        });
-        return { f, score };
-      })
-      .filter(x => x.score > 0)
-      .sort((a, b) => b.score - a.score)
-      .slice(0, 5)
-      .map(x => x.f);
-      if (scored.length > 0) matched = scored;
+    // Fallback: si el AI no devolvio ARCHIVOS pero habia candidatos locales
+    if (matched.length === 0 && !youtubeUrl && candidates.length > 0) {
+      matched = candidates.slice(0, 5).map(x => x.f);
     }
 
     return { text, matched, youtubeUrl };
