@@ -60,22 +60,22 @@ const AVATARS = [
 ];
 
 // MATERIALES: pageKey = clave Firestore progress/{pageKey}, total = archivos en esa sección
-const MATERIALES = [{ id:'clases-sin-pre',      label:'II. Clases Sin-Pre',            pageKey:'clases_sin_pre',                            total:72,  href:'clases-sin-pre.html'                             },
-  { id:'temarios',            label:'III. Temarios',                 pageKey:'temarios',                                  total:6,   href:'temarios.html'                                   },
-  { id:'admision-y-examenes', label:'IV. Admisión y Exámenes',       pageKey:'admision_y_examenes_un',                    total:37,  href:'admision-y-examenes-un.html'                     },
-  { id:'clases-preu-s-ii',    label:"VI. Clases PreU's II (Libres)", pageKey:'clases_preu_s_ii_libres',                   total:11,  href:'clases-preu-s-ii-libres.html'                    },
-  { id:'recursos-udea',       label:'VII. Recursos UdeA',            pageKey:'recursos_udea',                             total:30,  href:'recursos-udea.html'                              },
-  { id:'diapositivas',        label:'VIII. Diapositivas con TODO',   pageKey:'diapositivas_con_todo',                     total:50,  href:'diapositivas-con-todo.html'                      },
-  { id:'apuntes',             label:'IX. Apuntes Estudio',           pageKey:'apuntes_estudio_un',                        total:29,  href:'apuntes-estudio-un.html'                         },
-  { id:'textos',              label:'X. Textos Varios',              pageKey:'textos_varios_practica_textual',            total:44,  href:'textos-varios-practica-textual.html'             },
-  { id:'modulos-teoricos',    label:'XI. Módulos Teóricos',          pageKey:'modulos_teoricos',                          total:56,  href:'modulos-teoricos.html'                           },
-  { id:'modulos-especiales',  label:'XII. Módulos Especiales',       pageKey:'modulos_especiales',                        total:58,  href:'modulos-especiales.html'                         },
-  { id:'ejercicios',          label:'XIII. Ejercicios Prácticas',    pageKey:'ejercicios_practicas',                      total:115, href:'ejercicios-practicas.html'                       },
-  { id:'simulacros',          label:'XIV. Simulacros',               pageKey:'simulacros_un',                             total:28,  href:'simulacros-un.html'                              },
-  { id:'simulacros-cal',      label:'XV. Simulacros Calificados',    pageKey:'simulacros_calificados_un',                 total:108, href:'simulacros-calificados-un.html'                  },
-  { id:'apps',                label:"XVI. App's Estudio (Android)", pageKey:'app_s_estudio_android',                     total:27,  href:'app-s-estudio-android.html'                      },
-  { id:'formulario',          label:'Formulario Económico',          pageKey:'formulario_economico_1',                    total:0,   href:'formulario-economico-1.html'                     },
-  { id:'tomos',               label:'Tomos',                         pageKey:'tomos',                                     total:5,   href:'tomos.html'                                      },
+const MATERIALES = [
+  { id:'relampago',          label:'I. Relámpago 2026',          pageKey:'relampago_sinpre',               total:13,  href:'relampago-sinpre.html'               },
+  { id:'formulario',         label:'II. Exclusivos SinPre',       pageKey:'formulario_economico_1',         total:0,   href:'formulario-economico-1.html'         },
+  { id:'temarios',           label:'III. Temarios',               pageKey:'temarios',                       total:6,   href:'temarios.html'                       },
+  { id:'simulacros-cal',     label:'IV. Simulacros Cal. UN',      pageKey:'simulacros_calificados_un',      total:108, href:'simulacros-calificados-un.html'      },
+  { id:'admision',           label:'V. Admisión y Exámenes',      pageKey:'admision_y_examenes_un',         total:37,  href:'admision-y-examenes-un.html'         },
+  { id:'clases-preu',        label:"VI. Clases PreU's",           pageKey:'clases_preu_s_ii_libres',        total:11,  href:'clases-preu-s-ii-libres.html'        },
+  { id:'recursos-udea',      label:'VII. Recursos UdeA',          pageKey:'recursos_udea',                  total:30,  href:'recursos-udea.html'                  },
+  { id:'diapositivas',       label:'VIII. Diapositivas con TODO', pageKey:'diapositivas_con_todo',          total:50,  href:'diapositivas-con-todo.html'          },
+  { id:'apuntes',            label:'IX. Apuntes Estudio',         pageKey:'apuntes_estudio_un',             total:29,  href:'apuntes-estudio-un.html'             },
+  { id:'textos',             label:'X. Textos Varios',            pageKey:'textos_varios_practica_textual', total:44,  href:'textos-varios-practica-textual.html' },
+  { id:'modulos-teoricos',   label:'XI. Módulos Teóricos',        pageKey:'modulos_teoricos',               total:56,  href:'modulos-teoricos.html'               },
+  { id:'modulos-especiales', label:'XII. Módulos Especiales',     pageKey:'modulos_especiales',             total:58,  href:'modulos-especiales.html'             },
+  { id:'ejercicios',         label:'XIII. Ejercicios',            pageKey:'ejercicios_practicas',           total:115, href:'ejercicios-practicas.html'           },
+  { id:'simulacros',         label:'XIV. Simulacros UN',          pageKey:'simulacros_un',                  total:28,  href:'simulacros-un.html'                  },
+  { id:'apps',               label:"XV. App's Estudio",           pageKey:'app_s_estudio_android',          total:27,  href:'app-s-estudio-android.html'          },
 ];
 
 // Cache de progreso por sección (se llena al abrir el modal)
