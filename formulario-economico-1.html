@@ -713,21 +713,36 @@ let checked={},order=MODULES.map(m=>m.id),fileOrders={},heroMode='bar';
 let openCardId=null,activeModal=null,saveTimer=null;
 
 /* ── BOOT — llamado por firebase-auth.js vía window._pageReady ── */
-window._pageReady=function(user,db,docFn,setFn){
+window._pageReady=async function(user,db,docFn,setFn,getFn){
   // Guardar referencias a Firebase para saves
-  window._fdb=db; window._fdoc=docFn; window._fset=setFn;
+  window._fdb=db; window._fdoc=docFn; window._fset=setFn; window._getFn=getFn;
   window._cu=user;
-  // Si ya fue inicializado (ej: re-auth), no reiniciar estado
+  // Si ya fue inicializado (ej: re-auth), solo actualizar referencias
   if(window._pageBooted){return;}
-  // Cargar progreso
+  // Cargar progreso desde localStorage (inmediato)
   MODULES.forEach(m=>{
     checked[m.id]=JSON.parse(localStorage.getItem('sp_'+PAGE_KEY+'_'+m.id)||'null')||{};
     fileOrders[m.id]=m.files.map((_,i)=>i);
   });
   order=JSON.parse(localStorage.getItem('sp_'+PAGE_KEY+'_order')||'null')||MODULES.map(m=>m.id);
   heroMode=localStorage.getItem('sp_'+PAGE_KEY+'_hero')||'bar';
-  // Si hay datos en Firestore los sobrescribe
   applyHeroMode();renderGrid();
+  // Luego cargar desde Firestore y actualizar si hay datos más recientes
+  if(user&&getFn&&db&&docFn){
+    getFn(docFn(db,'usuarios',user.uid,'progress',PAGE_KEY)).then(snap=>{
+      if(!snap.exists())return;
+      var d=snap.data();
+      if(d.heroMode&&d.heroMode!==heroMode){
+        heroMode=d.heroMode;
+        localStorage.setItem('sp_'+PAGE_KEY+'_hero',heroMode);
+        applyHeroMode();
+      }
+      if(d.checked){Object.assign(checked,d.checked);MODULES.forEach(m=>localStorage.setItem('sp_'+PAGE_KEY+'_'+m.id,JSON.stringify(checked[m.id])));}
+      if(d.order&&d.order.length){order=d.order;localStorage.setItem('sp_'+PAGE_KEY+'_order',JSON.stringify(order));}
+      if(d.fileOrders){Object.assign(fileOrders,d.fileOrders);}
+      renderGrid();
+    }).catch(()=>{});
+  }
 };
 
 /* Fallback: si firebase-auth.js tarda más de 2s, inicializar con localStorage */
@@ -758,7 +773,7 @@ async function saveAll(){
   var u=window._cu;if(!u||!window._fdb)return;
   try{
     showBadge('⟳ Guardando…','');
-    await window._fset(window._fdoc(window._fdb,'users',u.uid,'progress',PAGE_KEY),
+    await window._fset(window._fdoc(window._fdb,'usuarios',u.uid,'progress',PAGE_KEY),
       {checked,order,heroMode,fileOrders,updatedAt:Date.now()},{merge:true});
     showBadge('✓ Guardado','ok');
   }catch(e){showBadge('⚠ Local','err');}
@@ -766,7 +781,17 @@ async function saveAll(){
 function scheduleSave(){clearTimeout(saveTimer);saveTimer=setTimeout(saveAll,800);}
 
 /* ── HERO MODE ── */
-function toggleHeroMode(){heroMode=heroMode==='bar'?'ring':'bar';applyHeroMode();scheduleSave();renderGrid();}
+function toggleHeroMode(){
+  heroMode=heroMode==='bar'?'ring':'bar';
+  applyHeroMode();
+  // Guardar inmediatamente (sin debounce) para no perder el cambio al navegar
+  localStorage.setItem('sp_'+PAGE_KEY+'_hero',heroMode);
+  if(window._cu&&window._fdb){
+    window._fset(window._fdoc(window._fdb,'usuarios',window._cu.uid,'progress',PAGE_KEY),
+      {heroMode:heroMode,updatedAt:Date.now()},{merge:true}).catch(()=>{});
+  }
+  scheduleSave();renderGrid();
+}
 window.toggleHeroMode=toggleHeroMode;
 function applyHeroMode(){
   var hero=document.getElementById('progress-hero'),ring=document.getElementById('ring-widget'),btn=document.getElementById('hero-ring-btn');
