@@ -1,151 +1,795 @@
 <!DOCTYPE html>
 <html lang="es" data-theme="light">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>VII. Recursos UdeA · Sin-Presupuesto</title>
-  <link rel="stylesheet" href="style.css">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>VII. Recursos UdeA · Sin-Presupuesto</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,700;1,9..144,400&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#f0f4fa;--bg2:#ffffff;--bg3:#e4ecf7;--border:#c5d4eb;
+  --accent:#1a3a6b;--accent2:#2e6fc4;--text:#1a2640;--muted:#5a6e8a;
+  --shadow:rgba(26,58,107,.09);--green:#1db97d;--green-bg:#e8f9f1;
+  --nav-bg:rgba(255,255,255,.94);
+  --hero-bg1:var(--accent);--hero-bg2:#2a5ba8;
+  --hero-text:white;--hero-sub:rgba(255,255,255,.7);--hero-track:rgba(255,255,255,.2);
+}
+[data-theme="dark"]{
+  --bg:#0d1829;--bg2:#112040;--bg3:#1a2d52;--border:#2a3f6a;
+  --accent:#4a8ede;--accent2:#7ab4f0;--text:#e8f0fc;--muted:#7d96bb;
+  --shadow:rgba(0,0,0,.35);--green:#34d399;--green-bg:#0e2b1a;
+  --nav-bg:rgba(13,24,41,.96);
+  --hero-bg1:#0a1e40;--hero-bg2:#1a3566;
+  --hero-text:#e8f0fc;--hero-sub:rgba(232,240,252,.65);--hero-track:rgba(255,255,255,.08);
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;font-size:15px;line-height:1.7;min-height:100vh;}
+/* NAV */
+nav{position:sticky;top:0;z-index:300;background:var(--nav-bg);backdrop-filter:blur(14px);border-bottom:1px solid var(--border);padding:0 2rem;display:flex;align-items:center;height:52px;box-shadow:0 2px 12px var(--shadow);}
+.nav-logo{font-family:'Fraunces',serif;font-size:1.1rem;font-weight:700;color:var(--accent2);text-decoration:none;padding-right:1.1rem;border-right:1px solid var(--border);margin-right:1.1rem;white-space:nowrap;display:flex;align-items:center;gap:.4rem;}
+.nav-logo img{width:28px;height:28px;border-radius:50%;object-fit:cover;}
+.nav-links{display:flex;list-style:none;flex:1;}
+.nav-links a{padding:0 .7rem;color:var(--muted);text-decoration:none;font-size:.83rem;font-weight:500;transition:color .15s;line-height:52px;display:block;}
+.nav-links a.active,.nav-links a:hover{color:var(--accent2);}
+.nav-right{display:flex;align-items:center;gap:.45rem;margin-left:auto;flex-shrink:0;}
+#btn-tema{background:none;border:1.5px solid var(--border);color:var(--muted);font-family:'DM Sans',sans-serif;font-size:.75rem;padding:.3rem .65rem;border-radius:20px;cursor:pointer;transition:all .2s;white-space:nowrap;height:1.9rem;}
+#btn-tema:hover{border-color:var(--accent2);color:var(--accent2);}
+#btn-avance,#btn-student-login{background:none;border:1.5px solid var(--border);color:var(--muted);font-family:'DM Sans',sans-serif;font-size:.8rem;padding:.35rem .75rem;border-radius:20px;cursor:pointer;transition:all .2s;white-space:nowrap;height:2rem;display:flex;align-items:center;gap:.3rem;}
+#btn-avance:hover,#btn-student-login:hover{border-color:var(--accent2);color:var(--accent2);}
+.nav-hamburger{display:none;background:none;border:none;cursor:pointer;padding:.3rem;flex-direction:column;gap:5px;}
+.nav-hamburger span{display:block;width:20px;height:2px;background:var(--muted);border-radius:2px;}
+@media(max-width:768px){.nav-links{display:none;}.nav-hamburger{display:flex;}}
+/* AUTH GATE OVERLAY — mostrado al intentar abrir archivo sin login */
+.auth-gate-toast{
+  position:fixed;bottom:5rem;left:50%;transform:translateX(-50%) translateY(20px);
+  background:var(--accent2);color:white;
+  padding:.65rem 1.4rem;border-radius:100px;
+  font-size:.85rem;font-weight:600;z-index:600;
+  opacity:0;transition:opacity .25s,transform .25s;pointer-events:none;
+  white-space:nowrap;box-shadow:0 4px 20px rgba(46,111,196,.4);
+}
+.auth-gate-toast.show{opacity:1;transform:translateX(-50%) translateY(0);}
+/* PROGRESS HERO */
+.progress-hero{background:linear-gradient(135deg,var(--hero-bg1) 0%,var(--hero-bg2) 100%);color:var(--hero-text);overflow:hidden;max-height:160px;opacity:1;transition:max-height .45s cubic-bezier(.4,0,.2,1),opacity .3s ease,padding .45s;padding:1.1rem 2rem;}
+.progress-hero.collapsed{max-height:0;opacity:0;padding-top:0;padding-bottom:0;}
+.ph-inner{max-width:1080px;margin:0 auto;display:flex;align-items:center;gap:1.5rem;}
+.ph-h1-row{display:flex;align-items:center;gap:0;}
+.ph-texts h1{font-family:'Fraunces',serif;font-size:1.35rem;font-weight:700;color:var(--hero-text);white-space:nowrap;line-height:1;}
+.ph-texts-sub{font-size:.75rem;color:var(--hero-sub);margin-top:.3rem;}
+.hero-ring-btn{margin-left:20px;flex-shrink:0;background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.3);color:var(--hero-text);font-family:'DM Sans',sans-serif;font-size:.7rem;font-weight:600;padding:.22rem .72rem;border-radius:20px;cursor:pointer;white-space:nowrap;transition:all .15s;display:inline-flex;align-items:center;gap:.35rem;line-height:1;}
+.hero-ring-btn:hover{background:rgba(255,255,255,.28);}
+.hero-ring-btn.ring-active{background:rgba(29,185,125,.18);border-color:rgba(29,185,125,.5);color:var(--green);}
+.ph-bar-area{max-width:1080px;margin:.65rem auto 0;}
+.global-track{height:10px;background:var(--hero-track);border-radius:8px;overflow:hidden;}
+.global-fill{height:100%;background:#4ade80;border-radius:8px;transition:width .5s ease;}
+.global-lbl{font-size:.68rem;color:var(--hero-sub);margin-top:.3rem;}
+.ph-stats{display:flex;gap:1.5rem;flex-shrink:0;}
+.pstat{text-align:center;}
+.pstat-num{font-family:'Fraunces',serif;font-size:1.75rem;font-weight:700;color:var(--hero-text);line-height:1;}
+.pstat-label{font-size:.62rem;color:var(--hero-sub);text-transform:uppercase;letter-spacing:.07em;margin-top:.12rem;}
+/* FLOATING RING WIDGET */
+.ring-widget{position:fixed;top:64px;right:1.25rem;z-index:250;background:var(--bg2);border:1px solid var(--border);border-radius:16px;padding:.8rem 1rem;box-shadow:0 8px 32px var(--shadow);display:flex;flex-direction:column;align-items:center;gap:.5rem;opacity:0;transform:translateY(-12px) scale(.92);pointer-events:none;transition:opacity .35s cubic-bezier(.4,0,.2,1),transform .35s cubic-bezier(.4,0,.2,1);min-width:110px;}
+.ring-widget.visible{opacity:1;transform:translateY(0) scale(1);pointer-events:auto;}
+.rw-ring-row{display:flex;align-items:center;gap:.65rem;}
+.ring-widget svg{transform:rotate(-90deg);flex-shrink:0;}
+.rw-pct{font-family:'Fraunces',serif;font-size:1.3rem;font-weight:700;color:var(--accent2);line-height:1;}
+.rw-sub{font-size:.66rem;color:var(--muted);white-space:nowrap;}
+.rw-back{background:rgba(122,180,240,.1);border:1px solid var(--border);color:var(--muted);font-family:'DM Sans',sans-serif;font-size:.7rem;font-weight:600;padding:.22rem .6rem;border-radius:20px;cursor:pointer;white-space:nowrap;transition:all .15s;display:inline-flex;align-items:center;gap:.3rem;width:100%;justify-content:center;}
+.rw-back:hover{background:rgba(122,180,240,.18);color:var(--accent2);border-color:var(--accent);}
+/* LAYOUT */
+.layout{display:grid;grid-template-columns:210px 1fr;max-width:1080px;margin:0 auto;padding:1.5rem 1.5rem 6rem;gap:1.5rem;}
+@media(max-width:900px){.layout{grid-template-columns:1fr;}}
+aside{position:sticky;top:64px;align-self:start;max-height:calc(100vh - 80px);overflow-y:auto;}
+.sidebar-title{font-size:.68rem;font-weight:600;text-transform:uppercase;letter-spacing:.09em;color:var(--muted);margin-bottom:.55rem;padding:0 .5rem;}
+.sidebar-links{list-style:none;}
+.sidebar-links li a{display:flex;align-items:center;gap:.5rem;padding:.36rem .6rem;border-radius:8px;color:var(--muted);text-decoration:none;font-size:.8rem;transition:all .15s;}
+.sidebar-links li a:hover{background:var(--bg3);color:var(--accent2);}
+.sidebar-links li a.current{background:var(--accent2);color:white;}
+.s-emoji{font-size:.88rem;width:18px;text-align:center;flex-shrink:0;}
+/* PAGE HEADER */
+.page-header{display:flex;align-items:center;gap:.85rem;margin-bottom:1.25rem;}
+.ph-icon{width:48px;height:48px;border-radius:12px;background:var(--bg3);display:flex;align-items:center;justify-content:center;font-size:1.5rem;flex-shrink:0;}
+.page-header h1{font-family:'Fraunces',serif;font-size:1.5rem;font-weight:700;color:var(--accent2);}
+.page-label{font-size:.7rem;text-transform:uppercase;letter-spacing:.09em;color:var(--muted);}
+.page-intro{font-size:.88rem;color:var(--muted);margin-bottom:1.1rem;line-height:1.6;padding:.65rem 1rem;background:var(--bg3);border-left:3px solid var(--accent2);border-radius:0 10px 10px 0;}
+.drag-hint{font-size:.74rem;color:var(--muted);margin-bottom:1rem;opacity:.7;display:flex;align-items:center;gap:.6rem;flex-wrap:wrap;}
+.reset-order-btn,.sort-btn{background:var(--bg3);border:1px solid var(--border);color:var(--muted);font-family:'DM Sans',sans-serif;font-size:.68rem;font-weight:600;padding:.18rem .55rem;border-radius:20px;cursor:pointer;white-space:nowrap;transition:all .15s;display:inline-flex;align-items:center;gap:.25rem;}
+.reset-order-btn:hover,.sort-btn:hover,.sort-btn.active{color:var(--accent2);border-color:var(--accent2);}
+.sort-wrap{position:relative;display:inline-flex;}
+.sort-menu{display:none;position:absolute;top:calc(100% + 6px);left:0;background:var(--bg2);border:1px solid var(--border);border-radius:12px;box-shadow:0 8px 28px var(--shadow);z-index:200;min-width:170px;overflow:hidden;}
+.sort-menu.open{display:block;}
+.sort-menu button{display:block;width:100%;text-align:left;background:none;border:none;color:var(--muted);font-family:'DM Sans',sans-serif;font-size:.76rem;padding:.52rem .85rem;cursor:pointer;transition:background .12s,color .12s;white-space:nowrap;}
+.sort-menu button:hover{background:var(--bg3);color:var(--accent2);}
+.sort-menu .sort-divider{height:1px;background:var(--border);margin:.2rem 0;}
+/* MODULES GRID */
+#modules-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1rem;align-items:start;}
+@media(max-width:700px){#modules-grid{grid-template-columns:1fr;}}
+@media(min-width:701px) and (max-width:900px){#modules-grid{grid-template-columns:repeat(2,1fr);}}
+/* MODULE CARD */
+.module-card{background:var(--bg2);border:1px solid var(--border);border-radius:16px;overflow:hidden;transition:box-shadow .22s,border-color .22s,opacity .22s ease,transform .22s cubic-bezier(.4,0,.2,1);grid-column:span 1;user-select:none;touch-action:none;}
+.module-card:hover{box-shadow:0 6px 20px var(--shadow);}
+.module-card.complete{border-color:rgba(29,185,125,.4);}
+.module-card.hold-ready{box-shadow:0 0 0 2px var(--accent2),0 8px 28px rgba(0,0,0,.45);transform:scale(1.025);}
+.module-card.is-dragging{opacity:.22;transform:scale(.95);box-shadow:none;}
+.module-card.drop-target{border-color:var(--accent2);box-shadow:0 0 0 2px rgba(122,180,240,.35);transform:translateY(-5px) scale(1.015);}
+.module-card.shift-up{transform:translateY(-8px);}
+.module-card.shift-down{transform:translateY(8px);}
+.module-card.open{grid-column:1/-1;}
+#modules-grid.has-open .module-card:not(.open){opacity:1;transform:none;}
+.mc-head{display:flex;align-items:center;gap:.75rem;padding:.85rem 1rem;cursor:pointer;background:var(--bg2);transition:background .15s;}
+.mc-head:hover{background:var(--bg3);}
+.module-card.hold-ready .mc-head{cursor:grab;}
+.module-card.is-dragging .mc-head{cursor:grabbing;}
+.mc-emoji{width:38px;height:38px;border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:1.2rem;flex-shrink:0;}
+.mc-title-wrap{flex:1;min-width:0;}
+.mc-title{font-family:'Fraunces',serif;font-size:.92rem;font-weight:700;color:var(--accent2);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.mc-desc{font-size:.7rem;color:var(--muted);margin-top:.02rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.mc-prog-ind{flex-shrink:0;}
+.mc-bar-mini{width:38px;}
+.mc-bar-mini-track{height:4px;background:var(--border);border-radius:4px;overflow:hidden;margin-bottom:2px;}
+.mc-bar-mini-fill{height:100%;background:var(--accent2);border-radius:4px;transition:width .4s;}
+.mc-bar-mini-fill.full{background:var(--green);}
+.mc-bar-mini-label{font-size:.62rem;color:var(--muted);text-align:right;}
+.mc-ring-mini svg{transform:rotate(-90deg);display:block;}
+.mc-chevron{font-size:.7rem;color:var(--muted);transition:transform .25s;flex-shrink:0;}
+.module-card.open .mc-chevron{transform:rotate(90deg);}
+.mc-prog{height:3px;background:var(--border);}
+.mc-prog-fill{height:100%;background:var(--accent2);transition:width .4s;}
+.mc-prog-fill.full{background:var(--green);}
+/* FILE CARDS */
+.mc-files{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:.5rem;padding:0 .9rem;max-height:0;overflow:hidden;opacity:0;transition:max-height .4s cubic-bezier(.4,0,.2,1),opacity .3s ease,padding .4s cubic-bezier(.4,0,.2,1);}
+.module-card.open .mc-files{max-height:2400px;opacity:1;padding:.6rem .9rem .9rem;}
+.module-card.open .file-card{animation:fcIn .22s ease both;}
+.module-card.open .file-card:nth-child(1){animation-delay:.04s;}
+.module-card.open .file-card:nth-child(2){animation-delay:.07s;}
+.module-card.open .file-card:nth-child(3){animation-delay:.10s;}
+.module-card.open .file-card:nth-child(n+4){animation-delay:.13s;}
+@keyframes fcIn{from{opacity:0;transform:translateY(10px) scale(.97);}to{opacity:1;transform:translateY(0) scale(1);}}
+.file-card{background:var(--bg3);border:1px solid var(--border);border-radius:11px;padding:.65rem .75rem;display:flex;align-items:flex-start;gap:.55rem;cursor:pointer;transition:all .17s;position:relative;user-select:none;touch-action:none;}
+.file-card::before{content:'';position:absolute;inset:0;border-radius:11px;background:linear-gradient(135deg,rgba(46,111,196,.08),transparent);opacity:0;transition:opacity .18s;}
+.file-card:hover{border-color:var(--accent2);box-shadow:0 3px 14px var(--shadow);transform:translateY(-1px);}
+.file-card:hover::before{opacity:1;}
+.file-card.done{opacity:.65;}
+.file-card.done .fc-name{text-decoration:line-through;color:var(--muted);}
+.file-card.fc-hold-ready{box-shadow:0 0 0 2px var(--accent2),0 6px 20px var(--shadow);transform:scale(1.04);cursor:grab;}
+.file-card.fc-dragging{opacity:.18;transform:scale(.93) rotate(-1deg);pointer-events:none;box-shadow:none;}
+.file-card.fc-drop-target{border-color:var(--accent2);box-shadow:0 0 0 2px rgba(46,111,196,.25);transform:translateY(-4px) scale(1.01);}
+.fc-icon{width:30px;height:30px;border-radius:7px;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:.95rem;background:var(--bg2);}
+.fc-body{flex:1;min-width:0;}
+.fc-name{font-size:.78rem;font-weight:600;color:var(--accent2);line-height:1.3;margin-bottom:.18rem;}
+.fc-meta{display:flex;align-items:center;gap:.3rem;flex-wrap:wrap;}
+.fc-tag{display:inline-block;padding:.03rem .35rem;background:var(--bg2);border-radius:20px;font-size:.64rem;font-weight:600;color:var(--accent2);}
+.fc-lock{font-size:.62rem;color:var(--muted);margin-top:.25rem;display:none;}
+.fc-seen{width:15px;height:15px;border-radius:50%;border:1.5px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:.5rem;color:transparent;background:var(--bg2);flex-shrink:0;transition:all .15s;}
+.fc-seen.done{background:var(--green);border-color:var(--green);color:white;}
+.fc-open{font-size:.64rem;font-weight:600;color:var(--accent2);margin-top:.3rem;opacity:0;transition:opacity .13s;display:block;}
+.file-card:hover .fc-open{opacity:1;}
+/* SAVE BADGE */
+.save-badge{position:fixed;bottom:1.2rem;right:1.25rem;z-index:400;background:var(--bg2);border:1px solid var(--border);border-radius:20px;padding:.3rem .85rem;font-size:.72rem;color:var(--muted);display:flex;align-items:center;gap:.4rem;opacity:0;transform:translateY(8px);transition:opacity .3s,transform .3s;pointer-events:none;}
+.save-badge.show{opacity:1;transform:translateY(0);}
+.save-badge.ok{color:var(--green);border-color:rgba(52,211,153,.3);}
+.save-badge.err{color:#f87171;border-color:rgba(248,113,113,.3);}
+/* MODAL DOCUMENTO */
+.modal-backdrop{display:none;position:fixed;inset:0;background:rgba(0,0,0,.55);backdrop-filter:blur(7px);z-index:500;align-items:center;justify-content:center;padding:1rem;}
+.modal-backdrop.open{display:flex;}
+.modal-window{background:var(--bg2);border:1px solid var(--border);border-radius:18px;width:100%;max-width:860px;height:90vh;display:flex;flex-direction:column;box-shadow:0 24px 80px var(--shadow);overflow:hidden;}
+.modal-chrome{display:flex;align-items:center;gap:.7rem;padding:.65rem 1rem;border-bottom:1px solid var(--border);background:var(--bg3);flex-shrink:0;}
+.modal-dots{display:flex;gap:.38rem;}
+.modal-dot{width:10px;height:10px;border-radius:50%;}
+.modal-url{flex:1;background:var(--bg2);border:1px solid var(--border);border-radius:7px;height:23px;font-size:.7rem;color:var(--muted);display:flex;align-items:center;padding:0 .55rem;margin:0 .4rem;overflow:hidden;white-space:nowrap;}
+.btn-close-modal{background:none;border:none;color:var(--muted);font-size:1.05rem;cursor:pointer;padding:0 .2rem;flex-shrink:0;}
+.modal-info{padding:.75rem 1.1rem;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:.7rem;flex-shrink:0;flex-wrap:wrap;}
+.mi-icon{font-size:1.35rem;flex-shrink:0;}
+.mi-body{flex:1;min-width:0;}
+.mi-name{font-family:'Fraunces',serif;font-size:.98rem;font-weight:700;color:var(--accent2);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+.mi-meta{font-size:.75rem;color:var(--muted);margin-top:.08rem;}
+.btn-seen{padding:.35rem .8rem;border-radius:8px;background:var(--bg3);color:var(--muted);font-size:.78rem;font-weight:500;border:1px solid var(--border);cursor:pointer;transition:all .15s;flex-shrink:0;}
+.btn-seen.done{background:var(--green-bg);color:var(--green);border-color:var(--green);}
+.btn-drive{padding:.35rem .8rem;border-radius:8px;background:var(--accent2);color:white;text-decoration:none;font-size:.78rem;font-weight:600;border:none;cursor:pointer;flex-shrink:0;display:inline-flex;align-items:center;gap:.3rem;}
+.btn-drive:hover{opacity:.85;}
+.modal-iframe-wrap{flex:1;overflow:hidden;position:relative;}
+.modal-iframe-wrap iframe{width:100%;height:100%;border:none;display:block;}
+.modal-iframe-loading{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;background:var(--bg3);color:var(--muted);font-size:.9rem;flex-direction:column;gap:.5rem;}
+.modal-iframe-loading.hidden{display:none;}
+/* NAV DRAWER MÓVIL */
+.nav-drawer-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.45);z-index:800;}
+.nav-drawer-overlay.open{display:block;}
+.nav-drawer{position:fixed;right:0;top:0;bottom:0;width:260px;background:var(--bg2);padding:1.5rem 1rem;overflow-y:auto;border-left:1px solid var(--border);}
+.nav-drawer-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:1rem;padding-bottom:.75rem;border-bottom:1px solid var(--border);}
+.btn-close-drawer{background:none;border:none;font-size:1.2rem;cursor:pointer;color:var(--muted);}
+.nav-drawer ul{list-style:none;}
+.nav-drawer ul a{display:flex;align-items:center;gap:.5rem;padding:.55rem .5rem;color:var(--muted);text-decoration:none;font-size:.88rem;border-radius:8px;transition:all .15s;}
+.nav-drawer ul a:hover,.nav-drawer ul a.current{background:var(--bg3);color:var(--accent2);}
+/* FOOTER */
+footer{border-top:1px solid var(--border);background:var(--bg2);padding:2rem;text-align:center;color:var(--muted);font-size:.82rem;}
+footer a{color:var(--accent2);text-decoration:none;}
+footer a:hover{text-decoration:underline;}
+/* TOAST (showToast de editor.js) */
+.toast{position:fixed;bottom:5rem;left:50%;transform:translateX(-50%);background:var(--accent);color:#fff;padding:.5rem 1.2rem;border-radius:100px;font-size:.82rem;z-index:600;pointer-events:none;animation:fadeup .2s ease;box-shadow:0 4px 16px rgba(26,58,107,.25);}
+@keyframes fadeup{from{opacity:0;transform:translateX(-50%) translateY(6px);}to{opacity:1;transform:translateX(-50%) translateY(0);}}
+</style>
 </head>
 <body>
-  <nav>
-    <a class="nav-logo" href="index.html">
-      <img src="logos/filosofia.png" alt="Sin-Presupuesto logo">
-      Sin-Presupuesto
-    </a>
-    <ul class="nav-links"><li><a href="index.html" class="">Inicio</a></li><li><a href="clases-sin-pre.html" class="">Clases</a></li><li><a href="motivacion-guia.html" class="">Motivación</a></li><li><a href="modulos-teoricos.html" class="">Material</a></li><li><a href="ejercicios-practicas.html" class="">Práctica</a></li><li><a href="temarios.html" class="">Recursos</a></li><li><a href="donativos.html" class="">Comunidad</a></li></ul>
-    <div class="nav-right" style="display:flex;align-items:center;gap:0.5rem">
-      <button class="nav-hamburger" id="nav-hamburger-btn" onclick="openNavDrawer()" aria-label="Menú"><span></span><span></span><span></span></button>
-      <button id="btn-tema" onclick="toggleTema()">🌙 Modo oscuro</button>
-      <button id="btn-avance" style="display:none">📋 Avance</button>
-      <button id="btn-student-login">👤 Ingresar</button>
-    </div>
-  </nav>
-  <div class="editing-badge" id="editing-badge">✦ Modo edición activo</div>
-  <div class="editor-bar" id="editor-bar">
-    <span>Editar:</span>
-    <button class="editor-btn" onclick="document.execCommand('bold')"><b>N</b></button>
-    <button class="editor-btn" onclick="document.execCommand('italic')"><i>I</i></button>
-    <button class="editor-btn" onclick="document.execCommand('underline')"><u>S</u></button>
-    <button class="editor-btn cancel-btn">Descartar</button>
-    <button class="editor-btn save-btn">Guardar ✓</button>
-  </div>
-  <div class="layout">
-    <main>
-      <div class="page-header">
-        <img class="page-header-logo" src="logos/biologia.png" alt="VII. Recursos UdeA">
-        <div class="page-header-text">
-          <p class="page-label">Sección</p>
-          <h1>VII. Recursos UdeA</h1><div class="section-desc">Material de preparación específico para el examen de admisión de la Universidad de Antioquia (UdeA), incluyendo cuadernillos de práctica.</div>
-          <p class="page-date">2024-09-19</p>
-        </div>
-      </div>
-      <div class="entry-body" id="entry-body">
-        <p> </p><p>En esta sección encontrará los <b>Recursos UdeA por</b><b> Sin-Presupuesto</b>, esperando que sean de ayuda para su examen de admisión a la Universidad Nacional de Colombia.</p><p><br /></p><p></p><h2>Libro Exámenes UdeA</h2><div>En esta sección encontrará un <b>libro de exámenes anteriores de la Universidad de Antioquia</b>, esperando que sirva como práctica o ampliación de conocimientos para su examen de admisión a la Universidad Nacional de Colombia.<div>* Para quienes pedían explorar otros exámenes.</div></div><div><b><br /></b></div><div><div class="file-box-grid"><a class="file-box" href="https://drive.google.com/file/d/1xlV-FkJmfBFiP3Iwn68IiMuTintXUIvV/view?usp=sharing" target="_blank"><div class="file-box-icon">📄</div><div class="file-box-body"><div class="file-box-title">Libro de exámenes UdeA — Compilado</div><div class="file-box-sub">Abrir en Drive ↗</div></div></a></div></div><div><br /></div><div><br /></div><div><h2>UdeA Comprensión Lectora</h2><div>En esta sección encontrará el <b>Material de: UdeA Comprensión Lectora</b> para Sin-Pre, esperando que sea de ayuda para su examen de admisión a la Universidad Nacional de Colombia.</div><div><br /></div><div><div class="file-box-grid"><a class="file-box" href="https://drive.google.com/file/d/1VaniX3RgYzPfBsiySgU1n-gsgMG7RMoV/view?usp=sharing" target="_blank"><div class="file-box-icon">📖</div><div class="file-box-body"><div class="file-box-title">UdeA — Comprensión lectora I</div><div class="file-box-sub">Abrir en Drive ↗</div></div></a><a class="file-box" href="https://drive.google.com/file/d/17doSJ4x-uLKR8zNzWEDPQsCs97ZhmXK3/view?usp=sharing" target="_blank"><div class="file-box-icon">📖</div><div class="file-box-body"><div class="file-box-title">UdeA — Comprensión lectora II</div><div class="file-box-sub">Abrir en Drive ↗</div></div></a><a class="file-box" href="https://drive.google.com/file/d/1M1i-3aGYCl3EMdePiVDp6-FEsJj3SypT/view?usp=sharing" target="_blank"><div class="file-box-icon">📖</div><div class="file-box-body"><div class="file-box-title">UdeA — Comprensión lectora III</div><div class="file-box-sub">Abrir en Drive ↗</div></div></a><a class="file-box" href="https://drive.google.com/file/d/11jvX11wA-KsdqTvtHAe1nLoIuIV9fgeC/view?usp=sharing" target="_blank"><div class="file-box-icon">📖</div><div class="file-box-body"><div class="file-box-title">UdeA — Comprensión lectora IV</div><div class="file-box-sub">Abrir en Drive ↗</div></div></a><a class="file-box" href="https://drive.google.com/file/d/19YSfj2I7g324I7bw9zZTezF6BRP53ivt/view?usp=sharing " target="_blank"><div class="file-box-icon">📖</div><div class="file-box-body"><div class="file-box-title">UdeA — Comprensión lectora V</div><div class="file-box-sub">Abrir en Drive ↗</div></div></a><a class="file-box" href="https://drive.google.com/file/d/1aTTAcKLH4kT2B0ucmI6cXAT_p8ZC7aSI/view?usp=sharing " target="_blank"><div class="file-box-icon">📖</div><div class="file-box-body"><div class="file-box-title">UdeA — Comprensión lectora VI</div><div class="file-box-sub">Abrir en Drive ↗</div></div></a></div><div class="file-box-grid"><a class="file-box" href="https://drive.google.com/file/d/1raaGlLp9yBWu3kLXWdxoPr_yJKC77VN6/view?usp=sharing " target="_blank"><div class="file-box-icon">📖</div><div class="file-box-body"><div class="file-box-title">UdeA — Comprensión lectora VII</div><div class="file-box-sub">Abrir en Drive ↗</div></div></a><a class="file-box" href="https://drive.google.com/file/d/1g19mCneLRs8BxGMq6zecqm4jg2In09ZC/view?usp=sharing" target="_blank"><div class="file-box-icon">📖</div><div class="file-box-body"><div class="file-box-title">UdeA — Comprensión lectora VIII</div><div class="file-box-sub">Abrir en Drive ↗</div></div></a><a class="file-box" href="https://drive.google.com/file/d/1MA8KydLgwiCmVl4e9CEuk5eg6fAFeSJm/view?usp=sharing" target="_blank"><div class="file-box-icon">📖</div><div class="file-box-body"><div class="file-box-title">UdeA — Comprensión lectora IX</div><div class="file-box-sub">Abrir en Drive ↗</div></div></a><a class="file-box" href="https://drive.google.com/file/d/1avMtF0OwPVQoqSPb3D0f-kMG1y6VQEti/view?usp=sharing" target="_blank"><div class="file-box-icon">📖</div><div class="file-box-body"><div class="file-box-title">UdeA — Comprensión lectora X</div><div class="file-box-sub">Abrir en Drive ↗</div></div></a><a class="file-box" href="https://drive.google.com/file/d/1ZPQkGYUN2eNtJQa7NUkN79Wa2UVBJufN/view?usp=sharing" target="_blank"><div class="file-box-icon">📖</div><div class="file-box-body"><div class="file-box-title">Archivo 11 — UdeA Comprensión Lectora</div><div class="file-box-sub">Abrir en Drive ↗</div></div></a><a class="file-box" href="https://drive.google.com/file/d/1rQbtI25dgYuFZp9bFHcEySkVT3_Rlmlp/view?usp=sharing" target="_blank"><div class="file-box-icon">📖</div><div class="file-box-body"><div class="file-box-title">Archivo 12 — UdeA Comprensión Lectora</div><div class="file-box-sub">Abrir en Drive ↗</div></div></a></div><div class="file-box-grid"><a class="file-box" href="https://drive.google.com/file/d/1RkyTLVihByYGq0UzK81xK_gPAjIEQueM/view?usp=sharing" target="_blank"><div class="file-box-icon">📖</div><div class="file-box-body"><div class="file-box-title">Archivo 13 — UdeA Comprensión Lectora</div><div class="file-box-sub">Abrir en Drive ↗</div></div></a><a class="file-box" href="https://drive.google.com/file/d/1IQVPKeC6wRM5Yj7NAqD1HZ-_qz3_Va6a/view?usp=sharing" target="_blank"><div class="file-box-icon">📖</div><div class="file-box-body"><div class="file-box-title">Archivo 14 — UdeA Comprensión Lectora</div><div class="file-box-sub">Abrir en Drive ↗</div></div></a><a class="file-box" href="https://drive.google.com/file/d/1wXeFSAf8oA4_Xn3XBff7zPEsVbhS3i9B/view?usp=sharing" target="_blank"><div class="file-box-icon">📖</div><div class="file-box-body"><div class="file-box-title">Archivo 15 — UdeA Comprensión Lectora</div><div class="file-box-sub">Abrir en Drive ↗</div></div></a><a class="file-box" href="https://drive.google.com/file/d/1pVRoDcngRN2Y7qMsJ88EFoI3wbEbbNjf/view?usp=sharing" target="_blank"><div class="file-box-icon">📖</div><div class="file-box-body"><div class="file-box-title">Archivo 16 — UdeA Comprensión Lectora</div><div class="file-box-sub">Abrir en Drive ↗</div></div></a></div><div><br /></div><div><br /></div><div><h1 class="fOvfyc B7SYid VnOHwf-Tvm9db">UdeA Razonamiento Lógico</h1></div><div>En esta sección encontrará el <b>Material de: UdeA Razonamiento Lógico</b> para Sin-Pre, esperando que sea de ayuda para su examen de admisión a la Universidad Nacional de Colombia.</div><div><br /></div><div><div class="file-box-grid"><a class="file-box" href="https://drive.google.com/file/d/1LbcGVWcWGJ5L0V_3uCWfrhc3J2AmKUzB/view?usp=sharing" target="_blank"><div class="file-box-icon">🏛️</div><div class="file-box-body"><div class="file-box-title">UdeA — Razonamiento lógico I</div><div class="file-box-sub">Abrir en Drive ↗</div></div></a><a class="file-box" href="https://drive.google.com/file/d/1a-FAHG5hEtFLum6A4eBOmQJ2NzD5GqK1/view?usp=sharing" target="_blank"><div class="file-box-icon">🏛️</div><div class="file-box-body"><div class="file-box-title">UdeA — Razonamiento lógico II</div><div class="file-box-sub">Abrir en Drive ↗</div></div></a><a class="file-box" href="https://drive.google.com/file/d/1wLQO8taE6Q0OPajBeY-OrKsstMQuGrq4/view?usp=sharing" target="_blank"><div class="file-box-icon">🏛️</div><div class="file-box-body"><div class="file-box-title">UdeA — Razonamiento lógico III</div><div class="file-box-sub">Abrir en Drive ↗</div></div></a><a class="file-box" href="https://drive.google.com/file/d/1X3iXutAKHKta-aOmyEyZ1neNBhu4bEZ2/view?usp=sharing" target="_blank"><div class="file-box-icon">🏛️</div><div class="file-box-body"><div class="file-box-title">UdeA — Razonamiento lógico IV</div><div class="file-box-sub">Abrir en Drive ↗</div></div></a><a class="file-box" href="https://drive.google.com/file/d/1jFAsTalh9qLpP1Hs-vtpraREHnAZKY63/view?usp=sharing " target="_blank"><div class="file-box-icon">🏛️</div><div class="file-box-body"><div class="file-box-title">UdeA — Razonamiento lógico V</div><div class="file-box-sub">Abrir en Drive ↗</div></div></a><a class="file-box" href="https://drive.google.com/file/d/1et-37z2d777-B-HAiY8JiZzIXwQkyo7a/view?usp=sharing" target="_blank"><div class="file-box-icon">🏛️</div><div class="file-box-body"><div class="file-box-title">UdeA — Razonamiento lógico VI</div><div class="file-box-sub">Abrir en Drive ↗</div></div></a></div><div class="file-box-grid"><a class="file-box" href="https://drive.google.com/file/d/1ydXpfWVc2FZ2NN60614D3cdC6rAxvxg_/view?usp=sharing" target="_blank"><div class="file-box-icon">🏛️</div><div class="file-box-body"><div class="file-box-title">UdeA — Razonamiento lógico VII</div><div class="file-box-sub">Abrir en Drive ↗</div></div></a><a class="file-box" href="https://drive.google.com/file/d/1CjdMcKCcV0X7KtDoOrlVDWxnbQKwYYxr/view?usp=sharing" target="_blank"><div class="file-box-icon">🏛️</div><div class="file-box-body"><div class="file-box-title">UdeA — Razonamiento lógico VIII</div><div class="file-box-sub">Abrir en Drive ↗</div></div></a><a class="file-box" href="https://drive.google.com/file/d/1yFFmZibGay2HwJeLwZvTgZ7kArKzSaij/view?usp=sharing" target="_blank"><div class="file-box-icon">🏛️</div><div class="file-box-body"><div class="file-box-title">UdeA — Razonamiento lógico IX</div><div class="file-box-sub">Abrir en Drive ↗</div></div></a><a class="file-box" href="https://drive.google.com/file/d/1jqaoaJYVqUOAAN9QBjShlW9BX_08K8DX/view?usp=sharing" target="_blank"><div class="file-box-icon">🏛️</div><div class="file-box-body"><div class="file-box-title">UdeA — Razonamiento lógico X</div><div class="file-box-sub">Abrir en Drive ↗</div></div></a><a class="file-box" href="https://drive.google.com/file/d/1u8w8ZGTKPRNCmYJBp4qZDZWplhAYeouY/view?usp=sharing" target="_blank"><div class="file-box-icon">🏛️</div><div class="file-box-body"><div class="file-box-title">UdeA — Razonamiento lógico XI</div><div class="file-box-sub">Abrir en Drive ↗</div></div></a><a class="file-box" href="https://drive.google.com/file/d/1OTNY7U_VWe4HRLIzGSEvFWWEgDKogmpS/view?usp=sharing" target="_blank"><div class="file-box-icon">🏛️</div><div class="file-box-body"><div class="file-box-title">UdeA — Razonamiento lógico XII</div><div class="file-box-sub">Abrir en Drive ↗</div></div></a></div><div><div class="file-box-grid"><a class="file-box" href="https://drive.google.com/file/d/1G9cEyxPn6HHwOd-q64tbOMjrt_2G1mMG/view?usp=sharing" target="_blank"><div class="file-box-icon">📄</div><div class="file-box-body"><div class="file-box-title">Archivo 13</div><div class="file-box-sub">Abrir en Drive ↗</div></div></a></div></div></div>
-      </div>
-    </main>
-    <aside class="sidebar">
-      <p class="sidebar-title">Todas las secciones</p>
-      <ul class="sidebar-links"><li><a href="motivacion-guia.html" class=""><img src="logos/imagen.png" alt="">I. Motivación/Guía</a></li><li><a href="clases-sin-pre.html" class=""><img src="logos/sociales.png" alt="">II. Clases Sin-Pre</a></li><li><a href="temarios.html" class=""><img src="logos/quimica.png" alt="">III. Temarios</a></li><li><a href="admision-y-examenes-un.html" class=""><img src="logos/ingles.png" alt="">IV. Admisión y Exámenes </a></li><li><a href="clases-preu-s-i.html" class=""><img src="logos/sociales.png" alt="">V. Clases PreU's I</a></li><li><a href="clases-preu-s-ii-libres.html" class=""><img src="logos/sociales.png" alt="">VI. Clases PreU's II (Libres)</a></li><li><a href="recursos-udea.html" class="current"><img src="logos/biologia.png" alt="">VII. Recursos UdeA</a></li><li><a href="diapositivas-con-todo.html" class=""><img src="logos/filosofia.png" alt="">VIII. Diapositivas con TODO</a></li><li><a href="apuntes-estudio-un.html" class=""><img src="logos/filosofia.png" alt="">IX. Apuntes Estudio </a></li><li><a href="textos-varios-practica-textual.html" class=""><img src="logos/textual.png" alt="">X. Textos Varios (Práctica Textual)</a></li><li><a href="modulos-teoricos.html" class=""><img src="logos/filosofia.png" alt="">XI. Módulos Teóricos</a></li><li><a href="modulos-especiales.html" class=""><img src="logos/filosofia.png" alt="">XII. Módulos Especiales</a></li><li><a href="ejercicios-practicas.html" class=""><img src="logos/matematicas.png" alt="">XIII. Ejercicios Prácticas</a></li><li><a href="simulacros-un.html" class=""><img src="logos/fisica.png" alt="">XIV. Simulacros </a></li><li><a href="simulacros-calificados-un.html" class=""><img src="logos/fisica.png" alt="">XV. Simulacros Calificados </a></li><li><a href="app-s-estudio-android.html" class=""><img src="logos/matematicas.png" alt="">XVI. App's Estudio (Android)</a></li><li><a href="clases-en-vivo-grabadas-sin-presupuesto-un.html" class=""><img src="logos/sociales.png" alt="">Clases en vivo/grabadas - Sin-Presupuesto</a></li><li><a href="donativos.html" class=""><img src="logos/sociales.png" alt="">Donativos</a></li><li><a href="formulario-economico-1.html" class=""><img src="logos/matematicas.png" alt="">Formulario Económico 1</a></li><li><a href="medios-de-sin-presupuesto-un.html" class=""><img src="logos/imagen.png" alt="">Medios de Sin-Presupuesto</a></li><li><a href="tomos.html" class=""><img src="logos/textual.png" alt="">Tomos</a></li></ul>
-    </aside>
-  </div>
-  <footer>
-    <p>Sin-Presupuesto · PreUniversitario gratuito y popular ❤️</p>
-    <p style="margin-top:0.4rem"><a href="donativos.html">Apoya el proyecto</a> · <a href="medios-de-sin-presupuesto-un.html">Redes sociales</a></p>
-    <p style="margin-top:0.75rem;padding-top:0.75rem;border-top:1px solid var(--border)">
-      <button id="btn-admin-footer"
-        style="background:none;border:none;color:var(--border);font-size:0.72rem;cursor:pointer;transition:color .2s;font-family:'DM Sans',sans-serif;"
-        onmouseover="this.style.color='var(--muted)'" onmouseout="this.style.color='var(--border)'">Joaquín L. Cortés</button>
-    </p>
-  </footer>
 
-  <!-- Modal admin COMPLETO -->
-  <div class="modal-overlay" id="admin-modal">
-    <div class="modal" style="max-width:360px">
-      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:1.25rem">
-        <h2 style="font-family:'Fraunces',serif;color:var(--accent)">Joaquín L. Cortés</h2>
-        <button onclick="closeAdminModal()" style="background:none;border:none;color:var(--muted);font-size:1.2rem;cursor:pointer;">✕</button>
+<!-- NAV -->
+<nav>
+  <a class="nav-logo" href="index.html">
+    <img src="logos/filosofia.png" alt="Sin-Presupuesto">Sin-Presupuesto
+  </a>
+  <ul class="nav-links"><li><a href="index.html">Inicio</a></li><li><a href="clases-sin-pre.html">Clases</a></li><li><a href="motivacion-guia.html">Motivación</a></li><li><a href="modulos-teoricos.html">Material</a></li><li><a href="ejercicios-practicas.html">Práctica</a></li><li><a href="temarios.html">Recursos</a></li><li><a href="donativos.html">Comunidad</a></li></ul>
+  <div class="nav-right">
+    <button class="nav-hamburger" onclick="openNavDrawer()" aria-label="Menú">
+      <span></span><span></span><span></span>
+    </button>
+    <button id="btn-tema" onclick="toggleTema()">🌙 Modo oscuro</button>
+    <button id="btn-avance" style="display:none">📋 Avance</button>
+    <button id="btn-student-login">👤 Ingresar</button>
+  </div>
+</nav>
+
+<!-- AUTH GATE TOAST -->
+<div class="auth-gate-toast" id="auth-gate-toast">🔒 Inicia sesión para acceder a los materiales</div>
+
+<!-- PROGRESS HERO -->
+<div class="progress-hero" id="progress-hero">
+  <div class="ph-inner">
+    <div style="flex:1">
+      <div class="ph-h1-row">
+        <div class="ph-texts"><h1>VII. Recursos UdeA</h1></div>
+        <button class="hero-ring-btn" id="hero-ring-btn" onclick="toggleHeroMode()">◯ Cambiar al Anillo</button>
       </div>
-      <div class="form-group">
-        <label>Correo</label>
-        <input type="email" id="admin-email" placeholder="tucorreo@gmail.com">
-      </div>
-      <div class="form-group">
-        <label>Contraseña</label>
-        <input type="password" id="admin-pass" placeholder="••••••••">
-      </div>
-      <p style="color:#c0392b;font-size:0.82rem;min-height:1.2em" id="admin-err"></p>
-      <button class="btn-submit" id="admin-submit">Ingresar</button>
-      <p style="text-align:center;margin-top:0.85rem">
-        <button onclick="adminForgotPassword()" style="background:none;border:none;color:var(--muted);font-size:0.8rem;cursor:pointer;text-decoration:underline;">¿Olvidaste tu contraseña?</button>
-      </p>
+      <p class="ph-texts-sub">Material específico para el examen de admisión UdeA</p>
+    </div>
+    <div class="ph-stats">
+      <div class="pstat"><div class="pstat-num" id="s-done">0</div><div class="pstat-label">Vistos</div></div>
+      <div class="pstat"><div class="pstat-num" id="s-total">30</div><div class="pstat-label">Total</div></div>
+      <div class="pstat"><div class="pstat-num" id="s-pct">0%</div><div class="pstat-label">Avance</div></div>
     </div>
   </div>
+  <div class="ph-bar-area">
+    <div class="global-track"><div class="global-fill" id="g-fill" style="width:0%"></div></div>
+    <div class="global-lbl" id="g-lbl">0 de 30 archivos completados</div>
+  </div>
+</div>
 
-  <!-- Modal confirmación logout admin -->
-  <div class="modal-overlay" id="admin-logout-modal">
-    <div class="modal" style="max-width:340px;text-align:center">
-      <p style="font-size:1.5rem;margin-bottom:0.5rem">⚙️</p>
-      <h2 style="font-family:'Fraunces',serif;color:var(--accent);margin-bottom:0.5rem">¿Salir del editor?</h2>
-      <p style="color:var(--muted);font-size:0.88rem;margin-bottom:1.5rem">Los cambios no guardados se perderán.</p>
-      <div style="display:flex;gap:0.75rem">
-        <button onclick="closeAdminLogoutModal()" class="btn-submit" style="background:var(--bg3);color:var(--text);flex:1">Cancelar</button>
-        <button onclick="doAdminLogout()" class="btn-submit" style="background:#c0392b;flex:1">Salir</button>
-      </div>
+<!-- FLOATING RING -->
+<div class="ring-widget" id="ring-widget">
+  <div class="rw-ring-row">
+    <svg width="48" height="48" viewBox="0 0 48 48">
+      <circle cx="24" cy="24" r="19" fill="none" stroke="var(--border)" stroke-width="4"/>
+      <circle id="rw-circle" cx="24" cy="24" r="19" fill="none" stroke="var(--green)"
+              stroke-width="4" stroke-dasharray="0 119.4" stroke-linecap="round"/>
+    </svg>
+    <div>
+      <div class="rw-pct" id="rw-pct">0%</div>
+      <div class="rw-sub" id="rw-sub">0 de 30</div>
     </div>
   </div>
+  <button class="rw-back" onclick="toggleHeroMode()">▬ Cambiar a la Barra</button>
+</div>
 
-  
-  <!-- Drawer menú móvil -->
-  <div class="nav-drawer-overlay" id="nav-drawer-overlay" onclick="closeNavDrawer()">
-    <div class="nav-drawer" onclick="event.stopPropagation()">
-      <div class="nav-drawer-header">
-        <div class="nav-drawer-title">
-          <img src="logos/filosofia.png" style="width:28px;height:28px;border-radius:50%"> Sin-Presupuesto
-        </div>
-        <button class="nav-drawer-close" onclick="closeNavDrawer()">✕</button>
+<div class="save-badge" id="save-badge">⟳ Guardando…</div>
+
+<!-- LAYOUT -->
+<div class="layout">
+  <aside>
+    <p class="sidebar-title">Secciones</p>
+    <ul class="sidebar-links">
+      <li><a href="motivacion-guia.html"><span class="s-emoji">💡</span>I. Motivación/Guía</a></li>
+      <li><a href="clases-sin-pre.html"><span class="s-emoji">📹</span>II. Clases Sin-Pre</a></li>
+      <li><a href="temarios.html"><span class="s-emoji">📋</span>III. Temarios</a></li>
+      <li><a href="admision-y-examenes-un.html"><span class="s-emoji">🎓</span>IV. Admisión y Exámenes</a></li>
+      <li><a href="clases-preu-s-i.html"><span class="s-emoji">🏫</span>V. Clases PreU's I</a></li>
+      <li><a href="clases-preu-s-ii-libres.html"><span class="s-emoji">🏫</span>VI. Clases PreU's II</a></li>
+      <li><a href="recursos-udea.html" class="current"><span class="s-emoji">🦁</span>VII. Recursos UdeA</a></li>
+      <li><a href="diapositivas-con-todo.html"><span class="s-emoji">📊</span>VIII. Diapositivas</a></li>
+      <li><a href="apuntes-estudio-un.html"><span class="s-emoji">📓</span>IX. Apuntes Estudio</a></li>
+      <li><a href="textos-varios-practica-textual.html"><span class="s-emoji">📰</span>X. Textos Varios</a></li>
+      <li><a href="modulos-teoricos.html"><span class="s-emoji">📚</span>XI. Módulos Teóricos</a></li>
+      <li><a href="modulos-especiales.html"><span class="s-emoji">⭐</span>XII. Módulos Especiales</a></li>
+      <li><a href="ejercicios-practicas.html"><span class="s-emoji">✏️</span>XIII. Ejercicios</a></li>
+      <li><a href="simulacros-un.html"><span class="s-emoji">🧪</span>XIV. Simulacros</a></li>
+      <li><a href="simulacros-calificados-un.html"><span class="s-emoji">🏆</span>XV. Simulacros Cal.</a></li>
+      <li><a href="app-s-estudio-android.html"><span class="s-emoji">📱</span>XVI. App's Estudio</a></li>
+      <li><a href="clases-en-vivo-grabadas-sin-presupuesto-un.html"><span class="s-emoji">🎥</span>Clases en vivo</a></li>
+      <li><a href="donativos.html"><span class="s-emoji">❤️</span>Donativos</a></li>
+      <li><a href="formulario-economico-1.html"><span class="s-emoji">📑</span>Formulario Económico</a></li>
+      <li><a href="medios-de-sin-presupuesto-un.html"><span class="s-emoji">📡</span>Medios Sin-Pre</a></li>
+      <li><a href="tomos.html"><span class="s-emoji">📕</span>Tomos</a></li>
+      
+    </ul>
+  </aside>
+  <main>
+    <div class="page-header">
+      <div class="ph-icon">🦁</div>
+      <div>
+        <p class="page-label">Sección VII</p>
+        <h1>Recursos UdeA</h1>
       </div>
-      <ul class="nav-drawer-links">        <li><a href="index.html"><span class="link-icon">🏠</span>Inicio</a></li>
-        <li><a href="clases-sin-pre.html"><span class="link-icon">📚</span>Clases</a></li>
-        <li><a href="motivacion-guia.html"><span class="link-icon">💡</span>Motivación</a></li>
-        <li><a href="modulos-teoricos.html"><span class="link-icon">📖</span>Material</a></li>
-        <li><a href="ejercicios-practicas.html"><span class="link-icon">✏️</span>Práctica</a></li>
-        <li><a href="temarios.html"><span class="link-icon">🔎</span>Recursos</a></li>
-        <li><a href="donativos.html"><span class="link-icon">❤️</span>Comunidad</a></li></ul>
+    </div>
+    <p class="page-intro">Material específico para el examen de admisión UdeA</p>
+    <p class="drag-hint">Mantén presionado para reordenar · Clic para expandir
+      <button class="reset-order-btn" onclick="resetOrder()">↺ Orden original</button>
+      <span class="sort-wrap"><button class="sort-btn" id="sort-btn" onclick="toggleSortMenu(event)">⇅ Ordenar ▾</button>
+      <div class="sort-menu" id="sort-menu"><button onclick="applySort('az')">A → Z</button><button onclick="applySort('za')">Z → A</button><div class="sort-divider"></div><button onclick="applySort('unseen')">Sin ver primero</button><button onclick="applySort('seen')">Vistos primero</button></div></span></p>
+    <div id="modules-grid"></div>
+  </main>
+</div>
+
+<!-- MODAL DOCUMENTO -->
+<div class="modal-backdrop" id="modal" onclick="outsideClose(event)">
+  <div class="modal-window">
+    <div class="modal-chrome">
+      <div class="modal-dots">
+        <div class="modal-dot" style="background:#ff5f57"></div>
+        <div class="modal-dot" style="background:#febc2e"></div>
+        <div class="modal-dot" style="background:#28c840"></div>
+      </div>
+      <div class="modal-url" id="m-url">drive.google.com</div>
+      <button class="btn-close-modal" onclick="closeModal()">✕</button>
+    </div>
+    <div class="modal-info">
+      <div class="mi-icon" id="m-icon">📄</div>
+      <div class="mi-body">
+        <div class="mi-name" id="m-name">—</div>
+        <div class="mi-meta" id="m-meta">—</div>
+      </div>
+      <button class="btn-seen" id="m-seen-btn" onclick="toggleModalSeen()">Marcar como visto</button>
+      <a class="btn-drive" href="#" target="_blank">↗ Abrir en Drive</a>
+    </div>
+    <div class="modal-iframe-wrap">
+      <div class="modal-iframe-loading" id="m-loading">
+        <span style="font-size:1.5rem">⏳</span>
+        <span>Cargando documento…</span>
+      </div>
+      <iframe id="m-iframe" allowfullscreen loading="lazy"
+        sandbox="allow-scripts allow-same-origin allow-popups allow-forms"></iframe>
     </div>
   </div>
+</div>
 
-  <script>
-  function openNavDrawer() {
-    document.getElementById('nav-drawer-overlay').classList.add('open');
-    document.body.style.overflow = 'hidden';
-  }
-  function closeNavDrawer() {
-    document.getElementById('nav-drawer-overlay').classList.remove('open');
-    document.body.style.overflow = '';
-  }
-  </script>
-  <script src="editor.js"></script>
-  <script type="module" src="firebase-auth.js"></script>
+<!-- DRAWER MÓVIL -->
+<div class="nav-drawer-overlay" id="nav-drawer-overlay" onclick="closeNavDrawer()">
+  <div class="nav-drawer" onclick="event.stopPropagation()">
+    <div class="nav-drawer-header">
+      <span style="font-family:'Fraunces',serif;font-weight:700;color:var(--accent2)">Sin-Presupuesto</span>
+      <button class="btn-close-drawer" onclick="closeNavDrawer()">✕</button>
+    </div>
+    <ul><li><a href="motivacion-guia.html"><span class="s-emoji">💡</span>I. Motivación/Guía</a></li>
+      <li><a href="clases-sin-pre.html"><span class="s-emoji">📹</span>II. Clases Sin-Pre</a></li>
+      <li><a href="temarios.html"><span class="s-emoji">📋</span>III. Temarios</a></li>
+      <li><a href="admision-y-examenes-un.html"><span class="s-emoji">🎓</span>IV. Admisión y Exámenes</a></li>
+      <li><a href="clases-preu-s-i.html"><span class="s-emoji">🏫</span>V. Clases PreU's I</a></li>
+      <li><a href="clases-preu-s-ii-libres.html"><span class="s-emoji">🏫</span>VI. Clases PreU's II</a></li>
+      <li><a href="recursos-udea.html" class="current"><span class="s-emoji">🦁</span>VII. Recursos UdeA</a></li>
+      <li><a href="diapositivas-con-todo.html"><span class="s-emoji">📊</span>VIII. Diapositivas</a></li>
+      <li><a href="apuntes-estudio-un.html"><span class="s-emoji">📓</span>IX. Apuntes Estudio</a></li>
+      <li><a href="textos-varios-practica-textual.html"><span class="s-emoji">📰</span>X. Textos Varios</a></li>
+      <li><a href="modulos-teoricos.html"><span class="s-emoji">📚</span>XI. Módulos Teóricos</a></li>
+      <li><a href="modulos-especiales.html"><span class="s-emoji">⭐</span>XII. Módulos Especiales</a></li>
+      <li><a href="ejercicios-practicas.html"><span class="s-emoji">✏️</span>XIII. Ejercicios</a></li>
+      <li><a href="simulacros-un.html"><span class="s-emoji">🧪</span>XIV. Simulacros</a></li>
+      <li><a href="simulacros-calificados-un.html"><span class="s-emoji">🏆</span>XV. Simulacros Cal.</a></li>
+      <li><a href="app-s-estudio-android.html"><span class="s-emoji">📱</span>XVI. App's Estudio</a></li>
+      <li><a href="clases-en-vivo-grabadas-sin-presupuesto-un.html"><span class="s-emoji">🎥</span>Clases en vivo</a></li>
+      <li><a href="donativos.html"><span class="s-emoji">❤️</span>Donativos</a></li>
+      <li><a href="formulario-economico-1.html"><span class="s-emoji">📑</span>Formulario Económico</a></li>
+      <li><a href="medios-de-sin-presupuesto-un.html"><span class="s-emoji">📡</span>Medios Sin-Pre</a></li>
+      <li><a href="tomos.html"><span class="s-emoji">📕</span>Tomos</a></li>
+      </ul>
+  </div>
+</div>
+
+<footer>
+  <p>Sin-Presupuesto · PreUniversitario gratuito y popular ❤️</p>
+  <p style="margin-top:.4rem">
+    <a href="donativos.html">Apoya el proyecto</a> ·
+    <a href="medios-de-sin-presupuesto-un.html">Redes sociales</a>
+  </p>
+  <p style="margin-top:.75rem;padding-top:.75rem;border-top:1px solid var(--border)">
+    <button id="btn-admin-footer"
+      style="background:none;border:none;color:var(--border);font-size:.72rem;cursor:pointer;transition:color .2s;font-family:'DM Sans',sans-serif;"
+      onmouseover="this.style.color='var(--muted)'" onmouseout="this.style.color='var(--border)'">
+      Joaquín L. Cortés
+    </button>
+  </p>
+</footer>
+
+<!-- SCRIPTS: editor.js primero (showToast), luego firebase-auth.js (auth + modales) -->
+<script src="editor.js"></script>
+<script type="module" src="firebase-auth.js"></script>
 
 <script>
-/* ── Tema oscuro/claro ── */
+/* ── TEMA ── */
 (function(){
-  var saved = localStorage.getItem('sp-tema') || 'light';
-  document.documentElement.setAttribute('data-theme', saved);
+  var s=localStorage.getItem('sp-tema')||'light';
+  document.documentElement.setAttribute('data-theme',s);
   function syncBtn(){
-    var btn = document.getElementById('btn-tema');
-    if(!btn) return;
-    btn.textContent = document.documentElement.getAttribute('data-theme')==='dark'
-      ? '☀ Modo claro' : '🌙 Modo oscuro';
+    var b=document.getElementById('btn-tema');
+    if(!b)return;
+    b.textContent=document.documentElement.getAttribute('data-theme')==='dark'?'☀ Modo claro':'🌙 Modo oscuro';
   }
-  document.addEventListener('DOMContentLoaded', syncBtn);
-  window.toggleTema = function(){
-    var next = document.documentElement.getAttribute('data-theme')==='dark' ? 'light' : 'dark';
-    document.documentElement.setAttribute('data-theme', next);
-    localStorage.setItem('sp-tema', next);
+  document.addEventListener('DOMContentLoaded',syncBtn);
+  window.toggleTema=function(){
+    var n=document.documentElement.getAttribute('data-theme')==='dark'?'light':'dark';
+    document.documentElement.setAttribute('data-theme',n);
+    localStorage.setItem('sp-tema',n);
     syncBtn();
   };
 })();
+
+/* ── AUTH GATE ── */
+function requireAuth(cb){
+  // _getAuthUser es expuesto por firebase-auth.js
+  var user=window._getAuthUser&&window._getAuthUser();
+  if(user){ cb(); return; }
+  // Mostrar toast y abrir modal de login
+  var toast=document.getElementById('auth-gate-toast');
+  if(toast){
+    toast.classList.add('show');
+    clearTimeout(window._authToastTimer);
+    window._authToastTimer=setTimeout(()=>toast.classList.remove('show'),2800);
+  }
+  if(window.openStudentModal) window.openStudentModal();
+  else {
+    // firebase-auth.js aún no cargó — esperar un tick
+    setTimeout(()=>{if(window.openStudentModal)window.openStudentModal();},600);
+  }
+}
+
+/* ── DATOS ── */
+const MODULES=[{"id": "libro_ex_menes_udea", "emoji": "🏛️", "bg": "#fff0de", "title": "Libro Exámenes UdeA", "desc": "Libro Exámenes UdeA", "files": [{"n": "Material preparatorio UdeA", "url": "https://drive.google.com/file/d/1xlV-FkJmfBFiP3Iwn68IiMuTintXUIvV/view?usp=sharing", "type": "PDF", "ext": false}]}, {"id": "udea_comprensi_n_lec", "emoji": "📖", "bg": "#fff0de", "title": "UdeA Comprensión Lectora", "desc": "UdeA Comprensión Lectora", "files": [{"n": "Material preparatorio UdeA", "url": "https://drive.google.com/file/d/1VaniX3RgYzPfBsiySgU1n-gsgMG7RMoV/view?usp=sharing", "type": "PDF", "ext": false}, {"n": "UdeA Comprensión Lectora — N° 2", "url": "https://drive.google.com/file/d/17doSJ4x-uLKR8zNzWEDPQsCs97ZhmXK3/view?usp=sharing", "type": "PDF", "ext": false}, {"n": "UdeA Comprensión Lectora — N° 3", "url": "https://drive.google.com/file/d/1M1i-3aGYCl3EMdePiVDp6-FEsJj3SypT/view?usp=sharing", "type": "PDF", "ext": false}, {"n": "UdeA Comprensión Lectora — N° 4", "url": "https://drive.google.com/file/d/11jvX11wA-KsdqTvtHAe1nLoIuIV9fgeC/view?usp=sharing", "type": "PDF", "ext": false}, {"n": "UdeA Comprensión Lectora — N° 5", "url": "https://drive.google.com/file/d/19YSfj2I7g324I7bw9zZTezF6BRP53ivt/view?usp=sharing ", "type": "PDF", "ext": false}, {"n": "UdeA Comprensión Lectora — N° 6", "url": "https://drive.google.com/file/d/1aTTAcKLH4kT2B0ucmI6cXAT_p8ZC7aSI/view?usp=sharing ", "type": "PDF", "ext": false}, {"n": "UdeA Comprensión Lectora — N° 7", "url": "https://drive.google.com/file/d/1raaGlLp9yBWu3kLXWdxoPr_yJKC77VN6/view?usp=sharing ", "type": "PDF", "ext": false}, {"n": "UdeA Comprensión Lectora — N° 8", "url": "https://drive.google.com/file/d/1g19mCneLRs8BxGMq6zecqm4jg2In09ZC/view?usp=sharing", "type": "PDF", "ext": false}, {"n": "UdeA Comprensión Lectora — N° 9", "url": "https://drive.google.com/file/d/1MA8KydLgwiCmVl4e9CEuk5eg6fAFeSJm/view?usp=sharing", "type": "PDF", "ext": false}, {"n": "UdeA Comprensión Lectora — N° 10", "url": "https://drive.google.com/file/d/1avMtF0OwPVQoqSPb3D0f-kMG1y6VQEti/view?usp=sharing", "type": "PDF", "ext": false}, {"n": "UdeA Comprensión Lectora — N° 11", "url": "https://drive.google.com/file/d/1ZPQkGYUN2eNtJQa7NUkN79Wa2UVBJufN/view?usp=sharing", "type": "PDF", "ext": false}, {"n": "UdeA Comprensión Lectora — N° 12", "url": "https://drive.google.com/file/d/1rQbtI25dgYuFZp9bFHcEySkVT3_Rlmlp/view?usp=sharing", "type": "PDF", "ext": false}, {"n": "UdeA Comprensión Lectora — N° 13", "url": "https://drive.google.com/file/d/1RkyTLVihByYGq0UzK81xK_gPAjIEQueM/view?usp=sharing", "type": "PDF", "ext": false}, {"n": "UdeA Comprensión Lectora — N° 14", "url": "https://drive.google.com/file/d/1IQVPKeC6wRM5Yj7NAqD1HZ-_qz3_Va6a/view?usp=sharing", "type": "PDF", "ext": false}, {"n": "UdeA Comprensión Lectora — N° 15", "url": "https://drive.google.com/file/d/1wXeFSAf8oA4_Xn3XBff7zPEsVbhS3i9B/view?usp=sharing", "type": "PDF", "ext": false}, {"n": "UdeA Comprensión Lectora — N° 16", "url": "https://drive.google.com/file/d/1pVRoDcngRN2Y7qMsJ88EFoI3wbEbbNjf/view?usp=sharing", "type": "PDF", "ext": false}]}, {"id": "udea_razonamiento_l", "emoji": "🏛️", "bg": "#fff0de", "title": "UdeA Razonamiento Lógico", "desc": "UdeA Razonamiento Lógico", "files": [{"n": "Material preparatorio UdeA", "url": "https://drive.google.com/file/d/1LbcGVWcWGJ5L0V_3uCWfrhc3J2AmKUzB/view?usp=sharing", "type": "PDF", "ext": false}, {"n": "UdeA Razonamiento Lógico — N° 2", "url": "https://drive.google.com/file/d/1a-FAHG5hEtFLum6A4eBOmQJ2NzD5GqK1/view?usp=sharing", "type": "PDF", "ext": false}, {"n": "UdeA Razonamiento Lógico — N° 3", "url": "https://drive.google.com/file/d/1wLQO8taE6Q0OPajBeY-OrKsstMQuGrq4/view?usp=sharing", "type": "PDF", "ext": false}, {"n": "UdeA Razonamiento Lógico — N° 4", "url": "https://drive.google.com/file/d/1X3iXutAKHKta-aOmyEyZ1neNBhu4bEZ2/view?usp=sharing", "type": "PDF", "ext": false}, {"n": "UdeA Razonamiento Lógico — N° 5", "url": "https://drive.google.com/file/d/1jFAsTalh9qLpP1Hs-vtpraREHnAZKY63/view?usp=sharing ", "type": "PDF", "ext": false}, {"n": "UdeA Razonamiento Lógico — N° 6", "url": "https://drive.google.com/file/d/1et-37z2d777-B-HAiY8JiZzIXwQkyo7a/view?usp=sharing", "type": "PDF", "ext": false}, {"n": "UdeA Razonamiento Lógico — N° 7", "url": "https://drive.google.com/file/d/1ydXpfWVc2FZ2NN60614D3cdC6rAxvxg_/view?usp=sharing", "type": "PDF", "ext": false}, {"n": "UdeA Razonamiento Lógico — N° 8", "url": "https://drive.google.com/file/d/1CjdMcKCcV0X7KtDoOrlVDWxnbQKwYYxr/view?usp=sharing", "type": "PDF", "ext": false}, {"n": "UdeA Razonamiento Lógico — N° 9", "url": "https://drive.google.com/file/d/1yFFmZibGay2HwJeLwZvTgZ7kArKzSaij/view?usp=sharing", "type": "PDF", "ext": false}, {"n": "UdeA Razonamiento Lógico — N° 10", "url": "https://drive.google.com/file/d/1jqaoaJYVqUOAAN9QBjShlW9BX_08K8DX/view?usp=sharing", "type": "PDF", "ext": false}, {"n": "UdeA Razonamiento Lógico — N° 11", "url": "https://drive.google.com/file/d/1u8w8ZGTKPRNCmYJBp4qZDZWplhAYeouY/view?usp=sharing", "type": "PDF", "ext": false}, {"n": "UdeA Razonamiento Lógico — N° 12", "url": "https://drive.google.com/file/d/1OTNY7U_VWe4HRLIzGSEvFWWEgDKogmpS/view?usp=sharing", "type": "PDF", "ext": false}, {"n": "UdeA Razonamiento Lógico — N° 13", "url": "https://drive.google.com/file/d/1G9cEyxPn6HHwOd-q64tbOMjrt_2G1mMG/view?usp=sharing", "type": "PDF", "ext": false}]}];
+const PAGE_KEY='recursos_udea';
+const HOLD_MS=300;
+let checked={},order=MODULES.map(m=>m.id),fileOrders={},heroMode='bar';
+let openCardId=null,activeModal=null,saveTimer=null;
+
+/* ── BOOT — llamado por firebase-auth.js vía window._pageReady ── */
+window._pageReady=function(user,db,docFn,setFn){
+  // Guardar referencias a Firebase para saves
+  window._fdb=db; window._fdoc=docFn; window._fset=setFn;
+  window._cu=user;
+  // Cargar progreso
+  MODULES.forEach(m=>{
+    checked[m.id]=JSON.parse(localStorage.getItem('sp_'+PAGE_KEY+'_'+m.id)||'null')||{};
+    fileOrders[m.id]=m.files.map((_,i)=>i);
+  });
+  order=JSON.parse(localStorage.getItem('sp_'+PAGE_KEY+'_order')||'null')||MODULES.map(m=>m.id);
+  heroMode=localStorage.getItem('sp_'+PAGE_KEY+'_hero')||'bar';
+  // Si hay datos en Firestore los sobrescribe
+  applyHeroMode();renderGrid();
+};
+
+/* Fallback: si firebase-auth.js tarda más de 2s, inicializar con localStorage */
+setTimeout(()=>{
+  if(!window._pageBooted){
+    window._pageBooted=true;
+    MODULES.forEach(m=>{
+      checked[m.id]=JSON.parse(localStorage.getItem('sp_'+PAGE_KEY+'_'+m.id)||'null')||{};
+      fileOrders[m.id]=m.files.map((_,i)=>i);
+    });
+    order=JSON.parse(localStorage.getItem('sp_'+PAGE_KEY+'_order')||'null')||MODULES.map(m=>m.id);
+    heroMode=localStorage.getItem('sp_'+PAGE_KEY+'_hero')||'bar';
+    applyHeroMode();renderGrid();
+  }
+},2000);
+
+/* ── PERSIST ── */
+function showBadge(msg,cls){
+  var b=document.getElementById('save-badge');
+  if(!b)return;
+  b.textContent=msg;b.className='save-badge show '+(cls||'');
+  clearTimeout(window._bt);window._bt=setTimeout(()=>b.classList.remove('show'),2200);
+}
+async function saveAll(){
+  MODULES.forEach(m=>localStorage.setItem('sp_'+PAGE_KEY+'_'+m.id,JSON.stringify(checked[m.id])));
+  localStorage.setItem('sp_'+PAGE_KEY+'_order',JSON.stringify(order));
+  localStorage.setItem('sp_'+PAGE_KEY+'_hero',heroMode);
+  var u=window._cu;if(!u||!window._fdb)return;
+  try{
+    showBadge('⟳ Guardando…','');
+    await window._fset(window._fdoc(window._fdb,'users',u.uid,'progress',PAGE_KEY),
+      {checked,order,heroMode,fileOrders,updatedAt:Date.now()},{merge:true});
+    showBadge('✓ Guardado','ok');
+  }catch(e){showBadge('⚠ Local','err');}
+}
+function scheduleSave(){clearTimeout(saveTimer);saveTimer=setTimeout(saveAll,800);}
+
+/* ── HERO MODE ── */
+function toggleHeroMode(){heroMode=heroMode==='bar'?'ring':'bar';applyHeroMode();scheduleSave();renderGrid();}
+window.toggleHeroMode=toggleHeroMode;
+function applyHeroMode(){
+  var hero=document.getElementById('progress-hero'),ring=document.getElementById('ring-widget'),btn=document.getElementById('hero-ring-btn');
+  if(heroMode==='ring'){
+    hero&&hero.classList.add('collapsed');
+    ring&&ring.classList.add('visible');
+    if(btn){btn.textContent='▬ Cambiar a la Barra';btn.classList.add('ring-active');}
+  }else{
+    hero&&hero.classList.remove('collapsed');
+    ring&&ring.classList.remove('visible');
+    if(btn){btn.textContent='◯ Cambiar al Anillo';btn.classList.remove('ring-active');}
+  }
+}
+
+/* ── STATS ── */
+function doneOf(mid){return Object.values(checked[mid]||{}).filter(Boolean).length;}
+function totalDone(){return MODULES.reduce((a,m)=>a+doneOf(m.id),0);}
+function totalAll(){return MODULES.reduce((a,m)=>a+m.files.length,0);}
+function updateStats(){
+  var done=totalDone(),total=totalAll(),pct=total?Math.round(done/total*100):0;
+  var sd=document.getElementById('s-done'),st=document.getElementById('s-total'),sp=document.getElementById('s-pct');
+  if(sd)sd.textContent=done;if(st)st.textContent=total;if(sp)sp.textContent=pct+'%';
+  var gf=document.getElementById('g-fill'),gl=document.getElementById('g-lbl');
+  if(gf)gf.style.width=pct+'%';
+  if(gl)gl.textContent=done+' de '+total+' archivos completados';
+  var c=2*Math.PI*19,d=(c*pct/100).toFixed(1),g=(c*(1-pct/100)).toFixed(1);
+  var rci=document.getElementById('rw-circle');if(rci)rci.setAttribute('stroke-dasharray',d+' '+g);
+  var rp=document.getElementById('rw-pct'),rs=document.getElementById('rw-sub');
+  if(rp)rp.textContent=pct+'%';if(rs)rs.textContent=done+' de '+total;
+}
+function buildProgInd(m,pct,done,total,allDone){
+  if(heroMode==='ring'){
+    var r=11,c=2*Math.PI*r,d=(c*pct/100).toFixed(1),g=(c*(1-pct/100)).toFixed(1);
+    return '<div class="mc-prog-ind mc-ring-mini"><svg width="26" height="26" viewBox="0 0 26 26">'
+      +'<circle cx="13" cy="13" r="11" fill="none" stroke="var(--border)" stroke-width="2.5"/>'
+      +'<circle cx="13" cy="13" r="11" fill="none" stroke="'+(allDone?'var(--green)':'var(--accent2)')+'" stroke-width="2.5" stroke-dasharray="'+d+' '+g+'" stroke-linecap="round"/>'
+      +'</svg></div>';
+  }
+  return '<div class="mc-prog-ind mc-bar-mini"><div class="mc-bar-mini-track"><div class="mc-bar-mini-fill'+(allDone?' full':'')+'" style="width:'+pct+'%"></div></div>'
+    +'<div class="mc-bar-mini-label">'+done+'/'+total+'</div></div>';
+}
+
+/* ── RENDER ── */
+function renderGrid(){
+  window._pageBooted=true;
+  var grid=document.getElementById('modules-grid');if(!grid)return;
+  grid.innerHTML='';grid.classList.toggle('has-open',!!openCardId);
+  var sorted=order.map(id=>MODULES.find(m=>m.id===id)).filter(Boolean);
+  sorted.forEach(function(m){
+    var total=m.files.length,done=doneOf(m.id),pct=total?Math.round(done/total*100):0,allDone=done===total&&total>0,isOpen=openCardId===m.id;
+    var card=document.createElement('div');
+    card.className='module-card'+(isOpen?' open':'')+(allDone?' complete':'');
+    card.dataset.mid=m.id;
+    var fo=fileOrders[m.id]||m.files.map(function(_,i){return i;});
+    var filesHtml=fo.map(function(fi){
+      var f=m.files[fi];if(!f)return'';
+      var isDone=!!(checked[m.id]&&checked[m.id][fi]);
+      return '<div class="file-card'+(isDone?' done':'')+'" data-mid="'+m.id+'" data-fi="'+fi+'">'
+        +'<div class="fc-icon" style="background:'+m.bg+'">'+m.emoji+'</div>'
+        +'<div class="fc-body">'
+        +'<div class="fc-name">'+f.n+'</div>'
+        +'<div class="fc-meta"><span class="fc-tag">'+(f.type||'PDF')+'</span></div>'
+        +'<span class="fc-open">'+(f.ext?'Abrir en nueva pestaña →':'Ver documento →')+'</span>'
+        +'</div>'
+        +'<div class="fc-seen'+(isDone?' done':'')+'">✓</div>'
+        +'</div>';
+    }).join('');
+    card.innerHTML='<div class="mc-head">'
+      +'<div class="mc-emoji" style="background:'+m.bg+'">'+m.emoji+'</div>'
+      +'<div class="mc-title-wrap"><div class="mc-title">'+m.title+'</div><div class="mc-desc">'+m.desc+'</div></div>'
+      +buildProgInd(m,pct,done,total,allDone)
+      +'<span class="mc-chevron">▶</span>'
+      +'</div>'
+      +'<div class="mc-prog"><div class="mc-prog-fill'+(allDone?' full':'')+'" style="width:'+pct+'%"></div></div>'
+      +'<div class="mc-files">'+filesHtml+'</div>';
+    attachCard(card,m);
+    grid.appendChild(card);
+  });
+  updateStats();
+}
+
+/* ── DRAG: MODULE CARDS ── */
+function allCards(){return[...document.querySelectorAll('.module-card')];}
+function clearDragClasses(){allCards().forEach(function(c){c.classList.remove('drop-target','shift-up','shift-down','is-dragging','hold-ready');});}
+var ghost=null;
+function createGhost(card){
+  ghost=document.createElement('div');
+  var r=card.getBoundingClientRect();ghost._w=r.width;
+  ghost.style.cssText='position:fixed;left:'+r.left+'px;top:'+r.top+'px;width:'+r.width+'px;height:50px;border-radius:16px;background:var(--bg2);border:2px solid var(--accent2);opacity:.88;pointer-events:none;z-index:9999;box-shadow:0 16px 48px var(--shadow);transform:rotate(-1.5deg) scale(1.04);';
+  document.body.appendChild(ghost);
+}
+function moveGhost(x,y){if(!ghost)return;ghost.style.left=(x-ghost._w/2)+'px';ghost.style.top=(y-25)+'px';}
+function removeGhost(){if(ghost){ghost.remove();ghost=null;}}
+
+function attachCard(card,m){
+  var head=card.querySelector('.mc-head');
+  var holdTimer=null,dragActive=false,everDragged=false,overMid=null,docMH=null,docUH=null;
+  head.addEventListener('pointerdown',function(e){
+    if(openCardId===m.id)return;
+    e.preventDefault();everDragged=false;
+    holdTimer=setTimeout(function(){
+      dragActive=true;everDragged=true;card.classList.add('hold-ready');
+      setTimeout(function(){
+        if(!dragActive)return;
+        card.classList.remove('hold-ready');card.classList.add('is-dragging');createGhost(card);
+        docMH=function(ev){
+          ev.preventDefault();moveGhost(ev.clientX,ev.clientY);
+          var under=document.elementFromPoint(ev.clientX,ev.clientY);
+          var tc=under?under.closest('.module-card'):null;
+          allCards().forEach(function(c){c.classList.remove('drop-target','shift-up','shift-down');});
+          if(tc&&tc!==card){
+            tc.classList.add('drop-target');
+            var si=order.indexOf(m.id),di=order.indexOf(tc.dataset.mid);
+            allCards().forEach(function(c){
+              if(c===card||c===tc)return;
+              var ci=order.indexOf(c.dataset.mid);
+              if(si<di&&ci>si&&ci<=di)c.classList.add('shift-up');
+              if(si>di&&ci<si&&ci>=di)c.classList.add('shift-down');
+            });
+            overMid=tc.dataset.mid;
+          }else overMid=null;
+        };
+        docUH=function(){cleanup(true);};
+        document.addEventListener('pointermove',docMH,{passive:false});
+        document.addEventListener('pointerup',docUH);
+      },50);
+    },HOLD_MS);
+  });
+  head.addEventListener('pointerup',function(e){
+    if(dragActive||everDragged)return;
+    clearTimeout(holdTimer);cleanup(false);toggleCard(m.id);
+  });
+  head.addEventListener('pointercancel',function(){cleanup(false);});
+  function cleanup(commit){
+    clearTimeout(holdTimer);
+    if(docMH){document.removeEventListener('pointermove',docMH);docMH=null;}
+    if(docUH){document.removeEventListener('pointerup',docUH);docUH=null;}
+    removeGhost();
+    var wasActive=dragActive,landing=overMid;dragActive=false;overMid=null;clearDragClasses();
+    if(commit&&wasActive&&landing){
+      var si=order.indexOf(m.id),di=order.indexOf(landing);
+      if(si!==di){order.splice(si,1);order.splice(di,0,m.id);scheduleSave();_setJustDropped();renderGrid();}
+    }
+  }
+  card.querySelectorAll('.file-card').forEach(function(fc){attachFile(fc,m);});
+}
+
+/* ── DRAG: FILE CARDS ── */
+function allFileCards(){return[...document.querySelectorAll('.file-card')];}
+function clearFileClasses(){allFileCards().forEach(function(c){c.classList.remove('fc-drop-target','fc-dragging','fc-hold-ready');});}
+function attachFile(fc,m){
+  var holdTimer=null,dragActive=false,overFi=null,srcFi=parseInt(fc.dataset.fi),docMF=null,docUF=null;
+  fc.addEventListener('pointerdown',function(e){
+    e.stopPropagation();e.preventDefault();
+    holdTimer=setTimeout(function(){
+      dragActive=true;fc.classList.add('fc-hold-ready');
+      setTimeout(function(){
+        if(!dragActive)return;
+        fc.classList.remove('fc-hold-ready');fc.classList.add('fc-dragging');
+        docMF=function(ev){
+          ev.preventDefault();
+          var under=document.elementFromPoint(ev.clientX,ev.clientY);
+          var tgt=under?under.closest('.file-card'):null;
+          allFileCards().forEach(function(c){c.classList.remove('fc-drop-target');});
+          if(tgt&&tgt!==fc&&tgt.dataset.mid===m.id){tgt.classList.add('fc-drop-target');overFi=parseInt(tgt.dataset.fi);}
+          else overFi=null;
+        };
+        docUF=function(){fileCleanup(true);};
+        document.addEventListener('pointermove',docMF,{passive:false});
+        document.addEventListener('pointerup',docUF);
+      },50);
+    },HOLD_MS);
+  });
+  fc.addEventListener('pointerup',function(e){
+    e.stopPropagation();
+    if(dragActive)return;
+    clearTimeout(holdTimer);fileCleanup(false);
+    openModal(m.id,srcFi);
+  });
+  fc.addEventListener('pointercancel',function(){fileCleanup(false);});
+  function fileCleanup(commit){
+    clearTimeout(holdTimer);
+    if(docMF){document.removeEventListener('pointermove',docMF);docMF=null;}
+    if(docUF){document.removeEventListener('pointerup',docUF);docUF=null;}
+    var wasActive=dragActive,landing=overFi;dragActive=false;overFi=null;clearFileClasses();
+    if(commit&&wasActive&&landing!=null&&landing!==srcFi){
+      var fo=fileOrders[m.id];
+      var si=fo.indexOf(srcFi),di=fo.indexOf(landing);
+      fo.splice(si,1);fo.splice(di,0,srcFi);scheduleSave();renderGrid();
+    }
+  }
+}
+
+/* ── CARD TOGGLE ── */
+var _justDropped=false;
+function _bDE(e){e.stopPropagation();e.preventDefault();}
+function _setJustDropped(){
+  _justDropped=true;
+  document.addEventListener('pointerup',_bDE,{capture:true,once:true});
+  document.addEventListener('click',_bDE,{capture:true,once:true});
+  setTimeout(function(){_justDropped=false;},200);
+}
+function toggleCard(mid){openCardId=openCardId===mid?null:mid;renderGrid();}
+window.toggleCard=toggleCard;
+
+function resetOrder(){
+  order=MODULES.map(function(m){return m.id;});
+  MODULES.forEach(function(m){fileOrders[m.id]=m.files.map(function(_,i){return i;});});
+  scheduleSave();renderGrid();
+}
+window.resetOrder=resetOrder;
+
+function toggleSortMenu(e){
+  if(e)e.stopPropagation();
+  var menu=document.getElementById('sort-menu'),btn=document.getElementById('sort-btn');
+  if(!menu)return;
+  var isOpen=menu.classList.toggle('open');
+  btn&&btn.classList.toggle('active',isOpen);
+  if(isOpen)document.addEventListener('click',function(){menu.classList.remove('open');btn&&btn.classList.remove('active');},{once:true});
+}
+window.toggleSortMenu=toggleSortMenu;
+function applySort(c){
+  var s=[...MODULES].sort(function(a,b){
+    switch(c){
+      case'az':return a.title.localeCompare(b.title,'es');
+      case'za':return b.title.localeCompare(a.title,'es');
+      case'unseen':return doneOf(a.id)-doneOf(b.id);
+      case'seen':return doneOf(b.id)-doneOf(a.id);
+      default:return 0;
+    }
+  });
+  order=s.map(function(m){return m.id;});scheduleSave();renderGrid();
+}
+window.applySort=applySort;
+
+/* ── MODAL DOCUMENTO ── */
+function openModal(mid,fi){
+  requireAuth(function(){
+    var m=MODULES.find(function(x){return x.id===mid;}),f=m.files[fi];
+    activeModal={mid:mid,fi:fi};
+    document.getElementById('m-icon').textContent=m.emoji;
+    document.getElementById('m-name').textContent=f.n;
+    document.getElementById('m-meta').textContent=m.title;
+    var driveUrl=f.url;
+    /* Archivos externos (Quizizz, Forms, etc.): abrir en pestaña nueva */
+    if(f.ext){
+      window.open(driveUrl,'_blank');
+      /* Marcar como visto automáticamente */
+      if(!checked[mid])checked[mid]={};
+      checked[mid][fi]=true;
+      scheduleSave();renderGrid();
+      return;
+    }
+    /* Drive PDF: mostrar en iframe */
+    var previewUrl=driveUrl;
+    var fm=driveUrl.match(/\/file\/d\/([^/]+)/);
+    if(fm)previewUrl='https://drive.google.com/file/d/'+fm[1]+'/preview';
+    document.getElementById('m-url').textContent=previewUrl.replace('https://','');
+    document.querySelector('.btn-drive').href=driveUrl;
+    var iframe=document.getElementById('m-iframe'),loading=document.getElementById('m-loading');
+    if(loading)loading.classList.remove('hidden');
+    if(iframe){iframe.src='';setTimeout(function(){iframe.src=previewUrl;},80);}
+    if(iframe)iframe.onload=function(){if(loading)loading.classList.add('hidden');};
+    syncSeen();
+    document.getElementById('modal').classList.add('open');
+  });
+}
+function syncSeen(){
+  if(!activeModal)return;
+  var isDone=!!(checked[activeModal.mid]&&checked[activeModal.mid][activeModal.fi]);
+  var btn=document.getElementById('m-seen-btn');
+  if(btn){btn.textContent=isDone?'✓ Visto':'Marcar como visto';btn.classList.toggle('done',isDone);}
+}
+function toggleModalSeen(){
+  if(!activeModal)return;
+  var mid=activeModal.mid,fi=activeModal.fi;
+  if(!checked[mid])checked[mid]={};
+  checked[mid][fi]=!checked[mid][fi];
+  scheduleSave();renderGrid();syncSeen();
+}
+function closeModal(){
+  document.getElementById('modal').classList.remove('open');
+  activeModal=null;
+  var iframe=document.getElementById('m-iframe');if(iframe)iframe.src='';
+}
+function outsideClose(e){if(e.target===document.getElementById('modal'))closeModal();}
+window.toggleModalSeen=toggleModalSeen;window.closeModal=closeModal;window.outsideClose=outsideClose;
+
+/* ── DRAWER MÓVIL ── */
+function openNavDrawer(){document.getElementById('nav-drawer-overlay').classList.add('open');}
+function closeNavDrawer(){document.getElementById('nav-drawer-overlay').classList.remove('open');}
+window.openNavDrawer=openNavDrawer;window.closeNavDrawer=closeNavDrawer;
 </script>
 </body>
 </html>

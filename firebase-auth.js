@@ -1009,7 +1009,6 @@ domReady(() => {
     currentUser = user;
     if (user) {
       userProfile = await ensureProfile(user);
-      // Si es estudiante normal (no admin), mostrar saludo al cargar
       if (!isAdmin(user, userProfile)) {
         toast(saludo(userProfile.genero, 'bienvenido'), 'success');
       }
@@ -1017,6 +1016,10 @@ domReady(() => {
       userProfile = null;
     }
     updateNav(user, userProfile);
+    // Notificar a la página que el estado de auth está listo
+    if (window._pageReady) {
+      window._pageReady(user, db, doc, setDoc);
+    }
   });
 
   // Admin modal listeners
@@ -1070,3 +1073,6 @@ window.openChangePasswordModal  = openChangePasswordModal;
 window.closeChangePasswordModal = closeChangePasswordModal;
 window.doChangePassword         = doChangePassword;
 window.doForgotPasswordFromProfile = doForgotPasswordFromProfile;
+window._getAuthUser = () => currentUser;
+window._getUserProfile = () => userProfile;
+
