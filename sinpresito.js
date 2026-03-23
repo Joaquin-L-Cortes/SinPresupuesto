@@ -186,19 +186,27 @@
     // Build catalog context (just names + sections, compact)
     const catalogText = CATALOG.map((f,i) => `${i+1}. [${f.s}] ${f.n}`).join('\n');
 
-    const systemPrompt = `Eres SinPesito, el asistente de estudio de SinPresupuesto, un preuniversitario gratuito colombiano para la prueba Saber 11 y el examen de admisión de la Universidad Nacional.
+    const systemPrompt = `Eres SinPesito, un buscador de material de SinPresupuesto (preuniversitario colombiano, Saber 11 y admisión UNAL).
 
-Tu única tarea es ayudar a los estudiantes a encontrar material de estudio relevante dentro del catálogo de archivos disponibles.
+REGLA ABSOLUTA: SIEMPRE que el estudiante pida material, tema, recurso o archivo — DEBES incluir la línea ARCHIVOS al final. Sin excepción. Si pregunta "dime cuáles", "llévame", "muéstrame", "sugiéreme" — es OBLIGATORIO incluir ARCHIVOS.
 
-CATÁLOGO DE ARCHIVOS DISPONIBLES (${CATALOG.length} archivos):
+FORMATO EXACTO DE RESPUESTA (síguelo siempre):
+[Una oración corta y directa, máximo 20 palabras]
+
+ARCHIVOS: [números del catálogo separados por comas, entre 3 y 8]
+
+Ejemplo:
+Aquí los mejores materiales de análisis de imagen:
+
+ARCHIVOS: 45,46,47,48,49,50
+
+CATÁLOGO (${CATALOG.length} archivos — formato "número. [Sección] Nombre"):
 ${catalogText}
 
-INSTRUCCIONES:
-- Analiza la pregunta del estudiante e identifica qué temas o tipos de material necesita.
-- Responde en español, de forma amigable y motivadora (máximo 2-3 oraciones).
-- Al final de tu respuesta, en una línea nueva, escribe exactamente: ARCHIVOS: seguido de los números de los archivos más relevantes separados por comas (máximo 8). Ejemplo: ARCHIVOS: 1,5,23,47
-- Si no encuentras nada relevante, responde normalmente sin incluir la línea ARCHIVOS.
-- No inventes archivos que no estén en el catálogo.`;
+REGLAS ADICIONALES:
+- Usa SOLO números que existan en el catálogo. Nunca inventes.
+- Si el estudiante dice que no le mostraste archivos o pide más detalles, muestra los ARCHIVOS correctamente.
+- Responde siempre en español.`;
 
     const body = {
       system_instruction: { parts: [{ text: systemPrompt }] },
@@ -222,14 +230,28 @@ INSTRUCCIONES:
     const data = await res.json();
     const raw = data.candidates?.[0]?.content?.parts?.[0]?.text || 'No obtuve respuesta.';
 
-    // Parse ARCHIVOS: line
+    // Parse ARCHIVOS: line — buscar en cualquier parte de la respuesta
     const archivosMatch = raw.match(/ARCHIVOS:\s*([\d,\s]+)/i);
     let matched = [];
-    let text = raw.replace(/ARCHIVOS:[\d,\s]+/i, '').trim();
+    let text = raw.replace(/ARCHIVOS:[\s\d,]+/gi, '').replace(/\n{3,}/g, '\n\n').trim();
 
     if (archivosMatch) {
-      const indices = archivosMatch[1].split(',').map(n => parseInt(n.trim()) - 1).filter(i => i >= 0 && i < CATALOG.length);
-      matched = indices.map(i => CATALOG[i]);
+      const indices = archivosMatch[1]
+        .split(',')
+        .map(n => parseInt(n.trim()) - 1)
+        .filter(i => !isNaN(i) && i >= 0 && i < CATALOG.length);
+      // Deduplicar
+      const unique = [...new Set(indices)];
+      matched = unique.map(i => CATALOG[i]);
+    }
+
+    // Si no hay archivos pero la respuesta parece una búsqueda, intentar fallback por palabras clave
+    if (matched.length === 0 && text.length > 0) {
+      const words = query.toLowerCase().split(/\s+/).filter(w => w.length > 3);
+      const fallback = CATALOG.filter(f =>
+        words.some(w => f.n.toLowerCase().includes(w) || f.s.toLowerCase().includes(w))
+      ).slice(0, 6);
+      if (fallback.length > 0) matched = fallback;
     }
 
     return { text, matched };
