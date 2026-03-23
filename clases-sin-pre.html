@@ -27,21 +27,22 @@
 }
 *{margin:0;padding:0;box-sizing:border-box;}
 body{background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;font-size:15px;line-height:1.7;min-height:100vh;}
-/* NAV */
-nav{position:sticky;top:0;z-index:300;background:var(--nav-bg);backdrop-filter:blur(14px);border-bottom:1px solid var(--border);padding:0 2rem;display:flex;align-items:center;height:52px;box-shadow:0 2px 12px var(--shadow);}
-.nav-logo{font-family:'Fraunces',serif;font-size:1.1rem;font-weight:700;color:var(--accent2);text-decoration:none;padding-right:1.1rem;border-right:1px solid var(--border);margin-right:1.1rem;white-space:nowrap;display:flex;align-items:center;gap:.4rem;}
-.nav-logo img{width:40px;height:40px;object-fit:contain;}
-.nav-links{display:flex;list-style:none;flex:1;}
-.nav-links a{padding:0 .7rem;color:var(--muted);text-decoration:none;font-size:.83rem;font-weight:500;transition:color .15s;line-height:52px;display:block;}
+/* NAV — fluid, se adapta a cualquier pantalla */
+nav{position:sticky;top:0;z-index:300;background:var(--nav-bg);backdrop-filter:blur(14px);border-bottom:1px solid var(--border);padding:0 clamp(.5rem,2vw,2rem);display:flex;align-items:center;height:clamp(46px,6vw,56px);box-shadow:0 2px 12px var(--shadow);}
+.nav-logo{font-family:'Fraunces',serif;font-size:clamp(.82rem,1.8vw,1.1rem);font-weight:700;color:var(--accent2);text-decoration:none;padding-right:clamp(.5rem,1.2vw,1.1rem);border-right:1px solid var(--border);margin-right:clamp(.4rem,1vw,1.1rem);white-space:nowrap;display:flex;align-items:center;gap:clamp(.25rem,.6vw,.4rem);flex-shrink:0;}
+.nav-logo img{width:clamp(26px,3.5vw,40px);height:clamp(26px,3.5vw,40px);object-fit:contain;}
+.nav-links{display:flex;list-style:none;flex:1;overflow:hidden;}
+.nav-links a{padding:0 clamp(.3rem,.7vw,.7rem);color:var(--muted);text-decoration:none;font-size:clamp(.7rem,1.2vw,.83rem);font-weight:500;transition:color .15s;line-height:clamp(46px,6vw,56px);display:block;white-space:nowrap;}
 .nav-links a.active,.nav-links a:hover{color:var(--accent2);}
-.nav-right{display:flex;align-items:center;gap:.45rem;margin-left:auto;flex-shrink:0;}
-#btn-tema{background:none;border:1.5px solid var(--border);color:var(--muted);font-family:'DM Sans',sans-serif;font-size:.75rem;padding:.3rem .65rem;border-radius:20px;cursor:pointer;transition:all .2s;white-space:nowrap;height:1.9rem;}
+.nav-right{display:flex;align-items:center;gap:clamp(.2rem,.5vw,.45rem);margin-left:auto;flex-shrink:0;}
+#btn-tema{background:none;border:1.5px solid var(--border);color:var(--muted);font-family:'DM Sans',sans-serif;font-size:clamp(.65rem,1.1vw,.75rem);padding:.3rem clamp(.4rem,.8vw,.65rem);border-radius:20px;cursor:pointer;transition:all .2s;white-space:nowrap;}
 #btn-tema:hover{border-color:var(--accent2);color:var(--accent2);}
-#btn-avance,#btn-student-login{background:none;border:1.5px solid var(--border);color:var(--muted);font-family:'DM Sans',sans-serif;font-size:.8rem;padding:.35rem .75rem;border-radius:20px;cursor:pointer;transition:all .2s;white-space:nowrap;height:2rem;display:flex;align-items:center;gap:.3rem;}
+#btn-avance,#btn-student-login{background:none;border:1.5px solid var(--border);color:var(--muted);font-family:'DM Sans',sans-serif;font-size:clamp(.68rem,1.1vw,.8rem);padding:.3rem clamp(.4rem,.8vw,.75rem);border-radius:20px;cursor:pointer;transition:all .2s;white-space:nowrap;display:flex;align-items:center;gap:.3rem;}
 #btn-avance:hover,#btn-student-login:hover{border-color:var(--accent2);color:var(--accent2);}
-.nav-hamburger{display:none;background:none;border:none;cursor:pointer;padding:.3rem;flex-direction:column;gap:5px;}
-.nav-hamburger span{display:block;width:20px;height:2px;background:var(--muted);border-radius:2px;}
-@media(max-width:768px){.nav-links{display:none;}.nav-hamburger{display:flex;}}
+.nav-hamburger{display:none;background:none;border:none;cursor:pointer;padding:.3rem;flex-direction:column;gap:4px;flex-shrink:0;}
+.nav-hamburger span{display:block;width:18px;height:2px;background:var(--muted);border-radius:2px;}
+/* Hamburguesa solo cuando nav-links ya no caben (~500px) */
+@media(max-width:640px){.nav-links{display:none;}.nav-hamburger{display:flex;}}
 /* AUTH GATE OVERLAY — mostrado al intentar abrir archivo sin login */
 .auth-gate-toast{
   position:fixed;bottom:5rem;left:50%;transform:translateX(-50%) translateY(20px);
@@ -262,6 +263,7 @@ footer a:hover{text-decoration:underline;}
   #student-modal-box>div:first-child,#perfil-modal-box>div:first-child{margin-left:-1.25rem!important;margin-right:-1.25rem!important;padding-left:1.25rem!important;padding-right:1.25rem!important;}
   #avance-list{max-height:60vh;overflow-y:auto;}
 }
+
 </style>
 </head>
 <body>
@@ -269,7 +271,7 @@ footer a:hover{text-decoration:underline;}
 <!-- NAV -->
 <nav>
   <a class="nav-logo" href="index.html">
-    <img src="logos/filosofia.png" alt="" onerror="this.style.display='none'">Sin-Presupuesto
+    <img src="logos/filosofia.png" alt="" onerror="this.style.display='none'"><span class="nav-logo-text">Sin-Presupuesto</span>
   </a>
   <ul class="nav-links"><li><a href="index.html">Inicio</a></li><li><a href="clases-sin-pre.html" class="active">Clases</a></li><li><a href="motivacion-guia.html">Motivación</a></li><li><a href="modulos-teoricos.html">Material</a></li><li><a href="ejercicios-practicas.html">Práctica</a></li><li><a href="temarios.html">Recursos</a></li><li><a href="donativos.html">Comunidad</a></li></ul>
   <div class="nav-right">
@@ -433,6 +435,10 @@ footer a:hover{text-decoration:underline;}
       <li><a href="medios-de-sin-presupuesto-un.html"><span class="s-emoji">📡</span>Medios Sin-Pre</a></li>
       <li><a href="tomos.html"><span class="s-emoji">📕</span>Tomos</a></li>
       </ul>
+    <!-- Modo oscuro dentro del drawer (visible solo en móvil) -->
+    <div style="margin-top:1rem;padding-top:.75rem;border-top:1px solid var(--border);">
+      <button onclick="toggleTema();closeNavDrawer()" style="width:100%;background:none;border:1px solid var(--border);color:var(--muted);font-family:'DM Sans',sans-serif;font-size:.82rem;padding:.5rem .75rem;border-radius:10px;cursor:pointer;display:flex;align-items:center;gap:.5rem;transition:all .15s;" id="drawer-tema-btn">🌙 Modo oscuro</button>
+    </div>
   </div>
 </div>
 

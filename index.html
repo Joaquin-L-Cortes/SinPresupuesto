@@ -13,7 +13,7 @@
   <nav>
     <a class="nav-logo" href="index.html">
       <img src="logos/filosofia.png" alt="" onerror="this.style.display='none'">
-      Sin-Presupuesto
+      <span class="nav-logo-text">Sin-Presupuesto</span>
     </a>
     <ul class="nav-links"><li><a href="index.html" class="active">Inicio</a></li><li><a href="clases-sin-pre.html" class="">Clases</a></li><li><a href="motivacion-guia.html" class="">Motivación</a></li><li><a href="modulos-teoricos.html" class="">Material</a></li><li><a href="ejercicios-practicas.html" class="">Práctica</a></li><li><a href="temarios.html" class="">Recursos</a></li><li><a href="donativos.html" class="">Comunidad</a></li></ul>
     <div class="nav-right" style="display:flex;align-items:center;gap:0.5rem">
@@ -179,6 +179,9 @@
         <li><a href="ejercicios-practicas.html"><span class="link-icon">✏️</span>Práctica</a></li>
         <li><a href="temarios.html"><span class="link-icon">🔎</span>Recursos</a></li>
         <li><a href="donativos.html"><span class="link-icon">❤️</span>Comunidad</a></li></ul>
+      <div style="margin-top:1rem;padding-top:.75rem;border-top:1px solid var(--border);">
+        <button onclick="toggleTema();closeNavDrawer()" style="width:100%;background:none;border:1px solid var(--border);color:var(--muted);font-family:'DM Sans',sans-serif;font-size:.82rem;padding:.5rem .75rem;border-radius:10px;cursor:pointer;display:flex;align-items:center;gap:.5rem;transition:all .15s;">🌙 Modo oscuro</button>
+      </div>
     </div>
   </div>
 
