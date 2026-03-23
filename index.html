@@ -254,18 +254,40 @@
 (function(){
   var saved = localStorage.getItem('sp-tema') || 'light';
   document.documentElement.setAttribute('data-theme', saved);
-  function syncBtn(){
-    var btn = document.getElementById('btn-tema');
-    if(!btn) return;
-    btn.textContent = document.documentElement.getAttribute('data-theme')==='dark'
-      ? '☀ Modo claro' : '🌙 Modo oscuro';
-  }
-  document.addEventListener('DOMContentLoaded', syncBtn);
+  function isDark(){ return document.documentElement.getAttribute('data-theme')==='dark'; }
+  window.syncNav = function(){
+    var nav = document.querySelector('nav');
+    var btnTema = document.getElementById('btn-tema');
+    if(!nav || !btnTema) return;
+    // Poner texto completo para medir
+    btnTema.textContent = isDark() ? '☀ Modo claro' : '🌙 Modo oscuro';
+    btnTema.style.removeProperty('padding');
+    requestAnimationFrame(function(){
+      var overflowing = nav.scrollWidth > nav.clientWidth + 4;
+      if(overflowing){
+        btnTema.textContent = isDark() ? '☀' : '🌙';
+        btnTema.style.padding = '.3rem .45rem';
+        window._navCompact = true;
+      } else {
+        window._navCompact = false;
+      }
+      // Re-render avance btn if visible
+      var btnAv = document.getElementById('btn-avance');
+      if(btnAv && btnAv.style.display !== 'none'){
+        var profile = window._getUserProfile ? window._getUserProfile() : null;
+        window.updateAvanceBtn && window.updateAvanceBtn(btnAv, profile);
+      }
+    });
+  };
+  document.addEventListener('DOMContentLoaded', function(){
+    window.syncNav();
+    window.addEventListener('resize', function(){ clearTimeout(window._navResizeT); window._navResizeT = setTimeout(window.syncNav, 120); });
+  });
   window.toggleTema = function(){
-    var next = document.documentElement.getAttribute('data-theme')==='dark' ? 'light' : 'dark';
+    var next = isDark() ? 'light' : 'dark';
     document.documentElement.setAttribute('data-theme', next);
     localStorage.setItem('sp-tema', next);
-    syncBtn();
+    window.syncNav();
   };
 })();
 </script>

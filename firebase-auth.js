@@ -435,19 +435,37 @@ function updateAvanceBtn(btn, profile) {
   const pct = _globalPct();
   const pctLabel = String(pct).padStart(2, '0') + ' %';
   const fillW = Math.max(pct, pct > 0 ? 4 : 0);
-  // Usar color del avatar del usuario, o accent2 como fallback
   const p = profile || window._getUserProfile && window._getUserProfile();
   const av = p ? getAvatar(p.avatarId || 1) : null;
   const fillColor = av ? av.color : 'var(--accent2)';
-  btn.innerHTML = `
-    <span style="display:inline-flex;align-items:center;gap:.45rem;">
-      <span style="position:relative;display:inline-flex;align-items:center;width:26px;height:13px;flex-shrink:0;">
-        <span style="position:absolute;inset:0;border:2px solid ${fillColor};border-radius:3px;"></span>
-        <span style="position:absolute;right:-4px;top:50%;transform:translateY(-50%);width:3px;height:6px;background:${fillColor};border-radius:0 2px 2px 0;"></span>
-        <span style="position:absolute;left:2px;top:2px;bottom:2px;width:calc(${fillW}% - 4px + ${fillW/100}*18px);max-width:18px;min-width:0px;background:${fillColor};border-radius:1.5px;transition:width .5s ease;opacity:0.9;"></span>
-      </span>
-      <span style="font-variant-numeric:tabular-nums;font-weight:600;font-size:.78rem;color:${fillColor};">${pctLabel}</span>
+
+  const battery = `
+    <span style="position:relative;display:inline-flex;align-items:center;width:26px;height:13px;flex-shrink:0;">
+      <span style="position:absolute;inset:0;border:2px solid ${fillColor};border-radius:3px;"></span>
+      <span style="position:absolute;right:-4px;top:50%;transform:translateY(-50%);width:3px;height:6px;background:${fillColor};border-radius:0 2px 2px 0;"></span>
+      <span style="position:absolute;left:2px;top:2px;bottom:2px;width:calc(${fillW}% - 4px + ${fillW/100}*18px);max-width:18px;min-width:0px;background:${fillColor};border-radius:1.5px;transition:width .5s ease;opacity:0.9;"></span>
     </span>`;
+
+  // Modo compacto: sincNav() ya midió si el nav desborda
+  const compact = !!window._navCompact;
+
+  if (compact) {
+    // Solo porcentaje en texto, sin batería — mínimo espacio
+    btn.innerHTML = `<span style="font-variant-numeric:tabular-nums;font-weight:700;font-size:.78rem;color:${fillColor};">${pctLabel}</span>`;
+  } else {
+    // Batería + porcentaje completo
+    btn.innerHTML = `<span style="display:inline-flex;align-items:center;gap:.45rem;">${battery}<span style="font-variant-numeric:tabular-nums;font-weight:600;font-size:.78rem;color:${fillColor};">${pctLabel}</span></span>`;
+    // Re-verificar overflow tras render
+    requestAnimationFrame(() => {
+      const nav = document.querySelector('nav');
+      if (!nav) return;
+      if (nav.scrollWidth > nav.clientWidth + 4) {
+        window._navCompact = true;
+        btn.innerHTML = `<span style="font-variant-numeric:tabular-nums;font-weight:700;font-size:.78rem;color:${fillColor};">${pctLabel}</span>`;
+        window.syncNav && window.syncNav();
+      }
+    });
+  }
 }
 
 // ─── MODAL AVANCE ─────────────────────────────────────────
@@ -1096,6 +1114,15 @@ function domReady(fn) {
   }
 }
 
+// Re-evaluar botón de avance al cambiar tamaño de ventana
+window.addEventListener('resize', () => {
+  const btnAv = document.getElementById('btn-avance');
+  if (btnAv && btnAv.style.display !== 'none') {
+    const profile = window._getUserProfile ? window._getUserProfile() : null;
+    updateAvanceBtn(btnAv, profile);
+  }
+});
+
 domReady(() => {
   console.log('[SP] domReady ejecutado. readyState:', document.readyState);
   injectStyles();
@@ -1137,6 +1164,8 @@ domReady(() => {
       userProfile = null;
     }
     updateNav(user, userProfile);
+    // Re-evaluar nav compacto tras cambio de botones
+    setTimeout(() => window.syncNav && window.syncNav(), 50);
     // Notificar a la página que el estado de auth está listo
     if (window._pageReady) {
       window._pageReady(user, db, doc, setDoc, getDoc);
