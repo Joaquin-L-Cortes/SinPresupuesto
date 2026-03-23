@@ -350,7 +350,7 @@ footer a:hover{text-decoration:underline;}
   .module-card.shift-up,.module-card.shift-down{transform:none!important;}
   .file-card{transition:border-color .15s!important;}
   .file-card:hover{transform:none!important;}
-  .page-header{flex-direction:column!important;align-items:flex-start!important;gap:.5rem!important;}
+  .page-header{flex-direction:row!important;align-items:center!important;gap:.85rem!important;}
   .page-header h1{font-size:clamp(1.1rem,4vw,1.5rem)!important;}
 }
 
@@ -358,7 +358,7 @@ footer a:hover{text-decoration:underline;}
 @media(max-width:600px){
   #modules-grid{grid-template-columns:1fr!important;}
   .layout{padding:1rem .75rem 3.5rem!important;}
-  .progress-hero{padding:.75rem .9rem!important;max-height:260px!important;}
+  .progress-hero{padding:.75rem .9rem!important;max-height:260px!important;}.progress-hero.collapsed{max-height:0!important;opacity:0!important;padding-top:0!important;padding-bottom:0!important;}
   .ph-texts h1{font-size:clamp(.9rem,4vw,1.15rem)!important;white-space:normal!important;}
   .pstat-num{font-size:1.1rem!important;}
   .pstat-label{font-size:.58rem!important;}

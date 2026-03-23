@@ -316,7 +316,7 @@ footer a:hover { text-decoration: underline; }
   .sections-grid { grid-template-columns: 1fr 1fr; gap: 0.75rem; }
   .section-card { padding: 1rem 0.75rem; }
   .section-card img { width: 44px; height: 44px; }
-  .page-header { flex-direction: column; gap: 0.75rem; }
+  .page-header { flex-direction: row; align-items: center; gap: 0.85rem; }
   .page-header-logo { width: 60px; height: 60px; }
   h1 { font-size: 1.5rem; }
   .hero h1 { font-size: clamp(1.8rem, 7vw, 3rem); }
@@ -491,43 +491,43 @@ footer a:hover { text-decoration: underline; }
 @media (max-width: 600px) {
   /* Layout: avatar preview | picker — en una fila, campos debajo */
   .reg-layout {
-    grid-template-columns: 80px 1fr !important;
+    grid-template-columns: 60px 1fr !important;
     grid-template-rows: auto auto !important;
-    gap: 0.6rem !important;
+    gap: 0.4rem !important;
   }
-  /* Avatar preview: columna 1, fila 1 — grande y centrado */
+  /* Avatar preview: columna 1, fila 1 — compacto */
   .reg-avatar-col {
     grid-column: 1 !important;
     grid-row: 1 !important;
     flex-direction: column !important;
     align-items: center !important;
     padding-top: 0 !important;
-    width: 80px !important;
+    width: 60px !important;
     justify-content: flex-start !important;
   }
   .reg-avatar-col > div:first-child {
-    width: 72px !important;
-    height: 72px !important;
-    font-size: 2.8rem !important;
+    width: 52px !important;
+    height: 52px !important;
+    font-size: 2rem !important;
   }
-  .reg-avatar-col > p { font-size: .68rem !important; margin-top: .2rem !important; }
+  .reg-avatar-col > p { font-size: .62rem !important; margin-top: .15rem !important; }
   /* Picker: columna 2, fila 1 — más grande */
   .reg-picker-col {
     grid-column: 2 !important;
     grid-row: 1 !important;
     width: 100% !important;
   }
-  .reg-picker-col > p { font-size: .68rem !important; margin-bottom: .2rem !important; }
+  .reg-picker-col > p { font-size: .62rem !important; margin-bottom: .15rem !important; }
   #reg-avatar-picker, #edit-avatar-picker {
-    grid-template-columns: repeat(6, 1fr) !important;
-    gap: 0.25rem !important;
+    grid-template-columns: repeat(7, 1fr) !important;
+    gap: 0.18rem !important;
   }
   .reg-picker-col .avatar-opt,
   #reg-avatar-picker .avatar-opt,
   #edit-avatar-picker .avatar-opt {
-    width: 34px !important;
-    height: 34px !important;
-    font-size: 1rem !important;
+    width: 28px !important;
+    height: 28px !important;
+    font-size: .82rem !important;
   }
   /* Campos: columna 1-2 (full width), fila 2 */
   .reg-fields-col {
@@ -720,41 +720,51 @@ footer a:hover { text-decoration: underline; }
   max-height: none !important;
 }
 
+/* En móvil: el modal de registro/perfil hace scroll internamente */
+@media (max-width: 600px) {
+  #student-modal-box,
+  #perfil-modal-box {
+    overflow-y: auto !important;
+    max-height: 88vh !important;
+  }
+}
+
 /* Reducir espacios internos en móvil para que todo quepa */
 @media (max-width: 600px) {
   .modal {
-    padding: 1.25rem !important;
+    padding: 0.9rem !important;
   }
   .form-group {
-    margin-bottom: 0.5rem !important;
+    margin-bottom: 0.35rem !important;
   }
   .form-group label {
-    font-size: 0.78rem !important;
-    margin-bottom: 0.2rem !important;
+    font-size: 0.72rem !important;
+    margin-bottom: 0.15rem !important;
   }
   .form-group input,
   .form-group select {
-    padding: 0.5rem 0.75rem !important;
-    font-size: 0.88rem !important;
+    padding: 0.4rem 0.65rem !important;
+    font-size: 0.84rem !important;
   }
   .btn-submit {
-    padding: 0.55rem 1rem !important;
-    font-size: 0.88rem !important;
+    padding: 0.45rem 1rem !important;
+    font-size: 0.85rem !important;
+    margin-top: 0.35rem !important;
   }
   /* Tab bar sticky: reducir padding vertical */
   .tab-btn {
-    padding: 0.45rem 0.85rem !important;
-    font-size: 0.85rem !important;
+    padding: 0.35rem 0.75rem !important;
+    font-size: 0.82rem !important;
   }
 
   /* Reducir margen del sticky header */
   #student-modal-box > div:first-child,
   #perfil-modal-box > div:first-child {
-    margin-left: -1.25rem !important;
-    margin-right: -1.25rem !important;
-    padding-left: 1.25rem !important;
-    padding-right: 1.25rem !important;
-    margin-bottom: 0.85rem !important;
+    margin-left: -0.9rem !important;
+    margin-right: -0.9rem !important;
+    padding-left: 0.9rem !important;
+    padding-right: 0.9rem !important;
+    margin-bottom: 0.6rem !important;
   }
   /* Tarjeta de avatar en perfil más compacta */
   #perfil-avatar-display {

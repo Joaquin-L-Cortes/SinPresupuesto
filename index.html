@@ -13,68 +13,77 @@
    SCHEDULE — Horario Relámpago
    ═══════════════════════════════════════════════════ */
 .schedule-wrap{
-  margin-top:1.1rem;
-  background:rgba(255,255,255,.08);
-  border:1px solid rgba(255,255,255,.18);
+  margin-top:1.25rem;
+  /* Modo claro: fondo sólido visible, borde azul */
+  background:rgba(255,255,255,.15);
+  border:1.5px solid rgba(255,255,255,.35);
   border-radius:14px;
-  padding:.75rem .85rem .8rem;
-  backdrop-filter:blur(4px);
-  max-width:480px;
+  padding:.85rem 1rem .9rem;
+  backdrop-filter:blur(6px);
+  width:100%;
+  max-width:100%;
+  box-sizing:border-box;
 }
 [data-theme="dark"] .schedule-wrap{
-  background:rgba(255,255,255,.05);
-  border-color:rgba(255,255,255,.1);
+  background:rgba(255,255,255,.07);
+  border-color:rgba(255,255,255,.12);
 }
 .schedule-header{
   display:flex;align-items:center;justify-content:space-between;
-  margin-bottom:.55rem;
+  margin-bottom:.65rem;
 }
 .schedule-title{
-  font-family:'Fraunces',serif;font-size:.82rem;font-weight:700;
-  color:rgba(255,255,255,.95);letter-spacing:.01em;
+  font-family:'Fraunces',serif;font-size:.9rem;font-weight:700;
+  color:#fff;letter-spacing:.01em;
+  text-shadow:0 1px 4px rgba(0,0,0,.25);
 }
 .schedule-dates{
-  font-size:.68rem;color:rgba(255,255,255,.65);
-  background:rgba(255,255,255,.1);border-radius:20px;
-  padding:.15rem .55rem;
+  font-size:.7rem;color:rgba(255,255,255,.85);
+  background:rgba(255,255,255,.18);border-radius:20px;
+  padding:.18rem .6rem;font-weight:500;
+  text-shadow:none;
 }
 .schedule-grid{
   display:grid;
-  grid-template-columns:3.4rem repeat(7,1fr);
-  gap:2px;
+  grid-template-columns:3.2rem repeat(7,1fr);
+  gap:3px;
 }
 .sch-head{
-  font-size:.62rem;font-weight:600;color:rgba(255,255,255,.55);
-  text-align:center;padding:.18rem .1rem;text-transform:uppercase;
+  font-size:.65rem;font-weight:700;
+  color:rgba(255,255,255,.9);
+  text-shadow:0 1px 3px rgba(0,0,0,.2);
+  text-align:center;padding:.2rem .05rem;text-transform:uppercase;
   letter-spacing:.04em;
 }
 .sch-time{
-  font-size:.62rem;color:rgba(255,255,255,.55);font-weight:500;
-  display:flex;align-items:center;padding-right:.3rem;
-  line-height:1.2;
+  font-size:.65rem;color:rgba(255,255,255,.85);font-weight:600;
+  display:flex;align-items:center;padding-right:.25rem;
+  line-height:1.2;text-shadow:0 1px 3px rgba(0,0,0,.2);
 }
 .sch-cell{
-  border-radius:6px;padding:.28rem .2rem;
-  font-size:.62rem;font-weight:600;text-align:center;
-  line-height:1.25;color:rgba(255,255,255,.92);
-  background:rgba(255,255,255,.07);
-  min-height:2rem;display:flex;flex-direction:column;
-  align-items:center;justify-content:center;gap:.1rem;
+  border-radius:7px;padding:.35rem .15rem;
+  font-size:.63rem;font-weight:700;text-align:center;
+  line-height:1.2;color:#fff;
+  text-shadow:0 1px 3px rgba(0,0,0,.3);
+  background:rgba(255,255,255,.1);
+  min-height:2.4rem;display:flex;flex-direction:column;
+  align-items:center;justify-content:center;gap:.12rem;
+  border:1px solid rgba(255,255,255,.08);
 }
-.sch-cell span{font-size:.54rem;opacity:.75;font-weight:400;}
-.sch-cell:empty{background:transparent;}
-.sch-logo{width:18px;height:18px;object-fit:contain;border-radius:50%;opacity:.9;}
-/* Colores por materia — exactos de los logos */
-.c-filo  {background:rgba(30,90,180,.32);}   /* Azul marino — Filosofía    */
-.c-orien {background:rgba(52,152,219,.28);}  /* Azul — Orientación         */
-.c-imagen{background:rgba(130,50,180,.35);}  /* Morado — Imagen            */
-.c-bio   {background:rgba(20,110,40,.35);}   /* Verde oscuro — Biología    */
-.c-mat   {background:rgba(20,40,120,.38);}   /* Azul oscuro — Matemáticas  */
-.c-quim  {background:rgba(60,160,70,.3);}    /* Verde claro — Química      */
-.c-text  {background:rgba(160,20,40,.35);}   /* Rojo borgoña — Textual     */
-.c-fis   {background:rgba(185,40,130,.32);}  /* Rosado/magenta — Física    */
-.c-soc   {background:rgba(200,100,20,.35);}  /* Naranja — Sociales         */
-.c-ing   {background:rgba(150,100,20,.35);}  /* Dorado — Inglés            */
+.sch-cell span{font-size:.55rem;opacity:.85;font-weight:500;}
+.sch-cell:empty{background:transparent;border-color:transparent;}
+.sch-logo{width:20px;height:20px;object-fit:contain;border-radius:50%;opacity:.95;filter:drop-shadow(0 1px 2px rgba(0,0,0,.3));}
+/* Colores por materia — sólidos para mejor visibilidad en modo claro */
+.c-filo  {background:rgba(30,90,180,.55);}   /* Azul marino — Filosofía    */
+.c-orien {background:rgba(30,120,200,.45);}  /* Azul — Orientación         */
+.c-imagen{background:rgba(120,40,170,.55);}  /* Morado — Imagen            */
+.c-bio   {background:rgba(15,100,35,.58);}   /* Verde oscuro — Biología    */
+.c-mat   {background:rgba(15,35,110,.62);}   /* Azul oscuro — Matemáticas  */
+.c-quim  {background:rgba(40,140,55,.55);}   /* Verde claro — Química      */
+.c-text  {background:rgba(140,15,30,.58);}   /* Rojo borgoña — Textual     */
+.c-fis   {background:rgba(165,30,115,.55);}  /* Rosado/magenta — Física    */
+.c-soc   {background:rgba(180,85,10,.58);}   /* Naranja — Sociales         */
+.c-ing   {background:rgba(130,85,10,.58);}   /* Dorado — Inglés            */
 
 /* ═══════════════════════════════════════════════════
    RESPONSIVO EXTRA — index.html
@@ -85,13 +94,14 @@
   .hero-desc{font-size:.88rem!important;margin-bottom:1.25rem!important;}
   .hero-badges{gap:.35rem!important;}
   .badge{font-size:.7rem!important;padding:.28rem .65rem!important;}
-  .schedule-wrap{max-width:420px;}
-  .schedule-grid{grid-template-columns:3rem repeat(7,1fr)!important;}
-  .sch-cell{font-size:.55rem!important;padding:.2rem .1rem!important;}
-  .sch-cell span{font-size:.5rem!important;}
-  .sch-time{font-size:.58rem!important;}
-  .sch-head{font-size:.58rem!important;}
-  .sch-logo{width:14px!important;height:14px!important;}
+  .schedule-wrap{width:100%!important;padding:.65rem .6rem .7rem!important;}
+  .schedule-grid{grid-template-columns:2.6rem repeat(7,1fr)!important;gap:2px!important;}
+  .sch-cell{font-size:.52rem!important;padding:.18rem .08rem!important;min-height:2rem!important;}
+  .sch-cell span{font-size:.46rem!important;}
+  .sch-time{font-size:.54rem!important;}
+  .sch-head{font-size:.54rem!important;}
+  .sch-logo{width:13px!important;height:13px!important;}
+  .schedule-title{font-size:.78rem!important;}
   .sections-wrap{padding:0 .75rem 2.5rem!important;}
   .sections-title{font-size:.62rem!important;}
   .sections-grid{grid-template-columns:1fr 1fr!important;gap:.6rem!important;}
@@ -135,7 +145,7 @@
       <p class="hero-desc">Somos Sin-Presupuesto — un preuniversitario 100% gratuito y popular. Clases, módulos teóricos, simulacros, ejercicios y más.</p>
       <div class="schedule-wrap">
         <div class="schedule-header">
-          <span class="schedule-title">⚡ Relámpago 2026</span>
+          <span class="schedule-title">⚡ SinPre Relámpago — 2026</span>
           <span class="schedule-dates">16 mar – 25 abr</span>
         </div>
         <div class="schedule-grid">
@@ -148,18 +158,18 @@
           <div class="sch-head">Sáb</div>
           <div class="sch-head">Dom</div>
 
-          <div class="sch-time">3–4 pm</div>
+          <div class="sch-time">3–5 pm</div>
           <div class="sch-cell c-filo"><img src="logos/filosofia.png" class="sch-logo" alt="">Filosofía<span>Teoría</span></div>
           <div class="sch-cell"></div>
           <div class="sch-cell c-filo"><img src="logos/filosofia.png" class="sch-logo" alt="">Filosofía<span>Metodología</span></div>
           <div class="sch-cell"></div>
-          <div class="sch-cell c-orien">Orientación<span>Vocacional</span></div>
+          <div class="sch-cell c-orien">Orient.<span>Vocacional</span></div>
           <div class="sch-cell c-imagen"><img src="logos/imagen.png" class="sch-logo" alt="">Imagen</div>
           <div class="sch-cell"></div>
 
-          <div class="sch-time">6–7 pm</div>
+          <div class="sch-time">6–8 pm</div>
           <div class="sch-cell c-bio"><img src="logos/biologia.png" class="sch-logo" alt="">Biología</div>
-          <div class="sch-cell c-mat"><img src="logos/matematicas.png" class="sch-logo" alt="">Matemáticas</div>
+          <div class="sch-cell c-mat"><img src="logos/matematicas.png" class="sch-logo" alt="">Matemát.</div>
           <div class="sch-cell c-quim"><img src="logos/quimica.png" class="sch-logo" alt="">Química</div>
           <div class="sch-cell c-text"><img src="logos/textual.png" class="sch-logo" alt="">Textual</div>
           <div class="sch-cell c-fis"><img src="logos/fisica.png" class="sch-logo" alt="">Física</div>
