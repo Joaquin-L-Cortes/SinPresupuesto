@@ -1140,7 +1140,11 @@ domReady(() => {
     if (user) {
       userProfile = await ensureProfile(user);
       if (!isAdmin(user, userProfile)) {
-        toast(saludo(userProfile.genero, 'bienvenido'), 'success');
+        // Mostrar saludo solo en la página principal
+        const _pageName = location.pathname.split('/').pop() || 'index.html';
+        if (_pageName === 'index.html' || _pageName === '' || _pageName === '/') {
+          toast(saludo(userProfile.genero, 'bienvenido'), 'success');
+        }
         // Cargar progreso en background para el botón de avance
         _loadSectionProgress(user.uid, db).then(() => {
           updateAvanceBtn(document.getElementById('btn-avance'), userProfile);

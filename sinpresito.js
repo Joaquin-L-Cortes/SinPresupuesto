@@ -8,8 +8,9 @@
   'use strict';
 
   // ── CONFIGURACIÓN ─────────────────────────────────
-  const GEMINI_KEY = 'AIzaSyCL71C-uAb6ZLwU8dguFShA6SO8O6YSZaU'; // ← Pega aquí tu API key // ← Pega aquí tu API key de Google AI Studio
-  const GEMINI_URL = 'https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent';
+  // Cloudflare Workers AI — la API key vive en el Worker, no aquí.
+  // Apunta al mismo Worker que usas para guardar en GitHub, con ruta /ai
+  const CF_AI_URL = 'https://sinpresupuesto-save01.jocortesca.workers.dev/ai';
   // ──────────────────────────────────────────────────
 
   // Catálogo completo de archivos (auto-generado)
@@ -182,7 +183,7 @@
     open = !open;
     panel.style.display = open ? 'flex' : 'none';
     if (open) {
-      if (!GEMINI_KEY) banner.style.display = 'flex';
+      // No se necesita key en el cliente con Cloudflare Workers AI
       if (msgs.children.length === 0) addMsg('bot', '¡Hola! 👋 Soy <b>SinPesito</b>, tu asistente de material SinPre.<br>Dime qué tema estás buscando y te recomiendo los archivos más útiles. Puedes ser específico: <i>"simulacros de matemática"</i>, <i>"biología célula"</i>, <i>"textos ICFES"</i>…');
       setTimeout(() => input.focus(), 100);
     }
@@ -380,7 +381,7 @@
     loading.classList.add('loading');
 
     try {
-      const answer = await askGemini(q);
+      const answer = await askAI(q);
       loading.remove();
       // Parse response: text + matched files
       const { text, matched, youtubeUrl } = answer;
@@ -402,8 +403,8 @@
     input.focus();
   }
 
-  async function askGemini(query) {
-    if (!GEMINI_KEY) throw new Error('API key no configurada');
+  async function askAI(query) {
+    // Usando Cloudflare Workers AI
 
     // Build catalog context (just names + sections, compact)
     const catalogText = CATALOG.map((f,i) => `${i+1}. [${f.s}] ${f.n}`).join('\n');
@@ -454,13 +455,18 @@ Si el estudiante pide clases, videos o quiere ver explicaciones en video:
 - Si el estudiante pide más archivos o dice que no le mostraste, muéstralos con ARCHIVOS:
 - maxOutputTokens permite respuestas largas — úsalos bien para explicaciones académicas.`;
 
-    const body = {
-      system_instruction: { parts: [{ text: systemPrompt }] },
-      contents: [...history.slice(-8), { role: 'user', parts: [{ text: query }] }],
-      generationConfig: { temperature: 0.5, maxOutputTokens: 1200 }
-    };
+    // Formato OpenAI-compatible que acepta Cloudflare Workers AI
+    const messages = [
+      { role: 'system', content: systemPrompt },
+      ...history.slice(-8).map(m => ({
+        role: m.role === 'model' ? 'assistant' : 'user',
+        content: m.parts[0].text
+      })),
+      { role: 'user', content: query }
+    ];
+    const body = { messages, max_tokens: 1200, temperature: 0.5 };
 
-    const res = await fetch(`${GEMINI_URL}?key=${GEMINI_KEY}`, {
+    const res = await fetch(CF_AI_URL, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(body)
@@ -474,7 +480,7 @@ Si el estudiante pide clases, videos o quiere ver explicaciones en video:
     }
 
     const data = await res.json();
-    const raw = data.candidates?.[0]?.content?.parts?.[0]?.text || 'No obtuve respuesta.';
+    const raw = data.result?.response || data.choices?.[0]?.message?.content || 'No obtuve respuesta.';
 
     // Parse ARCHIVOS: tag
     const archivosMatch = raw.match(/ARCHIVOS:\s*([\d,\s]+)/i);
