@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html lang="es" data-theme="light">
+<head>
+<link rel="icon" type="image/x-icon" href="favicon.ico">
+<link rel="icon" type="image/png" sizes="32x32" href="favicon.png">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Redes · Sin-Presupuesto</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,700;1,9..144,400&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#f0f4fa;--bg2:#ffffff;--bg3:#e4ecf7;--border:#c5d4eb;
+  --accent:#1a3a6b;--accent2:#2e6fc4;--accent3:#5b9bd5;--text:#1a2640;--muted:#5a6e8a;
+  --card:#ffffff;--shadow:rgba(26,58,107,.10);--green:#1db97d;
+  --nav-bg:rgba(255,255,255,.94);
+  --hero-bg1:#1a3a6b;--hero-bg2:#2a5ba8;
+  --hero-text:white;--hero-sub:rgba(255,255,255,.75);
+}
+[data-theme="dark"]{
+  --bg:#0d1829;--bg2:#112040;--bg3:#1a2d52;--border:#2a3f6a;
+  --accent:#4a8ede;--accent2:#7ab4f0;--accent3:#3a7ac4;--text:#e8f0fc;--muted:#7d96bb;
+  --card:#112040;--shadow:rgba(0,0,0,.35);--green:#34d399;
+  --nav-bg:rgba(13,24,41,.96);
+  --hero-bg1:#0a1e40;--hero-bg2:#1a3566;
+  --hero-text:#e8f0fc;--hero-sub:rgba(232,240,252,.65);
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;font-size:15px;line-height:1.7;min-height:100vh;}
+
+/* NAV */
+nav{position:sticky;top:0;z-index:300;background:var(--nav-bg);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border-bottom:1px solid var(--border);padding:0 clamp(.5rem,2vw,2rem);display:flex;align-items:center;height:clamp(46px,6vw,56px);box-shadow:0 2px 12px var(--shadow);}
+.nav-logo{font-family:'Fraunces',serif;font-size:clamp(.82rem,1.8vw,1.1rem);font-weight:700;color:var(--accent2);text-decoration:none;padding-right:clamp(.5rem,1.2vw,1.1rem);border-right:1px solid var(--border);margin-right:clamp(.4rem,1vw,1.1rem);white-space:nowrap;display:flex;align-items:center;gap:clamp(.25rem,.6vw,.4rem);flex-shrink:0;}
+.nav-logo img{width:clamp(26px,3.5vw,40px);height:clamp(26px,3.5vw,40px);object-fit:contain;}
+.nav-links{display:flex;list-style:none;flex:1;overflow:hidden;}
+.nav-links a{padding:0 clamp(.3rem,.7vw,.7rem);color:var(--muted);text-decoration:none;font-size:clamp(.7rem,1.2vw,.83rem);font-weight:500;transition:color .15s;line-height:clamp(46px,6vw,56px);display:block;white-space:nowrap;}
+.nav-links a.active,.nav-links a:hover{color:var(--accent2);}
+.nav-right{display:flex;align-items:center;gap:clamp(.2rem,.5vw,.45rem);margin-left:auto;flex-shrink:0;}
+#btn-tema{background:none;border:1.5px solid var(--border);color:var(--muted);font-family:'DM Sans',sans-serif;font-size:clamp(.65rem,1.1vw,.75rem);padding:.3rem clamp(.4rem,.8vw,.65rem);border-radius:20px;cursor:pointer;transition:all .2s;white-space:nowrap;}
+#btn-avance,#btn-student-login{background:none;border:1.5px solid var(--border);color:var(--muted);font-family:'DM Sans',sans-serif;font-size:clamp(.68rem,1.1vw,.8rem);padding:.3rem clamp(.4rem,.8vw,.75rem);border-radius:20px;cursor:pointer;transition:all .2s;white-space:nowrap;display:flex;align-items:center;gap:.3rem;}
+.nav-hamburger{display:none;background:none;border:none;cursor:pointer;padding:.3rem;flex-direction:column;gap:4px;flex-shrink:0;}
+.nav-hamburger span{display:block;width:18px;height:2px;background:var(--muted);border-radius:2px;}
+@media(max-width:640px){.nav-links{display:none;}.nav-hamburger{display:flex;}
+  #btn-tema{font-size:0!important;padding:.3rem .45rem!important;gap:0!important;}
+  #btn-tema::before{font-size:.95rem;content:attr(data-icon-light);}
+  [data-theme="dark"] #btn-tema::before{content:attr(data-icon-dark);}
+}
+
+/* NAV DRAWER */
+.nav-drawer-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.45);z-index:800;}
+.nav-drawer-overlay.open{display:block;}
+.nav-drawer{position:fixed;right:0;top:0;bottom:0;width:260px;background:var(--bg2);padding:1.5rem 1rem;overflow-y:auto;border-left:1px solid var(--border);}
+.nav-drawer-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:1rem;padding-bottom:.75rem;border-bottom:1px solid var(--border);}
+.btn-close-drawer{background:none;border:none;font-size:1.2rem;cursor:pointer;color:var(--muted);}
+.nav-drawer ul{list-style:none;}
+.nav-drawer ul a{display:flex;align-items:center;gap:.5rem;padding:.55rem .5rem;color:var(--muted);text-decoration:none;font-size:.88rem;border-radius:8px;transition:all .15s;}
+.nav-drawer ul a:hover,.nav-drawer ul a.active{background:var(--bg3);color:var(--accent2);}
+.drawer-group-title{font-size:.62rem;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:var(--muted);padding:.55rem .75rem .2rem;pointer-events:none;list-style:none;}
+.drawer-separator{height:1px;background:var(--border);margin:.4rem 0;list-style:none;}
+.s-emoji{font-size:.88rem;width:18px;text-align:center;flex-shrink:0;}
+
+/* HERO */
+.redes-hero{background:linear-gradient(135deg,var(--hero-bg1) 0%,var(--hero-bg2) 100%);padding:clamp(1.5rem,4vw,2.5rem) 2rem;color:var(--hero-text);}
+.redes-hero-inner{max-width:960px;margin:0 auto;}
+.redes-hero h1{font-family:'Fraunces',serif;font-size:clamp(1.4rem,4vw,2rem);font-weight:700;line-height:1.1;}
+.redes-hero p{font-size:.88rem;color:var(--hero-sub);margin-top:.4rem;max-width:480px;}
+
+/* PAGE WRAP */
+.page-wrap{max-width:960px;margin:0 auto;padding:2rem 1.5rem 5rem;}
+@media(max-width:600px){.page-wrap{padding:1.25rem .9rem 4rem;}}
+
+/* SECTION TITLE */
+.sec-label{font-size:.68rem;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);margin-bottom:1.25rem;padding-bottom:.75rem;border-bottom:2px solid var(--bg3);font-weight:600;}
+
+/* RED CARDS */
+.redes-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:1rem;margin-bottom:2.5rem;}
+@media(max-width:480px){.redes-grid{grid-template-columns:1fr;}}
+.red-card{background:var(--card);border:1.5px solid var(--border);border-radius:16px;padding:1.25rem 1.25rem 1.25rem 1rem;text-decoration:none;display:flex;align-items:center;gap:1rem;transition:box-shadow .2s,border-color .2s,transform .15s;box-shadow:0 1px 6px var(--shadow);}
+.red-card:hover{box-shadow:0 4px 20px var(--shadow);border-color:var(--accent3);transform:translateY(-2px);}
+.red-icon{width:52px;height:52px;border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:1.6rem;flex-shrink:0;}
+.red-info{flex:1;min-width:0;}
+.red-name{font-family:'Fraunces',serif;font-size:.95rem;font-weight:700;color:var(--accent);margin-bottom:.15rem;}
+.red-handle{font-size:.8rem;color:var(--muted);}
+.red-arrow{color:var(--accent3);font-size:.85rem;flex-shrink:0;transition:transform .15s;}
+.red-card:hover .red-arrow{transform:translateX(3px);color:var(--accent2);}
+
+/* DONATE BANNER */
+.donate-banner{background:linear-gradient(135deg,var(--hero-bg1) 0%,var(--hero-bg2) 100%);border-radius:20px;padding:1.75rem 2rem;color:var(--hero-text);display:flex;align-items:center;gap:1.5rem;flex-wrap:wrap;}
+@media(max-width:500px){.donate-banner{padding:1.25rem 1.1rem;gap:1rem;}}
+.donate-icon{width:56px;height:56px;background:rgba(255,255,255,.18);border-radius:16px;display:flex;align-items:center;justify-content:center;font-size:1.8rem;flex-shrink:0;}
+.donate-texts{flex:1;}
+.donate-texts h2{font-family:'Fraunces',serif;font-size:clamp(1rem,3vw,1.35rem);font-weight:700;line-height:1.15;margin-bottom:.3rem;}
+.donate-texts p{font-size:.82rem;color:var(--hero-sub);max-width:420px;}
+.donate-num{display:inline-flex;align-items:center;gap:.45rem;background:rgba(255,255,255,.18);border:1px solid rgba(255,255,255,.3);border-radius:12px;padding:.45rem .9rem;font-size:.92rem;font-weight:700;letter-spacing:.04em;margin-top:.6rem;cursor:pointer;transition:background .2s;user-select:all;}
+.donate-num:hover{background:rgba(255,255,255,.28);}
+.donate-methods{display:flex;gap:.6rem;flex-wrap:wrap;margin-top:.5rem;}
+.donate-badge{background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.25);border-radius:20px;padding:.2rem .65rem;font-size:.72rem;font-weight:600;color:var(--hero-text);}
+
+/* AUTH MODAL */
+.modal-overlay{position:fixed;inset:0;background:rgba(26,54,107,.45);backdrop-filter:blur(4px);z-index:1000;display:none;align-items:center;justify-content:center;padding:1rem;}
+.modal-overlay.open{display:flex;}
+@keyframes scaleIn{from{opacity:0;transform:scale(.92)}to{opacity:1;transform:scale(1)}}
+.modal-overlay.open .modal{animation:scaleIn .22s cubic-bezier(.34,1.56,.64,1) both;}
+.modal{background:var(--bg2);border:1px solid var(--border);border-radius:20px;padding:2rem;width:100%;max-height:92vh;overflow:visible;box-shadow:0 8px 40px var(--shadow);position:relative;}
+.form-group{margin-bottom:1rem;}
+.form-group label{display:block;font-size:.78rem;color:var(--muted);margin-bottom:.4rem;letter-spacing:.05em;text-transform:uppercase;}
+.form-group input,.form-group select{width:100%;background:var(--bg3);border:1.5px solid var(--border);border-radius:10px;padding:.65rem .9rem;color:var(--text);font-family:'DM Sans',sans-serif;font-size:.9rem;outline:none;transition:border-color .2s;}
+.form-group input:focus{border-color:var(--accent2);}
+.btn-submit{width:100%;background:var(--accent);color:#fff;font-family:'DM Sans',sans-serif;font-weight:600;font-size:.9rem;border:none;border-radius:10px;padding:.75rem;cursor:pointer;margin-top:.5rem;transition:background .2s;}
+.tab-btn{background:none;border:none;padding:.6rem 1.1rem;font-family:'DM Sans',sans-serif;font-size:.9rem;color:var(--muted);cursor:pointer;border-bottom:2px solid transparent;margin-bottom:-2px;transition:all .2s;}
+.tab-btn.active{color:var(--accent2);border-bottom-color:var(--accent2);font-weight:600;}
+.social-btn{display:flex;align-items:center;justify-content:center;gap:.4rem;padding:.55rem;border:1.5px solid var(--border);border-radius:10px;background:var(--bg2);cursor:pointer;font-family:'DM Sans',sans-serif;font-size:.82rem;color:var(--text);transition:background .2s;width:100%;}
+.reg-layout{display:grid;grid-template-columns:100px 1fr 148px;gap:1rem;align-items:start;}
+.reg-avatar-col{display:flex;flex-direction:column;align-items:center;padding-top:1.25rem;width:100px;}
+.reg-fields-col{min-width:0;}
+.reg-picker-col{min-width:0;width:148px;}
+@media(max-width:600px){
+  .modal{border-radius:14px!important;padding:.9rem!important;}
+  .reg-layout{grid-template-columns:60px 1fr!important;grid-template-rows:auto auto!important;gap:.4rem!important;align-items:stretch!important;}
+  .reg-avatar-col{grid-column:1!important;grid-row:1!important;width:60px!important;padding-top:0!important;justify-content:center!important;align-self:stretch!important;}
+  .reg-picker-col{grid-column:2!important;grid-row:1!important;width:100%!important;}
+  .reg-fields-col{grid-column:1/-1!important;grid-row:2!important;}
+}
+</style>
+</head>
+<body>
+
+<nav>
+  <a class="nav-logo" href="index.html">
+    <img src="logos/filosofia.png" alt="" onerror="this.style.display='none'">
+    <span class="nav-logo-text">Sin-Presupuesto</span>
+  </a>
+  <ul class="nav-links">
+    <li><a href="index.html">Inicio</a></li>
+    <li><a href="clases.html">Clases</a></li>
+    <li><a href="comunidad.html">Comunidad</a></li>
+    <li><a href="materiales.html">Material</a></li>
+    <li><a href="ejercicios-practicas.html">Práctica</a></li>
+    <li><a href="redes.html" class="active">Redes</a></li>
+  </ul>
+  <div class="nav-right">
+    <button class="nav-hamburger" onclick="openNavDrawer()" aria-label="Menú"><span></span><span></span><span></span></button>
+    <button id="btn-tema" onclick="toggleTema()">🌙 Modo oscuro</button>
+    <button id="btn-avance" style="display:none;align-items:center;"></button>
+    <button id="btn-student-login">👤 Ingresar</button>
+  </div>
+</nav>
+
+<!-- HERO -->
+<div class="redes-hero">
+  <div class="redes-hero-inner">
+    <h1>📲 Nuestras Redes</h1>
+    <p>Síguenos, únete a la comunidad y mantente al día con todo SinPresupuesto</p>
+  </div>
+</div>
+
+<div class="page-wrap">
+
+  <!-- REDES SOCIALES -->
+  <p class="sec-label">Redes sociales</p>
+  <div class="redes-grid">
+
+    <a class="red-card" href="https://www.youtube.com/@SinPresupuestoUN" target="_blank" rel="noopener">
+      <div class="red-icon" style="background:#fff0f0;">▶️</div>
+      <div class="red-info">
+        <div class="red-name">YouTube</div>
+        <div class="red-handle">@SinPresupuestoUN</div>
+      </div>
+      <span class="red-arrow">›</span>
+    </a>
+
+    <a class="red-card" href="https://chat.whatsapp.com/JITO3QNW4K86oZCD1F0e7B" target="_blank" rel="noopener">
+      <div class="red-icon" style="background:#e8f9f1;">💬</div>
+      <div class="red-info">
+        <div class="red-name">Comunidad WhatsApp</div>
+        <div class="red-handle">Unirse al grupo</div>
+      </div>
+      <span class="red-arrow">›</span>
+    </a>
+
+    <a class="red-card" href="http://meet.google.com/efp-ocww-oao" target="_blank" rel="noopener">
+      <div class="red-icon" style="background:#e8f0fe;">📹</div>
+      <div class="red-info">
+        <div class="red-name">Google Meet</div>
+        <div class="red-handle">meet.google.com/efp-ocww-oao</div>
+      </div>
+      <span class="red-arrow">›</span>
+    </a>
+
+    <a class="red-card" href="https://www.instagram.com/sinpre.un" target="_blank" rel="noopener">
+      <div class="red-icon" style="background:#fdf0f8;">📸</div>
+      <div class="red-info">
+        <div class="red-name">Instagram</div>
+        <div class="red-handle">@sinpre.un</div>
+      </div>
+      <span class="red-arrow">›</span>
+    </a>
+
+    <a class="red-card" href="https://www.tiktok.com/@sinpreun" target="_blank" rel="noopener">
+      <div class="red-icon" style="background:#f0f0f0;">🎵</div>
+      <div class="red-info">
+        <div class="red-name">TikTok</div>
+        <div class="red-handle">@sinpreun</div>
+      </div>
+      <span class="red-arrow">›</span>
+    </a>
+
+  </div>
+
+  <!-- BANNER DONATIVOS -->
+  <p class="sec-label">Apoya el proyecto</p>
+  <div class="donate-banner">
+    <div class="donate-icon">❤️</div>
+    <div class="donate-texts">
+      <h2>¿Te ha servido SinPresupuesto?<br>¡Apóyanos con lo que puedas!</h2>
+      <p>100% gratuito y popular. Cada donación nos ayuda a seguir produciendo contenido de calidad para todos.</p>
+      <div style="display:flex;flex-wrap:wrap;gap:.75rem;align-items:center;margin-top:.65rem;">
+        <div>
+          <div style="font-size:.68rem;color:var(--hero-sub);margin-bottom:.2rem;text-transform:uppercase;letter-spacing:.07em;">Nequi · Llaves</div>
+          <div class="donate-num" title="Toca para copiar" onclick="navigator.clipboard&&navigator.clipboard.writeText('3236948608');this.textContent='✓ Copiado';setTimeout(()=>this.textContent='📱 323 694 8608',1800);">📱 323 694 8608</div>
+        </div>
+        <div class="donate-methods">
+          <span class="donate-badge">Nequi</span>
+          <span class="donate-badge">Llaves</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<!-- NAV DRAWER -->
+<div class="nav-drawer-overlay" id="nav-drawer-overlay" onclick="closeNavDrawer()">
+  <div class="nav-drawer" onclick="event.stopPropagation()">
+    <div class="nav-drawer-header">
+      <span style="font-family:'Fraunces',serif;font-weight:700;color:var(--accent2)">Sin-Presupuesto</span>
+      <button class="btn-close-drawer" onclick="closeNavDrawer()">✕</button>
+    </div>
+    <ul>
+      <li class="drawer-group-title">Navegación</li>
+      <li><a href="index.html"><span class="s-emoji">🏠</span>Inicio</a></li>
+      <li><a href="clases.html"><span class="s-emoji">📺</span>Clases</a></li>
+      <li><a href="comunidad.html"><span class="s-emoji">💬</span>Comunidad</a></li>
+      <li><a href="materiales.html"><span class="s-emoji">📖</span>Material</a></li>
+      <li><a href="ejercicios-practicas.html"><span class="s-emoji">✏️</span>Práctica</a></li>
+      <li><a href="redes.html" class="active"><span class="s-emoji">📲</span>Redes</a></li>
+      <li class="drawer-separator"></li>
+      <li class="drawer-group-title">Secciones de material</li>
+      <li><a href="relampago-sinpre.html"><span class="s-emoji">⚡</span>I. Relámpago 2026</a></li>
+      <li><a href="formulario-economico-1.html"><span class="s-emoji">📑</span>II. Exclusivos SinPre</a></li>
+      <li><a href="temarios.html"><span class="s-emoji">📋</span>III. Temarios</a></li>
+      <li><a href="simulacros-calificados-un.html"><span class="s-emoji">🏆</span>IV. Simulacros Cal. UN</a></li>
+      <li><a href="admision-y-examenes-un.html"><span class="s-emoji">🎓</span>V. Admisión y Exámenes</a></li>
+      <li><a href="clases-preu-s-ii-libres.html"><span class="s-emoji">🏫</span>VI. Clases PreU's</a></li>
+      <li><a href="recursos-udea.html"><span class="s-emoji">🦁</span>VII. Recursos UdeA</a></li>
+      <li><a href="diapositivas-con-todo.html"><span class="s-emoji">📊</span>VIII. Diapositivas</a></li>
+      <li><a href="apuntes-estudio-un.html"><span class="s-emoji">📓</span>IX. Apuntes Estudio</a></li>
+      <li><a href="textos-varios-practica-textual.html"><span class="s-emoji">📰</span>X. Textos Varios</a></li>
+      <li><a href="modulos-teoricos.html"><span class="s-emoji">📚</span>XI. Módulos Teóricos</a></li>
+      <li><a href="modulos-especiales.html"><span class="s-emoji">⭐</span>XII. Módulos Especiales</a></li>
+      <li><a href="ejercicios-practicas.html"><span class="s-emoji">✏️</span>XIII. Ejercicios</a></li>
+      <li><a href="simulacros-un.html"><span class="s-emoji">🧪</span>XIV. Simulacros UN</a></li>
+      <li><a href="app-s-estudio-android.html"><span class="s-emoji">📱</span>XV. App's Estudio</a></li>
+    </ul>
+    <div style="margin-top:1rem;padding-top:.75rem;border-top:1px solid var(--border);">
+      <button onclick="toggleTema();closeNavDrawer()" id="drawer-tema-btn" style="width:100%;background:none;border:1px solid var(--border);color:var(--muted);font-family:'DM Sans',sans-serif;font-size:.82rem;padding:.5rem .75rem;border-radius:10px;cursor:pointer;display:flex;align-items:center;gap:.5rem;transition:all .15s;">🌙 Modo oscuro</button>
+    </div>
+  </div>
+</div>
+
+<footer style="border-top:1px solid var(--border);background:var(--bg2);padding:2rem;text-align:center;color:var(--muted);font-size:.82rem;">
+  <p>Sin-Presupuesto · PreUniversitario gratuito y popular ❤️</p>
+  <p style="margin-top:.4rem"><a href="https://youtube.com/@sinpresupuestoun" target="_blank" rel="noopener" style="color:var(--accent2);text-decoration:none;">▶ Canal de YouTube</a></p>
+</footer>
+
+<script src="editor.js"></script>
+<script type="module" src="firebase-auth.js"></script>
+<script>
+(function(){
+  var saved = localStorage.getItem('sp-tema') || 'light';
+  document.documentElement.setAttribute('data-theme', saved);
+  function isDark(){ return document.documentElement.getAttribute('data-theme') === 'dark'; }
+  window.syncNav = function(){
+    var b = document.getElementById('btn-tema');
+    var d = document.getElementById('drawer-tema-btn');
+    if(b){
+      b.setAttribute('data-icon-light','🌙');
+      b.setAttribute('data-icon-dark','☀');
+      b.textContent = isDark() ? '☀ Modo claro' : '🌙 Modo oscuro';
+    }
+    if(d) d.textContent = isDark() ? '☀ Modo claro' : '🌙 Modo oscuro';
+  };
+  window.toggleTema = function(){
+    var next = isDark() ? 'light' : 'dark';
+    document.documentElement.setAttribute('data-theme', next);
+    localStorage.setItem('sp-tema', next);
+    window.syncNav();
+  };
+  document.addEventListener('DOMContentLoaded', window.syncNav);
+})();
+window.openNavDrawer  = () => document.getElementById('nav-drawer-overlay').classList.add('open');
+window.closeNavDrawer = () => document.getElementById('nav-drawer-overlay').classList.remove('open');
+</script>
+</body>
+</html>
