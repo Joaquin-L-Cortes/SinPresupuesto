@@ -240,6 +240,10 @@ aside{position:sticky;top:clamp(46px,6vw,56px);align-self:start;max-height:calc(
 .modal-iframe-wrap iframe{width:100%;height:100%;border:none;display:block;}
 .modal-iframe-loading{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;background:var(--bg3);color:var(--muted);font-size:.9rem;flex-direction:column;gap:.5rem;}
 .modal-iframe-loading.hidden{display:none;}
+@media(max-width:600px){
+  .modal-backdrop{padding:0!important;}
+  .modal-window{border-radius:0!important;height:100dvh!important;height:100vh!important;max-width:100vw!important;width:100vw!important;}
+}
 /* NAV DRAWER MÓVIL */
 .nav-drawer-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.45);z-index:800;}
 .nav-drawer-overlay.open{display:block;}
@@ -378,23 +382,21 @@ footer a:hover{text-decoration:underline;}
       <span class="sidebar-toggle-arrow">▾</span>
     </button>
     <ul class="sidebar-links">
-      <li><a href="relampago-sinpre.html"><span class="s-emoji">⚡</span>I. Relámpago SinPre</a></li>
-      <li><a href="actividades-relampago.html"><span class="s-emoji">🎯</span>II. Actividades Relámpago</a></li>
-      <li><a href="tomos.html"><span class="s-emoji">📕</span>III. Inicial SinPre</a></li>
-      <li><a href="formulario-economico-1.html"><span class="s-emoji">📑</span>IV. Exclusivos SinPre</a></li>
-      <li><a href="temarios.html"><span class="s-emoji">📋</span>V. Temarios</a></li>
-      <li><a href="simulacros-calificados-un.html"><span class="s-emoji">🏆</span>VI. Simulacros Cal. UN</a></li>
-      <li><a href="admision-y-examenes-un.html"><span class="s-emoji">🎓</span>VII. Admisión y Exámenes</a></li>
-      <li><a href="clases-preu-s-ii-libres.html"><span class="s-emoji">🏫</span>VIII. Clases PreU's</a></li>
-      <li><a href="recursos-udea.html"><span class="s-emoji">🦁</span>IX. Recursos UdeA</a></li>
-      <li><a href="diapositivas-con-todo.html"><span class="s-emoji">📊</span>X. Diapositivas</a></li>
-      <li><a href="apuntes-estudio-un.html"><span class="s-emoji">📓</span>XI. Apuntes Estudio</a></li>
-      <li><a href="textos-varios-practica-textual.html"><span class="s-emoji">📰</span>XII. Textos Varios</a></li>
-      <li><a href="modulos-teoricos.html"><span class="s-emoji">📚</span>XIII. Módulos Teóricos</a></li>
-      <li><a href="modulos-especiales.html"><span class="s-emoji">⭐</span>XIV. Módulos Especiales</a></li>
-      <li><a href="ejercicios-practicas.html"><span class="s-emoji">✏️</span>XV. Ejercicios</a></li>
-      <li><a href="simulacros-un.html" class="current"><span class="s-emoji">🧪</span>XVI. Simulacros UN</a></li>
-      <li><a href="app-s-estudio-android.html"><span class="s-emoji">📱</span>XVII. App's Estudio</a></li>
+      <li><a href="relampago-sinpre.html"><span class="s-emoji">⚡</span>I. Relámpago 2026</a></li>
+      <li><a href="formulario-economico-1.html"><span class="s-emoji">📑</span>II. Exclusivos SinPre</a></li>
+      <li><a href="temarios.html"><span class="s-emoji">📋</span>III. Temarios</a></li>
+      <li><a href="simulacros-calificados-un.html"><span class="s-emoji">🏆</span>IV. Simulacros Cal. UN</a></li>
+      <li><a href="admision-y-examenes-un.html"><span class="s-emoji">🎓</span>V. Admisión y Exámenes</a></li>
+      <li><a href="clases-preu-s-ii-libres.html"><span class="s-emoji">🏫</span>VI. Clases PreU's</a></li>
+      <li><a href="recursos-udea.html"><span class="s-emoji">🦁</span>VII. Recursos UdeA</a></li>
+      <li><a href="diapositivas-con-todo.html"><span class="s-emoji">📊</span>VIII. Diapositivas</a></li>
+      <li><a href="apuntes-estudio-un.html"><span class="s-emoji">📓</span>IX. Apuntes Estudio</a></li>
+      <li><a href="textos-varios-practica-textual.html"><span class="s-emoji">📰</span>X. Textos Varios</a></li>
+      <li><a href="modulos-teoricos.html"><span class="s-emoji">📚</span>XI. Módulos Teóricos</a></li>
+      <li><a href="modulos-especiales.html"><span class="s-emoji">⭐</span>XII. Módulos Especiales</a></li>
+      <li><a href="ejercicios-practicas.html"><span class="s-emoji">✏️</span>XIII. Ejercicios</a></li>
+      <li><a href="simulacros-un.html" class="current"><span class="s-emoji">🧪</span>XIV. Simulacros UN</a></li>
+      <li><a href="app-s-estudio-android.html"><span class="s-emoji">📱</span>XV. App's Estudio</a></li>
     </ul>
   </aside>
   <main>
@@ -455,23 +457,21 @@ footer a:hover{text-decoration:underline;}
       <button class="btn-close-drawer" onclick="closeNavDrawer()">✕</button>
     </div>
     <ul>
-      <li><a href="relampago-sinpre.html"><span class="s-emoji">⚡</span>I. Relámpago SinPre</a></li>
-      <li><a href="actividades-relampago.html"><span class="s-emoji">🎯</span>II. Actividades Relámpago</a></li>
-      <li><a href="tomos.html"><span class="s-emoji">📕</span>III. Inicial SinPre</a></li>
-      <li><a href="formulario-economico-1.html"><span class="s-emoji">📑</span>IV. Exclusivos SinPre</a></li>
-      <li><a href="temarios.html"><span class="s-emoji">📋</span>V. Temarios</a></li>
-      <li><a href="simulacros-calificados-un.html"><span class="s-emoji">🏆</span>VI. Simulacros Cal. UN</a></li>
-      <li><a href="admision-y-examenes-un.html"><span class="s-emoji">🎓</span>VII. Admisión y Exámenes</a></li>
-      <li><a href="clases-preu-s-ii-libres.html"><span class="s-emoji">🏫</span>VIII. Clases PreU's</a></li>
-      <li><a href="recursos-udea.html"><span class="s-emoji">🦁</span>IX. Recursos UdeA</a></li>
-      <li><a href="diapositivas-con-todo.html"><span class="s-emoji">📊</span>X. Diapositivas</a></li>
-      <li><a href="apuntes-estudio-un.html"><span class="s-emoji">📓</span>XI. Apuntes Estudio</a></li>
-      <li><a href="textos-varios-practica-textual.html"><span class="s-emoji">📰</span>XII. Textos Varios</a></li>
-      <li><a href="modulos-teoricos.html"><span class="s-emoji">📚</span>XIII. Módulos Teóricos</a></li>
-      <li><a href="modulos-especiales.html"><span class="s-emoji">⭐</span>XIV. Módulos Especiales</a></li>
-      <li><a href="ejercicios-practicas.html"><span class="s-emoji">✏️</span>XV. Ejercicios</a></li>
-      <li><a href="simulacros-un.html" class="current"><span class="s-emoji">🧪</span>XVI. Simulacros UN</a></li>
-      <li><a href="app-s-estudio-android.html"><span class="s-emoji">📱</span>XVII. App's Estudio</a></li>
+      <li><a href="relampago-sinpre.html"><span class="s-emoji">⚡</span>I. Relámpago 2026</a></li>
+      <li><a href="formulario-economico-1.html"><span class="s-emoji">📑</span>II. Exclusivos SinPre</a></li>
+      <li><a href="temarios.html"><span class="s-emoji">📋</span>III. Temarios</a></li>
+      <li><a href="simulacros-calificados-un.html"><span class="s-emoji">🏆</span>IV. Simulacros Cal. UN</a></li>
+      <li><a href="admision-y-examenes-un.html"><span class="s-emoji">🎓</span>V. Admisión y Exámenes</a></li>
+      <li><a href="clases-preu-s-ii-libres.html"><span class="s-emoji">🏫</span>VI. Clases PreU's</a></li>
+      <li><a href="recursos-udea.html"><span class="s-emoji">🦁</span>VII. Recursos UdeA</a></li>
+      <li><a href="diapositivas-con-todo.html"><span class="s-emoji">📊</span>VIII. Diapositivas</a></li>
+      <li><a href="apuntes-estudio-un.html"><span class="s-emoji">📓</span>IX. Apuntes Estudio</a></li>
+      <li><a href="textos-varios-practica-textual.html"><span class="s-emoji">📰</span>X. Textos Varios</a></li>
+      <li><a href="modulos-teoricos.html"><span class="s-emoji">📚</span>XI. Módulos Teóricos</a></li>
+      <li><a href="modulos-especiales.html"><span class="s-emoji">⭐</span>XII. Módulos Especiales</a></li>
+      <li><a href="ejercicios-practicas.html"><span class="s-emoji">✏️</span>XIII. Ejercicios</a></li>
+      <li><a href="simulacros-un.html" class="current"><span class="s-emoji">🧪</span>XIV. Simulacros UN</a></li>
+      <li><a href="app-s-estudio-android.html"><span class="s-emoji">📱</span>XV. App's Estudio</a></li>
       </ul>
     <!-- Modo oscuro dentro del drawer (visible solo en móvil) -->
     <div style="margin-top:1rem;padding-top:.75rem;border-top:1px solid var(--border);">

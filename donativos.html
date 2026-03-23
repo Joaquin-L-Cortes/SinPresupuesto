@@ -104,6 +104,7 @@ nav{position:sticky;top:0;z-index:300;background:var(--nav-bg);backdrop-filter:b
 /* POST CARD */
 .post-card{background:var(--bg2);border:1.5px solid var(--border);border-radius:16px;margin-bottom:1rem;overflow:hidden;transition:box-shadow .2s,border-color .2s;}
 .post-card:hover{box-shadow:0 4px 20px var(--shadow);}
+.post-card.type-general{border-left:4px solid var(--muted);}
 .post-card.type-quiz{border-left:4px solid var(--accent2);}
 .post-card.type-apunte{border-left:4px solid var(--green);}
 .post-card.type-pregunta{border-left:4px solid var(--yellow);}
@@ -113,6 +114,7 @@ nav{position:sticky;top:0;z-index:300;background:var(--nav-bg);backdrop-filter:b
 .pc-author{font-size:.82rem;font-weight:600;color:var(--text);}
 .pc-date{font-size:.7rem;color:var(--muted);}
 .pc-type-badge{display:inline-block;padding:.1rem .5rem;border-radius:20px;font-size:.65rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;margin-left:.4rem;}
+.badge-general{background:rgba(90,110,138,.12);color:var(--muted);}
 .badge-quiz{background:rgba(46,111,196,.12);color:var(--accent2);}
 .badge-apunte{background:rgba(29,185,125,.12);color:var(--green);}
 .badge-pregunta{background:rgba(214,158,46,.12);color:var(--yellow);}
@@ -221,6 +223,31 @@ nav{position:sticky;top:0;z-index:300;background:var(--nav-bg);backdrop-filter:b
 .nav-drawer ul a:hover,.nav-drawer ul a.active{background:var(--bg3);color:var(--accent2);}
 .s-emoji{font-size:.88rem;width:18px;text-align:center;flex-shrink:0;}
 
+<style>
+/* Menú tres puntos en posts */
+.pc-dots-btn{background:none;border:none;color:var(--muted);cursor:pointer;padding:.25rem .4rem;border-radius:8px;font-size:1rem;line-height:1;transition:background .15s;flex-shrink:0;}
+.pc-dots-btn:hover{background:var(--bg3);color:var(--text);}
+.pc-dots-menu{display:none;position:absolute;top:calc(100% + 4px);right:0;background:var(--bg2);border:1px solid var(--border);border-radius:12px;box-shadow:0 8px 28px var(--shadow);z-index:200;min-width:160px;overflow:hidden;}
+.pc-dots-menu.open{display:block;}
+.pc-dots-menu button{display:flex;align-items:center;gap:.5rem;width:100%;background:none;border:none;color:var(--muted);font-family:'DM Sans',sans-serif;font-size:.78rem;padding:.5rem .85rem;cursor:pointer;transition:background .12s;}
+.pc-dots-menu button:hover{background:var(--bg3);color:var(--text);}
+.pc-dots-menu button.danger{color:var(--red);}
+.pc-dots-menu button.danger:hover{background:var(--red-bg);}
+.pc-dots-wrap{position:relative;margin-left:auto;}
+/* Modal de verificación de eliminación */
+.del-modal-overlay{display:none;position:fixed;inset:0;background:rgba(26,54,107,.45);backdrop-filter:blur(4px);z-index:1100;align-items:center;justify-content:center;padding:1rem;}
+.del-modal-overlay.open{display:flex;}
+.del-modal-overlay.open .del-modal-box{animation:scaleIn .22s cubic-bezier(.34,1.56,.64,1) both;}
+.del-modal-box{background:var(--bg2);border:1px solid var(--border);border-radius:20px;padding:1.75rem;width:100%;max-width:380px;box-shadow:0 8px 40px var(--shadow);}
+.del-modal-icon{font-size:2rem;text-align:center;margin-bottom:.6rem;}
+.del-modal-title{font-family:'Fraunces',serif;font-size:1.1rem;font-weight:700;color:var(--accent);text-align:center;margin-bottom:.35rem;}
+.del-modal-sub{font-size:.83rem;color:var(--muted);text-align:center;margin-bottom:1.25rem;line-height:1.5;}
+.del-modal-actions{display:flex;gap:.6rem;}
+.btn-del-cancel{flex:1;background:var(--bg3);color:var(--muted);border:1.5px solid var(--border);border-radius:10px;padding:.6rem;font-family:'DM Sans',sans-serif;font-size:.88rem;font-weight:600;cursor:pointer;transition:all .15s;}
+.btn-del-cancel:hover{border-color:var(--accent2);color:var(--accent2);}
+.btn-del-confirm{flex:1;background:var(--red);color:white;border:none;border-radius:10px;padding:.6rem;font-family:'DM Sans',sans-serif;font-size:.88rem;font-weight:600;cursor:pointer;transition:opacity .15s;}
+.btn-del-confirm:hover{opacity:.85;}
+</style>
 footer{border-top:1px solid var(--border);background:var(--bg2);padding:2rem;text-align:center;color:var(--muted);font-size:.82rem;}
 footer a{color:var(--accent2);text-decoration:none;}
 .toast-notif{position:fixed;bottom:5rem;left:50%;transform:translateX(-50%) translateY(20px);background:var(--accent2);color:white;padding:.65rem 1.4rem;border-radius:100px;font-size:.85rem;font-weight:600;z-index:600;opacity:0;transition:opacity .25s,transform .25s;pointer-events:none;white-space:nowrap;box-shadow:0 4px 20px rgba(46,111,196,.4);}
@@ -275,10 +302,11 @@ footer a{color:var(--accent2);text-decoration:none;}
 
   <!-- Tabs -->
   <div class="tabs-row">
-    <button class="tab-pill active" onclick="setTab('feed')" id="tab-feed">📋 Feed</button>
+    <button class="tab-pill active" onclick="setTab('general')" id="tab-general">💬 General</button>
+    <button class="tab-pill" onclick="setTab('feed')" id="tab-feed">📋 Feed</button>
     <button class="tab-pill" onclick="setTab('apuntes')" id="tab-apuntes">📝 Apuntes</button>
-    <button class="tab-pill" onclick="setTab('quizzes')" id="tab-quizzes">🧠 Quizzes</button>
     <button class="tab-pill" onclick="setTab('preguntas')" id="tab-preguntas">❓ Preguntas</button>
+    <button class="tab-pill" onclick="setTab('quizzes')" id="tab-quizzes">🧠 Quizzes</button>
   </div>
 
   <!-- Compose -->
@@ -289,7 +317,8 @@ footer a{color:var(--accent2);text-decoration:none;}
     </div>
     <div class="compose-box" id="compose-box" style="display:none">
       <div class="compose-type-row">
-        <button class="ctype-btn active" onclick="setPostType('apunte')" id="ctype-apunte">📝 Apunte</button>
+        <button class="ctype-btn active" onclick="setPostType('general')" id="ctype-general">💬 General</button>
+        <button class="ctype-btn" onclick="setPostType('apunte')" id="ctype-apunte">📝 Apunte</button>
         <button class="ctype-btn" onclick="setPostType('pregunta')" id="ctype-pregunta">❓ Pregunta</button>
         <button class="ctype-btn" onclick="setPostType('quiz')" id="ctype-quiz">🧠 Quiz</button>
       </div>
@@ -330,6 +359,19 @@ footer a{color:var(--accent2);text-decoration:none;}
 
 <div class="toast-notif" id="toast-notif"></div>
 
+
+<!-- Modal verificación eliminar -->
+<div class="del-modal-overlay" id="del-modal-overlay">
+  <div class="del-modal-box">
+    <div class="del-modal-icon">🗑️</div>
+    <div class="del-modal-title">¿Eliminar publicación?</div>
+    <div class="del-modal-sub">Esta acción no se puede deshacer. La publicación y sus comentarios serán eliminados permanentemente.</div>
+    <div class="del-modal-actions">
+      <button class="btn-del-cancel" onclick="closeDel()">Cancelar</button>
+      <button class="btn-del-confirm" id="btn-del-confirm">Sí, eliminar</button>
+    </div>
+  </div>
+</div>
 <!-- NAV DRAWER -->
 <div class="nav-drawer-overlay" id="nav-drawer-overlay" onclick="closeNavDrawer()">
   <div class="nav-drawer" onclick="event.stopPropagation()">
@@ -338,23 +380,21 @@ footer a{color:var(--accent2);text-decoration:none;}
       <button class="btn-close-drawer" onclick="closeNavDrawer()">✕</button>
     </div>
     <ul>
-      <li><a href="relampago-sinpre.html"><span class="s-emoji">⚡</span>I. Relámpago SinPre</a></li>
-      <li><a href="actividades-relampago.html"><span class="s-emoji">🎯</span>II. Actividades Relámpago</a></li>
-      <li><a href="tomos.html"><span class="s-emoji">📕</span>III. Inicial SinPre</a></li>
-      <li><a href="formulario-economico-1.html"><span class="s-emoji">📑</span>IV. Exclusivos SinPre</a></li>
-      <li><a href="temarios.html"><span class="s-emoji">📋</span>V. Temarios</a></li>
-      <li><a href="simulacros-calificados-un.html"><span class="s-emoji">🏆</span>VI. Simulacros Cal. UN</a></li>
-      <li><a href="admision-y-examenes-un.html"><span class="s-emoji">🎓</span>VII. Admisión y Exámenes</a></li>
-      <li><a href="clases-preu-s-ii-libres.html"><span class="s-emoji">🏫</span>VIII. Clases PreU's</a></li>
-      <li><a href="recursos-udea.html"><span class="s-emoji">🦁</span>IX. Recursos UdeA</a></li>
-      <li><a href="diapositivas-con-todo.html"><span class="s-emoji">📊</span>X. Diapositivas</a></li>
-      <li><a href="apuntes-estudio-un.html"><span class="s-emoji">📓</span>XI. Apuntes Estudio</a></li>
-      <li><a href="textos-varios-practica-textual.html"><span class="s-emoji">📰</span>XII. Textos Varios</a></li>
-      <li><a href="modulos-teoricos.html"><span class="s-emoji">📚</span>XIII. Módulos Teóricos</a></li>
-      <li><a href="modulos-especiales.html"><span class="s-emoji">⭐</span>XIV. Módulos Especiales</a></li>
-      <li><a href="ejercicios-practicas.html"><span class="s-emoji">✏️</span>XV. Ejercicios</a></li>
-      <li><a href="simulacros-un.html"><span class="s-emoji">🧪</span>XVI. Simulacros UN</a></li>
-      <li><a href="app-s-estudio-android.html"><span class="s-emoji">📱</span>XVII. App's Estudio</a></li>
+      <li><a href="relampago-sinpre.html"><span class="s-emoji">⚡</span>I. Relámpago 2026</a></li>
+      <li><a href="formulario-economico-1.html"><span class="s-emoji">📑</span>II. Exclusivos SinPre</a></li>
+      <li><a href="temarios.html"><span class="s-emoji">📋</span>III. Temarios</a></li>
+      <li><a href="simulacros-calificados-un.html"><span class="s-emoji">🏆</span>IV. Simulacros Cal. UN</a></li>
+      <li><a href="admision-y-examenes-un.html"><span class="s-emoji">🎓</span>V. Admisión y Exámenes</a></li>
+      <li><a href="clases-preu-s-ii-libres.html"><span class="s-emoji">🏫</span>VI. Clases PreU's</a></li>
+      <li><a href="recursos-udea.html"><span class="s-emoji">🦁</span>VII. Recursos UdeA</a></li>
+      <li><a href="diapositivas-con-todo.html"><span class="s-emoji">📊</span>VIII. Diapositivas</a></li>
+      <li><a href="apuntes-estudio-un.html"><span class="s-emoji">📓</span>IX. Apuntes Estudio</a></li>
+      <li><a href="textos-varios-practica-textual.html"><span class="s-emoji">📰</span>X. Textos Varios</a></li>
+      <li><a href="modulos-teoricos.html"><span class="s-emoji">📚</span>XI. Módulos Teóricos</a></li>
+      <li><a href="modulos-especiales.html"><span class="s-emoji">⭐</span>XII. Módulos Especiales</a></li>
+      <li><a href="ejercicios-practicas.html"><span class="s-emoji">✏️</span>XIII. Ejercicios</a></li>
+      <li><a href="simulacros-un.html"><span class="s-emoji">🧪</span>XIV. Simulacros UN</a></li>
+      <li><a href="app-s-estudio-android.html"><span class="s-emoji">📱</span>XV. App's Estudio</a></li>
       </ul>
     <div style="margin-top:1rem;padding-top:.75rem;border-top:1px solid var(--border);">
       <button onclick="toggleTema();closeNavDrawer()" style="width:100%;background:none;border:1px solid var(--border);color:var(--muted);font-family:'DM Sans',sans-serif;font-size:.82rem;padding:.5rem .75rem;border-radius:10px;cursor:pointer;display:flex;align-items:center;gap:.5rem;" id="drawer-tema-btn">🌙 Modo oscuro</button>
@@ -396,9 +436,9 @@ const auth = getAuth(app);
 /* ── Estado global ── */
 let currentUser = null;
 let allPosts = [];
-let currentTab = 'feed';
+let currentTab = 'general';
 let currentSort = 'reciente';
-let currentPostType = 'apunte';
+let currentPostType = 'general';
 let quizAnswers = {}; // {postId: choiceIndex}
 const ADMIN_UID = 'Yx6LxvfXOZQMBU9nxszWZN3mtrz1';
 
@@ -531,7 +571,7 @@ function updateHeroStats() {
 /* ── Tabs y filtros ── */
 window.setTab = function(tab) {
   currentTab = tab;
-  ['feed','apuntes','quizzes','preguntas'].forEach(t => {
+  ['general','feed','apuntes','preguntas','quizzes'].forEach(t => {
     document.getElementById('tab-'+t).classList.toggle('active', t === tab);
   });
   renderFeed();
@@ -547,11 +587,11 @@ window.setSort = function(s) {
 /* ── Tipo de post ── */
 window.setPostType = function(type) {
   currentPostType = type;
-  ['apunte','pregunta','quiz'].forEach(t => {
+  ['general','apunte','pregunta','quiz'].forEach(t => {
     document.getElementById('ctype-'+t).classList.toggle('active', t === type);
   });
   document.getElementById('quiz-section').classList.toggle('visible', type === 'quiz');
-  const ph = { apunte:'Escribe aquí tu apunte (máx. 1500 palabras)…', pregunta:'Describe tu pregunta con detalle…', quiz:'Contexto o explicación adicional del quiz (opcional)…' };
+  const ph = { general:'Escribe un mensaje para la comunidad…', apunte:'Escribe aquí tu apunte (máx. 1500 palabras)…', pregunta:'Describe tu pregunta con detalle…', quiz:'Contexto o explicación adicional del quiz (opcional)…' };
   document.getElementById('compose-body').placeholder = ph[type];
 };
 
@@ -605,7 +645,9 @@ window.publishPost = async function() {
   btn.textContent = '⏳ Publicando…';
 
   const profile = window._getUserProfile ? window._getUserProfile() : null;
-  const authorName = profile ? (profile.nombre || profile.displayName || 'Anónimo') : 'Anónimo';
+  const nombre   = profile ? (profile.nombre   || '') : '';
+  const apellido  = profile ? (profile.apellido  || '') : '';
+  const authorName = (nombre + ' ' + apellido).trim() || (profile && profile.displayName) || 'Anónimo';
   const authorAvatar = profile ? (profile.avatar || '👤') : '👤';
 
   try {
@@ -644,7 +686,11 @@ window.renderFeed = function() {
   let posts = [...allPosts];
 
   // Filtro por tab
-  if (currentTab !== 'feed') {
+  if (currentTab === 'feed') {
+    // todos
+  } else if (currentTab === 'general') {
+    posts = posts.filter(p => p.type === 'general');
+  } else {
     const map = { apuntes:'apunte', quizzes:'quiz', preguntas:'pregunta' };
     posts = posts.filter(p => p.type === map[currentTab]);
   }
@@ -688,7 +734,7 @@ function renderPost(p) {
   const disliked = uid && (p.dislikes||[]).includes(uid);
   const likeCount  = (p.likes||[]).length;
   const dislikeCount = (p.dislikes||[]).length;
-  const typeBadge = { apunte:'badge-apunte Apunte', quiz:'badge-quiz Quiz', pregunta:'badge-pregunta Pregunta' }[p.type] || 'badge-apunte Apunte';
+  const typeBadge = { general:'badge-general General', apunte:'badge-apunte Apunte', quiz:'badge-quiz Quiz', pregunta:'badge-pregunta Pregunta' }[p.type] || 'badge-general General';
   const [badgeClass, badgeLabel] = typeBadge.split(' ');
   const bodyTxt = (p.body||'').replace(/</g,'&lt;');
   const isLong  = (p.body||'').split(/\s+/).length > 80;
@@ -710,9 +756,13 @@ function renderPost(p) {
     </div>`;
   }
 
-  const deleteBtn = isAdmin
-    ? `<button class="act-btn" onclick="deletePost('${p.id}')" style="color:var(--red);margin-left:auto">🗑 Eliminar</button>`
-    : '';
+  const canDelete = uid === ADMIN_UID || uid === p.authorId;
+  const dotsMenu = canDelete ? `<div class="pc-dots-wrap">
+      <button class="pc-dots-btn" onclick="toggleDots('${p.id}',event)" title="Opciones">⋯</button>
+      <div class="pc-dots-menu" id="dots-${p.id}">
+        <button class="danger" onclick="confirmDelete('${p.id}')">🗑 Eliminar publicación</button>
+      </div>
+    </div>` : '';
 
   return `<div class="post-card type-${p.type}" id="post-${p.id}">
     <div class="pc-header">
@@ -722,6 +772,7 @@ function renderPost(p) {
         <span class="pc-type-badge ${badgeClass}">${badgeLabel}</span>
         <div class="pc-date">${timeAgo(p.createdAt)}</div>
       </div>
+      ${dotsMenu}
     </div>
     <div class="pc-title">${(p.title||'').replace(/</g,'&lt;')}</div>
     ${p.body ? `<div class="pc-body${isLong?' clamped':''}" id="body-${p.id}">${bodyTxt}</div>
@@ -747,7 +798,6 @@ function renderPost(p) {
           <button onclick="sharePost('${p.id}','twitter')">🐦 Twitter / X</button>
         </div>
       </div>
-      ${deleteBtn}
     </div>
     <div class="pc-comments hidden" id="comments-${p.id}">
       <div id="comments-list-${p.id}"><div style="font-size:.78rem;color:var(--muted);padding:.25rem 0">Cargando comentarios…</div></div>
@@ -911,15 +961,49 @@ window.expandBody = function(pid) {
   if (btn && btn.classList.contains('expand-btn')) btn.style.display = 'none';
 };
 
-/* ── Eliminar (solo admin) ── */
+/* ── Eliminar ── */
 window.deletePost = async function(pid) {
-  if (!currentUser || currentUser.uid !== ADMIN_UID) return;
-  if (!confirm('¿Eliminar esta publicación?')) return;
+  const uid = currentUser ? currentUser.uid : null;
+  const post = allPosts.find(p => p.id === pid);
+  if (!uid || !post) return;
+  if (uid !== ADMIN_UID && uid !== post.authorId) return;
   try {
     await deleteDoc(doc(db,'forum_posts',pid));
     showToast('🗑 Publicación eliminada');
   } catch(e) { showToast('Error al eliminar.'); }
 };
+
+/* ── Menú tres puntos y modal eliminar ── */
+window.toggleDots = function(pid, e) {
+  e.stopPropagation();
+  const el = document.getElementById('dots-'+pid);
+  if (!el) return;
+  document.querySelectorAll('.pc-dots-menu.open').forEach(d => { if(d.id!=='dots-'+pid) d.classList.remove('open'); });
+  el.classList.toggle('open');
+  document.addEventListener('click', () => el.classList.remove('open'), { once: true });
+};
+
+let _pendingDeleteId = null;
+window.confirmDelete = function(pid) {
+  document.querySelectorAll('.pc-dots-menu.open').forEach(d => d.classList.remove('open'));
+  _pendingDeleteId = pid;
+  document.getElementById('del-modal-overlay').classList.add('open');
+};
+window.closeDel = function() {
+  _pendingDeleteId = null;
+  document.getElementById('del-modal-overlay').classList.remove('open');
+};
+document.getElementById('btn-del-confirm').addEventListener('click', async () => {
+  if (!_pendingDeleteId) return;
+  const pid = _pendingDeleteId;
+  closeDel();
+  await deletePost(pid);
+});
+// Cerrar al click fuera
+document.getElementById('del-modal-overlay').addEventListener('click', function(e){
+  if(e.target === this) closeDel();
+});
+
 
 /* ── Toast ── */
 function showToast(msg, ms = 2800) {
