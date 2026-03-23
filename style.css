@@ -148,7 +148,7 @@ nav {
   white-space: nowrap;
   display: flex; align-items: center; gap: 0.5rem;
 }
-.nav-logo img { width: 36px; height: 36px; border-radius: 50%; object-fit: cover; }
+.nav-logo img { width: 36px; height: 36px; object-fit: contain; }
 .nav-links { display: flex; flex-wrap: wrap; list-style: none; flex: 1; }
 .nav-links a {
   display: block; padding: 0.85rem 0.8rem;

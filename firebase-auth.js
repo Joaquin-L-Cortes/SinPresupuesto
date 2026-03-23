@@ -61,27 +61,27 @@ const AVATARS = [
 
 // MATERIALES: pageKey = clave Firestore progress/{pageKey}, total = archivos en esa sección
 const MATERIALES = [
-  { id:'motivacion-guia',     label:'I. Motivación/Guía',            pageKey:'motivacion_guia',                           total:0   },
-  { id:'clases-sin-pre',      label:'II. Clases Sin-Pre',            pageKey:'clases_sin_pre',                            total:72  },
-  { id:'temarios',            label:'III. Temarios',                 pageKey:'temarios',                                  total:6   },
-  { id:'admision-y-examenes', label:'IV. Admisión y Exámenes',       pageKey:'admision_y_examenes_un',                    total:37  },
-  { id:'clases-preu-s-i',     label:"V. Clases PreU's I",           pageKey:'clases_preu_s_i',                           total:45  },
-  { id:'clases-preu-s-ii',    label:"VI. Clases PreU's II (Libres)", pageKey:'clases_preu_s_ii_libres',                   total:11  },
-  { id:'recursos-udea',       label:'VII. Recursos UdeA',            pageKey:'recursos_udea',                             total:30  },
-  { id:'diapositivas',        label:'VIII. Diapositivas con TODO',   pageKey:'diapositivas_con_todo',                     total:50  },
-  { id:'apuntes',             label:'IX. Apuntes Estudio',           pageKey:'apuntes_estudio_un',                        total:29  },
-  { id:'textos',              label:'X. Textos Varios',              pageKey:'textos_varios_practica_textual',            total:44  },
-  { id:'modulos-teoricos',    label:'XI. Módulos Teóricos',          pageKey:'modulos_teoricos',                          total:56  },
-  { id:'modulos-especiales',  label:'XII. Módulos Especiales',       pageKey:'modulos_especiales',                        total:58  },
-  { id:'ejercicios',          label:'XIII. Ejercicios Prácticas',    pageKey:'ejercicios_practicas',                      total:115 },
-  { id:'simulacros',          label:'XIV. Simulacros',               pageKey:'simulacros_un',                             total:28  },
-  { id:'simulacros-cal',      label:'XV. Simulacros Calificados',    pageKey:'simulacros_calificados_un',                 total:108 },
-  { id:'apps',                label:"XVI. App's Estudio (Android)", pageKey:'app_s_estudio_android',                     total:27  },
-  { id:'clases-vivo',         label:'Clases en vivo/grabadas',       pageKey:'clases_en_vivo_grabadas_sin_presupuesto_un',total:0   },
-  { id:'donativos',           label:'Donativos',                     pageKey:'donativos',                                 total:0   },
-  { id:'formulario',          label:'Formulario Económico',          pageKey:'formulario_economico_1',                    total:0   },
-  { id:'medios',              label:'Medios de Sin-Presupuesto',     pageKey:'medios_de_sin_presupuesto_un',              total:0   },
-  { id:'tomos',               label:'Tomos',                         pageKey:'tomos',                                     total:5   },
+  { id:'motivacion-guia',     label:'I. Motivación/Guía',            pageKey:'motivacion_guia',                           total:0,   href:'motivacion-guia.html'                            },
+  { id:'clases-sin-pre',      label:'II. Clases Sin-Pre',            pageKey:'clases_sin_pre',                            total:72,  href:'clases-sin-pre.html'                             },
+  { id:'temarios',            label:'III. Temarios',                 pageKey:'temarios',                                  total:6,   href:'temarios.html'                                   },
+  { id:'admision-y-examenes', label:'IV. Admisión y Exámenes',       pageKey:'admision_y_examenes_un',                    total:37,  href:'admision-y-examenes-un.html'                     },
+  { id:'clases-preu-s-i',     label:"V. Clases PreU's I",           pageKey:'clases_preu_s_i',                           total:45,  href:'clases-preu-s-i.html'                            },
+  { id:'clases-preu-s-ii',    label:"VI. Clases PreU's II (Libres)", pageKey:'clases_preu_s_ii_libres',                   total:11,  href:'clases-preu-s-ii-libres.html'                    },
+  { id:'recursos-udea',       label:'VII. Recursos UdeA',            pageKey:'recursos_udea',                             total:30,  href:'recursos-udea.html'                              },
+  { id:'diapositivas',        label:'VIII. Diapositivas con TODO',   pageKey:'diapositivas_con_todo',                     total:50,  href:'diapositivas-con-todo.html'                      },
+  { id:'apuntes',             label:'IX. Apuntes Estudio',           pageKey:'apuntes_estudio_un',                        total:29,  href:'apuntes-estudio-un.html'                         },
+  { id:'textos',              label:'X. Textos Varios',              pageKey:'textos_varios_practica_textual',            total:44,  href:'textos-varios-practica-textual.html'             },
+  { id:'modulos-teoricos',    label:'XI. Módulos Teóricos',          pageKey:'modulos_teoricos',                          total:56,  href:'modulos-teoricos.html'                           },
+  { id:'modulos-especiales',  label:'XII. Módulos Especiales',       pageKey:'modulos_especiales',                        total:58,  href:'modulos-especiales.html'                         },
+  { id:'ejercicios',          label:'XIII. Ejercicios Prácticas',    pageKey:'ejercicios_practicas',                      total:115, href:'ejercicios-practicas.html'                       },
+  { id:'simulacros',          label:'XIV. Simulacros',               pageKey:'simulacros_un',                             total:28,  href:'simulacros-un.html'                              },
+  { id:'simulacros-cal',      label:'XV. Simulacros Calificados',    pageKey:'simulacros_calificados_un',                 total:108, href:'simulacros-calificados-un.html'                  },
+  { id:'apps',                label:"XVI. App's Estudio (Android)", pageKey:'app_s_estudio_android',                     total:27,  href:'app-s-estudio-android.html'                      },
+  { id:'clases-vivo',         label:'Clases en vivo/grabadas',       pageKey:'clases_en_vivo_grabadas_sin_presupuesto_un',total:0,   href:'clases-en-vivo-grabadas-sin-presupuesto-un.html' },
+  { id:'donativos',           label:'Donativos',                     pageKey:'donativos',                                 total:0,   href:'donativos.html'                                  },
+  { id:'formulario',          label:'Formulario Económico',          pageKey:'formulario_economico_1',                    total:0,   href:'formulario-economico-1.html'                     },
+  { id:'medios',              label:'Medios de Sin-Presupuesto',     pageKey:'medios_de_sin_presupuesto_un',              total:0,   href:'medios-de-sin-presupuesto-un.html'               },
+  { id:'tomos',               label:'Tomos',                         pageKey:'tomos',                                     total:5,   href:'tomos.html'                                      },
 ];
 
 // Cache de progreso por sección (se llena al abrir el modal)
@@ -475,25 +475,35 @@ async function openAvanceModal() {
   document.getElementById('avance-progress-text').textContent =
     `${doneAll} de ${totalAll} archivos completados · ${pctGlobal} %`;
 
-  // Lista de secciones
-  listEl.innerHTML = withFiles.map(m => {
+  // Lista de secciones — cada item es un enlace a la sección
+  // Ordenar: primero con progreso (desc), luego sin progreso
+  const sorted = [...withFiles].sort((a, b) => {
+    const pa = (_sectionProgress[a.pageKey] || {done:0}).done;
+    const pb = (_sectionProgress[b.pageKey] || {done:0}).done;
+    return pb - pa;
+  });
+  listEl.innerHTML = sorted.map(m => {
     const sp   = _sectionProgress[m.pageKey] || { done: 0, total: m.total };
     const pct  = sp.total > 0 ? Math.round(sp.done / sp.total * 100) : 0;
     const done = sp.done;
     const tot  = sp.total;
     const fillW = Math.max(pct, done > 0 ? 3 : 0);
     const color = pct === 100 ? 'var(--green,#4ade80)' : 'var(--accent2)';
+    const chevron = `<span class="asi-chevron">→</span>`;
     return `
-    <div class="avance-section-item ${pct===100?'done':''}">
+    <a class="avance-section-item ${pct===100?'done':''}" href="${m.href}" onclick="closeAvanceModal()">
       <div class="asi-top">
         <span class="asi-label">${m.label}</span>
-        <span class="asi-pct">${String(pct).padStart(2,'0')} %</span>
+        <span style="display:flex;align-items:center;gap:.5rem">
+          <span class="asi-pct">${String(pct).padStart(2,'0')} %</span>
+          ${chevron}
+        </span>
       </div>
       <div class="asi-track">
         <div class="asi-fill" style="width:${fillW}%;background:${color};"></div>
       </div>
       <div class="asi-sub">${done} de ${tot} archivos</div>
-    </div>`;
+    </a>`;
   }).join('');
 
   // Actualizar botón del nav con color del avatar
@@ -797,8 +807,12 @@ function injectModals() {
 
   <!-- MODAL AVANCE -->
   <style>
-    .avance-section-item{background:var(--bg3);border:1px solid var(--border);border-radius:12px;padding:.7rem .9rem;transition:border-color .2s;}
+    .avance-section-item{display:block;background:var(--bg3);border:1px solid var(--border);border-radius:12px;padding:.7rem .9rem;transition:border-color .2s,background .15s;text-decoration:none;cursor:pointer;}
+    .avance-section-item:hover{background:var(--bg2);border-color:var(--accent2);}
     .avance-section-item.done{border-color:rgba(74,222,128,.4);}
+    .avance-section-item.done:hover{border-color:var(--green,#4ade80);}
+    .asi-chevron{font-size:.8rem;color:var(--muted);transition:transform .15s;}
+    .avance-section-item:hover .asi-chevron{transform:translateX(3px);color:var(--accent2);}
     .asi-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:.4rem;}
     .asi-label{font-size:.82rem;font-weight:600;color:var(--text);}
     .asi-pct{font-size:.82rem;font-weight:700;color:var(--accent2);font-variant-numeric:tabular-nums;}
