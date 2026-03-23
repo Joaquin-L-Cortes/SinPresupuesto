@@ -504,31 +504,50 @@ window._pageReady=async function(user,db,docFn,setFn,getFn){
   window._fdb=db; window._fdoc=docFn; window._fset=setFn;
   window._cu=user;
   window._pageBooted=true;
-  // 1. Base: localStorage (funciona sin conexión)
-  MODULES.forEach(m=>{
-    checked[m.id]=JSON.parse(localStorage.getItem('sp_'+PAGE_KEY+'_'+m.id)||'null')||{};
-    fileOrders[m.id]=m.files.map((_,i)=>i);
-  });
-  order=JSON.parse(localStorage.getItem('sp_'+PAGE_KEY+'_order')||'null')||MODULES.map(m=>m.id);
-  heroMode=localStorage.getItem('sp_global_hero')||'bar';
-  applyHeroMode();renderGrid();
-  // 2. Firestore es la fuente de verdad — sobrescribir si hay sesión
+
+  // Inicializar estructuras base siempre
+  MODULES.forEach(m=>{ fileOrders[m.id]=m.files.map((_,i)=>i); });
+
   if(user&&db&&getFn){
+    // CON SESIÓN: Firestore es la fuente de verdad — esperar antes de renderizar
+    // Cargar localStorage como fallback inmediato mientras llega Firestore
+    MODULES.forEach(m=>{
+      checked[m.id]=JSON.parse(localStorage.getItem('sp_'+PAGE_KEY+'_'+m.id)||'null')||{};
+    });
+    order=JSON.parse(localStorage.getItem('sp_'+PAGE_KEY+'_order')||'null')||MODULES.map(m=>m.id);
+    heroMode=localStorage.getItem('sp_global_hero')||'bar';
+    applyHeroMode(); renderGrid(); // render provisional con localStorage
+
     try{
       var ref=docFn(db,'usuarios',user.uid,'progress',PAGE_KEY);
       var snap=await getFn(ref);
       if(snap.exists()){
         var d=snap.data();
-        if(d.checked)MODULES.forEach(m=>{if(d.checked[m.id]!==undefined)checked[m.id]=d.checked[m.id];});
-        if(d.order&&Array.isArray(d.order))order=d.order;
-        if(d.fileOrders)MODULES.forEach(m=>{if(d.fileOrders[m.id])fileOrders[m.id]=d.fileOrders[m.id];});
-        if(d.heroMode){heroMode=d.heroMode;localStorage.setItem('sp_global_hero',heroMode);}
-        // Sincronizar localStorage con Firestore
+        // Firestore gana sobre localStorage en todo
+        if(d.checked) MODULES.forEach(m=>{
+          if(d.checked[m.id]!==undefined) checked[m.id]=d.checked[m.id];
+        });
+        if(d.order&&Array.isArray(d.order)) order=d.order;
+        if(d.fileOrders) MODULES.forEach(m=>{ if(d.fileOrders[m.id]) fileOrders[m.id]=d.fileOrders[m.id]; });
+        if(d.heroMode){ heroMode=d.heroMode; }
+        // Actualizar localStorage con los datos reales de Firestore
         MODULES.forEach(m=>localStorage.setItem('sp_'+PAGE_KEY+'_'+m.id,JSON.stringify(checked[m.id])));
         localStorage.setItem('sp_'+PAGE_KEY+'_order',JSON.stringify(order));
-        applyHeroMode();renderGrid();
+        localStorage.setItem('sp_global_hero',heroMode);
       }
-    }catch(e){console.warn('[SP] Error leyendo Firestore:',e);}
+      // Renderizar con datos definitivos (Firestore o localStorage si no había nada en Firestore)
+      applyHeroMode(); renderGrid();
+    }catch(e){
+      console.warn('[SP] Error leyendo Firestore, usando localStorage:',e);
+    }
+  } else {
+    // SIN SESIÓN: solo localStorage
+    MODULES.forEach(m=>{
+      checked[m.id]=JSON.parse(localStorage.getItem('sp_'+PAGE_KEY+'_'+m.id)||'null')||{};
+    });
+    order=JSON.parse(localStorage.getItem('sp_'+PAGE_KEY+'_order')||'null')||MODULES.map(m=>m.id);
+    heroMode=localStorage.getItem('sp_global_hero')||'bar';
+    applyHeroMode(); renderGrid();
   }
 };
 
@@ -582,10 +601,9 @@ function scheduleSave(){
     MODULES.forEach(function(mod){tot+=mod.files.length;done+=doneOf(mod.id);});
     if(typeof window._sectionProgress==='undefined')window._sectionProgress={};
     window._sectionProgress[PAGE_KEY]={done:done,total:tot};
-    // updateAvanceBtn lee avatar del perfil actual
     var profile=window._getUserProfile?window._getUserProfile():null;
     window.updateAvanceBtn&&window.updateAvanceBtn(document.getElementById('btn-avance'),profile);
-  },800);
+  },50);
 }
 
 /* ── HERO MODE ── */
