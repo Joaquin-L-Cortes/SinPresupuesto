@@ -8,7 +8,7 @@
   'use strict';
 
   // ── CONFIGURACIÓN ─────────────────────────────────
-  const GEMINI_KEY = 'AIzaSyBUSW-MPSM0iJOTgYPKP2iEVxXcz6SJk7E'; // ← Pega aquí tu API key de Google AI Studio // ← Pega aquí tu API key de Google AI Studio
+  const GEMINI_KEY = ''; // ← Pega aquí tu API key // ← Pega aquí tu API key de Google AI Studio
   const GEMINI_URL = 'https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent';
   // ──────────────────────────────────────────────────
 
@@ -131,7 +131,28 @@
             <div id="sp-mini-name">—</div>
             <div id="sp-mini-meta">—</div>
           </div>
-          <button id="sp-mini-fs" title="Pantalla completa" onclick="document.getElementById('sp-mini-box').classList.toggle('sp-mini-fullscreen')">⛶</button>
+          <button id="sp-mini-fs" title="Pantalla completa" onclick="(function(){
+            var box=document.getElementById('sp-mini-box');
+            var isMobile=window.innerWidth<=600;
+            if(isMobile){
+              var chrome=document.getElementById('sp-mini-chrome');
+              var info=document.getElementById('sp-mini-info');
+              var immersive=box.dataset.immersive==='1';
+              if(immersive){
+                box.dataset.immersive='0';
+                if(chrome)chrome.style.display='';
+                if(info)info.style.display='';
+                document.getElementById('sp-mini-fs').style.opacity='1';
+              } else {
+                box.dataset.immersive='1';
+                if(chrome)chrome.style.display='none';
+                if(info)info.style.display='none';
+                document.getElementById('sp-mini-fs').style.opacity='0.4';
+              }
+            } else {
+              box.classList.toggle('sp-mini-fullscreen');
+            }
+          })()">⛶</button>
           <button id="sp-mini-seen">Marcar como visto</button>
           <a id="sp-mini-drivebt" href="#" target="_blank" rel="noopener">↗ Abrir en Drive</a>
         </div>

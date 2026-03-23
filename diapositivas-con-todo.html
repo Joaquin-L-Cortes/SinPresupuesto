@@ -30,7 +30,11 @@
   transition:box-shadow .18s,border-color .18s,transform .18s cubic-bezier(.4,0,.2,1);
 }
 [data-theme="dark"] nav{
-  backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);
+  backdrop-filter:none;-webkit-backdrop-filter:none;
+  background:var(--nav-bg)!important;
+}
+@media(max-width:900px){
+  nav{backdrop-filter:none!important;-webkit-backdrop-filter:none!important;}
 }
 body{background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;font-size:15px;line-height:1.7;min-height:100vh;}
 /* NAV — fluid, se adapta a cualquier pantalla */
@@ -145,7 +149,6 @@ aside{position:sticky;top:clamp(46px,6vw,56px);align-self:start;max-height:calc(
 .sort-menu .sort-divider{height:1px;background:var(--border);margin:.2rem 0;}
 /* MODULES GRID */
 #modules-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:1rem;align-items:start;}
-}
 /* MODULE CARD */
 .module-card{background:var(--bg2);border:1px solid var(--border);border-radius:16px;overflow:hidden;transition:box-shadow .22s,border-color .22s,opacity .22s ease,transform .22s cubic-bezier(.4,0,.2,1);grid-column:span 1;user-select:none;touch-action:pan-y;}
 .module-card:hover{box-shadow:0 6px 20px var(--shadow);}
@@ -238,6 +241,8 @@ aside{position:sticky;top:clamp(46px,6vw,56px);align-self:start;max-height:calc(
 .btn-fullscreen{padding:.35rem .55rem;border-radius:8px;background:var(--bg3);color:var(--muted);font-size:1rem;border:1px solid var(--border);cursor:pointer;transition:all .15s;flex-shrink:0;line-height:1;}
 .btn-fullscreen:hover{color:var(--accent2);border-color:var(--accent2);}
 .modal-window.is-fullscreen{position:fixed!important;inset:0!important;max-width:100vw!important;width:100vw!important;height:100vh!important;border-radius:0!important;z-index:2000;}
+.modal-window.immersive .modal-chrome,.modal-window.immersive .modal-info{display:none!important;}
+.modal-window.immersive .modal-iframe-wrap{height:100%!important;}
 .btn-seen.done{background:var(--green-bg);color:var(--green);border-color:var(--green);}
 .btn-drive{padding:.35rem .8rem;border-radius:8px;background:var(--accent2);color:white;text-decoration:none;font-size:.78rem;font-weight:600;border:none;cursor:pointer;flex-shrink:0;display:inline-flex;align-items:center;gap:.3rem;}
 .btn-drive:hover{opacity:.85;}
@@ -701,62 +706,24 @@ function requireAuth(cb){
 /* ── DATOS ── */
 const MODULES=[{"id": "i__diapositivas_e", "emoji": "📖", "bg": "#dceef7", "title": "I. Diapositivas E. - Textual", "desc": "I. Diapositivas E. - Textual", "files": [{"n": "E. Análisis Textual 1", "url": "https://docs.google.com/presentation/d/1HUpVE5ACkmJzfCSJftX0ZVTonKhqo0L5/edit?usp=sharing&amp;ouid=107806560525543497146&amp;rtpof=true&amp;sd=true", "type": "Enlace", "ext": false}, {"n": "E. Análisis Textual 2", "url": "https://docs.google.com/presentation/d/13JA_4T7XYCaGJHfaLdAnnx7voYNtH80b/edit?usp=sharing&amp;ouid=107806560525543497146&amp;rtpof=true&amp;sd=true", "type": "Enlace", "ext": false}, {"n": "E. Análisis Textual 3", "url": "https://docs.google.com/presentation/d/1HkF34saJeqifc37eI8r1oohB070Bzyjz/edit?usp=sharing&amp;ouid=107806560525543497146&amp;rtpof=true&amp;sd=true", "type": "Enlace", "ext": false}, {"n": "E. Análisis Textual 4", "url": "https://docs.google.com/presentation/d/1oFSLWINHVxfeuJZyi6GFvMAg5gKls0BH/edit?usp=sharing&amp;ouid=107806560525543497146&amp;rtpof=true&amp;sd=true", "type": "Enlace", "ext": false}, {"n": "E. Análisis Textual 5", "url": "https://docs.google.com/presentation/d/13wY16obYXsOnHKr5UcaK387r3OktY39I/edit?usp=sharing&amp;ouid=107806560525543497146&amp;rtpof=true&amp;sd=true", "type": "Enlace", "ext": false}, {"n": "E. Análisis Textual 6", "url": "https://docs.google.com/presentation/d/1girv-k1UJtMzYRP0OaOEybsLXw4Qa3Ry/edit?usp=sharing&amp;ouid=107806560525543497146&amp;rtpof=true&amp;sd=true", "type": "Enlace", "ext": false}]}, {"id": "ii__diapositivas_e", "emoji": "🧬", "bg": "#d8f4e8", "title": "II. Diapositivas E. - Ciencias (Biología)", "desc": "II. Diapositivas E. - Ciencias (Biología)", "files": [{"n": "Célula — estructura y función", "url": "https://docs.google.com/presentation/d/1tnF6Aif1rh2QQvs1aaLUOq0epzdAcvhc/edit?usp=sharing&amp;ouid=107806560525543497146&amp;rtpof=true&amp;sd=true", "type": "Enlace", "ext": false}, {"n": "Genética y herencia", "url": "https://docs.google.com/presentation/d/1WZgZY9k2N_pkijAzhTh7g0uEZhgqCtWh/edit?usp=sharing&amp;ouid=107806560525543497146&amp;rtpof=true&amp;sd=true", "type": "Enlace", "ext": false}, {"n": "Ecología y ecosistemas", "url": "https://docs.google.com/presentation/d/1T3bLPEzJ4mWBFNNELD3Y4D4LSARRL6Fn/edit?usp=sharing&amp;ouid=107806560525543497146&amp;rtpof=true&amp;sd=true", "type": "Enlace", "ext": false}, {"n": "Evolución y selección natural", "url": "https://docs.google.com/presentation/d/1EviORLQiQ-dIeJyiELK294sWBPdAUEYx/edit?usp=sharing&amp;ouid=107806560525543497146&amp;rtpof=true&amp;sd=true", "type": "Enlace", "ext": false}, {"n": "Fisiología humana", "url": "https://docs.google.com/presentation/d/1ZDpns9qvVMu1bGt9fi9Z2Fi8noxHHMxo/edit?usp=sharing&amp;ouid=107806560525543497146&amp;rtpof=true&amp;sd=true", "type": "Enlace", "ext": false}, {"n": "Diap. Biología — Metabolismo celular", "url": "https://docs.google.com/presentation/d/1AWDOM-ZK8eWNn2lQNRJuNXKLRB_9SA6a/edit?usp=sharing&amp;ouid=107806560525543497146&amp;rtpof=true&amp;sd=true", "type": "Enlace", "ext": false}, {"n": "Diap. Biología — Reproducción y meiosis", "url": "https://docs.google.com/presentation/d/14zBId2ChYtK-kAXFQvRUz7m3eWOhe6mU/edit?usp=sharing&amp;ouid=107806560525543497146&amp;rtpof=true&amp;sd=true", "type": "Enlace", "ext": false}, {"n": "Diap. Biología — Sistema nervioso", "url": "https://docs.google.com/presentation/d/1CKW0QnaPOZYWXuKvrfNjPBKMQ7Y3fjAq/edit?usp=sharing&amp;ouid=107806560525543497146&amp;rtpof=true&amp;sd=true", "type": "Enlace", "ext": false}, {"n": "Diap. Biología — Sistema circulatorio", "url": "https://docs.google.com/presentation/d/1VJD2hpRYSar3B9X_MzFatYNugJJ08xnz/edit?usp=sharing&amp;ouid=107806560525543497146&amp;rtpof=true&amp;sd=true", "type": "Enlace", "ext": false}, {"n": "Diap. Biología — Sistema digestivo", "url": "https://docs.google.com/presentation/d/1RG5n5e03AIecnFvOwVAg0FIFSHhTk5jW/edit?usp=sharing&amp;ouid=107806560525543497146&amp;rtpof=true&amp;sd=true", "type": "Enlace", "ext": false}, {"n": "Diap. Biología — Inmunología básica", "url": "https://docs.google.com/presentation/d/1xmWBU6AB4Hj3mXesXs6W7X0wxrlFJF6f/edit?usp=sharing&amp;ouid=107806560525543497146&amp;rtpof=true&amp;sd=true", "type": "Enlace", "ext": false}, {"n": "Diap. Biología — Biotecnología", "url": "https://docs.google.com/presentation/d/1dlcwKUXZxdQq2vXCGJfP-xxG7SuwKtwE/edit?usp=sharing&amp;ouid=107806560525543497146&amp;rtpof=true&amp;sd=true", "type": "Enlace", "ext": false}, {"n": "Diap. Biología — Biodiversidad", "url": "https://docs.google.com/presentation/d/13rqGCnF6EL-0eJNHqxsCsUKsCBT_sPZS/edit?usp=sharing&amp;ouid=107806560525543497146&amp;rtpof=true&amp;sd=true", "type": "Enlace", "ext": false}, {"n": "Diap. Biología — Módulo integrador", "url": "https://docs.google.com/presentation/d/18_Hugs4aRD1AJSaZ5pNuRjsMvt-ZKVux/edit?usp=sharing&amp;ouid=107806560525543497146&amp;rtpof=true&amp;sd=true", "type": "Enlace", "ext": false}]}, {"id": "iii__diapositivas_e", "emoji": "🧪", "bg": "#fce0ee", "title": "III. Diapositivas E. - Ciencias (Química)", "desc": "III. Diapositivas E. - Ciencias (Química)", "files": [{"n": "Tabla periódica y enlace químico", "url": "https://docs.google.com/presentation/d/1QinYOR2WKiDulk1eY24yjvhqPshDVSpN/edit?usp=sharing&amp;ouid=107806560525543497146&amp;rtpof=true&amp;sd=true", "type": "Enlace", "ext": false}, {"n": "Estequiometría y reacciones", "url": "https://docs.google.com/presentation/d/1bX7ERfqdtU7VZIZ33So510Jvq1mxijcb/edit?usp=sharing&amp;ouid=107806560525543497146&amp;rtpof=true&amp;sd=true", "type": "Enlace", "ext": false}, {"n": "Soluciones y concentración", "url": "https://docs.google.com/presentation/d/1vKw9KfL3HkAtueGIRh69qOZ9OdZwIdDP/edit?usp=sharing&amp;ouid=107806560525543497146&amp;rtpof=true&amp;sd=true", "type": "Enlace", "ext": false}, {"n": "Termoquímica y equilibrio", "url": "https://docs.google.com/presentation/d/1ws76HBbAMnAFfAQ80pKXOE6kc7_WvYdo/edit?usp=sharing&amp;ouid=107806560525543497146&amp;rtpof=true&amp;sd=true", "type": "Enlace", "ext": false}, {"n": "Química orgánica básica", "url": "https://docs.google.com/presentation/d/1Qva80VS_HkqGiSV-CKmjJolcNkMGz9VD/edit?usp=sharing&amp;ouid=107806560525543497146&amp;rtpof=true&amp;sd=true", "type": "Enlace", "ext": false}, {"n": "Diap. Química — Ácidos y bases", "url": "https://docs.google.com/presentation/d/1TNmEF9Lh_D27VGZ4N2i74n8HNek6PrMA/edit?usp=sharing&amp;ouid=107806560525543497146&amp;rtpof=true&amp;sd=true", "type": "Enlace", "ext": false}, {"n": "Diap. Química — Electroquímica", "url": "https://docs.google.com/presentation/d/1jRZyYUwL2OzIICf-khgqnAJ9HzdqUqXV/edit?usp=sharing&amp;ouid=107806560525543497146&amp;rtpof=true&amp;sd=true", "type": "Enlace", "ext": false}, {"n": "Diap. Química — Cinética química", "url": "https://docs.google.com/presentation/d/1PypgfCf5OVE6RPxL_RUBO-X3nQqQJDEy/edit?usp=sharing&amp;ouid=107806560525543497146&amp;rtpof=true&amp;sd=true", "type": "Enlace", "ext": false}, {"n": "Diap. Química — Gases y presión", "url": "https://docs.google.com/presentation/d/1AV_sS4wLSc-6qu3vSV_MSl-XXxTmlHM_/edit?usp=sharing&amp;ouid=107806560525543497146&amp;rtpof=true&amp;sd=true", "type": "Enlace", "ext": false}, {"n": "Diap. Química — Nomenclatura", "url": "https://docs.google.com/presentation/d/1_386DfgYNoyZAss7OUnCM1cUgCigCqp2/edit?usp=sharing&amp;ouid=107806560525543497146&amp;rtpof=true&amp;sd=true", "type": "Enlace", "ext": false}, {"n": "Diap. Química — Polímeros", "url": "https://docs.google.com/presentation/d/1brzHE_dtHQy1kH-F_iGgqp6Ua53ILB0Y/edit?usp=sharing&amp;ouid=107806560525543497146&amp;rtpof=true&amp;sd=true", "type": "Enlace", "ext": false}, {"n": "Diap. Química — Módulo integrador", "url": "https://docs.google.com/presentation/d/1mYwZG5ZhKQStT44k9FeAFcuk-R5Oxv9b/edit?usp=sharing&amp;ouid=107806560525543497146&amp;rtpof=true&amp;sd=true", "type": "Enlace", "ext": false}]}, {"id": "iv__diapositivas_e", "emoji": "⚡", "bg": "#fef3e2", "title": "IV. Diapositivas E. - Física", "desc": "IV. Diapositivas E. - Física", "files": [{"n": "E. Física 1", "url": "https://drive.google.com/file/d/1clUgN1NafNIWH-FlqMDgjprNToytY8qW/view?usp=classroom_web&amp;authuser=0", "type": "PDF", "ext": false}, {"n": "E. Física 2", "url": "https://drive.google.com/file/d/1lb7mPGWqDabFhV6VAVsqU9X87CE03nbk/view?usp=classroom_web&amp;authuser=0", "type": "PDF", "ext": false}, {"n": "E. Física 3", "url": "https://drive.google.com/file/d/1ca_YvRnpCrucT5YfoifSg-QW-76VKe7M/view?usp=classroom_web&amp;authuser=0", "type": "PDF", "ext": false}, {"n": "E. Física 4", "url": "https://drive.google.com/file/d/1duZcOSaJ4vbkkUVxzSdIFQoIcw9gXfDx/view?usp=classroom_web&amp;authuser=0", "type": "PDF", "ext": false}, {"n": "E. Física 5", "url": "https://drive.google.com/file/d/15LHih8dEZ6DJuCeZ_1ZPW-3Kf_RbeSDi/view?usp=classroom_web&amp;authuser=0", "type": "PDF", "ext": false}, {"n": "E. Física 6", "url": "https://drive.google.com/file/d/1jT_dXebhdGKSBQ3GnIxWLjzazODeJX49/view?usp=classroom_web&amp;authuser=0", "type": "PDF", "ext": false}, {"n": "E. Física 7", "url": "https://drive.google.com/file/d/1io0F1sGgaZr64qSfWTdAv9WdgQngJaf3/view?usp=classroom_web&amp;authuser=0", "type": "PDF", "ext": false}, {"n": "E. Física 8", "url": "https://drive.google.com/file/d/1g7JORl__BM5Zz0OcJhOPN_i4ggTgPZpe/view?usp=classroom_web&amp;authuser=0", "type": "PDF", "ext": false}, {"n": "E. Física 9", "url": "https://drive.google.com/file/d/1GcLFMINkP1EuoWBXMKDrC5A-NZUp9HF8/view?usp=classroom_web&amp;authuser=0", "type": "PDF", "ext": false}, {"n": "E. Física 10", "url": "https://drive.google.com/file/d/17DXFhoovxTM6TzhsqMXh52L9tz1FZDEg/view?usp=classroom_web&amp;authuser=0", "type": "PDF", "ext": false}, {"n": "Diap. Física — Física moderna", "url": "https://drive.google.com/file/d/18Ik78uNasZTQX1cLIOK-T0IrrMHREgnJ/view?usp=classroom_web&amp;authuser=0", "type": "PDF", "ext": false}, {"n": "Diap. Física — Relatividad básica", "url": "https://drive.google.com/file/d/1bP1Z0yONc4ppMnpsbc88Wimz61w4TmPU/view?usp=classroom_web&amp;authuser=0", "type": "PDF", "ext": false}, {"n": "Diap. Física — Módulo integrador", "url": "https://drive.google.com/file/d/10miGgN2yRjHs8UvPCSlhEbKiolzDCA53/view?usp=classroom_web&amp;authuser=0", "type": "PDF", "ext": false}]}, {"id": "v__diapositivas_e", "emoji": "🌍", "bg": "#ece0fc", "title": "V. Diapositivas E. - Sociales", "desc": "V. Diapositivas E. - Sociales", "files": [{"n": "Historia de Colombia", "url": "https://drive.google.com/file/d/1ybMLMcBf6wR9PQxx4BCfLfD64m_Gb-H0/view?usp=classroom_web&amp;authuser=0", "type": "PDF", "ext": false}, {"n": "Geografía y territorio", "url": "https://drive.google.com/file/d/1AzqkQC03PEuPn99AVoilTyWizgqbzssV/view?usp=classroom_web&amp;authuser=0", "type": "PDF", "ext": false}, {"n": "Ciencias Políticas y democracia", "url": "https://drive.google.com/file/d/1zFAWnR-2MO3ixwr4r01hnwUZiQxxQx42/view?usp=classroom_web&amp;authuser=0", "type": "PDF", "ext": false}, {"n": "Economía básica", "url": "https://drive.google.com/file/d/1ATFPky7l2wKyEQnOH8xYKl_gdWZGUu83/view?usp=classroom_web&amp;authuser=0", "type": "PDF", "ext": false}, {"n": "Historia universal", "url": "https://drive.google.com/file/d/1aXVEsO_3YJNx6lK_Pfq7lPF0hukHoFfm/view?usp=classroom_web&amp;authuser=0", "type": "PDF", "ext": false}]}];
 const PAGE_KEY='diapositivas_con_todo';
-const HOLD_MS=550;
+const HOLD_MS=300;
 let checked={},order=MODULES.map(m=>m.id),fileOrders={},heroMode='bar';
-// Exponer para el editor
-window.MODULES=MODULES; window.order=order; window.fileOrders=fileOrders; window.checked=checked;
 let openCardId=null,activeModal=null,saveTimer=null;
 
 /* ── BOOT — llamado por firebase-auth.js vía window._pageReady ── */
-window._pageReady=async function(user,db,docFn,setFn,getFn){
+window._pageReady=function(user,db,docFn,setFn){
+  // Guardar referencias a Firebase para saves
   window._fdb=db; window._fdoc=docFn; window._fset=setFn;
   window._cu=user;
-  window._pageBooted=true;
-
-  // Inicializar estructuras base siempre
-  MODULES.forEach(m=>{ fileOrders[m.id]=m.files.map((_,i)=>i); });
-
-  if(user&&db&&getFn){
-    // CON SESIÓN: Firestore es la fuente de verdad — esperar antes de renderizar
-    // Cargar localStorage como fallback inmediato mientras llega Firestore
-    MODULES.forEach(m=>{
-      checked[m.id]=JSON.parse(localStorage.getItem('sp_'+PAGE_KEY+'_'+m.id)||'null')||{};
-    });
-    order=JSON.parse(localStorage.getItem('sp_'+PAGE_KEY+'_order')||'null')||MODULES.map(m=>m.id);
-    heroMode=localStorage.getItem('sp_global_hero')||'bar';
-    applyHeroMode(); renderGrid(); // render provisional con localStorage
-
-    try{
-      var ref=docFn(db,'usuarios',user.uid,'progress',PAGE_KEY);
-      var snap=await getFn(ref);
-      if(snap.exists()){
-        var d=snap.data();
-        // Firestore gana sobre localStorage en todo
-        if(d.checked) MODULES.forEach(m=>{
-          if(d.checked[m.id]!==undefined) checked[m.id]=d.checked[m.id];
-        });
-        if(d.order&&Array.isArray(d.order)) order=d.order;
-        if(d.fileOrders) MODULES.forEach(m=>{ if(d.fileOrders[m.id]) fileOrders[m.id]=d.fileOrders[m.id]; });
-        if(d.heroMode){ heroMode=d.heroMode; }
-        // Actualizar localStorage con los datos reales de Firestore
-        MODULES.forEach(m=>localStorage.setItem('sp_'+PAGE_KEY+'_'+m.id,JSON.stringify(checked[m.id])));
-        localStorage.setItem('sp_'+PAGE_KEY+'_order',JSON.stringify(order));
-        localStorage.setItem('sp_global_hero',heroMode);
-      }
-      // Renderizar con datos definitivos (Firestore o localStorage si no había nada en Firestore)
-      applyHeroMode(); renderGrid();
-    }catch(e){
-      console.warn('[SP] Error leyendo Firestore, usando localStorage:',e);
-    }
-  } else {
-    // SIN SESIÓN: solo localStorage
-    MODULES.forEach(m=>{
-      checked[m.id]=JSON.parse(localStorage.getItem('sp_'+PAGE_KEY+'_'+m.id)||'null')||{};
-    });
-    order=JSON.parse(localStorage.getItem('sp_'+PAGE_KEY+'_order')||'null')||MODULES.map(m=>m.id);
-    heroMode=localStorage.getItem('sp_global_hero')||'bar';
-    applyHeroMode(); renderGrid();
-  }
+  // Cargar progreso
+  MODULES.forEach(m=>{
+    checked[m.id]=JSON.parse(localStorage.getItem('sp_'+PAGE_KEY+'_'+m.id)||'null')||{};
+    fileOrders[m.id]=m.files.map((_,i)=>i);
+  });
+  order=JSON.parse(localStorage.getItem('sp_'+PAGE_KEY+'_order')||'null')||MODULES.map(m=>m.id);
+  heroMode=localStorage.getItem('sp_'+PAGE_KEY+'_hero')||'bar';
+  // Si hay datos en Firestore los sobrescribe
+  applyHeroMode();renderGrid();
 };
 
 /* Fallback: si firebase-auth.js tarda más de 2s, inicializar con localStorage */
@@ -768,7 +735,7 @@ setTimeout(()=>{
       fileOrders[m.id]=m.files.map((_,i)=>i);
     });
     order=JSON.parse(localStorage.getItem('sp_'+PAGE_KEY+'_order')||'null')||MODULES.map(m=>m.id);
-    heroMode=localStorage.getItem('sp_global_hero')||'bar';
+    heroMode=localStorage.getItem('sp_'+PAGE_KEY+'_hero')||'bar';
     applyHeroMode();renderGrid();
   }
 },2000);
@@ -783,36 +750,16 @@ function showBadge(msg,cls){
 async function saveAll(){
   MODULES.forEach(m=>localStorage.setItem('sp_'+PAGE_KEY+'_'+m.id,JSON.stringify(checked[m.id])));
   localStorage.setItem('sp_'+PAGE_KEY+'_order',JSON.stringify(order));
-  localStorage.setItem('sp_global_hero',heroMode);
-  var u=window._cu;if(!u||!window._fdb){
-    // Sin sesión activa: solo localStorage, sin badge
-    return;
-  }
+  localStorage.setItem('sp_'+PAGE_KEY+'_hero',heroMode);
+  var u=window._cu;if(!u||!window._fdb)return;
   try{
-    await window._fset(window._fdoc(window._fdb,'usuarios',u.uid,'progress',PAGE_KEY),
+    showBadge('⟳ Guardando…','');
+    await window._fset(window._fdoc(window._fdb,'users',u.uid,'progress',PAGE_KEY),
       {checked,order,heroMode,fileOrders,updatedAt:Date.now()},{merge:true});
     showBadge('✓ Guardado','ok');
-    window._saveErrCount=0;
-  }catch(e){
-    window._saveErrCount=(window._saveErrCount||0)+1;
-    // Solo mostrar error tras 2 fallos seguidos para no alarmar por red momentánea
-    if(window._saveErrCount>=2)showBadge('⚠ Sin conexión','err');
-    console.warn('[SP] saveAll error:',e);
-  }
+  }catch(e){showBadge('⚠ Local','err');}
 }
-function scheduleSave(){
-  clearTimeout(saveTimer);
-  saveTimer=setTimeout(async function(){
-    await saveAll();
-    // Actualizar cache de progreso de esta sección y refrescar botón de avance
-    var done=0,tot=0;
-    MODULES.forEach(function(mod){tot+=mod.files.length;done+=doneOf(mod.id);});
-    if(typeof window._sectionProgress==='undefined')window._sectionProgress={};
-    window._sectionProgress[PAGE_KEY]={done:done,total:tot};
-    var profile=window._getUserProfile?window._getUserProfile():null;
-    window.updateAvanceBtn&&window.updateAvanceBtn(document.getElementById('btn-avance'),profile);
-  },50);
-}
+function scheduleSave(){clearTimeout(saveTimer);saveTimer=setTimeout(saveAll,800);}
 
 /* ── HERO MODE ── */
 function toggleHeroMode(){heroMode=heroMode==='bar'?'ring':'bar';applyHeroMode();scheduleSave();renderGrid();}
@@ -912,208 +859,109 @@ function removeGhost(){if(ghost){ghost.remove();ghost=null;}}
 
 function attachCard(card,m){
   var head=card.querySelector('.mc-head');
-  var holdTimer=null,isDragging=false,ghostCreated=false,overMid=null;
-  var onMove=null,onUp=null,onEarly=null;
-  var startX=0,startY=0,moved=false;
-
-  function cancelEarly(){
-    if(onEarly){ document.removeEventListener('pointermove',onEarly); onEarly=null; }
-  }
-  function cleanup(commit){
-    clearTimeout(holdTimer);
-    cancelEarly();
-    if(onMove){ document.removeEventListener('pointermove',onMove); onMove=null; }
-    if(onUp)  { document.removeEventListener('pointerup',  onUp);   onUp=null;   }
-    removeGhost();
-    head.style.cursor='';
-    card.style.touchAction='';
-    var wasDragging=isDragging, landing=overMid;
-    isDragging=false; ghostCreated=false; overMid=null; moved=false;
-    clearDragClasses();
-    if(commit && wasDragging && ghostCreated && landing){
-      var si=order.indexOf(m.id), di=order.indexOf(landing);
-      if(si!==-1 && di!==-1 && si!==di){
-        order.splice(si,1); order.splice(di,0,m.id);
-        scheduleSave(); _setJustDropped(); renderGrid();
-      }
-    }
-  }
-
+  var holdTimer=null,dragActive=false,ghostCreated=false,overMid=null,docMH=null,docUH=null;
   head.addEventListener('pointerdown',function(e){
-    if(openCardId===m.id) return;           // tarjeta abierta: no iniciar drag
-    if(e.button && e.button!==0) return;    // solo botón izquierdo / toque
-    // (selección de texto controlada por CSS user-select)
-    isDragging=false; ghostCreated=false; overMid=null; moved=false;
-    startX=e.clientX; startY=e.clientY;
-
-    // Escuchar movimiento temprano para cancelar si se mueve antes del hold
-    var CTHRESH='ontouchstart' in window?14:10;
-    onEarly=function(ev){
-      if(Math.abs(ev.clientX-startX)>CTHRESH || Math.abs(ev.clientY-startY)>CTHRESH){
-        moved=true;
-        clearTimeout(holdTimer);
-        cancelEarly();
-      }
-    };
-    document.addEventListener('pointermove',onEarly,{passive:true});
-
+    if(openCardId===m.id)return;
+    e.preventDefault();
+    dragActive=false;ghostCreated=false;overMid=null;
     holdTimer=setTimeout(function(){
-      cancelEarly();
-      if(moved) return;
-      isDragging=true;
-      if(navigator.vibrate) navigator.vibrate(45);
-      try{ head.setPointerCapture(e.pointerId); }catch(err){}
-      card.style.touchAction='none';
+      dragActive=true;
       card.classList.add('hold-ready');
-
       setTimeout(function(){
-        if(!isDragging) return;
+        if(!dragActive)return;
         ghostCreated=true;
-        card.classList.remove('hold-ready');
-        card.classList.add('is-dragging');
-        createGhost(card);
-        head.style.cursor='grabbing';
-
-        var _px=e.clientX,_py=e.clientY,_raf=false;
-        onMove=function(ev){
-          ev.preventDefault();
-          _px=ev.clientX;_py=ev.clientY;
-          if(!_raf){_raf=true;requestAnimationFrame(function(){_raf=false;moveGhost(_px,_py);});}
-          var under=document.elementFromPoint(ev.clientX, ev.clientY);
-          var tc=under ? under.closest('.module-card') : null;
-          allCards().forEach(function(c2){ c2.classList.remove('drop-target','shift-up','shift-down'); });
-          if(tc && tc!==card){
+        card.classList.remove('hold-ready');card.classList.add('is-dragging');createGhost(card);
+        docMH=function(ev){
+          ev.preventDefault();moveGhost(ev.clientX,ev.clientY);
+          var under=document.elementFromPoint(ev.clientX,ev.clientY);
+          var tc=under?under.closest('.module-card'):null;
+          allCards().forEach(function(c){c.classList.remove('drop-target','shift-up','shift-down');});
+          if(tc&&tc!==card){
             tc.classList.add('drop-target');
-            var si=order.indexOf(m.id), di=order.indexOf(tc.dataset.mid);
-            allCards().forEach(function(c2){
-              if(c2===card||c2===tc) return;
-              var ci=order.indexOf(c2.dataset.mid);
-              if(si<di && ci>si && ci<=di) c2.classList.add('shift-up');
-              if(si>di && ci<si && ci>=di) c2.classList.add('shift-down');
+            var si=order.indexOf(m.id),di=order.indexOf(tc.dataset.mid);
+            allCards().forEach(function(c){
+              if(c===card||c===tc)return;
+              var ci=order.indexOf(c.dataset.mid);
+              if(si<di&&ci>si&&ci<=di)c.classList.add('shift-up');
+              if(si>di&&ci<si&&ci>=di)c.classList.add('shift-down');
             });
             overMid=tc.dataset.mid;
-          } else { overMid=null; }
+          }else overMid=null;
         };
-        onUp=function(){ cleanup(true); };
-        document.addEventListener('pointermove',onMove,{passive:false});
-        document.addEventListener('pointerup',onUp);
-      },60);
+        docUH=function(){cleanup(true);};
+        document.addEventListener('pointermove',docMH,{passive:false});
+        document.addEventListener('pointerup',docUH);
+      },50);
     },HOLD_MS);
-  },{passive:true});
-
+  });
   head.addEventListener('pointerup',function(e){
-    if(isDragging){ return; }     // se soltó durante drag — cleanup lo maneja
     clearTimeout(holdTimer);
-    cancelEarly();
-    cleanup(false);
-    toggleCard(m.id);
+    if(dragActive){return;}
+    cleanup(false);toggleCard(m.id);
   });
-
-  head.addEventListener('pointercancel',function(){
+  head.addEventListener('pointercancel',function(){clearTimeout(holdTimer);cleanup(false);});
+  function cleanup(commit){
     clearTimeout(holdTimer);
-    cancelEarly();
-    cleanup(false);
-  });
-
-  card.querySelectorAll('.file-card').forEach(function(fc){ attachFile(fc,m); });
+    if(docMH){document.removeEventListener('pointermove',docMH);docMH=null;}
+    if(docUH){document.removeEventListener('pointerup',docUH);docUH=null;}
+    removeGhost();
+    var wasGhost=ghostCreated,landing=overMid;
+    dragActive=false;ghostCreated=false;overMid=null;clearDragClasses();
+    if(commit&&wasGhost&&landing){
+      var si=order.indexOf(m.id),di=order.indexOf(landing);
+      if(si!==di){order.splice(si,1);order.splice(di,0,m.id);scheduleSave();_setJustDropped();renderGrid();}
+    }
+  }
+  card.querySelectorAll('.file-card').forEach(function(fc){attachFile(fc,m);});
 }
 
 /* ── DRAG: FILE CARDS ── */
 function allFileCards(){return[...document.querySelectorAll('.file-card')];}
 function clearFileClasses(){allFileCards().forEach(function(c){c.classList.remove('fc-drop-target','fc-dragging','fc-hold-ready');});}
-
 function attachFile(fc,m){
-  var srcFi=parseInt(fc.dataset.fi);
-  var holdTimer=null,isDragging=false,ghostCreated=false,overFi=null;
-  var onMove=null,onUp=null,onEarly=null;
-  var startX=0,startY=0,moved=false;
-
-  function cancelEarly(){
-    if(onEarly){ fc.removeEventListener('pointermove',onEarly); onEarly=null; }
-  }
-  function fileCleanup(commit){
-    clearTimeout(holdTimer);
-    cancelEarly();
-    if(onMove){ document.removeEventListener('pointermove',onMove); onMove=null; }
-    if(onUp)  { document.removeEventListener('pointerup',  onUp);   onUp=null;   }
-    fc.style.touchAction='';
-    var wasDragging=isDragging, landing=overFi;
-    isDragging=false; ghostCreated=false; overFi=null; moved=false;
-    clearFileClasses();
-    if(commit && wasDragging && ghostCreated && landing!=null && landing!==srcFi){
-      var fo=fileOrders[m.id];
-      var si=fo.indexOf(srcFi), di=fo.indexOf(landing);
-      if(si!==-1 && di!==-1 && si!==di){
-        fo.splice(si,1); fo.splice(di,0,srcFi);
-        scheduleSave(); _setJustDropped(); renderGrid();
-      }
-    }
-  }
-
+  var holdTimer=null,dragActive=false,overFi=null,srcFi=parseInt(fc.dataset.fi),docMF=null,docUF=null;
   fc.addEventListener('pointerdown',function(e){
-    e.stopPropagation();
-    if(e.button && e.button!==0) return;
-    isDragging=false; ghostCreated=false; overFi=null; moved=false;
-    startX=e.clientX; startY=e.clientY;
-
-    onEarly=function(ev){
-      if(Math.abs(ev.clientX-startX)>8 || Math.abs(ev.clientY-startY)>8){
-        moved=true;
-        clearTimeout(holdTimer);
-        cancelEarly();
-      }
-    };
-    fc.addEventListener('pointermove',onEarly,{passive:true});
-
+    e.stopPropagation();e.preventDefault();
     holdTimer=setTimeout(function(){
-      cancelEarly();
-      if(moved) return;
-      isDragging=true;
-      if(navigator.vibrate) navigator.vibrate(30);
-      fc.classList.add('fc-hold-ready');
-
+      dragActive=true;fc.classList.add('fc-hold-ready');
       setTimeout(function(){
-        if(!isDragging) return;
-        ghostCreated=true;
-        fc.classList.remove('fc-hold-ready');
-        fc.classList.add('fc-dragging');
-        fc.style.touchAction='none';
-
-        onMove=function(ev){
+        if(!dragActive)return;
+        fc.classList.remove('fc-hold-ready');fc.classList.add('fc-dragging');
+        docMF=function(ev){
           ev.preventDefault();
-          var under=document.elementFromPoint(ev.clientX, ev.clientY);
-          var tgt=under ? under.closest('.file-card') : null;
-          allFileCards().forEach(function(c){ c.classList.remove('fc-drop-target'); });
-          if(tgt && tgt!==fc && tgt.dataset.mid===m.id){
-            tgt.classList.add('fc-drop-target');
-            overFi=parseInt(tgt.dataset.fi);
-          } else { overFi=null; }
+          var under=document.elementFromPoint(ev.clientX,ev.clientY);
+          var tgt=under?under.closest('.file-card'):null;
+          allFileCards().forEach(function(c){c.classList.remove('fc-drop-target');});
+          if(tgt&&tgt!==fc&&tgt.dataset.mid===m.id){tgt.classList.add('fc-drop-target');overFi=parseInt(tgt.dataset.fi);}
+          else overFi=null;
         };
-        onUp=function(){ fileCleanup(true); };
-        document.addEventListener('pointermove',onMove,{passive:false});
-        document.addEventListener('pointerup',onUp);
-      },60);
+        docUF=function(){fileCleanup(true);};
+        document.addEventListener('pointermove',docMF,{passive:false});
+        document.addEventListener('pointerup',docUF);
+      },50);
     },HOLD_MS);
   });
-
   fc.addEventListener('pointerup',function(e){
     e.stopPropagation();
-    if(isDragging){ return; }
-    clearTimeout(holdTimer);
-    cancelEarly();
-    fileCleanup(false);
+    if(dragActive)return;
+    clearTimeout(holdTimer);fileCleanup(false);
     openModal(m.id,srcFi);
   });
-
-  fc.addEventListener('pointercancel',function(){
+  fc.addEventListener('pointercancel',function(){fileCleanup(false);});
+  function fileCleanup(commit){
     clearTimeout(holdTimer);
-    cancelEarly();
-    fileCleanup(false);
-  });
+    if(docMF){document.removeEventListener('pointermove',docMF);docMF=null;}
+    if(docUF){document.removeEventListener('pointerup',docUF);docUF=null;}
+    var wasActive=dragActive,landing=overFi;dragActive=false;overFi=null;clearFileClasses();
+    if(commit&&wasActive&&landing!=null&&landing!==srcFi){
+      var fo=fileOrders[m.id];
+      var si=fo.indexOf(srcFi),di=fo.indexOf(landing);
+      fo.splice(si,1);fo.splice(di,0,srcFi);scheduleSave();renderGrid();
+    }
+  }
 }
 
 /* ── CARD TOGGLE ── */
-
 var _justDropped=false;
 function _bDE(e){e.stopPropagation();e.preventDefault();}
 function _setJustDropped(){
@@ -1271,9 +1119,19 @@ function toggleFullscreen(){
   var mw=document.querySelector('.modal-window');
   var btn=document.getElementById('m-fullscreen-btn');
   if(!mw)return;
-  mw.classList.toggle('is-fullscreen');
-  btn.textContent=mw.classList.contains('is-fullscreen')?'✕':'⛶';
-  btn.title=mw.classList.contains('is-fullscreen')?'Salir de pantalla completa':'Pantalla completa';
+  var isMobile=window.innerWidth<=600;
+  if(isMobile){
+    // En móvil el modal ya es fullscreen — ⛶ oculta la barra superior (modo inmersivo)
+    mw.classList.toggle('immersive');
+    var immersive=mw.classList.contains('immersive');
+    btn.textContent=immersive?'⛶':'⛶';
+    btn.title=immersive?'Mostrar barra':'Ocultar barra';
+    btn.style.opacity=immersive?'0.4':'1';
+  } else {
+    mw.classList.toggle('is-fullscreen');
+    btn.textContent=mw.classList.contains('is-fullscreen')?'✕':'⛶';
+    btn.title=mw.classList.contains('is-fullscreen')?'Salir de pantalla completa':'Pantalla completa';
+  }
 }
 window.toggleModalSeen=toggleModalSeen;window.closeModal=closeModal;window.outsideClose=outsideClose;window.toggleFullscreen=toggleFullscreen;
 

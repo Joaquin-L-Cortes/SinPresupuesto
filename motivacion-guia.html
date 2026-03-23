@@ -30,7 +30,11 @@
   transition:box-shadow .18s,border-color .18s,transform .18s cubic-bezier(.4,0,.2,1);
 }
 [data-theme="dark"] nav{
-  backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);
+  backdrop-filter:none;-webkit-backdrop-filter:none;
+  background:var(--nav-bg)!important;
+}
+@media(max-width:900px){
+  nav{backdrop-filter:none!important;-webkit-backdrop-filter:none!important;}
 }
 body{background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;font-size:15px;line-height:1.7;min-height:100vh;}
 /* NAV — fluid, se adapta a cualquier pantalla */
@@ -239,6 +243,8 @@ aside{position:sticky;top:clamp(46px,6vw,56px);align-self:start;max-height:calc(
 .btn-fullscreen{padding:.35rem .55rem;border-radius:8px;background:var(--bg3);color:var(--muted);font-size:1rem;border:1px solid var(--border);cursor:pointer;transition:all .15s;flex-shrink:0;line-height:1;}
 .btn-fullscreen:hover{color:var(--accent2);border-color:var(--accent2);}
 .modal-window.is-fullscreen{position:fixed!important;inset:0!important;max-width:100vw!important;width:100vw!important;height:100vh!important;border-radius:0!important;z-index:2000;}
+.modal-window.immersive .modal-chrome,.modal-window.immersive .modal-info{display:none!important;}
+.modal-window.immersive .modal-iframe-wrap{height:100%!important;}
 .btn-seen.done{background:var(--green-bg);color:var(--green);border-color:var(--green);}
 .btn-drive{padding:.35rem .8rem;border-radius:8px;background:var(--accent2);color:white;text-decoration:none;font-size:.78rem;font-weight:600;border:none;cursor:pointer;flex-shrink:0;display:inline-flex;align-items:center;gap:.3rem;}
 .btn-drive:hover{opacity:.85;}
@@ -582,62 +588,24 @@ function requireAuth(cb){
 /* ── DATOS ── */
 const MODULES=[{"id": "relamPago_sinpre_2026", "emoji": "⚡", "bg": "#fff3cd", "title": "Relámpago - 2026", "desc": "Curso intensivo Relámpago Sin-Presupuesto 2026", "files": [{"n": "Temario Relámpago", "url": "#", "type": "Enlace", "ext": true}, {"n": "Meet Relámpago", "url": "#", "type": "Enlace", "ext": true}, {"n": "Materiales Relámpago", "url": "#", "type": "Enlace", "ext": true}, {"n": "Diapositivas Relámpago", "url": "#", "type": "Enlace", "ext": true}, {"n": "Artículos Relámpago", "url": "#", "type": "Enlace", "ext": true}, {"n": "¿Cómo Aprender? Relámpago", "url": "#", "type": "Enlace", "ext": true}, {"n": "Aprender a Aprender Relámpago", "url": "#", "type": "Enlace", "ext": true}, {"n": "Padlet Relámpago", "url": "#", "type": "Enlace", "ext": true}, {"n": "Métodos de Apunte Relámpago", "url": "#", "type": "Enlace", "ext": true}, {"n": "¿Qué materiales utilizaré? Relámpago", "url": "#", "type": "Enlace", "ext": true}, {"n": "Actividades Relámpago", "url": "#", "type": "Enlace", "ext": true}]}, {"id": "inicial_sinpre", "emoji": "🌱", "bg": "#d8f4e8", "title": "Inicial", "desc": "Materiales iniciales de Sin-Presupuesto", "files": [{"n": "Tomos de Resumen", "url": "#", "type": "Enlace", "ext": true}, {"n": "Motivación Auto-estudio :)", "url": "#", "type": "Enlace", "ext": true}]}, {"id": "exclusivos_sinpre", "emoji": "⭐", "bg": "#fef3e2", "title": "Exclusivos", "desc": "Recursos exclusivos de Sin-Presupuesto", "files": [{"n": "Calculo PBM", "url": "#", "type": "Enlace", "ext": true}, {"n": "Calculo resultados - DIPA", "url": "https://docs.google.com/spreadsheets/d/1D7VJy-4Sf37BPUk-JzzRCU7vfl5-0UyQ/edit?usp=sharing", "type": "Enlace", "ext": false}, {"n": "Calculo Carreras Posibles", "url": "#", "type": "Enlace", "ext": true}, {"n": "Material PreU - Anterior", "url": "#", "type": "Enlace", "ext": true}, {"n": "Material PreU - 2025", "url": "#", "type": "Enlace", "ext": true}]}];
 const PAGE_KEY='motivacion_guia';
-const HOLD_MS=400;
+const HOLD_MS=300;
 let checked={},order=MODULES.map(m=>m.id),fileOrders={},heroMode='bar';
-// Exponer para el editor
-window.MODULES=MODULES; window.order=order; window.fileOrders=fileOrders; window.checked=checked;
 let openCardId=null,activeModal=null,saveTimer=null;
 
 /* ── BOOT — llamado por firebase-auth.js vía window._pageReady ── */
-window._pageReady=async function(user,db,docFn,setFn,getFn){
+window._pageReady=function(user,db,docFn,setFn){
+  // Guardar referencias a Firebase para saves
   window._fdb=db; window._fdoc=docFn; window._fset=setFn;
   window._cu=user;
-  window._pageBooted=true;
-
-  // Inicializar estructuras base siempre
-  MODULES.forEach(m=>{ fileOrders[m.id]=m.files.map((_,i)=>i); });
-
-  if(user&&db&&getFn){
-    // CON SESIÓN: Firestore es la fuente de verdad — esperar antes de renderizar
-    // Cargar localStorage como fallback inmediato mientras llega Firestore
-    MODULES.forEach(m=>{
-      checked[m.id]=JSON.parse(localStorage.getItem('sp_'+PAGE_KEY+'_'+m.id)||'null')||{};
-    });
-    order=JSON.parse(localStorage.getItem('sp_'+PAGE_KEY+'_order')||'null')||MODULES.map(m=>m.id);
-    heroMode=localStorage.getItem('sp_global_hero')||'bar';
-    applyHeroMode(); renderGrid(); // render provisional con localStorage
-
-    try{
-      var ref=docFn(db,'usuarios',user.uid,'progress',PAGE_KEY);
-      var snap=await getFn(ref);
-      if(snap.exists()){
-        var d=snap.data();
-        // Firestore gana sobre localStorage en todo
-        if(d.checked) MODULES.forEach(m=>{
-          if(d.checked[m.id]!==undefined) checked[m.id]=d.checked[m.id];
-        });
-        if(d.order&&Array.isArray(d.order)) order=d.order;
-        if(d.fileOrders) MODULES.forEach(m=>{ if(d.fileOrders[m.id]) fileOrders[m.id]=d.fileOrders[m.id]; });
-        if(d.heroMode){ heroMode=d.heroMode; }
-        // Actualizar localStorage con los datos reales de Firestore
-        MODULES.forEach(m=>localStorage.setItem('sp_'+PAGE_KEY+'_'+m.id,JSON.stringify(checked[m.id])));
-        localStorage.setItem('sp_'+PAGE_KEY+'_order',JSON.stringify(order));
-        localStorage.setItem('sp_global_hero',heroMode);
-      }
-      // Renderizar con datos definitivos (Firestore o localStorage si no había nada en Firestore)
-      applyHeroMode(); renderGrid();
-    }catch(e){
-      console.warn('[SP] Error leyendo Firestore, usando localStorage:',e);
-    }
-  } else {
-    // SIN SESIÓN: solo localStorage
-    MODULES.forEach(m=>{
-      checked[m.id]=JSON.parse(localStorage.getItem('sp_'+PAGE_KEY+'_'+m.id)||'null')||{};
-    });
-    order=JSON.parse(localStorage.getItem('sp_'+PAGE_KEY+'_order')||'null')||MODULES.map(m=>m.id);
-    heroMode=localStorage.getItem('sp_global_hero')||'bar';
-    applyHeroMode(); renderGrid();
-  }
+  // Cargar progreso
+  MODULES.forEach(m=>{
+    checked[m.id]=JSON.parse(localStorage.getItem('sp_'+PAGE_KEY+'_'+m.id)||'null')||{};
+    fileOrders[m.id]=m.files.map((_,i)=>i);
+  });
+  order=JSON.parse(localStorage.getItem('sp_'+PAGE_KEY+'_order')||'null')||MODULES.map(m=>m.id);
+  heroMode=localStorage.getItem('sp_'+PAGE_KEY+'_hero')||'bar';
+  // Si hay datos en Firestore los sobrescribe
+  applyHeroMode();renderGrid();
 };
 
 /* Fallback: si firebase-auth.js tarda más de 2s, inicializar con localStorage */
@@ -649,7 +617,7 @@ setTimeout(()=>{
       fileOrders[m.id]=m.files.map((_,i)=>i);
     });
     order=JSON.parse(localStorage.getItem('sp_'+PAGE_KEY+'_order')||'null')||MODULES.map(m=>m.id);
-    heroMode=localStorage.getItem('sp_global_hero')||'bar';
+    heroMode=localStorage.getItem('sp_'+PAGE_KEY+'_hero')||'bar';
     applyHeroMode();renderGrid();
   }
 },2000);
@@ -664,36 +632,16 @@ function showBadge(msg,cls){
 async function saveAll(){
   MODULES.forEach(m=>localStorage.setItem('sp_'+PAGE_KEY+'_'+m.id,JSON.stringify(checked[m.id])));
   localStorage.setItem('sp_'+PAGE_KEY+'_order',JSON.stringify(order));
-  localStorage.setItem('sp_global_hero',heroMode);
-  var u=window._cu;if(!u||!window._fdb){
-    // Sin sesión activa: solo localStorage, sin badge
-    return;
-  }
+  localStorage.setItem('sp_'+PAGE_KEY+'_hero',heroMode);
+  var u=window._cu;if(!u||!window._fdb)return;
   try{
-    await window._fset(window._fdoc(window._fdb,'usuarios',u.uid,'progress',PAGE_KEY),
+    showBadge('⟳ Guardando…','');
+    await window._fset(window._fdoc(window._fdb,'users',u.uid,'progress',PAGE_KEY),
       {checked,order,heroMode,fileOrders,updatedAt:Date.now()},{merge:true});
     showBadge('✓ Guardado','ok');
-    window._saveErrCount=0;
-  }catch(e){
-    window._saveErrCount=(window._saveErrCount||0)+1;
-    // Solo mostrar error tras 2 fallos seguidos para no alarmar por red momentánea
-    if(window._saveErrCount>=2)showBadge('⚠ Sin conexión','err');
-    console.warn('[SP] saveAll error:',e);
-  }
+  }catch(e){showBadge('⚠ Local','err');}
 }
-function scheduleSave(){
-  clearTimeout(saveTimer);
-  saveTimer=setTimeout(async function(){
-    await saveAll();
-    // Actualizar cache de progreso de esta sección y refrescar botón de avance
-    var done=0,tot=0;
-    MODULES.forEach(function(mod){tot+=mod.files.length;done+=doneOf(mod.id);});
-    if(typeof window._sectionProgress==='undefined')window._sectionProgress={};
-    window._sectionProgress[PAGE_KEY]={done:done,total:tot};
-    var profile=window._getUserProfile?window._getUserProfile():null;
-    window.updateAvanceBtn&&window.updateAvanceBtn(document.getElementById('btn-avance'),profile);
-  },50);
-}
+function scheduleSave(){clearTimeout(saveTimer);saveTimer=setTimeout(saveAll,800);}
 
 /* ── HERO MODE ── */
 function toggleHeroMode(){heroMode=heroMode==='bar'?'ring':'bar';applyHeroMode();scheduleSave();renderGrid();}
@@ -796,26 +744,15 @@ function attachCard(card,m){
   var holdTimer=null,dragActive=false,ghostCreated=false,overMid=null,docMH=null,docUH=null;
   head.addEventListener('pointerdown',function(e){
     if(openCardId===m.id)return;
+    e.preventDefault();
     dragActive=false;ghostCreated=false;overMid=null;
-    var startX=e.clientX,startY=e.clientY,scrollIntent=false,intentChecked=false;
-    // Escuchar el primer movimiento para decidir scroll vs drag
-    var earlyMove=function(ev){
-      if(intentChecked)return;
-      intentChecked=true;
-      var dx=Math.abs(ev.clientX-startX),dy=Math.abs(ev.clientY-startY);
-      if(dy>dx&&dy>6){scrollIntent=true;clearTimeout(holdTimer);dragActive=false;}
-      head.removeEventListener('pointermove',earlyMove);
-    };
-    head.addEventListener('pointermove',earlyMove,{passive:true});
     holdTimer=setTimeout(function(){
-      if(scrollIntent){dragActive=false;return;}
       dragActive=true;
       card.classList.add('hold-ready');
       setTimeout(function(){
         if(!dragActive)return;
         ghostCreated=true;
         card.classList.remove('hold-ready');card.classList.add('is-dragging');createGhost(card);
-        card.style.touchAction='none';
         docMH=function(ev){
           ev.preventDefault();moveGhost(ev.clientX,ev.clientY);
           var under=document.elementFromPoint(ev.clientX,ev.clientY);
@@ -852,7 +789,6 @@ function attachCard(card,m){
     removeGhost();
     var wasGhost=ghostCreated,landing=overMid;
     dragActive=false;ghostCreated=false;overMid=null;clearDragClasses();
-    card.style.touchAction='';
     if(commit&&wasGhost&&landing){
       var si=order.indexOf(m.id),di=order.indexOf(landing);
       if(si!==di){order.splice(si,1);order.splice(di,0,m.id);scheduleSave();_setJustDropped();renderGrid();}
@@ -865,28 +801,14 @@ function attachCard(card,m){
 function allFileCards(){return[...document.querySelectorAll('.file-card')];}
 function clearFileClasses(){allFileCards().forEach(function(c){c.classList.remove('fc-drop-target','fc-dragging','fc-hold-ready');});}
 function attachFile(fc,m){
-  var holdTimer=null,dragActive=false,ghostCreated=false,overFi=null,srcFi=parseInt(fc.dataset.fi),docMF=null,docUF=null;
+  var holdTimer=null,dragActive=false,overFi=null,srcFi=parseInt(fc.dataset.fi),docMF=null,docUF=null;
   fc.addEventListener('pointerdown',function(e){
-    e.stopPropagation();
-    var startX=e.clientX,startY=e.clientY,scrollIntent=false,intentChecked=false;
-    var earlyMoveFC=function(ev){
-      if(intentChecked)return;
-      intentChecked=true;
-      var dx=Math.abs(ev.clientX-startX),dy=Math.abs(ev.clientY-startY);
-      if(dy>dx&&dy>6){scrollIntent=true;clearTimeout(holdTimer);dragActive=false;}
-      fc.removeEventListener('pointermove',earlyMoveFC);
-    };
-    fc.addEventListener('pointermove',earlyMoveFC,{passive:true});
-    dragActive=false;ghostCreated=false;overFi=null;
+    e.stopPropagation();e.preventDefault();
     holdTimer=setTimeout(function(){
-      if(scrollIntent){dragActive=false;return;}
-      dragActive=true;
-      fc.classList.add('fc-hold-ready');
+      dragActive=true;fc.classList.add('fc-hold-ready');
       setTimeout(function(){
         if(!dragActive)return;
-        ghostCreated=true;
         fc.classList.remove('fc-hold-ready');fc.classList.add('fc-dragging');
-        fc.style.touchAction='none';
         docMF=function(ev){
           ev.preventDefault();
           var under=document.elementFromPoint(ev.clientX,ev.clientY);
@@ -903,23 +825,20 @@ function attachFile(fc,m){
   });
   fc.addEventListener('pointerup',function(e){
     e.stopPropagation();
-    clearTimeout(holdTimer);
-    if(dragActive){return;}
-    fileCleanup(false);
+    if(dragActive)return;
+    clearTimeout(holdTimer);fileCleanup(false);
     openModal(m.id,srcFi);
   });
-  fc.addEventListener('pointercancel',function(){clearTimeout(holdTimer);fileCleanup(false);});
+  fc.addEventListener('pointercancel',function(){fileCleanup(false);});
   function fileCleanup(commit){
     clearTimeout(holdTimer);
     if(docMF){document.removeEventListener('pointermove',docMF);docMF=null;}
     if(docUF){document.removeEventListener('pointerup',docUF);docUF=null;}
-    var wasGhost=ghostCreated,landing=overFi;
-    dragActive=false;ghostCreated=false;overFi=null;clearFileClasses();
-    fc.style.touchAction='';
-    if(commit&&wasGhost&&landing!=null&&landing!==srcFi){
+    var wasActive=dragActive,landing=overFi;dragActive=false;overFi=null;clearFileClasses();
+    if(commit&&wasActive&&landing!=null&&landing!==srcFi){
       var fo=fileOrders[m.id];
       var si=fo.indexOf(srcFi),di=fo.indexOf(landing);
-      if(si!==di){fo.splice(si,1);fo.splice(di,0,srcFi);scheduleSave();_setJustDropped();renderGrid();}
+      fo.splice(si,1);fo.splice(di,0,srcFi);scheduleSave();renderGrid();
     }
   }
 }
@@ -1082,9 +1001,19 @@ function toggleFullscreen(){
   var mw=document.querySelector('.modal-window');
   var btn=document.getElementById('m-fullscreen-btn');
   if(!mw)return;
-  mw.classList.toggle('is-fullscreen');
-  btn.textContent=mw.classList.contains('is-fullscreen')?'✕':'⛶';
-  btn.title=mw.classList.contains('is-fullscreen')?'Salir de pantalla completa':'Pantalla completa';
+  var isMobile=window.innerWidth<=600;
+  if(isMobile){
+    // En móvil el modal ya es fullscreen — ⛶ oculta la barra superior (modo inmersivo)
+    mw.classList.toggle('immersive');
+    var immersive=mw.classList.contains('immersive');
+    btn.textContent=immersive?'⛶':'⛶';
+    btn.title=immersive?'Mostrar barra':'Ocultar barra';
+    btn.style.opacity=immersive?'0.4':'1';
+  } else {
+    mw.classList.toggle('is-fullscreen');
+    btn.textContent=mw.classList.contains('is-fullscreen')?'✕':'⛶';
+    btn.title=mw.classList.contains('is-fullscreen')?'Salir de pantalla completa':'Pantalla completa';
+  }
 }
 window.toggleModalSeen=toggleModalSeen;window.closeModal=closeModal;window.outsideClose=outsideClose;window.toggleFullscreen=toggleFullscreen;
 

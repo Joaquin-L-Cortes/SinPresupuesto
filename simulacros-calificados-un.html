@@ -30,7 +30,11 @@
   transition:box-shadow .18s,border-color .18s,transform .18s cubic-bezier(.4,0,.2,1);
 }
 [data-theme="dark"] nav{
-  backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);
+  backdrop-filter:none;-webkit-backdrop-filter:none;
+  background:var(--nav-bg)!important;
+}
+@media(max-width:900px){
+  nav{backdrop-filter:none!important;-webkit-backdrop-filter:none!important;}
 }
 body{background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;font-size:15px;line-height:1.7;min-height:100vh;}
 /* NAV — fluid, se adapta a cualquier pantalla */
@@ -145,7 +149,6 @@ aside{position:sticky;top:clamp(46px,6vw,56px);align-self:start;max-height:calc(
 .sort-menu .sort-divider{height:1px;background:var(--border);margin:.2rem 0;}
 /* MODULES GRID */
 #modules-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:1rem;align-items:start;}
-}
 /* MODULE CARD */
 .module-card{background:var(--bg2);border:1px solid var(--border);border-radius:16px;overflow:hidden;transition:box-shadow .22s,border-color .22s,opacity .22s ease,transform .22s cubic-bezier(.4,0,.2,1);grid-column:span 1;user-select:none;touch-action:pan-y;}
 .module-card:hover{box-shadow:0 6px 20px var(--shadow);}
@@ -238,6 +241,8 @@ aside{position:sticky;top:clamp(46px,6vw,56px);align-self:start;max-height:calc(
 .btn-fullscreen{padding:.35rem .55rem;border-radius:8px;background:var(--bg3);color:var(--muted);font-size:1rem;border:1px solid var(--border);cursor:pointer;transition:all .15s;flex-shrink:0;line-height:1;}
 .btn-fullscreen:hover{color:var(--accent2);border-color:var(--accent2);}
 .modal-window.is-fullscreen{position:fixed!important;inset:0!important;max-width:100vw!important;width:100vw!important;height:100vh!important;border-radius:0!important;z-index:2000;}
+.modal-window.immersive .modal-chrome,.modal-window.immersive .modal-info{display:none!important;}
+.modal-window.immersive .modal-iframe-wrap{height:100%!important;}
 .btn-seen.done{background:var(--green-bg);color:var(--green);border-color:var(--green);}
 .btn-drive{padding:.35rem .8rem;border-radius:8px;background:var(--accent2);color:white;text-decoration:none;font-size:.78rem;font-weight:600;border:none;cursor:pointer;flex-shrink:0;display:inline-flex;align-items:center;gap:.3rem;}
 .btn-drive:hover{opacity:.85;}
@@ -701,62 +706,24 @@ function requireAuth(cb){
 /* ── DATOS ── */
 const MODULES=[{"id": "i__simulacros_cal", "emoji": "📖", "bg": "#dceef7", "title": "I. Simulacros Cal. - Textual", "desc": "I. Simulacros Cal. - Textual", "files": [{"n": "Link 1", "url": "https://forms.gle/9J85bVueisbG7vfv8", "type": "Formulario", "ext": true}, {"n": "Link 2", "url": "https://forms.gle/S1JLPBizcMgdxa2r9", "type": "Formulario", "ext": true}, {"n": "Link 3", "url": "https://forms.gle/f2ZaEn6Dp6XLpr686", "type": "Formulario", "ext": true}, {"n": "Link 4", "url": "https://forms.gle/RvWjsMdqRUtALmPb6", "type": "Formulario", "ext": true}, {"n": "Link 5", "url": "https://forms.gle/dj4yehAPRRthSeP3A", "type": "Formulario", "ext": true}]}, {"id": "ii__simulacros_cal", "emoji": "🔢", "bg": "#dce8f8", "title": "II. Simulacros Cal. - Matemáticas", "desc": "II. Simulacros Cal. - Matemáticas", "files": [{"n": "Link 1", "url": "https://quizizz.com/join/quiz/64b58c7f718e6c001dc8f239/start?studentShare=true", "type": "Quizizz", "ext": true}, {"n": "Link 2", "url": "https://quizizz.com/join/quiz/64b5af9806ea92001e2b0409/start?studentShare=true", "type": "Quizizz", "ext": true}, {"n": "Link 3", "url": "https://quizizz.com/join/quiz/638e5641b5d768001d25b503/start?studentShare=true", "type": "Quizizz", "ext": true}, {"n": "Link 4", "url": "https://quizizz.com/join/quiz/638e62b48227af001ddd474a/start?studentShare=true", "type": "Quizizz", "ext": true}, {"n": "Link 5", "url": "https://quizizz.com/join/quiz/5f0c81ede147a5001b169ae2/start?studentShare=true", "type": "Quizizz", "ext": true}, {"n": "Link 6", "url": "https://quizizz.com/join/quiz/5f0c956a2245da001ba42369/start?studentShare=true", "type": "Quizizz", "ext": true}, {"n": "Link 8", "url": "https://quizizz.com/join/quiz/63320fbc454b8e001d1953f1/start?studentShare=true", "type": "Quizizz", "ext": true}, {"n": "Link 11", "url": "https://quizizz.com/join/quiz/638907db326caa001e1b32d1/start?studentShare=true", "type": "Quizizz", "ext": true}, {"n": "Link 12", "url": "https://quizizz.com/join/quiz/63ffb3c10b8122001d6a2838/start?studentShare=true", "type": "Quizizz", "ext": true}, {"n": "Link 13", "url": "https://quizizz.com/join/quiz/5f287d4744df1d001bf1b495/start?studentShare=true", "type": "Quizizz", "ext": true}, {"n": "Link 14", "url": "https://quizizz.com/join/quiz/65d3d3ffcbf68a9c35a85fdc/start?studentShare=true", "type": "Quizizz", "ext": true}, {"n": "Link 15", "url": "https://quizizz.com/join/quiz/5f23268787bb53001c94b571/start?studentShare=true", "type": "Quizizz", "ext": true}, {"n": "Link 16", "url": "https://quizizz.com/join/quiz/65d3ce96472cf3443d936a8d/start?studentShare=true", "type": "Quizizz", "ext": true}, {"n": "Link 17", "url": "https://quizizz.com/join/quiz/5f481927182df6001cb4b679/start?studentShare=true", "type": "Quizizz", "ext": true}, {"n": "Link 18", "url": "https://quizizz.com/join/quiz/61f3fb77c6e3b2001d8fd3cd/start?studentShare=true", "type": "Quizizz", "ext": true}, {"n": "Link 19", "url": "https://quizizz.com/join/quiz/65dd0b91936f6b4370433bb9/start?studentShare=true", "type": "Quizizz", "ext": true}, {"n": "Link 20", "url": "https://quizizz.com/join/quiz/65dd14283ed07546d755edab/start?studentShare=true", "type": "Quizizz", "ext": true}, {"n": "Link 22", "url": "https://quizizz.com/join/quiz/61f44f83e19117001d7fb270/start?studentShare=true", "type": "Quizizz", "ext": true}, {"n": "Link 25", "url": "https://quizizz.com/join/quiz/5f3ec480fa2350001b1b9e31/start?studentShare=true", "type": "Quizizz", "ext": true}, {"n": "Link 26", "url": "https://quizizz.com/join/quiz/5f4418fd7959da001bf40c29/start?studentShare=true", "type": "Quizizz", "ext": true}, {"n": "Link 27", "url": "https://quizizz.com/join/quiz/65e64aee064e6617e9d32bc3/start?studentShare=true", "type": "Quizizz", "ext": true}, {"n": "Link 28", "url": "https://quizizz.com/join/quiz/64e7d5dc4fd43c7eefc457b5/start?studentShare=true", "type": "Quizizz", "ext": true}, {"n": "Link 30", "url": "https://quizizz.com/join/quiz/5f7395ded7e682001d5c46d9/start?studentShare=true", "type": "Quizizz", "ext": true}, {"n": "Link 32", "url": "https://quizizz.com/join/quiz/641071f1cbadc0001e17927e/start?studentShare=true", "type": "Quizizz", "ext": true}, {"n": "Link 36", "url": "https://quizizz.com/join/quiz/5f354d25c20f05001fe1aa4f/start?studentShare=true", "type": "Quizizz", "ext": true}, {"n": "Link 37", "url": "https://quizizz.com/join/quiz/5f7b2b720a296c001b286071/start?studentShare=true", "type": "Quizizz", "ext": true}, {"n": "Link 39", "url": "https://quizizz.com/join/quiz/5f5f4bfb90c572001f9887a3/start?studentShare=true", "type": "Quizizz", "ext": true}, {"n": "Link 40", "url": "https://quizizz.com/join/quiz/5f638bbf3abafb001c092663/start?studentShare=true", "type": "Quizizz", "ext": true}]}, {"id": "iii__simulacro_cal", "emoji": "⚡", "bg": "#fef3e2", "title": "III. Simulacro Cal. - Ciencias (Física)", "desc": "III. Simulacro Cal. - Ciencias (Física)", "files": [{"n": "Link 1", "url": "https://quizizz.com/join/quiz/6398853abc868e001d972910/start?studentShare=true", "type": "Quizizz", "ext": true}, {"n": "Link 2", "url": "https://quizizz.com/join/quiz/6398ac64d3c469001d9ab7f2/start?studentShare=true", "type": "Quizizz", "ext": true}, {"n": "Link 3", "url": "https://quizizz.com/join/quiz/5ed051279e8b60001c2ae43c/start?studentShare=true", "type": "Quizizz", "ext": true}, {"n": "Link 4", "url": "https://quizizz.com/join/quiz/5fecac22411bc9001d4a50a9/start?studentShare=true", "type": "Quizizz", "ext": true}, {"n": "Link 5", "url": "https://quizizz.com/join/quiz/5ee3e83b0a44bf001bceea6e/start?studentShare=true", "type": "Quizizz", "ext": true}, {"n": "Link 8", "url": "https://quizizz.com/join/quiz/5ee3e8263da745001b5a1b4d/start?studentShare=true", "type": "Quizizz", "ext": true}, {"n": "Link 9", "url": "https://quizizz.com/join/quiz/5f5b8d97c60ebb001da0a6f8/start?studentShare=true", "type": "Quizizz", "ext": true}, {"n": "Link 10", "url": "https://quizizz.com/join/quiz/5f08d5319fb489001c1347a1/start?studentShare=true", "type": "Quizizz", "ext": true}, {"n": "Link 11", "url": "https://quizizz.com/join/quiz/5f08e98686bb8d001b027b8f/start?studentShare=true", "type": "Quizizz", "ext": true}, {"n": "Link 12", "url": "https://quizizz.com/join/quiz/5f04c71add1331001c4bdb52/start?studentShare=true", "type": "Quizizz", "ext": true}, {"n": "Link 13", "url": "https://quizizz.com/join/quiz/5f04e908135fda001b5178ed/start?studentShare=true", "type": "Quizizz", "ext": true}, {"n": "Link 14", "url": "https://quizizz.com/join/quiz/5ef25f279cb67b001d6a6078/start?studentShare=true", "type": "Quizizz", "ext": true}, {"n": "Link 15", "url": "https://quizizz.com/join/quiz/6081870c0e6ef4001cc3fe55/start?studentShare=true", "type": "Quizizz", "ext": true}, {"n": "Link 16", "url": "https://quizizz.com/join/quiz/608076fb3a2a69001b32ed8b/start?studentShare=true", "type": "Quizizz", "ext": true}, {"n": "Link 17", "url": "https://quizizz.com/join/quiz/5efb9cad3d2ea3001b66efb2/start?studentShare=true", "type": "Quizizz", "ext": true}, {"n": "Link 18", "url": "https://quizizz.com/join/quiz/5efbbe963448e2001b0dd70d/start?studentShare=true", "type": "Quizizz", "ext": true}, {"n": "Link 19", "url": "https://quizizz.com/join/quiz/5efe742bf9827f001cec2630/start?studentShare=true", "type": "Quizizz", "ext": true}, {"n": "Link 20", "url": "https://quizizz.com/join/quiz/5effab31ba5884001bf8b46a/start?studentShare=true", "type": "Quizizz", "ext": true}, {"n": "Link 21", "url": "https://quizizz.com/join/quiz/5f1743211fd97c001bc6791c/start?studentShare=true", "type": "Quizizz", "ext": true}, {"n": "Link 22", "url": "https://quizizz.com/join/quiz/5f1b0b521aa2aa001bcba8d2/start?studentShare=true", "type": "Quizizz", "ext": true}, {"n": "Link 23", "url": "https://quizizz.com/join/quiz/5f1b1631e96d5e001bae8ea5/start?studentShare=true", "type": "Quizizz", "ext": true}, {"n": "Link 24", "url": "https://quizizz.com/join/quiz/5f6b6e6efb4dbb001c06cd9b/start?studentShare=true", "type": "Quizizz", "ext": true}, {"n": "Link 25", "url": "https://quizizz.com/join/quiz/5ed6c74dc0e41d001b12d4a7/start?studentShare=true", "type": "Quizizz", "ext": true}, {"n": "Link 26", "url": "https://quizizz.com/join/quiz/5edace82788545001b5b021c/start?studentShare=true", "type": "Quizizz", "ext": true}, {"n": "Link 27", "url": "https://quizizz.com/join/quiz/5ee78ddab3881a001b5b5644/start?studentShare=true", "type": "Quizizz", "ext": true}, {"n": "Link 28", "url": "https://quizizz.com/join/quiz/5ff5f197c21398001b308dbf/start?studentShare=true", "type": "Quizizz", "ext": true}, {"n": "Link 29", "url": "https://quizizz.com/join/quiz/63b6b6b600be44001dce0aaf/start?studentShare=true", "type": "Quizizz", "ext": true}, {"n": "Link 30", "url": "https://quizizz.com/join/quiz/5f0e21fbc0e73e001d404221/start?studentShare=true", "type": "Quizizz", "ext": true}, {"n": "Link 31", "url": "https://quizizz.com/join/quiz/63b6b6e9322c20001da18b3b/start?studentShare=true", "type": "Quizizz", "ext": true}, {"n": "Link 32", "url": "https://quizizz.com/join/quiz/5f2038108e9b6f001cf8232d/start?studentShare=true", "type": "Quizizz", "ext": true}, {"n": "Link 33", "url": "https://quizizz.com/join/quiz/5f29bc7bcc5041001baa68e1/start?studentShare=true", "type": "Quizizz", "ext": true}, {"n": "Link 34", "url": "https://quizizz.com/join/quiz/5f29db56f15ac9001cf3d89a/start?studentShare=true", "type": "Quizizz", "ext": true}, {"n": "Link 35", "url": "https://quizizz.com/join/quiz/5f36ad80b07330001caf256a/start?studentShare=true", "type": "Quizizz", "ext": true}]}, {"id": "iv__simulacros_cal", "emoji": "🧬", "bg": "#d8f4e8", "title": "IV. Simulacros Cal. - Ciencias (Biología)", "desc": "IV. Simulacros Cal. - Ciencias (Biología)", "files": [{"n": "Link 1", "url": "https://quizizz.com/join/quiz/65ba65345005bff4d35d8541/start?studentShare=true", "type": "Quizizz", "ext": true}, {"n": "Link 2", "url": "https://quizizz.com/join/quiz/65ba690fe7d4ee3d209da5d2/start?studentShare=true", "type": "Quizizz", "ext": true}, {"n": "Link 3", "url": "https://quizizz.com/join/quiz/65c8d74d40a7f4d425e60585/start?studentShare=true", "type": "Quizizz", "ext": true}, {"n": "Link 4", "url": "https://quizizz.com/join/quiz/65c25d57036b2cac1dfcbe32/start?studentShare=true", "type": "Quizizz", "ext": true}, {"n": "Link 5", "url": "https://quizizz.com/join/quiz/65c26e0eb7a4644d89dc3478/start?studentShare=true", "type": "Quizizz", "ext": true}, {"n": "Link 6", "url": "https://quizizz.com/join/quiz/65df7f019870df47708c64f2/start?studentShare=true", "type": "Quizizz", "ext": true}, {"n": "Link 7", "url": "https://quizizz.com/join/quiz/65df87aa9870df597b8c6980/start?studentShare=true", "type": "Quizizz", "ext": true}, {"n": "Link 8", "url": "https://quizizz.com/join/quiz/65eb3ea004a563847cbb27c4/start?studentShare=true", "type": "Quizizz", "ext": true}, {"n": "Link 9", "url": "https://quizizz.com/join/quiz/65eb4efa16ec895b672f2971/start?studentShare=true", "type": "Quizizz", "ext": true}]}, {"id": "v__simulacros_cal", "emoji": "🧪", "bg": "#fce0ee", "title": "V. Simulacros Cal. - Ciencias (Química)", "desc": "V. Simulacros Cal. - Ciencias (Química)", "files": [{"n": "Link 1", "url": "https://quizizz.com/join/quiz/65b798361159780bcd9979e2/start?studentShare=true", "type": "Quizizz", "ext": true}, {"n": "Link 2", "url": "https://quizizz.com/join/quiz/65b7c80a163121e70affdb65/start?studentShare=true", "type": "Quizizz", "ext": true}, {"n": "Link 3", "url": "https://quizizz.com/join/quiz/65baacd3d59c81d113586ff8/start?studentShare=true", "type": "Quizizz", "ext": true}, {"n": "Link 4", "url": "https://quizizz.com/join/quiz/65c10a268576dd57cb942939/start?studentShare=true", "type": "Quizizz", "ext": true}, {"n": "Link 5", "url": "https://quizizz.com/join/quiz/65df938062b98ab3ede43874/start?studentShare=true", "type": "Quizizz", "ext": true}, {"n": "Link 6", "url": "https://quizizz.com/join/quiz/65d8f85b4b3ad9872d1d2b2d/start?studentShare=true", "type": "Quizizz", "ext": true}, {"n": "Link 7", "url": "https://quizizz.com/join/quiz/65ea11145874d85e7925e533/start?studentShare=true", "type": "Quizizz", "ext": true}, {"n": "Link 8", "url": "https://quizizz.com/join/quiz/65ea30913984411c70d0870f/start?studentShare=true", "type": "Quizizz", "ext": true}]}, {"id": "vi__simulacros_cal", "emoji": "🌍", "bg": "#ece0fc", "title": "VI. Simulacros Cal. - Sociales", "desc": "VI. Simulacros Cal. - Sociales", "files": [{"n": "Link 1", "url": "https://forms.gle/5RdpMaeWfWTqYyif6", "type": "Formulario", "ext": true}, {"n": "Link 2", "url": "https://forms.gle/YqujsBMsmWWKgkM59", "type": "Formulario", "ext": true}, {"n": "Link 3", "url": "https://forms.gle/dQiMVzG7rftnsjybA", "type": "Formulario", "ext": true}, {"n": "Link 4", "url": "https://docs.google.com/forms/d/e/1FAIpQLSc5P2N_xVFBQYGn_I853Dk5YMqT9eSnlCnMNKK2GJ7OPLohWQ/viewform?usp=sf_link", "type": "Formulario", "ext": true}, {"n": "Link 5", "url": "https://docs.google.com/forms/d/e/1FAIpQLSeCRViTpv5mB86915csmwopjgnfuDo3ny7oXMA23Syb0n67OQ/viewform?usp=sharing", "type": "Formulario", "ext": true}, {"n": "Link 6", "url": "https://docs.google.com/forms/d/e/1FAIpQLSd50UQklJQ01NrxlgbqnVoIaosBJrerOOpOAH086ZcclMrt1w/viewform?usp=sharing", "type": "Formulario", "ext": true}, {"n": "Link 7", "url": "https://forms.gle/DC57Qf3p6jG8mUj77", "type": "Formulario", "ext": true}, {"n": "Link 8", "url": "https://forms.gle/QY9HnwhgSV4m4iGf7", "type": "Formulario", "ext": true}, {"n": "Link 9", "url": "https://forms.gle/ibYSxBwXAGZAhYPu7", "type": "Formulario", "ext": true}, {"n": "Link 10", "url": "https://forms.gle/JJ8wAHGzHVZmDJxQ6", "type": "Formulario", "ext": true}, {"n": "Link 11", "url": "https://forms.gle/7kZYSy51JF5FP2Zg7", "type": "Formulario", "ext": true}, {"n": "Link 12", "url": "https://forms.gle/eLnm6Uwr61Z7kf6b9", "type": "Formulario", "ext": true}, {"n": "Link 13", "url": "https://forms.gle/VfQLKnX7tfgthTu87", "type": "Formulario", "ext": true}, {"n": "Link 14", "url": "https://forms.gle/gkiRmviTwMPoskTbA", "type": "Formulario", "ext": true}, {"n": "Link 15", "url": "https://forms.gle/YGQfWkqHCZy7ADMs9", "type": "Formulario", "ext": true}, {"n": "Link 16", "url": "https://forms.gle/taix1PLu33rULYcW6", "type": "Formulario", "ext": true}, {"n": "Link 17", "url": "https://forms.gle/JSXCav1kGAqFYtPo8", "type": "Formulario", "ext": true}, {"n": "Link 18", "url": "https://forms.gle/Pdp9xwxVwyyBvRap8", "type": "Formulario", "ext": true}, {"n": "Link 19", "url": "https://forms.gle/wxdQ9yBCgmUqLyxg9", "type": "Formulario", "ext": true}, {"n": "Link 20", "url": "https://forms.gle/iGV1gh7RBshWYTT98", "type": "Formulario", "ext": true}]}, {"id": "vii__simulacros_cal", "emoji": "🖼️", "bg": "#d8faf4", "title": "VII. Simulacros Cal. - Imagen", "desc": "VII. Simulacros Cal. - Imagen", "files": [{"n": "Link 1", "url": "https://forms.gle/TeEPLFr7ARCfVcz16", "type": "Formulario", "ext": true}, {"n": "Link 2", "url": "https://forms.gle/CnGEWEHw4Vd7ym3e6", "type": "Formulario", "ext": true}, {"n": "Link 3", "url": "https://docs.google.com/forms/d/143Msh_vmyzTgyD5o7XC_lt7CbmwhJovTloljyJsB1WY/edit", "type": "Formulario", "ext": true}, {"n": "Link 4", "url": "https://docs.google.com/forms/d/12aIP6TTYfMy_JI81KVnkTu41K9tHF6w3-tP_RDjih_o/edit", "type": "Formulario", "ext": true}, {"n": "Link 5", "url": "https://docs.google.com/forms/d/1TCmlWdMrOFcNG421uCdW_SidrehjFpXgx9HNQNC6qlc/edit", "type": "Formulario", "ext": true}]}];
 const PAGE_KEY='simulacros_calificados_un';
-const HOLD_MS=550;
+const HOLD_MS=300;
 let checked={},order=MODULES.map(m=>m.id),fileOrders={},heroMode='bar';
-// Exponer para el editor
-window.MODULES=MODULES; window.order=order; window.fileOrders=fileOrders; window.checked=checked;
 let openCardId=null,activeModal=null,saveTimer=null;
 
 /* ── BOOT — llamado por firebase-auth.js vía window._pageReady ── */
-window._pageReady=async function(user,db,docFn,setFn,getFn){
+window._pageReady=function(user,db,docFn,setFn){
+  // Guardar referencias a Firebase para saves
   window._fdb=db; window._fdoc=docFn; window._fset=setFn;
   window._cu=user;
-  window._pageBooted=true;
-
-  // Inicializar estructuras base siempre
-  MODULES.forEach(m=>{ fileOrders[m.id]=m.files.map((_,i)=>i); });
-
-  if(user&&db&&getFn){
-    // CON SESIÓN: Firestore es la fuente de verdad — esperar antes de renderizar
-    // Cargar localStorage como fallback inmediato mientras llega Firestore
-    MODULES.forEach(m=>{
-      checked[m.id]=JSON.parse(localStorage.getItem('sp_'+PAGE_KEY+'_'+m.id)||'null')||{};
-    });
-    order=JSON.parse(localStorage.getItem('sp_'+PAGE_KEY+'_order')||'null')||MODULES.map(m=>m.id);
-    heroMode=localStorage.getItem('sp_global_hero')||'bar';
-    applyHeroMode(); renderGrid(); // render provisional con localStorage
-
-    try{
-      var ref=docFn(db,'usuarios',user.uid,'progress',PAGE_KEY);
-      var snap=await getFn(ref);
-      if(snap.exists()){
-        var d=snap.data();
-        // Firestore gana sobre localStorage en todo
-        if(d.checked) MODULES.forEach(m=>{
-          if(d.checked[m.id]!==undefined) checked[m.id]=d.checked[m.id];
-        });
-        if(d.order&&Array.isArray(d.order)) order=d.order;
-        if(d.fileOrders) MODULES.forEach(m=>{ if(d.fileOrders[m.id]) fileOrders[m.id]=d.fileOrders[m.id]; });
-        if(d.heroMode){ heroMode=d.heroMode; }
-        // Actualizar localStorage con los datos reales de Firestore
-        MODULES.forEach(m=>localStorage.setItem('sp_'+PAGE_KEY+'_'+m.id,JSON.stringify(checked[m.id])));
-        localStorage.setItem('sp_'+PAGE_KEY+'_order',JSON.stringify(order));
-        localStorage.setItem('sp_global_hero',heroMode);
-      }
-      // Renderizar con datos definitivos (Firestore o localStorage si no había nada en Firestore)
-      applyHeroMode(); renderGrid();
-    }catch(e){
-      console.warn('[SP] Error leyendo Firestore, usando localStorage:',e);
-    }
-  } else {
-    // SIN SESIÓN: solo localStorage
-    MODULES.forEach(m=>{
-      checked[m.id]=JSON.parse(localStorage.getItem('sp_'+PAGE_KEY+'_'+m.id)||'null')||{};
-    });
-    order=JSON.parse(localStorage.getItem('sp_'+PAGE_KEY+'_order')||'null')||MODULES.map(m=>m.id);
-    heroMode=localStorage.getItem('sp_global_hero')||'bar';
-    applyHeroMode(); renderGrid();
-  }
+  // Cargar progreso
+  MODULES.forEach(m=>{
+    checked[m.id]=JSON.parse(localStorage.getItem('sp_'+PAGE_KEY+'_'+m.id)||'null')||{};
+    fileOrders[m.id]=m.files.map((_,i)=>i);
+  });
+  order=JSON.parse(localStorage.getItem('sp_'+PAGE_KEY+'_order')||'null')||MODULES.map(m=>m.id);
+  heroMode=localStorage.getItem('sp_'+PAGE_KEY+'_hero')||'bar';
+  // Si hay datos en Firestore los sobrescribe
+  applyHeroMode();renderGrid();
 };
 
 /* Fallback: si firebase-auth.js tarda más de 2s, inicializar con localStorage */
@@ -768,7 +735,7 @@ setTimeout(()=>{
       fileOrders[m.id]=m.files.map((_,i)=>i);
     });
     order=JSON.parse(localStorage.getItem('sp_'+PAGE_KEY+'_order')||'null')||MODULES.map(m=>m.id);
-    heroMode=localStorage.getItem('sp_global_hero')||'bar';
+    heroMode=localStorage.getItem('sp_'+PAGE_KEY+'_hero')||'bar';
     applyHeroMode();renderGrid();
   }
 },2000);
@@ -783,36 +750,16 @@ function showBadge(msg,cls){
 async function saveAll(){
   MODULES.forEach(m=>localStorage.setItem('sp_'+PAGE_KEY+'_'+m.id,JSON.stringify(checked[m.id])));
   localStorage.setItem('sp_'+PAGE_KEY+'_order',JSON.stringify(order));
-  localStorage.setItem('sp_global_hero',heroMode);
-  var u=window._cu;if(!u||!window._fdb){
-    // Sin sesión activa: solo localStorage, sin badge
-    return;
-  }
+  localStorage.setItem('sp_'+PAGE_KEY+'_hero',heroMode);
+  var u=window._cu;if(!u||!window._fdb)return;
   try{
-    await window._fset(window._fdoc(window._fdb,'usuarios',u.uid,'progress',PAGE_KEY),
+    showBadge('⟳ Guardando…','');
+    await window._fset(window._fdoc(window._fdb,'users',u.uid,'progress',PAGE_KEY),
       {checked,order,heroMode,fileOrders,updatedAt:Date.now()},{merge:true});
     showBadge('✓ Guardado','ok');
-    window._saveErrCount=0;
-  }catch(e){
-    window._saveErrCount=(window._saveErrCount||0)+1;
-    // Solo mostrar error tras 2 fallos seguidos para no alarmar por red momentánea
-    if(window._saveErrCount>=2)showBadge('⚠ Sin conexión','err');
-    console.warn('[SP] saveAll error:',e);
-  }
+  }catch(e){showBadge('⚠ Local','err');}
 }
-function scheduleSave(){
-  clearTimeout(saveTimer);
-  saveTimer=setTimeout(async function(){
-    await saveAll();
-    // Actualizar cache de progreso de esta sección y refrescar botón de avance
-    var done=0,tot=0;
-    MODULES.forEach(function(mod){tot+=mod.files.length;done+=doneOf(mod.id);});
-    if(typeof window._sectionProgress==='undefined')window._sectionProgress={};
-    window._sectionProgress[PAGE_KEY]={done:done,total:tot};
-    var profile=window._getUserProfile?window._getUserProfile():null;
-    window.updateAvanceBtn&&window.updateAvanceBtn(document.getElementById('btn-avance'),profile);
-  },50);
-}
+function scheduleSave(){clearTimeout(saveTimer);saveTimer=setTimeout(saveAll,800);}
 
 /* ── HERO MODE ── */
 function toggleHeroMode(){heroMode=heroMode==='bar'?'ring':'bar';applyHeroMode();scheduleSave();renderGrid();}
@@ -912,208 +859,109 @@ function removeGhost(){if(ghost){ghost.remove();ghost=null;}}
 
 function attachCard(card,m){
   var head=card.querySelector('.mc-head');
-  var holdTimer=null,isDragging=false,ghostCreated=false,overMid=null;
-  var onMove=null,onUp=null,onEarly=null;
-  var startX=0,startY=0,moved=false;
-
-  function cancelEarly(){
-    if(onEarly){ document.removeEventListener('pointermove',onEarly); onEarly=null; }
-  }
-  function cleanup(commit){
-    clearTimeout(holdTimer);
-    cancelEarly();
-    if(onMove){ document.removeEventListener('pointermove',onMove); onMove=null; }
-    if(onUp)  { document.removeEventListener('pointerup',  onUp);   onUp=null;   }
-    removeGhost();
-    head.style.cursor='';
-    card.style.touchAction='';
-    var wasDragging=isDragging, landing=overMid;
-    isDragging=false; ghostCreated=false; overMid=null; moved=false;
-    clearDragClasses();
-    if(commit && wasDragging && ghostCreated && landing){
-      var si=order.indexOf(m.id), di=order.indexOf(landing);
-      if(si!==-1 && di!==-1 && si!==di){
-        order.splice(si,1); order.splice(di,0,m.id);
-        scheduleSave(); _setJustDropped(); renderGrid();
-      }
-    }
-  }
-
+  var holdTimer=null,dragActive=false,ghostCreated=false,overMid=null,docMH=null,docUH=null;
   head.addEventListener('pointerdown',function(e){
-    if(openCardId===m.id) return;           // tarjeta abierta: no iniciar drag
-    if(e.button && e.button!==0) return;    // solo botón izquierdo / toque
-    // (selección de texto controlada por CSS user-select)
-    isDragging=false; ghostCreated=false; overMid=null; moved=false;
-    startX=e.clientX; startY=e.clientY;
-
-    // Escuchar movimiento temprano para cancelar si se mueve antes del hold
-    var CTHRESH='ontouchstart' in window?14:10;
-    onEarly=function(ev){
-      if(Math.abs(ev.clientX-startX)>CTHRESH || Math.abs(ev.clientY-startY)>CTHRESH){
-        moved=true;
-        clearTimeout(holdTimer);
-        cancelEarly();
-      }
-    };
-    document.addEventListener('pointermove',onEarly,{passive:true});
-
+    if(openCardId===m.id)return;
+    e.preventDefault();
+    dragActive=false;ghostCreated=false;overMid=null;
     holdTimer=setTimeout(function(){
-      cancelEarly();
-      if(moved) return;
-      isDragging=true;
-      if(navigator.vibrate) navigator.vibrate(45);
-      try{ head.setPointerCapture(e.pointerId); }catch(err){}
-      card.style.touchAction='none';
+      dragActive=true;
       card.classList.add('hold-ready');
-
       setTimeout(function(){
-        if(!isDragging) return;
+        if(!dragActive)return;
         ghostCreated=true;
-        card.classList.remove('hold-ready');
-        card.classList.add('is-dragging');
-        createGhost(card);
-        head.style.cursor='grabbing';
-
-        var _px=e.clientX,_py=e.clientY,_raf=false;
-        onMove=function(ev){
-          ev.preventDefault();
-          _px=ev.clientX;_py=ev.clientY;
-          if(!_raf){_raf=true;requestAnimationFrame(function(){_raf=false;moveGhost(_px,_py);});}
-          var under=document.elementFromPoint(ev.clientX, ev.clientY);
-          var tc=under ? under.closest('.module-card') : null;
-          allCards().forEach(function(c2){ c2.classList.remove('drop-target','shift-up','shift-down'); });
-          if(tc && tc!==card){
+        card.classList.remove('hold-ready');card.classList.add('is-dragging');createGhost(card);
+        docMH=function(ev){
+          ev.preventDefault();moveGhost(ev.clientX,ev.clientY);
+          var under=document.elementFromPoint(ev.clientX,ev.clientY);
+          var tc=under?under.closest('.module-card'):null;
+          allCards().forEach(function(c){c.classList.remove('drop-target','shift-up','shift-down');});
+          if(tc&&tc!==card){
             tc.classList.add('drop-target');
-            var si=order.indexOf(m.id), di=order.indexOf(tc.dataset.mid);
-            allCards().forEach(function(c2){
-              if(c2===card||c2===tc) return;
-              var ci=order.indexOf(c2.dataset.mid);
-              if(si<di && ci>si && ci<=di) c2.classList.add('shift-up');
-              if(si>di && ci<si && ci>=di) c2.classList.add('shift-down');
+            var si=order.indexOf(m.id),di=order.indexOf(tc.dataset.mid);
+            allCards().forEach(function(c){
+              if(c===card||c===tc)return;
+              var ci=order.indexOf(c.dataset.mid);
+              if(si<di&&ci>si&&ci<=di)c.classList.add('shift-up');
+              if(si>di&&ci<si&&ci>=di)c.classList.add('shift-down');
             });
             overMid=tc.dataset.mid;
-          } else { overMid=null; }
+          }else overMid=null;
         };
-        onUp=function(){ cleanup(true); };
-        document.addEventListener('pointermove',onMove,{passive:false});
-        document.addEventListener('pointerup',onUp);
-      },60);
+        docUH=function(){cleanup(true);};
+        document.addEventListener('pointermove',docMH,{passive:false});
+        document.addEventListener('pointerup',docUH);
+      },50);
     },HOLD_MS);
-  },{passive:true});
-
+  });
   head.addEventListener('pointerup',function(e){
-    if(isDragging){ return; }     // se soltó durante drag — cleanup lo maneja
     clearTimeout(holdTimer);
-    cancelEarly();
-    cleanup(false);
-    toggleCard(m.id);
+    if(dragActive){return;}
+    cleanup(false);toggleCard(m.id);
   });
-
-  head.addEventListener('pointercancel',function(){
+  head.addEventListener('pointercancel',function(){clearTimeout(holdTimer);cleanup(false);});
+  function cleanup(commit){
     clearTimeout(holdTimer);
-    cancelEarly();
-    cleanup(false);
-  });
-
-  card.querySelectorAll('.file-card').forEach(function(fc){ attachFile(fc,m); });
+    if(docMH){document.removeEventListener('pointermove',docMH);docMH=null;}
+    if(docUH){document.removeEventListener('pointerup',docUH);docUH=null;}
+    removeGhost();
+    var wasGhost=ghostCreated,landing=overMid;
+    dragActive=false;ghostCreated=false;overMid=null;clearDragClasses();
+    if(commit&&wasGhost&&landing){
+      var si=order.indexOf(m.id),di=order.indexOf(landing);
+      if(si!==di){order.splice(si,1);order.splice(di,0,m.id);scheduleSave();_setJustDropped();renderGrid();}
+    }
+  }
+  card.querySelectorAll('.file-card').forEach(function(fc){attachFile(fc,m);});
 }
 
 /* ── DRAG: FILE CARDS ── */
 function allFileCards(){return[...document.querySelectorAll('.file-card')];}
 function clearFileClasses(){allFileCards().forEach(function(c){c.classList.remove('fc-drop-target','fc-dragging','fc-hold-ready');});}
-
 function attachFile(fc,m){
-  var srcFi=parseInt(fc.dataset.fi);
-  var holdTimer=null,isDragging=false,ghostCreated=false,overFi=null;
-  var onMove=null,onUp=null,onEarly=null;
-  var startX=0,startY=0,moved=false;
-
-  function cancelEarly(){
-    if(onEarly){ fc.removeEventListener('pointermove',onEarly); onEarly=null; }
-  }
-  function fileCleanup(commit){
-    clearTimeout(holdTimer);
-    cancelEarly();
-    if(onMove){ document.removeEventListener('pointermove',onMove); onMove=null; }
-    if(onUp)  { document.removeEventListener('pointerup',  onUp);   onUp=null;   }
-    fc.style.touchAction='';
-    var wasDragging=isDragging, landing=overFi;
-    isDragging=false; ghostCreated=false; overFi=null; moved=false;
-    clearFileClasses();
-    if(commit && wasDragging && ghostCreated && landing!=null && landing!==srcFi){
-      var fo=fileOrders[m.id];
-      var si=fo.indexOf(srcFi), di=fo.indexOf(landing);
-      if(si!==-1 && di!==-1 && si!==di){
-        fo.splice(si,1); fo.splice(di,0,srcFi);
-        scheduleSave(); _setJustDropped(); renderGrid();
-      }
-    }
-  }
-
+  var holdTimer=null,dragActive=false,overFi=null,srcFi=parseInt(fc.dataset.fi),docMF=null,docUF=null;
   fc.addEventListener('pointerdown',function(e){
-    e.stopPropagation();
-    if(e.button && e.button!==0) return;
-    isDragging=false; ghostCreated=false; overFi=null; moved=false;
-    startX=e.clientX; startY=e.clientY;
-
-    onEarly=function(ev){
-      if(Math.abs(ev.clientX-startX)>8 || Math.abs(ev.clientY-startY)>8){
-        moved=true;
-        clearTimeout(holdTimer);
-        cancelEarly();
-      }
-    };
-    fc.addEventListener('pointermove',onEarly,{passive:true});
-
+    e.stopPropagation();e.preventDefault();
     holdTimer=setTimeout(function(){
-      cancelEarly();
-      if(moved) return;
-      isDragging=true;
-      if(navigator.vibrate) navigator.vibrate(30);
-      fc.classList.add('fc-hold-ready');
-
+      dragActive=true;fc.classList.add('fc-hold-ready');
       setTimeout(function(){
-        if(!isDragging) return;
-        ghostCreated=true;
-        fc.classList.remove('fc-hold-ready');
-        fc.classList.add('fc-dragging');
-        fc.style.touchAction='none';
-
-        onMove=function(ev){
+        if(!dragActive)return;
+        fc.classList.remove('fc-hold-ready');fc.classList.add('fc-dragging');
+        docMF=function(ev){
           ev.preventDefault();
-          var under=document.elementFromPoint(ev.clientX, ev.clientY);
-          var tgt=under ? under.closest('.file-card') : null;
-          allFileCards().forEach(function(c){ c.classList.remove('fc-drop-target'); });
-          if(tgt && tgt!==fc && tgt.dataset.mid===m.id){
-            tgt.classList.add('fc-drop-target');
-            overFi=parseInt(tgt.dataset.fi);
-          } else { overFi=null; }
+          var under=document.elementFromPoint(ev.clientX,ev.clientY);
+          var tgt=under?under.closest('.file-card'):null;
+          allFileCards().forEach(function(c){c.classList.remove('fc-drop-target');});
+          if(tgt&&tgt!==fc&&tgt.dataset.mid===m.id){tgt.classList.add('fc-drop-target');overFi=parseInt(tgt.dataset.fi);}
+          else overFi=null;
         };
-        onUp=function(){ fileCleanup(true); };
-        document.addEventListener('pointermove',onMove,{passive:false});
-        document.addEventListener('pointerup',onUp);
-      },60);
+        docUF=function(){fileCleanup(true);};
+        document.addEventListener('pointermove',docMF,{passive:false});
+        document.addEventListener('pointerup',docUF);
+      },50);
     },HOLD_MS);
   });
-
   fc.addEventListener('pointerup',function(e){
     e.stopPropagation();
-    if(isDragging){ return; }
-    clearTimeout(holdTimer);
-    cancelEarly();
-    fileCleanup(false);
+    if(dragActive)return;
+    clearTimeout(holdTimer);fileCleanup(false);
     openModal(m.id,srcFi);
   });
-
-  fc.addEventListener('pointercancel',function(){
+  fc.addEventListener('pointercancel',function(){fileCleanup(false);});
+  function fileCleanup(commit){
     clearTimeout(holdTimer);
-    cancelEarly();
-    fileCleanup(false);
-  });
+    if(docMF){document.removeEventListener('pointermove',docMF);docMF=null;}
+    if(docUF){document.removeEventListener('pointerup',docUF);docUF=null;}
+    var wasActive=dragActive,landing=overFi;dragActive=false;overFi=null;clearFileClasses();
+    if(commit&&wasActive&&landing!=null&&landing!==srcFi){
+      var fo=fileOrders[m.id];
+      var si=fo.indexOf(srcFi),di=fo.indexOf(landing);
+      fo.splice(si,1);fo.splice(di,0,srcFi);scheduleSave();renderGrid();
+    }
+  }
 }
 
 /* ── CARD TOGGLE ── */
-
 var _justDropped=false;
 function _bDE(e){e.stopPropagation();e.preventDefault();}
 function _setJustDropped(){
@@ -1271,9 +1119,19 @@ function toggleFullscreen(){
   var mw=document.querySelector('.modal-window');
   var btn=document.getElementById('m-fullscreen-btn');
   if(!mw)return;
-  mw.classList.toggle('is-fullscreen');
-  btn.textContent=mw.classList.contains('is-fullscreen')?'✕':'⛶';
-  btn.title=mw.classList.contains('is-fullscreen')?'Salir de pantalla completa':'Pantalla completa';
+  var isMobile=window.innerWidth<=600;
+  if(isMobile){
+    // En móvil el modal ya es fullscreen — ⛶ oculta la barra superior (modo inmersivo)
+    mw.classList.toggle('immersive');
+    var immersive=mw.classList.contains('immersive');
+    btn.textContent=immersive?'⛶':'⛶';
+    btn.title=immersive?'Mostrar barra':'Ocultar barra';
+    btn.style.opacity=immersive?'0.4':'1';
+  } else {
+    mw.classList.toggle('is-fullscreen');
+    btn.textContent=mw.classList.contains('is-fullscreen')?'✕':'⛶';
+    btn.title=mw.classList.contains('is-fullscreen')?'Salir de pantalla completa':'Pantalla completa';
+  }
 }
 window.toggleModalSeen=toggleModalSeen;window.closeModal=closeModal;window.outsideClose=outsideClose;window.toggleFullscreen=toggleFullscreen;
 
