@@ -497,19 +497,36 @@ let checked={},order=MODULES.map(m=>m.id),fileOrders={},heroMode='bar';
 let openCardId=null,activeModal=null,saveTimer=null;
 
 /* ── BOOT — llamado por firebase-auth.js vía window._pageReady ── */
-window._pageReady=function(user,db,docFn,setFn){
-  // Guardar referencias a Firebase para saves
+window._pageReady=async function(user,db,docFn,setFn,getFn){
   window._fdb=db; window._fdoc=docFn; window._fset=setFn;
   window._cu=user;
-  // Cargar progreso
+  window._pageBooted=true;
+  // 1. Base: localStorage (funciona sin conexión)
   MODULES.forEach(m=>{
     checked[m.id]=JSON.parse(localStorage.getItem('sp_'+PAGE_KEY+'_'+m.id)||'null')||{};
     fileOrders[m.id]=m.files.map((_,i)=>i);
   });
   order=JSON.parse(localStorage.getItem('sp_'+PAGE_KEY+'_order')||'null')||MODULES.map(m=>m.id);
   heroMode=localStorage.getItem('sp_global_hero')||'bar';
-  // Si hay datos en Firestore los sobrescribe
   applyHeroMode();renderGrid();
+  // 2. Firestore es la fuente de verdad — sobrescribir si hay sesión
+  if(user&&db&&getFn){
+    try{
+      var ref=docFn(db,'usuarios',user.uid,'progress',PAGE_KEY);
+      var snap=await getFn(ref);
+      if(snap.exists()){
+        var d=snap.data();
+        if(d.checked)MODULES.forEach(m=>{if(d.checked[m.id]!==undefined)checked[m.id]=d.checked[m.id];});
+        if(d.order&&Array.isArray(d.order))order=d.order;
+        if(d.fileOrders)MODULES.forEach(m=>{if(d.fileOrders[m.id])fileOrders[m.id]=d.fileOrders[m.id];});
+        if(d.heroMode){heroMode=d.heroMode;localStorage.setItem('sp_global_hero',heroMode);}
+        // Sincronizar localStorage con Firestore
+        MODULES.forEach(m=>localStorage.setItem('sp_'+PAGE_KEY+'_'+m.id,JSON.stringify(checked[m.id])));
+        localStorage.setItem('sp_'+PAGE_KEY+'_order',JSON.stringify(order));
+        applyHeroMode();renderGrid();
+      }
+    }catch(e){console.warn('[SP] Error leyendo Firestore:',e);}
+  }
 };
 
 /* Fallback: si firebase-auth.js tarda más de 2s, inicializar con localStorage */
@@ -538,37 +555,33 @@ async function saveAll(){
   localStorage.setItem('sp_'+PAGE_KEY+'_order',JSON.stringify(order));
   localStorage.setItem('sp_global_hero',heroMode);
   var u=window._cu;if(!u||!window._fdb){
-    // Sin sesión: guardar solo en localStorage, sin badge de error
+    // Sin sesión activa: solo localStorage, sin badge
     return;
   }
   try{
-    showBadge('⟳ Guardando…','');
     await window._fset(window._fdoc(window._fdb,'usuarios',u.uid,'progress',PAGE_KEY),
       {checked,order,heroMode,fileOrders,updatedAt:Date.now()},{merge:true});
     showBadge('✓ Guardado','ok');
+    window._saveErrCount=0;
   }catch(e){
-    // Error real de red/Firestore: mostrar solo si había usuario
-    showBadge('⚠ Sin conexión','err');
+    window._saveErrCount=(window._saveErrCount||0)+1;
+    // Solo mostrar error tras 2 fallos seguidos para no alarmar por red momentánea
+    if(window._saveErrCount>=2)showBadge('⚠ Sin conexión','err');
+    console.warn('[SP] saveAll error:',e);
   }
 }
 function scheduleSave(){
   clearTimeout(saveTimer);
   saveTimer=setTimeout(async function(){
     await saveAll();
-    // Actualizar botón de avance global con el progreso nuevo de esta página
-    if(window._loadSectionProgress&&window._cu){
-      var pageKey=PAGE_KEY;
-      var m=window._fdb?window._fdoc(window._fdb,'usuarios',window._cu.uid,'progress',pageKey):null;
-      // Actualizar _sectionProgress para esta página con datos locales
-      var done=0,tot=0;
-      MODULES.forEach(function(mod){
-        tot+=mod.files.length;
-        done+=doneOf(mod.id);
-      });
-      if(window._sectionProgress===undefined)window._sectionProgress={};
-      window._sectionProgress[pageKey]={done:done,total:tot};
-      window.updateAvanceBtn&&window.updateAvanceBtn(document.getElementById('btn-avance'),null);
-    }
+    // Actualizar cache de progreso de esta sección y refrescar botón de avance
+    var done=0,tot=0;
+    MODULES.forEach(function(mod){tot+=mod.files.length;done+=doneOf(mod.id);});
+    if(typeof window._sectionProgress==='undefined')window._sectionProgress={};
+    window._sectionProgress[PAGE_KEY]={done:done,total:tot};
+    // updateAvanceBtn lee avatar del perfil actual
+    var profile=window._getUserProfile?window._getUserProfile():null;
+    window.updateAvanceBtn&&window.updateAvanceBtn(document.getElementById('btn-avance'),profile);
   },800);
 }
 

@@ -86,6 +86,7 @@ const MATERIALES = [
 
 // Cache de progreso por sección (se llena al abrir el modal)
 let _sectionProgress = {}; // { pageKey: { done, total } }
+window._sectionProgress = _sectionProgress; // referencia compartida con subpáginas
 
 let currentUser  = null;
 let userProfile  = null;
@@ -879,10 +880,10 @@ function injectModals() {
             <option value="NB">No binario</option><option value="NR">Prefiero no responder</option>
           </select>
         </div>
-        <p style="font-size:.82rem;min-height:1em;margin-top:.25rem" id="perfil-edit-err"></p>
+        <p style="font-size:.78rem;min-height:.8em;margin-top:.15rem;margin-bottom:0" id="perfil-edit-err"></p>
       </div>
       <!-- Botones: se muestran según el modo -->
-      <div id="perfil-edit-btns" style="display:none;flex-direction:column;gap:.6rem;margin-top:.75rem;">
+      <div id="perfil-edit-btns" style="display:none;flex-direction:column;gap:.6rem;margin-top:.35rem;">
         <button id="btn-guardar-cambios" class="btn-submit" onclick="saveProfileChanges()">Guardar cambios</button>
         <button class="btn-submit" style="background:#e74c3c" onclick="doLogout()">Cerrar sesión</button>
       </div>
@@ -1128,7 +1129,7 @@ domReady(() => {
     updateNav(user, userProfile);
     // Notificar a la página que el estado de auth está listo
     if (window._pageReady) {
-      window._pageReady(user, db, doc, setDoc);
+      window._pageReady(user, db, doc, setDoc, getDoc);
     }
   });
 
@@ -1167,6 +1168,11 @@ window.sendPhoneOTP          = sendPhoneOTP;
 window.verifyPhoneOTP        = verifyPhoneOTP;
 window.openAvanceModal       = openAvanceModal;
 window.updateAvanceBtn       = updateAvanceBtn;
+// Exponer _sectionProgress para que las subpáginas actualicen su sección
+Object.defineProperty(window, '_sectionProgress', {
+  get: function(){ return _sectionProgress; },
+  set: function(v){ /* no-op, usar directamente */ }
+});
 window._loadSectionProgress  = _loadSectionProgress;
 window.closeAvanceModal      = closeAvanceModal;
 window.openPerfilModal       = openPerfilModal;
