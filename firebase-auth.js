@@ -475,14 +475,8 @@ async function openAvanceModal() {
   document.getElementById('avance-progress-text').textContent =
     `${doneAll} de ${totalAll} archivos completados · ${pctGlobal} %`;
 
-  // Lista de secciones — cada item es un enlace a la sección
-  // Ordenar: primero con progreso (desc), luego sin progreso
-  const sorted = [...withFiles].sort((a, b) => {
-    const pa = (_sectionProgress[a.pageKey] || {done:0}).done;
-    const pb = (_sectionProgress[b.pageKey] || {done:0}).done;
-    return pb - pa;
-  });
-  listEl.innerHTML = sorted.map(m => {
+  // Lista de secciones en orden numérico original (sin reordenar)
+  listEl.innerHTML = withFiles.map(m => {
     const sp   = _sectionProgress[m.pageKey] || { done: 0, total: m.total };
     const pct  = sp.total > 0 ? Math.round(sp.done / sp.total * 100) : 0;
     const done = sp.done;
