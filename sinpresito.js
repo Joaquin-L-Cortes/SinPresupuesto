@@ -8,8 +8,8 @@
   'use strict';
 
   // ── CONFIGURACIÓN ─────────────────────────────────
-  const GEMINI_KEY = 'AIzaSyCSm8YJLqIocYlU5cmpty_f6xCEa2QL_7s'; // ← Pega aquí tu API key de Google AI Studio
-  const GEMINI_URL = 'https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash-latest:generateContent';
+  const GEMINI_KEY = 'AIzaSyD27wLEUTI5-lVpPNgkyG0nQyeXAOnHVyE'; // ← Pega aquí tu API key de Google AI Studio
+  const GEMINI_URL = 'https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent';
   // ──────────────────────────────────────────────────
 
   // Catálogo completo de archivos (auto-generado)
@@ -213,8 +213,10 @@ INSTRUCCIONES:
     });
 
     if (!res.ok) {
-      const err = await res.json().catch(() => ({}));
-      throw new Error(err?.error?.message || `HTTP ${res.status}`);
+      const errBody = await res.json().catch(() => ({}));
+      const msg = errBody?.error?.message || `HTTP ${res.status}`;
+      const code = errBody?.error?.code || res.status;
+      throw new Error(`[${code}] ${msg}`);
     }
 
     const data = await res.json();
