@@ -746,7 +746,7 @@ function injectModals() {
 
   <!-- MODAL ESTUDIANTE -->
   <div class="modal-overlay" id="student-modal">
-    <div class="modal" id="student-modal-box" style="max-width:440px">
+    <div class="modal" id="student-modal-box" style="max-width:600px">
       <div style="display:flex;gap:0;margin-bottom:1.5rem;border-bottom:2px solid var(--border);position:sticky;top:0;background:var(--bg2);z-index:50;padding-top:.25rem;margin-left:-2rem;margin-right:-2rem;padding-left:2rem;padding-right:2rem">
         <button id="tab-login" class="tab-btn active" onclick="showStudentTab('login')">Ingresar</button>
         <button id="tab-reg"   class="tab-btn"        onclick="showStudentTab('reg')">Registrarse</button>
