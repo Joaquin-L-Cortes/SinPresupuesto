@@ -503,13 +503,26 @@ Si el estudiante pide clases, videos o quiere ver explicaciones en video:
       matched = [...new Set(indices)].map(i => CATALOG[i]);
     }
 
-    // Fallback por palabras clave si no hubo ARCHIVOS
+    // Fallback por relevancia si no hubo ARCHIVOS
     if (matched.length === 0 && !youtubeUrl) {
-      const words = query.toLowerCase().split(/\s+/).filter(w => w.length > 3);
-      const fallback = CATALOG.filter(f =>
-        words.some(w => f.n.toLowerCase().includes(w) || f.s.toLowerCase().includes(w))
-      ).slice(0, 5);
-      if (fallback.length > 0) matched = fallback;
+      const normalize = s => s.toLowerCase()
+        .normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+      const words = normalize(query).split(/\s+/).filter(w => w.length > 3);
+      const scored = CATALOG.map(f => {
+        const name = normalize(f.n);
+        const sect = normalize(f.s);
+        let score = 0;
+        words.forEach(w => {
+          if (name.includes(w)) score += 2;
+          if (sect.includes(w)) score += 1;
+        });
+        return { f, score };
+      })
+      .filter(x => x.score > 0)
+      .sort((a, b) => b.score - a.score)
+      .slice(0, 5)
+      .map(x => x.f);
+      if (scored.length > 0) matched = scored;
     }
 
     return { text, matched, youtubeUrl };
