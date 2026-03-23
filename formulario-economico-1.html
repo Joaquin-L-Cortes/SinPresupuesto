@@ -798,13 +798,28 @@ function openModal(mid,fi){
     document.getElementById('m-name').textContent=f.n;
     document.getElementById('m-meta').textContent=m.title;
     var driveUrl=f.url;
-    /* Archivos externos (Quizizz, Forms, etc.): abrir en pestaña nueva */
-    if(f.ext){
-      window.open(driveUrl,'_blank');
-      /* Marcar como visto automáticamente */
-      if(!checked[mid])checked[mid]={};
-      checked[mid][fi]=true;
-      scheduleSave();renderGrid();
+    /* Detectar si es Google Drive o enlace externo por URL */
+    var isDrive=driveUrl.indexOf('drive.google.com')!==-1;
+    /* Enlace externo: mostrar modal de confirmación, no iframe */
+    if(f.ext||!isDrive){
+      /* Actualizar botón "Abrir" con la URL externa */
+      var btnDrive=document.querySelector('.btn-drive');
+      if(btnDrive){btnDrive.href=driveUrl;btnDrive.textContent='↗ Abrir';}
+      /* Ocultar iframe, mostrar mensaje de apertura externa */
+      var loading=document.getElementById('m-loading');
+      var iframe=document.getElementById('m-iframe');
+      if(iframe)iframe.src='';
+      if(loading){
+        loading.classList.remove('hidden');
+        loading.innerHTML='<span style="font-size:2rem">🌐</span>'
+          +'<span style="text-align:center;max-width:240px;line-height:1.6">Este contenido es un enlace externo.<br>'
+          +'<small style="color:var(--muted)">Ábrelo en una nueva pestaña para verlo.</small></span>'
+          +'<a href="'+driveUrl+'" target="_blank" onclick="_markExternalSeen('+JSON.stringify(mid)+','+fi+')" '
+          +'style="margin-top:.5rem;padding:.5rem 1.2rem;background:var(--accent);color:#fff;border-radius:8px;'
+          +'text-decoration:none;font-size:.85rem;font-weight:600;display:inline-flex;align-items:center;gap:.4rem;">↗ Abrir en nueva pestaña</a>';
+      }
+      document.getElementById('m-url').textContent=driveUrl.replace('https://','');
+      document.getElementById('modal').classList.add('open');
       return;
     }
     /* Drive PDF: mostrar en iframe */
@@ -812,7 +827,8 @@ function openModal(mid,fi){
     var fm=driveUrl.match(/\/file\/d\/([^/]+)/);
     if(fm)previewUrl='https://drive.google.com/file/d/'+fm[1]+'/preview';
     document.getElementById('m-url').textContent=previewUrl.replace('https://','');
-    document.querySelector('.btn-drive').href=driveUrl;
+    var btnDrive=document.querySelector('.btn-drive');
+    if(btnDrive){btnDrive.href=driveUrl;btnDrive.textContent='↗ Abrir en Drive';}
     var iframe=document.getElementById('m-iframe'),loading=document.getElementById('m-loading');
     if(loading)loading.classList.remove('hidden');
     if(iframe){
@@ -858,6 +874,11 @@ function toggleModalSeen(){
   if(!checked[mid])checked[mid]={};
   checked[mid][fi]=!checked[mid][fi];
   scheduleSave();renderGrid();syncSeen();
+}
+function _markExternalSeen(mid,fi){
+  if(!checked[mid])checked[mid]={};
+  checked[mid][fi]=true;
+  scheduleSave();renderGrid();
 }
 function closeModal(){
   document.getElementById('modal').classList.remove('open');
