@@ -399,12 +399,13 @@ function _countDone(checkedObj) {
   return n;
 }
 
-async function _loadSectionProgress(uid) {
-  if (!uid || !window._fdb) return;
+async function _loadSectionProgress(uid, dbInstance) {
+  const _db = dbInstance || window._fdb;
+  if (!uid || !_db) return;
   const withFiles = MATERIALES.filter(m => m.total > 0);
   await Promise.all(withFiles.map(async m => {
     try {
-      const snap = await getDoc(doc(window._fdb, 'usuarios', uid, 'progress', m.pageKey));
+      const snap = await getDoc(doc(_db, 'usuarios', uid, 'progress', m.pageKey));
       const data = snap.exists() ? snap.data() : {};
       const done = _countDone(data.checked);
       _sectionProgress[m.pageKey] = { done, total: m.total };
@@ -472,7 +473,7 @@ async function openAvanceModal() {
   listEl.innerHTML = '<p style="color:var(--muted);font-size:.85rem;text-align:center;padding:1rem">Cargando progreso…</p>';
 
   // Cargar datos reales de Firestore
-  await _loadSectionProgress(currentUser.uid);
+  await _loadSectionProgress(currentUser.uid, db);
 
   const withFiles = MATERIALES.filter(m => m.total > 0);
   const totalAll  = withFiles.reduce((a, m) => a + m.total, 0);
@@ -1151,7 +1152,7 @@ domReady(() => {
       if (!isAdmin(user, userProfile)) {
         toast(saludo(userProfile.genero, 'bienvenido'), 'success');
         // Cargar progreso en background para el botón de avance
-        _loadSectionProgress(user.uid).then(() => {
+        _loadSectionProgress(user.uid, db).then(() => {
           updateAvanceBtn(document.getElementById('btn-avance'), userProfile);
         });
       }
@@ -1207,7 +1208,7 @@ Object.defineProperty(window, '_sectionProgress', {
   get: function(){ return _sectionProgress; },
   set: function(v){ /* no-op, usar directamente */ }
 });
-window._loadSectionProgress  = _loadSectionProgress;
+window._loadSectionProgress  = (uid) => _loadSectionProgress(uid, db);
 window.closeAvanceModal      = closeAvanceModal;
 window.openPerfilModal       = openPerfilModal;
 window.closePerfilModal      = closePerfilModal;

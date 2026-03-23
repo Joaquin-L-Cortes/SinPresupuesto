@@ -466,6 +466,55 @@ footer a{color:var(--accent2);text-decoration:none;}
 </footer>
 
 <script src="editor.js"></script>
+<script>
+
+window.handleImageSelect = async function(input) {
+  const file = input.files[0];
+  if (!file) return;
+  if (!file.type.startsWith('image/')) { window.showToast && showToast('Solo se permiten imágenes.'); return; }
+  if (file.size > 5 * 1024 * 1024)    { window.showToast && showToast('La imagen no puede superar 5 MB.'); return; }
+  const reader = new FileReader();
+  reader.onload = e => {
+    document.getElementById('img-preview').src = e.target.result;
+    document.getElementById('img-preview-wrap').style.display = 'inline-block';
+  };
+  reader.readAsDataURL(file);
+  const btn    = document.getElementById('btn-img-upload');
+  const status = document.getElementById('img-upload-status');
+  btn.classList.add('uploading');
+  status.textContent = '⏳ Subiendo…';
+  try {
+    const formData = new FormData();
+    formData.append('file', file);
+    formData.append('upload_preset', 'SinPresupuesto');
+    formData.append('folder', 'sinpresupuesto/comunidad');
+    const res  = await fetch('https://api.cloudinary.com/v1_1/daqhloanq/image/upload', { method: 'POST', body: formData });
+    const data = await res.json();
+    if (data.secure_url) {
+      window._pendingImageUrl = data.secure_url;
+      status.textContent = '✅ Lista';
+      setTimeout(() => status.textContent = '', 2000);
+    } else {
+      throw new Error(data.error?.message || 'Error desconocido');
+    }
+  } catch(err) {
+    window._pendingImageUrl = null;
+    status.textContent = '❌ Error al subir';
+    document.getElementById('img-preview-wrap').style.display = 'none';
+    window.showToast && showToast('No se pudo subir: ' + err.message);
+  }
+  btn.classList.remove('uploading');
+  input.value = '';
+};
+
+window.removeImage = function() {
+  window._pendingImageUrl = null;
+  document.getElementById('img-preview-wrap').style.display = 'none';
+  document.getElementById('img-preview').src = '';
+  document.getElementById('img-upload-status').textContent = '';
+};
+
+</script>
 <script type="module" src="firebase-auth.js"></script>
 
 <script type="module">
@@ -668,72 +717,6 @@ document.getElementById('compose-body').addEventListener('input', function() {
 });
 
 
-/* ══════════════════════════════════════════════════════
-   SUBIR IMÁGENES — Cloudinary unsigned upload
-   Cloud name: sinpresupuesto
-   Upload preset: sp_community  (debes crearlo en Cloudinary)
-   ══════════════════════════════════════════════════════ */
-const CLOUDINARY_CLOUD   = 'daqhloanq';
-const CLOUDINARY_PRESET  = 'SinPresupuesto';
-const CLOUDINARY_UPLOAD  = `https://api.cloudinary.com/v1_1/${CLOUDINARY_CLOUD}/image/upload`;
-
-let _pendingImageUrl = null; // URL de Cloudinary tras upload exitoso
-
-window.handleImageSelect = async function(input) {
-  const file = input.files[0];
-  if (!file) return;
-
-  // Validar tipo y tamaño (máx 5 MB)
-  if (!file.type.startsWith('image/')) { showToast('Solo se permiten imágenes.'); return; }
-  if (file.size > 5 * 1024 * 1024)    { showToast('La imagen no puede superar 5 MB.'); return; }
-
-  // Mostrar preview local inmediato
-  const reader = new FileReader();
-  reader.onload = e => {
-    document.getElementById('img-preview').src = e.target.result;
-    document.getElementById('img-preview-wrap').style.display = 'inline-block';
-  };
-  reader.readAsDataURL(file);
-
-  // Subir a Cloudinary
-  const btn    = document.getElementById('btn-img-upload');
-  const status = document.getElementById('img-upload-status');
-  btn.classList.add('uploading');
-  status.textContent = '⏳ Subiendo…';
-
-  try {
-    const formData = new FormData();
-    formData.append('file', file);
-    formData.append('upload_preset', CLOUDINARY_PRESET);
-    formData.append('folder', 'sinpresupuesto/comunidad');
-
-    const res  = await fetch(CLOUDINARY_UPLOAD, { method: 'POST', body: formData });
-    const data = await res.json();
-
-    if (data.secure_url) {
-      _pendingImageUrl = data.secure_url;
-      status.textContent = '✅ Lista';
-      setTimeout(() => status.textContent = '', 2000);
-    } else {
-      throw new Error(data.error?.message || 'Error desconocido');
-    }
-  } catch(err) {
-    _pendingImageUrl = null;
-    status.textContent = '❌ Error al subir';
-    document.getElementById('img-preview-wrap').style.display = 'none';
-    showToast('No se pudo subir la imagen: ' + err.message);
-  }
-  btn.classList.remove('uploading');
-  // Reset input para permitir subir el mismo archivo de nuevo
-  input.value = '';
-};
-
-window.removeImage = function() {
-  _pendingImageUrl = null;
-  document.getElementById('img-preview-wrap').style.display = 'none';
-  document.getElementById('img-preview').src = '';
-  document.getElementById('img-upload-status').textContent = '';
-};
 
 /* ── Publicar ── */
 window.publishPost = async function() {
@@ -788,7 +771,7 @@ window.publishPost = async function() {
       title,
       body,
       quiz: quizData,
-      imageUrl: _pendingImageUrl || null,
+      imageUrl: window._pendingImageUrl || null,
       authorId: currentUser.uid,
       authorName,
       authorAvatar,

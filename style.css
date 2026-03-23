@@ -772,3 +772,33 @@ footer a:hover { text-decoration: underline; }
     overflow-y: auto;
   }
 }
+
+/* ── Drawer móvil: grupos de secciones ── */
+.drawer-group-title {
+  font-size: .62rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: .1em;
+  color: var(--muted);
+  padding: .55rem .75rem .2rem;
+  pointer-events: none;
+  list-style: none;
+}
+.drawer-separator {
+  height: 1px;
+  background: var(--border);
+  margin: .4rem 0;
+  list-style: none;
+}
+/* Hacer el ul del drawer scrolleable para que quepan todas las secciones */
+.nav-drawer ul,
+.nav-drawer-links {
+  overflow-y: auto;
+  flex: 1;
+  padding-right: .1rem;
+}
+.nav-drawer {
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}

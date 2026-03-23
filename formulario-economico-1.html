@@ -151,7 +151,7 @@ aside{position:sticky;top:clamp(46px,6vw,56px);align-self:start;max-height:calc(
 .module-card.shift-down{transform:translateY(8px);}
 .module-card.open{grid-column:1/-1;}
 #modules-grid.has-open .module-card:not(.open){opacity:1;transform:none;}
-.mc-head{display:flex;align-items:center;gap:.75rem;padding:.85rem 1rem;cursor:pointer;background:var(--bg2);transition:background .15s;}
+.mc-head{display:flex;align-items:center;gap:.75rem;padding:.85rem 1rem;cursor:pointer;background:var(--bg2);transition:background .15s;user-select:none;-webkit-user-select:none;}
 .mc-head:hover{background:var(--bg3);}
 .module-card.hold-ready .mc-head{cursor:grab;}
 .module-card.is-dragging .mc-head{cursor:grabbing;}
@@ -190,7 +190,7 @@ aside{position:sticky;top:clamp(46px,6vw,56px);align-self:start;max-height:calc(
   .file-card{transition:border-color .15s;}
   .file-card:hover{transform:none;}
 }
-.file-card{background:var(--bg3);border:1px solid var(--border);border-radius:11px;padding:.65rem .75rem;display:flex;align-items:flex-start;gap:.55rem;cursor:pointer;transition:all .17s;position:relative;user-select:none;touch-action:pan-y;}
+.file-card{background:var(--bg3);border:1px solid var(--border);border-radius:11px;padding:.65rem .75rem;display:flex;align-items:flex-start;gap:.55rem;cursor:pointer;transition:all .17s;position:relative;user-select:none;-webkit-user-select:none;touch-action:pan-y;}
 .file-card::before{content:'';position:absolute;inset:0;border-radius:11px;background:linear-gradient(135deg,rgba(46,111,196,.08),transparent);opacity:0;transition:opacity .18s;}
 .file-card:hover{border-color:var(--accent2);box-shadow:0 3px 14px var(--shadow);transform:translateY(-1px);}
 .file-card:hover::before{opacity:1;}
@@ -323,7 +323,7 @@ footer a:hover{text-decoration:underline;}
   .ph-inner{flex-direction:column!important;align-items:flex-start!important;gap:.75rem!important;}
   .ph-stats{gap:1rem!important;align-self:stretch!important;justify-content:space-between!important;}
   .pstat-num{font-size:1.3rem!important;}
-  .progress-hero{padding:.9rem 1rem!important;max-height:none!important;}
+  .progress-hero{padding:.9rem 1rem!important;max-height:260px!important;}
   .ph-bar-area{margin-top:.5rem!important;}
 }
 
@@ -347,7 +347,7 @@ footer a:hover{text-decoration:underline;}
 @media(max-width:600px){
   #modules-grid{grid-template-columns:1fr!important;}
   .layout{padding:1rem .75rem 3.5rem!important;}
-  .progress-hero{padding:.75rem .9rem!important;}
+  .progress-hero{padding:.75rem .9rem!important;max-height:260px!important;}
   .ph-texts h1{font-size:clamp(.9rem,4vw,1.15rem)!important;white-space:normal!important;}
   .pstat-num{font-size:1.1rem!important;}
   .pstat-label{font-size:.58rem!important;}
@@ -529,6 +529,14 @@ footer a:hover{text-decoration:underline;}
       <button class="btn-close-drawer" onclick="closeNavDrawer()">✕</button>
     </div>
     <ul>
+      <li class="drawer-group-title">Navegación</li>
+      <li><a href="index.html"><span class="s-emoji">🏠</span>Inicio</a></li>
+      <li><a href="clases.html"><span class="s-emoji">📺</span>Clases</a></li>
+      <li><a href="donativos.html"><span class="s-emoji">💬</span>Comunidad</a></li>
+      <li><a href="materiales.html"><span class="s-emoji">📖</span>Material</a></li>
+      <li><a href="ejercicios-practicas.html"><span class="s-emoji">✏️</span>Práctica</a></li>
+      <li class="drawer-separator"></li>
+      <li class="drawer-group-title">Secciones de material</li>
       <li><a href="relampago-sinpre.html"><span class="s-emoji">⚡</span>I. Relámpago 2026</a></li>
       <li><a href="formulario-economico-1.html" class="current"><span class="s-emoji">📑</span>II. Exclusivos SinPre</a></li>
       <li><a href="temarios.html"><span class="s-emoji">📋</span>III. Temarios</a></li>
@@ -544,11 +552,39 @@ footer a:hover{text-decoration:underline;}
       <li><a href="ejercicios-practicas.html"><span class="s-emoji">✏️</span>XIII. Ejercicios</a></li>
       <li><a href="simulacros-un.html"><span class="s-emoji">🧪</span>XIV. Simulacros UN</a></li>
       <li><a href="app-s-estudio-android.html"><span class="s-emoji">📱</span>XV. App's Estudio</a></li>
-      </ul>
+</ul>
     <!-- Modo oscuro dentro del drawer (visible solo en móvil) -->
     <div style="margin-top:1rem;padding-top:.75rem;border-top:1px solid var(--border);">
       <button onclick="toggleTema();closeNavDrawer()" style="width:100%;background:none;border:1px solid var(--border);color:var(--muted);font-family:'DM Sans',sans-serif;font-size:.82rem;padding:.5rem .75rem;border-radius:10px;cursor:pointer;display:flex;align-items:center;gap:.5rem;transition:all .15s;" id="drawer-tema-btn">🌙 Modo oscuro</button>
     </div>
+  </div>
+</div>
+
+
+<!-- Modal de secciones para móvil -->
+<div class="sections-modal-overlay" id="sections-modal-overlay" onclick="closeSectionsModal()">
+  <div class="sections-modal-box" onclick="event.stopPropagation()">
+    <div class="sections-modal-header">
+      <h3>📋 Secciones</h3>
+      <button class="sections-modal-close" onclick="closeSectionsModal()">✕</button>
+    </div>
+    <ul class="sections-modal-list">
+<li><a href="relampago-sinpre.html"><span class="s-emoji">⚡</span>I. Relámpago 2026</a></li>
+      <li><a href="formulario-economico-1.html" class="current"><span class="s-emoji">📑</span>II. Exclusivos SinPre</a></li>
+      <li><a href="temarios.html"><span class="s-emoji">📋</span>III. Temarios</a></li>
+      <li><a href="simulacros-calificados-un.html"><span class="s-emoji">🏆</span>IV. Simulacros Cal. UN</a></li>
+      <li><a href="admision-y-examenes-un.html"><span class="s-emoji">🎓</span>V. Admisión y Exámenes</a></li>
+      <li><a href="clases-preu-s-ii-libres.html"><span class="s-emoji">🏫</span>VI. Clases PreU's</a></li>
+      <li><a href="recursos-udea.html"><span class="s-emoji">🦁</span>VII. Recursos UdeA</a></li>
+      <li><a href="diapositivas-con-todo.html"><span class="s-emoji">📊</span>VIII. Diapositivas</a></li>
+      <li><a href="apuntes-estudio-un.html"><span class="s-emoji">📓</span>IX. Apuntes Estudio</a></li>
+      <li><a href="textos-varios-practica-textual.html"><span class="s-emoji">📰</span>X. Textos Varios</a></li>
+      <li><a href="modulos-teoricos.html"><span class="s-emoji">📚</span>XI. Módulos Teóricos</a></li>
+      <li><a href="modulos-especiales.html"><span class="s-emoji">⭐</span>XII. Módulos Especiales</a></li>
+      <li><a href="ejercicios-practicas.html"><span class="s-emoji">✏️</span>XIII. Ejercicios</a></li>
+      <li><a href="simulacros-un.html"><span class="s-emoji">🧪</span>XIV. Simulacros UN</a></li>
+      <li><a href="app-s-estudio-android.html"><span class="s-emoji">📱</span>XV. App's Estudio</a></li>
+    </ul>
   </div>
 </div>
 
@@ -651,7 +687,7 @@ function requireAuth(cb){
 /* ── DATOS ── */
 const MODULES=[];
 const PAGE_KEY='formulario_economico_1';
-const HOLD_MS=400;
+const HOLD_MS=550;
 let checked={},order=MODULES.map(m=>m.id),fileOrders={},heroMode='bar';
 // Exponer para el editor
 window.MODULES=MODULES; window.order=order; window.fileOrders=fileOrders; window.checked=checked;
@@ -863,41 +899,49 @@ function removeGhost(){if(ghost){ghost.remove();ghost=null;}}
 function attachCard(card,m){
   var head=card.querySelector('.mc-head');
   var holdTimer=null,dragActive=false,ghostCreated=false,overMid=null,docMH=null,docUH=null;
+  var isTouch='ontouchstart' in window;
+
   head.addEventListener('pointerdown',function(e){
     if(openCardId===m.id)return;
     dragActive=false;ghostCreated=false;overMid=null;
-    var startX=e.clientX,startY=e.clientY,scrollIntent=false,intentChecked=false;
-    // Escuchar el primer movimiento para decidir scroll vs drag
-    var earlyMove=function(ev){
-      if(intentChecked)return;
-      intentChecked=true;
+    var startX=e.clientX,startY=e.clientY,moved=false,scrollBlocked=false;
+
+    // En móvil: solo escuchar si el dedo no se mueve (scroll libre hasta que empiece el hold)
+    var onEarlyMove=function(ev){
       var dx=Math.abs(ev.clientX-startX),dy=Math.abs(ev.clientY-startY);
-      if(dy>dx&&dy>6){scrollIntent=true;clearTimeout(holdTimer);dragActive=false;}
-      head.removeEventListener('pointermove',earlyMove);
+      if(dx>6||dy>6){ moved=true; clearTimeout(holdTimer); dragActive=false; }
     };
-    head.addEventListener('pointermove',earlyMove,{passive:true});
+    document.addEventListener('pointermove',onEarlyMove,{passive:true,once:false});
+
     holdTimer=setTimeout(function(){
-      if(scrollIntent){dragActive=false;return;}
+      document.removeEventListener('pointermove',onEarlyMove);
+      if(moved){ dragActive=false; return; }
       dragActive=true;
+      // Feedback táctil
+      if(navigator.vibrate) navigator.vibrate(40);
       card.classList.add('hold-ready');
       setTimeout(function(){
         if(!dragActive)return;
         ghostCreated=true;
-        card.classList.remove('hold-ready');card.classList.add('is-dragging');createGhost(card);
+        card.classList.remove('hold-ready');
+        card.classList.add('is-dragging');
+        createGhost(card);
         card.style.touchAction='none';
+        head.style.cursor='grabbing';
         docMH=function(ev){
-          ev.preventDefault();moveGhost(ev.clientX,ev.clientY);
+          ev.preventDefault();
+          moveGhost(ev.clientX,ev.clientY);
           var under=document.elementFromPoint(ev.clientX,ev.clientY);
           var tc=under?under.closest('.module-card'):null;
-          allCards().forEach(function(c){c.classList.remove('drop-target','shift-up','shift-down');});
+          allCards().forEach(function(c2){c2.classList.remove('drop-target','shift-up','shift-down');});
           if(tc&&tc!==card){
             tc.classList.add('drop-target');
             var si=order.indexOf(m.id),di=order.indexOf(tc.dataset.mid);
-            allCards().forEach(function(c){
-              if(c===card||c===tc)return;
-              var ci=order.indexOf(c.dataset.mid);
-              if(si<di&&ci>si&&ci<=di)c.classList.add('shift-up');
-              if(si>di&&ci<si&&ci>=di)c.classList.add('shift-down');
+            allCards().forEach(function(c2){
+              if(c2===card||c2===tc)return;
+              var ci=order.indexOf(c2.dataset.mid);
+              if(si<di&&ci>si&&ci<=di)c2.classList.add('shift-up');
+              if(si>di&&ci<si&&ci>=di)c2.classList.add('shift-down');
             });
             overMid=tc.dataset.mid;
           }else overMid=null;
@@ -908,14 +952,19 @@ function attachCard(card,m){
       },50);
     },HOLD_MS);
   });
+
   head.addEventListener('pointerup',function(e){
+    document.removeEventListener('pointermove',arguments[0]);
     clearTimeout(holdTimer);
     if(dragActive){return;}
-    cleanup(false);toggleCard(m.id);
+    cleanup(false);
+    toggleCard(m.id);
   });
   head.addEventListener('pointercancel',function(){clearTimeout(holdTimer);cleanup(false);});
+
   function cleanup(commit){
     clearTimeout(holdTimer);
+    head.style.cursor='';
     if(docMH){document.removeEventListener('pointermove',docMH);docMH=null;}
     if(docUH){document.removeEventListener('pointerup',docUH);docUH=null;}
     removeGhost();
