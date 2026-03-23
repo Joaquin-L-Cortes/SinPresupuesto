@@ -150,7 +150,8 @@
     const q = input.value.trim();
     if (!q) return;
     // ── Verificar que el usuario está logueado ──
-    if (!window._spCurrentUser) {
+    // _spCurrentUser: null = no logueado, undefined = Firebase aún no cargó
+    if (window._spCurrentUser === null) {
       addMsg('bot', '🔒 Para usar SinPesito debes estar registrado. <br><button onclick="window.openStudentModal&&window.openStudentModal()" style="margin-top:.4rem;background:#2a6cc4;color:white;border:none;border-radius:8px;padding:.4rem .85rem;font-size:.8rem;cursor:pointer;font-family:inherit">Ingresar / Registrarse</button>');
       return;
     }
@@ -233,18 +234,18 @@ INSTRUCCIONES:
   }
 
   // ── Escuchar estado de auth de Firebase ──
-  // firebase-auth.js expone el usuario a través de onAuthStateChanged
-  // Esperamos a que esté disponible y lo escuchamos
-  (function waitForAuth() {
-    if (window.firebase_auth_ready) {
-      // Ya está listo
-    } else {
-      // Escuchar cuando firebase-auth.js actualice el estado
-      document.addEventListener('sp-auth-changed', function(e) {
-        window._spCurrentUser = e.detail.user;
-      });
-    }
-  })();
+  // firebase-auth.js es type=module y puede cargar después de sinpresito.js.
+  // Nos suscribimos al evento Y también leemos el valor actual si ya está seteado.
+  document.addEventListener('sp-auth-changed', function(e) {
+    window._spCurrentUser = e.detail.user || null;
+  });
+  // Si firebase-auth.js ya corrió antes que nosotros, _spCurrentUser ya tiene valor.
+  // Si no está definido (undefined), lo dejamos así — significa que aún no cargó
+  // y trataremos al usuario como logueado provisionalmente hasta confirmación.
+  if (typeof window._spCurrentUser === 'undefined') {
+    // Firebase aún no ha respondido — esperamos, no bloqueamos
+    window._spCurrentUser = undefined;
+  }
 
   function escHtml(s) {
     return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
