@@ -52,17 +52,31 @@
   #sp-send:disabled{background:#94a3b8;cursor:not-allowed;}
   #sp-key-banner{background:#fff3cd;border-bottom:1px solid #ffc107;padding:.55rem .85rem;font-size:.75rem;color:#856404;display:flex;align-items:center;gap:.4rem;}
   @media(max-width:400px){#sp-panel{width:calc(100vw - 2rem);max-height:80vh;}}
-  /* ── Mini modal fallback para páginas sin modal nativo ── */
-  #sp-mini-modal{display:none;position:fixed;inset:0;z-index:10000;background:rgba(0,0,0,.55);align-items:center;justify-content:center;}
+  /* ── Mini modal fallback (mismo estilo que modal nativo) ── */
+  #sp-mini-modal{display:none;position:fixed;inset:0;z-index:10000;background:rgba(0,0,0,.55);backdrop-filter:blur(7px);align-items:center;justify-content:center;padding:1rem;}
   #sp-mini-modal.open{display:flex;}
-  #sp-mini-box{background:var(--bg2,#fff);border-radius:14px;width:min(780px,96vw);height:min(88vh,700px);display:flex;flex-direction:column;overflow:hidden;box-shadow:0 12px 48px rgba(0,0,0,.3);}
-  #sp-mini-bar{background:linear-gradient(135deg,#2a6cc4,#1a4fa0);padding:.6rem 1rem;display:flex;align-items:center;gap:.75rem;flex-shrink:0;}
-  #sp-mini-title{color:#fff;font-size:.88rem;font-weight:600;flex:1;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;font-family:'DM Sans',sans-serif;}
-  #sp-mini-drive{color:#fff;font-size:.78rem;text-decoration:none;background:rgba(255,255,255,.2);padding:.25rem .65rem;border-radius:6px;font-weight:600;white-space:nowrap;}
-  #sp-mini-close{background:none;border:none;color:rgba(255,255,255,.85);font-size:1.2rem;cursor:pointer;padding:.1rem .3rem;border-radius:6px;}
-  #sp-mini-close:hover{background:rgba(255,255,255,.15);}
-  #sp-mini-iframe{flex:1;border:none;width:100%;}
-  #sp-mini-loading{flex:1;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:.75rem;color:var(--muted,#64748b);font-size:.88rem;font-family:'DM Sans',sans-serif;}
+  #sp-mini-box{background:var(--bg2,#fff);border:1px solid var(--border,#e2e8f0);border-radius:18px;width:100%;max-width:860px;height:90vh;display:flex;flex-direction:column;box-shadow:0 24px 80px rgba(0,0,0,.25);overflow:hidden;}
+  #sp-mini-chrome{display:flex;align-items:center;gap:.7rem;padding:.65rem 1rem;border-bottom:1px solid var(--border,#e2e8f0);background:var(--bg3,#f8fafc);flex-shrink:0;}
+  .sp-mini-dots{display:flex;gap:.38rem;}
+  .sp-mini-dot{width:10px;height:10px;border-radius:50%;}
+  #sp-mini-urlbar{flex:1;background:var(--bg2,#fff);border:1px solid var(--border,#e2e8f0);border-radius:7px;height:23px;font-size:.7rem;color:var(--muted,#64748b);display:flex;align-items:center;padding:0 .55rem;margin:0 .4rem;overflow:hidden;white-space:nowrap;}
+  #sp-mini-close{background:none;border:none;color:var(--muted,#64748b);font-size:1.05rem;cursor:pointer;padding:0 .2rem;flex-shrink:0;}
+  #sp-mini-info{padding:.75rem 1.1rem;border-bottom:1px solid var(--border,#e2e8f0);display:flex;align-items:center;gap:.7rem;flex-shrink:0;flex-wrap:wrap;}
+  #sp-mini-icon{font-size:1.35rem;flex-shrink:0;}
+  #sp-mini-body{flex:1;min-width:0;}
+  #sp-mini-name{font-family:'Fraunces',serif;font-size:.98rem;font-weight:700;color:var(--accent2,#2a6cc4);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+  #sp-mini-meta{font-size:.75rem;color:var(--muted,#64748b);margin-top:.08rem;}
+  #sp-mini-fs{padding:.35rem .55rem;border-radius:8px;background:var(--bg3,#f8fafc);color:var(--muted,#64748b);font-size:1rem;border:1px solid var(--border,#e2e8f0);cursor:pointer;transition:all .15s;flex-shrink:0;line-height:1;}
+  #sp-mini-fs:hover{color:var(--accent2,#2a6cc4);border-color:var(--accent2,#2a6cc4);}
+  #sp-mini-seen{padding:.35rem .8rem;border-radius:8px;background:var(--bg3,#f8fafc);color:var(--muted,#64748b);font-size:.78rem;font-weight:500;border:1px solid var(--border,#e2e8f0);cursor:pointer;transition:all .15s;flex-shrink:0;}
+  #sp-mini-drivebt{padding:.35rem .8rem;border-radius:8px;background:var(--accent2,#2a6cc4);color:white;text-decoration:none;font-size:.78rem;font-weight:600;border:none;cursor:pointer;flex-shrink:0;display:inline-flex;align-items:center;gap:.3rem;}
+  #sp-mini-drivebt:hover{opacity:.85;}
+  #sp-mini-iframewrap{flex:1;overflow:hidden;position:relative;}
+  #sp-mini-iframewrap iframe{width:100%;height:100%;border:none;display:block;}
+  #sp-mini-loading{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;background:var(--bg3,#f8fafc);color:var(--muted,#64748b);font-size:.9rem;flex-direction:column;gap:.5rem;}
+  #sp-mini-loading.hidden{display:none;}
+  #sp-mini-box.sp-mini-fullscreen{position:fixed!important;inset:0!important;max-width:100vw!important;width:100vw!important;height:100vh!important;border-radius:0!important;z-index:10001;}
+  @media(max-width:600px){#sp-mini-modal{padding:0!important;}#sp-mini-box{border-radius:0!important;height:100dvh!important;max-width:100vw!important;width:100vw!important;}}
   `;
 
   // ── INJECT CSS ────────────────────────────────────
@@ -90,15 +104,32 @@
         <button id="sp-send">➤</button>
       </div>
     </div>
-    <div id="sp-mini-modal" onclick="if(event.target===this)document.getElementById('sp-mini-modal').classList.remove('open')">
+    <div id="sp-mini-modal" onclick="if(event.target===this){document.getElementById('sp-mini-modal').classList.remove('open');document.getElementById('sp-mini-iframe-el').src='';}">
       <div id="sp-mini-box">
-        <div id="sp-mini-bar">
-          <span id="sp-mini-title">Documento</span>
-          <a id="sp-mini-drive" href="#" target="_blank" rel="noopener">↗ Drive</a>
-          <button id="sp-mini-close" onclick="document.getElementById('sp-mini-modal').classList.remove('open');document.getElementById('sp-mini-iframe').src=''">✕</button>
+        <div id="sp-mini-chrome">
+          <div class="sp-mini-dots">
+            <div class="sp-mini-dot" style="background:#ff5f57"></div>
+            <div class="sp-mini-dot" style="background:#febc2e"></div>
+            <div class="sp-mini-dot" style="background:#28c840"></div>
+          </div>
+          <div id="sp-mini-urlbar">drive.google.com</div>
+          <button id="sp-mini-close" onclick="document.getElementById('sp-mini-modal').classList.remove('open');document.getElementById('sp-mini-iframe-el').src='';">✕</button>
         </div>
-        <div id="sp-mini-loading"><span style="font-size:1.8rem">⏳</span><span>Cargando…</span></div>
-        <iframe id="sp-mini-iframe" allowfullscreen sandbox="allow-scripts allow-same-origin allow-popups allow-forms allow-popups-to-escape-sandbox" style="display:none;flex:1;border:none;width:100%;"></iframe>
+        <div id="sp-mini-info">
+          <div id="sp-mini-icon">📄</div>
+          <div id="sp-mini-body">
+            <div id="sp-mini-name">—</div>
+            <div id="sp-mini-meta">—</div>
+          </div>
+          <button id="sp-mini-fs" title="Pantalla completa" onclick="document.getElementById('sp-mini-box').classList.toggle('sp-mini-fullscreen')">⛶</button>
+          <button id="sp-mini-seen">Marcar como visto</button>
+          <a id="sp-mini-drivebt" href="#" target="_blank" rel="noopener">↗ Abrir en Drive</a>
+        </div>
+        <div id="sp-mini-iframewrap">
+          <div id="sp-mini-loading"><span style="font-size:1.5rem">⏳</span><span>Cargando documento…</span></div>
+          <iframe id="sp-mini-iframe-el" allowfullscreen loading="lazy"
+            sandbox="allow-scripts allow-same-origin allow-popups allow-forms allow-popups-to-escape-sandbox"></iframe>
+        </div>
       </div>
     </div>
     <button id="sp-btn" title="SinPesito — busca tu material"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" fill="none" style="width:30px;height:30px;flex-shrink:0"><defs><linearGradient id="spg" x1="0" y1="0" x2="64" y2="64" gradientUnits="userSpaceOnUse"><stop offset="0%" stop-color="#1a3a6b"/><stop offset="100%" stop-color="#2e6fc4"/></linearGradient></defs><rect width="64" height="64" rx="14" fill="url(#spg)"/><path d="M18 22c0-2.2 1.8-4 4-4h8c2.2 0 4 1.8 4 4v2c0 1.1-.9 2-2 2h-8c-2.2 0-4 1.8-4 4v2c0 2.2 1.8 4 4 4h8c1.1 0 2 .9 2 2v2c0 2.2-1.8 4-4 4h-8c-2.2 0-4-1.8-4-4" stroke="white" stroke-width="3" stroke-linecap="round"/><path d="M38 18h6c2.2 0 4 1.8 4 4v4c0 2.2-1.8 4-4 4h-6M38 18v28" stroke="white" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg><span class="sp-badge"></span></button>
@@ -175,10 +206,23 @@
 
     if (modal && mIframe) {
       // Usar el modal nativo de la página
-      if (mIcon) mIcon.textContent = '📄';
+      // Icono según sección
+      const sectionIcon = section.includes('Ejercicio') || section.includes('Práctica') ? '✏️'
+        : section.includes('Módulo') ? '📚'
+        : section.includes('Simulacro') ? '🧪'
+        : section.includes('Diapositiva') ? '📊'
+        : section.includes('Apunte') ? '📓'
+        : section.includes('Texto') ? '📰'
+        : section.includes('Temario') ? '📋'
+        : section.includes('Relámpago') ? '⚡'
+        : '📄';
+      if (mIcon) mIcon.textContent = sectionIcon;
       if (mName) mName.textContent = name;
       if (mMeta) mMeta.textContent = section;
       if (btnDrv) { btnDrv.href = url; btnDrv.textContent = '↗ Abrir en Drive'; }
+      // Resetear botón visto
+      const mSeenBtn = document.getElementById('m-seen-btn');
+      if (mSeenBtn) { mSeenBtn.textContent = 'Marcar como visto'; mSeenBtn.classList.remove('done'); }
 
       // Construir URL de preview
       const fm = url.match(/\/file\/d\/([^/]+)/);
@@ -194,25 +238,58 @@
 
       modal.classList.add('open');
     } else {
-      // Fallback: mini-modal propio de SinPesito
+      // Fallback: mini-modal propio de SinPesito (misma estética que modal nativo)
       const miniModal  = document.getElementById('sp-mini-modal');
-      const miniIframe = document.getElementById('sp-mini-iframe');
-      const miniTitle  = document.getElementById('sp-mini-title');
-      const miniDrive  = document.getElementById('sp-mini-drive');
+      const miniIframe = document.getElementById('sp-mini-iframe-el');
       const miniLoad   = document.getElementById('sp-mini-loading');
       if (miniModal && miniIframe) {
-        if (miniTitle) miniTitle.textContent = name;
-        if (miniDrive) miniDrive.href = url;
+        // Poblar campos igual que el modal nativo
+        const el = (id) => document.getElementById(id);
+        if (el('sp-mini-icon')) el('sp-mini-icon').textContent = '📄';
+        if (el('sp-mini-name')) el('sp-mini-name').textContent = name;
+        if (el('sp-mini-meta')) el('sp-mini-meta').textContent = section;
+        if (el('sp-mini-drivebt')) el('sp-mini-drivebt').href = url;
+
+        // URL de previsualización
         const fm2 = url.match(/\/file\/d\/([^/]+)/);
-        const prev2 = fm2 ? 'https://drive.google.com/file/d/' + fm2[1] + '/preview' : url;
-        if (miniLoad) miniLoad.style.display = 'flex';
-        miniIframe.style.display = 'none';
+        const prev2 = fm2
+          ? 'https://drive.google.com/file/d/' + fm2[1] + '/preview'
+          : url;
+        if (el('sp-mini-urlbar')) el('sp-mini-urlbar').textContent = prev2.replace('https://','');
+
+        // Cargar iframe
+        if (miniLoad) miniLoad.classList.remove('hidden');
         miniIframe.src = '';
         setTimeout(() => { miniIframe.src = prev2; }, 80);
-        miniIframe.onload = () => {
-          if (miniLoad) miniLoad.style.display = 'none';
-          miniIframe.style.display = 'block';
+        miniIframe.onload = () => { if (miniLoad) miniLoad.classList.add('hidden'); };
+        miniIframe.onerror = () => {
+          if (miniLoad) {
+            miniLoad.classList.remove('hidden');
+            miniLoad.innerHTML = '<span style="font-size:1.5rem">⚠️</span><span style="text-align:center;max-width:260px">No se pudo cargar.<br><small style="color:var(--muted,#64748b)">Prueba abrirlo en Drive.</small></span>';
+          }
         };
+
+        // Botón "Marcar como visto" — toggle visual simple
+        const seenBtn = el('sp-mini-seen');
+        if (seenBtn) {
+          seenBtn.className = 'btn-seen';
+          seenBtn.textContent = 'Marcar como visto';
+          seenBtn.onclick = () => {
+            const done = seenBtn.classList.toggle('done');
+            seenBtn.textContent = done ? '✓ Visto' : 'Marcar como visto';
+          };
+        }
+
+        // Cerrar mini-modal con Escape
+        const escHandler = (e) => {
+          if (e.key === 'Escape') {
+            miniModal.classList.remove('open');
+            miniIframe.src = '';
+            document.removeEventListener('keydown', escHandler);
+          }
+        };
+        document.addEventListener('keydown', escHandler);
+
         miniModal.classList.add('open');
       } else {
         window.open(url, '_blank');
