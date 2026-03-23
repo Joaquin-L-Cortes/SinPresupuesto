@@ -253,8 +253,52 @@ nav{position:sticky;top:0;z-index:300;background:var(--nav-bg);backdrop-filter:b
 .btn-del-confirm:hover{opacity:.85;}
 footer{border-top:1px solid var(--border);background:var(--bg2);padding:2rem;text-align:center;color:var(--muted);font-size:.82rem;}
 footer a{color:var(--accent2);text-decoration:none;}
+
+/* Subir imagen */
+.compose-img-row{display:flex;align-items:center;gap:.6rem;margin-top:.6rem;flex-wrap:wrap;}
+.btn-img-upload{display:inline-flex;align-items:center;gap:.35rem;background:var(--bg3);border:1.5px solid var(--border);color:var(--muted);font-family:'DM Sans',sans-serif;font-size:.75rem;font-weight:600;padding:.32rem .75rem;border-radius:20px;cursor:pointer;transition:all .15s;}
+.btn-img-upload:hover{border-color:var(--accent2);color:var(--accent2);}
+.btn-img-upload.uploading{opacity:.6;cursor:wait;}
+.img-preview-wrap{position:relative;display:inline-block;}
+.img-preview-wrap img{max-height:90px;max-width:180px;border-radius:10px;border:1.5px solid var(--border);object-fit:cover;}
+.btn-rm-img{position:absolute;top:-6px;right:-6px;background:var(--red,#e53e3e);color:white;border:none;border-radius:50%;width:18px;height:18px;font-size:.65rem;cursor:pointer;display:flex;align-items:center;justify-content:center;line-height:1;}
+/* Imagen en post */
+.pc-image{width:100%;max-height:360px;object-fit:cover;display:block;}
+.pc-image-wrap{overflow:hidden;border-radius:0;}
+
 .toast-notif{position:fixed;bottom:5rem;left:50%;transform:translateX(-50%) translateY(20px);background:var(--accent2);color:white;padding:.65rem 1.4rem;border-radius:100px;font-size:.85rem;font-weight:600;z-index:600;opacity:0;transition:opacity .25s,transform .25s;pointer-events:none;white-space:nowrap;box-shadow:0 4px 20px rgba(46,111,196,.4);}
 .toast-notif.show{opacity:1;transform:translateX(-50%) translateY(0);}
+
+/* ═══════════════════════════════════════════════════
+   RESPONSIVO — comunidad
+   ═══════════════════════════════════════════════════ */
+@media(max-width:600px){
+  .forum-wrap{padding:.9rem .75rem 3.5rem!important;}
+  .forum-hero{padding:1.25rem 1rem!important;}
+  .forum-hero h1{font-size:clamp(1.2rem,5vw,1.6rem)!important;}
+  .yt-hero-stats,.hero-stats{flex-wrap:wrap!important;gap:.75rem!important;}
+  .tabs-row{gap:.2rem!important;overflow-x:auto!important;padding-bottom:.25rem!important;}
+  .tab-pill{font-size:.75rem!important;padding:.4rem .65rem!important;white-space:nowrap!important;}
+  .compose-box{padding:.9rem 1rem!important;}
+  .compose-type-row{gap:.3rem!important;}
+  .ctype-btn{font-size:.7rem!important;padding:.28rem .6rem!important;}
+  .filter-row{gap:.35rem!important;}
+  .filter-chip{font-size:.68rem!important;padding:.22rem .55rem!important;}
+  .post-card{border-radius:12px!important;}
+  .pc-header{padding:.7rem .9rem .4rem!important;}
+  .pc-title{font-size:.9rem!important;padding:.25rem .9rem .1rem!important;}
+  .pc-body{padding:.25rem .9rem .6rem!important;font-size:.82rem!important;}
+  .pc-actions{padding:.4rem .75rem .65rem!important;gap:.2rem!important;flex-wrap:wrap!important;}
+  .act-btn{font-size:.72rem!important;padding:.22rem .55rem!important;}
+  .pc-comments{padding:.6rem .9rem!important;}
+  .cmt-bubble{padding:.38rem .6rem!important;}
+  .cmt-text{font-size:.78rem!important;}
+}
+@media(max-width:380px){
+  .tabs-row{gap:.1rem!important;}
+  .tab-pill{font-size:.7rem!important;padding:.35rem .5rem!important;}
+}
+
 </style>
 </head>
 <body>
@@ -336,6 +380,17 @@ footer a{color:var(--accent2);text-decoration:none;}
           <div class="quiz-opt-row"><input type="radio" name="correct-opt" class="opt-radio" value="3"><input class="opt-inp" placeholder="Opción D" maxlength="120"></div>
         </div>
         <p class="quiz-hint">☝ Selecciona el botón de radio de la opción correcta</p>
+      </div>
+      <div class="compose-img-row">
+        <label class="btn-img-upload" id="btn-img-upload" title="Subir imagen">
+          📷 Imagen
+          <input type="file" id="img-file-input" accept="image/*" style="display:none" onchange="handleImageSelect(this)">
+        </label>
+        <div class="img-preview-wrap" id="img-preview-wrap" style="display:none">
+          <img id="img-preview" src="" alt="preview">
+          <button class="btn-rm-img" onclick="removeImage()" title="Quitar imagen">✕</button>
+        </div>
+        <span id="img-upload-status" style="font-size:.72rem;color:var(--muted);"></span>
       </div>
       <div class="compose-footer">
         <span class="compose-footer-left" id="compose-hint">Los administradores pueden eliminar contenido inapropiado.</span>
@@ -612,6 +667,74 @@ document.getElementById('compose-body').addEventListener('input', function() {
   el.classList.toggle('over', words > 1500);
 });
 
+
+/* ══════════════════════════════════════════════════════
+   SUBIR IMÁGENES — Cloudinary unsigned upload
+   Cloud name: sinpresupuesto
+   Upload preset: sp_community  (debes crearlo en Cloudinary)
+   ══════════════════════════════════════════════════════ */
+const CLOUDINARY_CLOUD   = 'daqhloanq';
+const CLOUDINARY_PRESET  = 'SinPresupuesto';
+const CLOUDINARY_UPLOAD  = `https://api.cloudinary.com/v1_1/${CLOUDINARY_CLOUD}/image/upload`;
+
+let _pendingImageUrl = null; // URL de Cloudinary tras upload exitoso
+
+window.handleImageSelect = async function(input) {
+  const file = input.files[0];
+  if (!file) return;
+
+  // Validar tipo y tamaño (máx 5 MB)
+  if (!file.type.startsWith('image/')) { showToast('Solo se permiten imágenes.'); return; }
+  if (file.size > 5 * 1024 * 1024)    { showToast('La imagen no puede superar 5 MB.'); return; }
+
+  // Mostrar preview local inmediato
+  const reader = new FileReader();
+  reader.onload = e => {
+    document.getElementById('img-preview').src = e.target.result;
+    document.getElementById('img-preview-wrap').style.display = 'inline-block';
+  };
+  reader.readAsDataURL(file);
+
+  // Subir a Cloudinary
+  const btn    = document.getElementById('btn-img-upload');
+  const status = document.getElementById('img-upload-status');
+  btn.classList.add('uploading');
+  status.textContent = '⏳ Subiendo…';
+
+  try {
+    const formData = new FormData();
+    formData.append('file', file);
+    formData.append('upload_preset', CLOUDINARY_PRESET);
+    formData.append('folder', 'sinpresupuesto/comunidad');
+
+    const res  = await fetch(CLOUDINARY_UPLOAD, { method: 'POST', body: formData });
+    const data = await res.json();
+
+    if (data.secure_url) {
+      _pendingImageUrl = data.secure_url;
+      status.textContent = '✅ Lista';
+      setTimeout(() => status.textContent = '', 2000);
+    } else {
+      throw new Error(data.error?.message || 'Error desconocido');
+    }
+  } catch(err) {
+    _pendingImageUrl = null;
+    status.textContent = '❌ Error al subir';
+    document.getElementById('img-preview-wrap').style.display = 'none';
+    showToast('No se pudo subir la imagen: ' + err.message);
+  }
+  btn.classList.remove('uploading');
+  // Reset input para permitir subir el mismo archivo de nuevo
+  input.value = '';
+};
+
+window.removeImage = function() {
+  _pendingImageUrl = null;
+  document.getElementById('img-preview-wrap').style.display = 'none';
+  document.getElementById('img-preview').src = '';
+  document.getElementById('img-upload-status').textContent = '';
+};
+
 /* ── Publicar ── */
 window.publishPost = async function() {
   if (!currentUser) { openLoginModal(); return; }
@@ -665,6 +788,7 @@ window.publishPost = async function() {
       title,
       body,
       quiz: quizData,
+      imageUrl: _pendingImageUrl || null,
       authorId: currentUser.uid,
       authorName,
       authorAvatar,
@@ -677,6 +801,7 @@ window.publishPost = async function() {
     document.getElementById('compose-title').value = '';
     document.getElementById('compose-body').value  = '';
     document.getElementById('word-count').textContent = '0 / 1500 palabras';
+    window.removeImage && window.removeImage();
     document.getElementById('quiz-question').value = '';
     document.querySelectorAll('#quiz-opts .opt-inp').forEach(i => i.value = '');
     const r = document.querySelector('input[name="correct-opt"]:checked');
@@ -782,6 +907,7 @@ function renderPost(p) {
     <div class="pc-title">${(p.title||'').replace(/</g,'&lt;')}</div>
     ${p.body ? `<div class="pc-body${isLong?' clamped':''}" id="body-${p.id}">${bodyTxt}</div>
     ${isLong ? `<button class="expand-btn" onclick="expandBody('${p.id}')">Ver más ▾</button>` : ''}` : ''}
+    ${p.imageUrl ? '<div class="pc-image-wrap"><img class="pc-image" src="' + p.imageUrl + '" alt="Imagen del post" loading="lazy" onclick="window.open(\''+ p.imageUrl +'\',\'_blank\')"></div>' : ''}
     ${quizHtml}
     <div class="pc-actions">
       <button class="act-btn${liked?' liked':''}" onclick="toggleLike('${p.id}')" id="like-${p.id}">

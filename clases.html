@@ -148,6 +148,30 @@ nav{position:sticky;top:0;z-index:300;background:var(--nav-bg);backdrop-filter:b
 .s-emoji{font-size:.88rem;width:18px;text-align:center;flex-shrink:0;}
 footer{border-top:1px solid var(--border);background:var(--bg2);padding:2rem;text-align:center;color:var(--muted);font-size:.82rem;}
 footer a{color:var(--accent2);text-decoration:none;}
+
+/* ═══════════════════════════════════════════════════
+   RESPONSIVO — clases.html
+   ═══════════════════════════════════════════════════ */
+@media(max-width:600px){
+  .yt-hero{padding:1.25rem 1rem!important;}
+  .yt-hero-inner{gap:.75rem!important;}
+  .yt-hero-texts h1{font-size:clamp(1.1rem,5vw,1.5rem)!important;}
+  .yt-hero-texts p{font-size:.8rem!important;}
+  .yt-hero-stats{margin-left:0!important;gap:.75rem!important;}
+  .page-wrap{padding:1.1rem .75rem 3.5rem!important;}
+  .yt-section{margin-bottom:1.75rem!important;}
+  .yt-section-title{font-size:1rem!important;}
+  .yt-featured-info{padding:.85rem 1rem 1rem!important;}
+  .yt-featured-title{font-size:.9rem!important;}
+  .yt-watch-btn{font-size:.75rem!important;padding:.35rem .85rem!important;}
+  .yt-grid{grid-template-columns:1fr 1fr!important;gap:.65rem!important;}
+  .yt-playlist-title{font-size:.82rem!important;}
+}
+@media(max-width:380px){
+  .yt-grid{grid-template-columns:1fr!important;}
+  .yt-play-btn{width:52px!important;height:38px!important;}
+}
+
 </style>
 </head>
 <body>
@@ -408,75 +432,52 @@ function loadTopVideo() {
   injectVideo('top-ratio', 'top-info', TOP_VIDEO_ID, TOP_VIDEO_TITLE, TOP_VIDEO_META);
 }
 
-/* ── Cursos / Playlists: hardcodeados ──────────────────────── */
-/* Para actualizar: ir a youtube.com/@sinpresupuestoun/playlists */
-/* y copiar los IDs de las playlists que quieras mostrar.       */
-const CURSOS = [
-  /* Formato: { id: 'PLxxxxxx', title: 'Nombre', thumb_vid: 'videoId' } */
-  /* thumb_vid es el ID de cualquier video de la playlist para su miniatura */
-  {
-    id:        'PLxxxxxxxxxxxxxxxxxx', // ← reemplaza con IDs reales
-    title:     '¿Cómo Aprender?',
-    thumb_vid: 'xFnGLD_OD7E'
-  },
-  {
-    id:        'PLxxxxxxxxxxxxxxxxx2',
-    title:     'Análisis Textual',
-    thumb_vid: 'dFpjSnVxuzY'
-  },
-  {
-    id:        'PLxxxxxxxxxxxxxxxxx3',
-    title:     'Matemáticas UN',
-    thumb_vid: 'xFnGLD_OD7E'
-  },
-  {
-    id:        'PLxxxxxxxxxxxxxxxxx4',
-    title:     'Ciencias (Biología)',
-    thumb_vid: 'dFpjSnVxuzY'
-  },
-  {
-    id:        'PLxxxxxxxxxxxxxxxxx5',
-    title:     'Ciencias (Física)',
-    thumb_vid: 'xFnGLD_OD7E'
-  },
-  {
-    id:        'PLxxxxxxxxxxxxxxxxx6',
-    title:     'Ciencias (Química)',
-    thumb_vid: 'dFpjSnVxuzY'
-  },
-];
+/* ── Cursos del canal ──────────────────────────────────────── */
+const CURSOS_URL = 'https://www.youtube.com/@SinPresupuestoUN/courses';
+
+/* Pega aquí los IDs reales cuando los tengas:                 */
+/* { id:'PLxxxxx', title:'Nombre', thumb_vid:'videoId' }       */
+const CURSOS = [];
 
 function loadCursos() {
   const grid = document.getElementById('cursos-grid');
-
-  // Si no hay IDs reales aún, mostrar botón al canal
-  const hasReal = CURSOS.some(c => !c.id.includes('xxxxx'));
+  const hasReal = CURSOS.length > 0;
 
   if (!hasReal) {
     grid.innerHTML = `
-      <a class="curso-card" href="${CHANNEL_URL}/playlists" target="_blank" rel="noopener"
-         style="grid-column:1/-1;flex-direction:row;align-items:center;padding:1.25rem 1.5rem;gap:1rem;">
-        <div style="font-size:2rem;flex-shrink:0;">📚</div>
-        <div>
-          <div class="curso-title" style="-webkit-line-clamp:unset;">Ver todos los cursos en YouTube</div>
-          <div class="curso-link" style="margin-top:.3rem;">Ir al canal →</div>
+      <a class="curso-card" href="${CURSOS_URL}" target="_blank" rel="noopener"
+         style="grid-column:1/-1;flex-direction:row;align-items:center;
+                padding:1.5rem 1.75rem;gap:1.25rem;border-color:var(--accent2);
+                background:linear-gradient(135deg,var(--bg2) 0%,var(--bg3) 100%);">
+        <div style="font-size:2.5rem;flex-shrink:0;">🎓</div>
+        <div style="flex:1;min-width:0;">
+          <div class="curso-title" style="-webkit-line-clamp:unset;font-size:1rem;margin-bottom:.3rem;">
+            Ver todos los cursos en YouTube
+          </div>
+          <div style="font-size:.78rem;color:var(--muted);line-height:1.5;">
+            Accede a todos los cursos de SinPresupuesto directamente en YouTube,
+            organizados por materia y con videos completos.
+          </div>
+          <div class="curso-link" style="margin-top:.6rem;color:#ff0000;font-weight:700;">
+            ▶ Ir a @SinPresupuestoUN/courses →
+          </div>
         </div>
       </a>`;
     return;
   }
 
-  grid.innerHTML = CURSOS.map(c => {
-    const thumb = `https://i.ytimg.com/vi/${c.thumb_vid}/mqdefault.jpg`;
-    const url   = `https://www.youtube.com/playlist?list=${c.id}`;
+  grid.innerHTML = CURSOS.map(cur => {
+    const thumb = `https://i.ytimg.com/vi/${cur.thumb_vid}/mqdefault.jpg`;
+    const url   = `https://www.youtube.com/playlist?list=${cur.id}`;
     return `
       <a class="curso-card" href="${url}" target="_blank" rel="noopener">
         <div class="curso-thumb">
-          <img src="${thumb}" alt="${c.title}" loading="lazy"
+          <img src="${thumb}" alt="${cur.title}" loading="lazy"
                onerror="this.src='logos/filosofia.png';this.style.objectFit='contain';this.style.padding='1.5rem'">
-          <div class="pl-badge">▶ Playlist</div>
+          <div class="pl-badge">🎓 Curso</div>
         </div>
         <div class="curso-info">
-          <div class="curso-title">${c.title}</div>
+          <div class="curso-title">${cur.title}</div>
           <span class="curso-link">Ver curso →</span>
         </div>
       </a>`;
