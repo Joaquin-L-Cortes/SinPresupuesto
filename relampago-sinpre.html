@@ -829,7 +829,7 @@ function _setJustDropped(){
 function toggleCard(mid){openCardId=openCardId===mid?null:mid;renderGrid();}
 window.toggleCard=toggleCard;
 
-unction resetOrder(){order=MODULES.map(function(m){return m.id;});MODULES.forEach(function(m){fileOrders[m.id]=m.files.map(function(_,i){return i;});});scheduleSave();renderGrid();}
+function resetOrder(){order=MODULES.map(function(m){return m.id;});MODULES.forEach(function(m){fileOrders[m.id]=m.files.map(function(_,i){return i;});});scheduleSave();renderGrid();}
 window.resetOrder=resetOrder;
 function toggleSortMenu(e){if(e)e.stopPropagation();var menu=document.getElementById('sort-menu'),btn=document.getElementById('sort-btn');if(!menu)return;var isOpen=menu.classList.toggle('open');btn&&btn.classList.toggle('active',isOpen);if(isOpen)document.addEventListener('click',function(){menu.classList.remove('open');btn&&btn.classList.remove('active');},{once:true});}
 window.toggleSortMenu=toggleSortMenu;
