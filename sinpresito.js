@@ -10,7 +10,7 @@
   // ── CONFIGURACIÓN ─────────────────────────────────
   // Cloudflare Workers AI — la API key vive en el Worker, no aquí.
   // Apunta al mismo Worker que usas para guardar en GitHub, con ruta /ai
-  const CF_AI_URL = 'https://sinpresupuesto-save01.jocortesca.workers.dev/ai';
+  const CF_AI_URL = 'https://sinpresito-ai.jocortesca.workers.dev/ai';
   // ──────────────────────────────────────────────────
 
   // Catálogo completo de archivos (auto-generado)
