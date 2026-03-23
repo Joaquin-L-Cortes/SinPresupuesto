@@ -899,151 +899,205 @@ function removeGhost(){if(ghost){ghost.remove();ghost=null;}}
 
 function attachCard(card,m){
   var head=card.querySelector('.mc-head');
-  var holdTimer=null,dragActive=false,ghostCreated=false,overMid=null,docMH=null,docUH=null;
-  var isTouch='ontouchstart' in window;
+  var holdTimer=null,isDragging=false,ghostCreated=false,overMid=null;
+  var onMove=null,onUp=null,onEarly=null;
+  var startX=0,startY=0,moved=false;
+
+  function cancelEarly(){
+    if(onEarly){ document.removeEventListener('pointermove',onEarly); onEarly=null; }
+  }
+  function cleanup(commit){
+    clearTimeout(holdTimer);
+    cancelEarly();
+    if(onMove){ document.removeEventListener('pointermove',onMove); onMove=null; }
+    if(onUp)  { document.removeEventListener('pointerup',  onUp);   onUp=null;   }
+    removeGhost();
+    head.style.cursor='';
+    card.style.touchAction='';
+    var wasDragging=isDragging, landing=overMid;
+    isDragging=false; ghostCreated=false; overMid=null; moved=false;
+    clearDragClasses();
+    if(commit && wasDragging && ghostCreated && landing){
+      var si=order.indexOf(m.id), di=order.indexOf(landing);
+      if(si!==-1 && di!==-1 && si!==di){
+        order.splice(si,1); order.splice(di,0,m.id);
+        scheduleSave(); _setJustDropped(); renderGrid();
+      }
+    }
+  }
 
   head.addEventListener('pointerdown',function(e){
-    if(openCardId===m.id)return;
-    dragActive=false;ghostCreated=false;overMid=null;
-    var startX=e.clientX,startY=e.clientY,moved=false,scrollBlocked=false;
+    if(openCardId===m.id) return;           // tarjeta abierta: no iniciar drag
+    if(e.button && e.button!==0) return;    // solo botón izquierdo / toque
+    e.preventDefault();                     // evita selección de texto en PC
+    isDragging=false; ghostCreated=false; overMid=null; moved=false;
+    startX=e.clientX; startY=e.clientY;
 
-    // En móvil: solo escuchar si el dedo no se mueve (scroll libre hasta que empiece el hold)
-    var onEarlyMove=function(ev){
-      var dx=Math.abs(ev.clientX-startX),dy=Math.abs(ev.clientY-startY);
-      if(dx>6||dy>6){ moved=true; clearTimeout(holdTimer); dragActive=false; }
+    // Escuchar movimiento temprano para cancelar si se mueve antes del hold
+    onEarly=function(ev){
+      if(Math.abs(ev.clientX-startX)>8 || Math.abs(ev.clientY-startY)>8){
+        moved=true;
+        clearTimeout(holdTimer);
+        cancelEarly();
+      }
     };
-    document.addEventListener('pointermove',onEarlyMove,{passive:true,once:false});
+    document.addEventListener('pointermove',onEarly,{passive:true});
 
     holdTimer=setTimeout(function(){
-      document.removeEventListener('pointermove',onEarlyMove);
-      if(moved){ dragActive=false; return; }
-      dragActive=true;
-      // Feedback táctil
-      if(navigator.vibrate) navigator.vibrate(40);
+      cancelEarly();
+      if(moved) return;            // se movió antes: no drag
+      isDragging=true;
+      if(navigator.vibrate) navigator.vibrate(45);
       card.classList.add('hold-ready');
+
+      // Pequeño delay para que el usuario vea el feedback antes del ghost
       setTimeout(function(){
-        if(!dragActive)return;
+        if(!isDragging) return;
         ghostCreated=true;
         card.classList.remove('hold-ready');
         card.classList.add('is-dragging');
         createGhost(card);
         card.style.touchAction='none';
         head.style.cursor='grabbing';
-        docMH=function(ev){
+
+        onMove=function(ev){
           ev.preventDefault();
-          moveGhost(ev.clientX,ev.clientY);
-          var under=document.elementFromPoint(ev.clientX,ev.clientY);
-          var tc=under?under.closest('.module-card'):null;
-          allCards().forEach(function(c2){c2.classList.remove('drop-target','shift-up','shift-down');});
-          if(tc&&tc!==card){
+          moveGhost(ev.clientX, ev.clientY);
+          var under=document.elementFromPoint(ev.clientX, ev.clientY);
+          var tc=under ? under.closest('.module-card') : null;
+          allCards().forEach(function(c2){ c2.classList.remove('drop-target','shift-up','shift-down'); });
+          if(tc && tc!==card){
             tc.classList.add('drop-target');
-            var si=order.indexOf(m.id),di=order.indexOf(tc.dataset.mid);
+            var si=order.indexOf(m.id), di=order.indexOf(tc.dataset.mid);
             allCards().forEach(function(c2){
-              if(c2===card||c2===tc)return;
+              if(c2===card||c2===tc) return;
               var ci=order.indexOf(c2.dataset.mid);
-              if(si<di&&ci>si&&ci<=di)c2.classList.add('shift-up');
-              if(si>di&&ci<si&&ci>=di)c2.classList.add('shift-down');
+              if(si<di && ci>si && ci<=di) c2.classList.add('shift-up');
+              if(si>di && ci<si && ci>=di) c2.classList.add('shift-down');
             });
             overMid=tc.dataset.mid;
-          }else overMid=null;
+          } else { overMid=null; }
         };
-        docUH=function(){cleanup(true);};
-        document.addEventListener('pointermove',docMH,{passive:false});
-        document.addEventListener('pointerup',docUH);
-      },50);
+        onUp=function(){ cleanup(true); };
+        document.addEventListener('pointermove',onMove,{passive:false});
+        document.addEventListener('pointerup',onUp);
+      },60);
     },HOLD_MS);
-  });
+  },{passive:false});
 
   head.addEventListener('pointerup',function(e){
-    document.removeEventListener('pointermove',arguments[0]);
+    if(isDragging){ return; }     // se soltó durante drag — cleanup lo maneja
     clearTimeout(holdTimer);
-    if(dragActive){return;}
+    cancelEarly();
     cleanup(false);
     toggleCard(m.id);
   });
-  head.addEventListener('pointercancel',function(){clearTimeout(holdTimer);cleanup(false);});
 
-  function cleanup(commit){
+  head.addEventListener('pointercancel',function(){
     clearTimeout(holdTimer);
-    head.style.cursor='';
-    if(docMH){document.removeEventListener('pointermove',docMH);docMH=null;}
-    if(docUH){document.removeEventListener('pointerup',docUH);docUH=null;}
-    removeGhost();
-    var wasGhost=ghostCreated,landing=overMid;
-    dragActive=false;ghostCreated=false;overMid=null;clearDragClasses();
-    card.style.touchAction='';
-    if(commit&&wasGhost&&landing){
-      var si=order.indexOf(m.id),di=order.indexOf(landing);
-      if(si!==di){order.splice(si,1);order.splice(di,0,m.id);scheduleSave();_setJustDropped();renderGrid();}
-    }
-  }
-  card.querySelectorAll('.file-card').forEach(function(fc){attachFile(fc,m);});
+    cancelEarly();
+    cleanup(false);
+  });
+
+  card.querySelectorAll('.file-card').forEach(function(fc){ attachFile(fc,m); });
 }
 
 /* ── DRAG: FILE CARDS ── */
 function allFileCards(){return[...document.querySelectorAll('.file-card')];}
 function clearFileClasses(){allFileCards().forEach(function(c){c.classList.remove('fc-drop-target','fc-dragging','fc-hold-ready');});}
+
 function attachFile(fc,m){
-  var holdTimer=null,dragActive=false,ghostCreated=false,overFi=null,srcFi=parseInt(fc.dataset.fi),docMF=null,docUF=null;
+  var srcFi=parseInt(fc.dataset.fi);
+  var holdTimer=null,isDragging=false,ghostCreated=false,overFi=null;
+  var onMove=null,onUp=null,onEarly=null;
+  var startX=0,startY=0,moved=false;
+
+  function cancelEarly(){
+    if(onEarly){ fc.removeEventListener('pointermove',onEarly); onEarly=null; }
+  }
+  function fileCleanup(commit){
+    clearTimeout(holdTimer);
+    cancelEarly();
+    if(onMove){ document.removeEventListener('pointermove',onMove); onMove=null; }
+    if(onUp)  { document.removeEventListener('pointerup',  onUp);   onUp=null;   }
+    fc.style.touchAction='';
+    var wasDragging=isDragging, landing=overFi;
+    isDragging=false; ghostCreated=false; overFi=null; moved=false;
+    clearFileClasses();
+    if(commit && wasDragging && ghostCreated && landing!=null && landing!==srcFi){
+      var fo=fileOrders[m.id];
+      var si=fo.indexOf(srcFi), di=fo.indexOf(landing);
+      if(si!==-1 && di!==-1 && si!==di){
+        fo.splice(si,1); fo.splice(di,0,srcFi);
+        scheduleSave(); _setJustDropped(); renderGrid();
+      }
+    }
+  }
+
   fc.addEventListener('pointerdown',function(e){
     e.stopPropagation();
-    var startX=e.clientX,startY=e.clientY,scrollIntent=false,intentChecked=false;
-    var earlyMoveFC=function(ev){
-      if(intentChecked)return;
-      intentChecked=true;
-      var dx=Math.abs(ev.clientX-startX),dy=Math.abs(ev.clientY-startY);
-      if(dy>dx&&dy>6){scrollIntent=true;clearTimeout(holdTimer);dragActive=false;}
-      fc.removeEventListener('pointermove',earlyMoveFC);
+    if(e.button && e.button!==0) return;
+    isDragging=false; ghostCreated=false; overFi=null; moved=false;
+    startX=e.clientX; startY=e.clientY;
+
+    onEarly=function(ev){
+      if(Math.abs(ev.clientX-startX)>8 || Math.abs(ev.clientY-startY)>8){
+        moved=true;
+        clearTimeout(holdTimer);
+        cancelEarly();
+      }
     };
-    fc.addEventListener('pointermove',earlyMoveFC,{passive:true});
-    dragActive=false;ghostCreated=false;overFi=null;
+    fc.addEventListener('pointermove',onEarly,{passive:true});
+
     holdTimer=setTimeout(function(){
-      if(scrollIntent){dragActive=false;return;}
-      dragActive=true;
+      cancelEarly();
+      if(moved) return;
+      isDragging=true;
+      if(navigator.vibrate) navigator.vibrate(30);
       fc.classList.add('fc-hold-ready');
+
       setTimeout(function(){
-        if(!dragActive)return;
+        if(!isDragging) return;
         ghostCreated=true;
-        fc.classList.remove('fc-hold-ready');fc.classList.add('fc-dragging');
+        fc.classList.remove('fc-hold-ready');
+        fc.classList.add('fc-dragging');
         fc.style.touchAction='none';
-        docMF=function(ev){
+
+        onMove=function(ev){
           ev.preventDefault();
-          var under=document.elementFromPoint(ev.clientX,ev.clientY);
-          var tgt=under?under.closest('.file-card'):null;
-          allFileCards().forEach(function(c){c.classList.remove('fc-drop-target');});
-          if(tgt&&tgt!==fc&&tgt.dataset.mid===m.id){tgt.classList.add('fc-drop-target');overFi=parseInt(tgt.dataset.fi);}
-          else overFi=null;
+          var under=document.elementFromPoint(ev.clientX, ev.clientY);
+          var tgt=under ? under.closest('.file-card') : null;
+          allFileCards().forEach(function(c){ c.classList.remove('fc-drop-target'); });
+          if(tgt && tgt!==fc && tgt.dataset.mid===m.id){
+            tgt.classList.add('fc-drop-target');
+            overFi=parseInt(tgt.dataset.fi);
+          } else { overFi=null; }
         };
-        docUF=function(){fileCleanup(true);};
-        document.addEventListener('pointermove',docMF,{passive:false});
-        document.addEventListener('pointerup',docUF);
-      },50);
+        onUp=function(){ fileCleanup(true); };
+        document.addEventListener('pointermove',onMove,{passive:false});
+        document.addEventListener('pointerup',onUp);
+      },60);
     },HOLD_MS);
   });
+
   fc.addEventListener('pointerup',function(e){
     e.stopPropagation();
+    if(isDragging){ return; }
     clearTimeout(holdTimer);
-    if(dragActive){return;}
+    cancelEarly();
     fileCleanup(false);
     openModal(m.id,srcFi);
   });
-  fc.addEventListener('pointercancel',function(){clearTimeout(holdTimer);fileCleanup(false);});
-  function fileCleanup(commit){
+
+  fc.addEventListener('pointercancel',function(){
     clearTimeout(holdTimer);
-    if(docMF){document.removeEventListener('pointermove',docMF);docMF=null;}
-    if(docUF){document.removeEventListener('pointerup',docUF);docUF=null;}
-    var wasGhost=ghostCreated,landing=overFi;
-    dragActive=false;ghostCreated=false;overFi=null;clearFileClasses();
-    fc.style.touchAction='';
-    if(commit&&wasGhost&&landing!=null&&landing!==srcFi){
-      var fo=fileOrders[m.id];
-      var si=fo.indexOf(srcFi),di=fo.indexOf(landing);
-      if(si!==di){fo.splice(si,1);fo.splice(di,0,srcFi);scheduleSave();_setJustDropped();renderGrid();}
-    }
-  }
+    cancelEarly();
+    fileCleanup(false);
+  });
 }
 
 /* ── CARD TOGGLE ── */
+
 var _justDropped=false;
 function _bDE(e){e.stopPropagation();e.preventDefault();}
 function _setJustDropped(){
