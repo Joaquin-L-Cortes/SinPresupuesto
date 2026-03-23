@@ -1,0 +1,508 @@
+<!DOCTYPE html>
+<html lang="es" data-theme="light">
+<head>
+<link rel="icon" type="image/x-icon" href="favicon.ico">
+<link rel="icon" type="image/png" sizes="32x32" href="favicon.png">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Clases · Sin-Presupuesto</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,700;1,9..144,400&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#f0f4fa;--bg2:#ffffff;--bg3:#e4ecf7;--border:#c5d4eb;
+  --accent:#1a3a6b;--accent2:#2e6fc4;--text:#1a2640;--muted:#5a6e8a;
+  --shadow:rgba(26,58,107,.09);--green:#1db97d;--green-bg:#e8f9f1;
+  --red:#e53e3e;--yt:#ff0000;
+  --nav-bg:rgba(255,255,255,.94);
+  --hero-bg1:#1a3a6b;--hero-bg2:#2a5ba8;
+  --hero-text:white;--hero-sub:rgba(255,255,255,.75);
+}
+[data-theme="dark"]{
+  --bg:#0d1829;--bg2:#112040;--bg3:#1a2d52;--border:#2a3f6a;
+  --accent:#4a8ede;--accent2:#7ab4f0;--text:#e8f0fc;--muted:#7d96bb;
+  --shadow:rgba(0,0,0,.35);--green:#34d399;--green-bg:#0e2b1a;
+  --nav-bg:rgba(13,24,41,.96);
+  --hero-bg1:#0a1e40;--hero-bg2:#1a3566;
+  --hero-text:#e8f0fc;--hero-sub:rgba(232,240,252,.65);
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;font-size:15px;line-height:1.7;min-height:100vh;}
+
+/* NAV */
+nav{position:sticky;top:0;z-index:300;background:var(--nav-bg);backdrop-filter:blur(14px);border-bottom:1px solid var(--border);padding:0 clamp(.5rem,2vw,2rem);display:flex;align-items:center;height:clamp(46px,6vw,56px);box-shadow:0 2px 12px var(--shadow);}
+.nav-logo{font-family:'Fraunces',serif;font-size:clamp(.82rem,1.8vw,1.1rem);font-weight:700;color:var(--accent2);text-decoration:none;padding-right:clamp(.5rem,1.2vw,1.1rem);border-right:1px solid var(--border);margin-right:clamp(.4rem,1vw,1.1rem);white-space:nowrap;display:flex;align-items:center;gap:clamp(.25rem,.6vw,.4rem);flex-shrink:0;}
+.nav-logo img{width:clamp(26px,3.5vw,40px);height:clamp(26px,3.5vw,40px);object-fit:contain;}
+.nav-links{display:flex;list-style:none;flex:1;overflow:hidden;}
+.nav-links a{padding:0 clamp(.3rem,.7vw,.7rem);color:var(--muted);text-decoration:none;font-size:clamp(.7rem,1.2vw,.83rem);font-weight:500;transition:color .15s;line-height:clamp(46px,6vw,56px);display:block;white-space:nowrap;}
+.nav-links a.active,.nav-links a:hover{color:var(--accent2);}
+.nav-right{display:flex;align-items:center;gap:clamp(.2rem,.5vw,.45rem);margin-left:auto;flex-shrink:0;}
+#btn-tema{background:none;border:1.5px solid var(--border);color:var(--muted);font-family:'DM Sans',sans-serif;font-size:clamp(.65rem,1.1vw,.75rem);padding:.3rem clamp(.4rem,.8vw,.65rem);border-radius:20px;cursor:pointer;transition:all .2s;white-space:nowrap;}
+#btn-tema:hover{border-color:var(--accent2);color:var(--accent2);}
+#btn-avance,#btn-student-login{background:none;border:1.5px solid var(--border);color:var(--muted);font-family:'DM Sans',sans-serif;font-size:clamp(.68rem,1.1vw,.8rem);padding:.3rem clamp(.4rem,.8vw,.75rem);border-radius:20px;cursor:pointer;transition:all .2s;white-space:nowrap;display:flex;align-items:center;gap:.3rem;}
+#btn-avance:hover,#btn-student-login:hover{border-color:var(--accent2);color:var(--accent2);}
+.nav-hamburger{display:none;background:none;border:none;cursor:pointer;padding:.3rem;flex-direction:column;gap:4px;flex-shrink:0;}
+.nav-hamburger span{display:block;width:18px;height:2px;background:var(--muted);border-radius:2px;}
+@media(max-width:640px){.nav-links{display:none;}.nav-hamburger{display:flex;}}
+
+/* HERO */
+.yt-hero{background:linear-gradient(135deg,var(--hero-bg1) 0%,var(--hero-bg2) 100%);padding:clamp(1.5rem,4vw,2.5rem) 2rem;color:var(--hero-text);}
+.yt-hero-inner{max-width:960px;margin:0 auto;display:flex;align-items:center;gap:1.25rem;flex-wrap:wrap;}
+.yt-hero-icon{width:56px;height:56px;background:var(--yt);border-radius:14px;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.yt-hero-icon svg{width:28px;height:20px;fill:white;}
+.yt-hero-texts h1{font-family:'Fraunces',serif;font-size:clamp(1.3rem,4vw,2rem);font-weight:700;line-height:1.1;}
+.yt-hero-texts p{font-size:.88rem;color:var(--hero-sub);margin-top:.35rem;}
+.yt-hero-stats{display:flex;gap:1.25rem;margin-left:auto;flex-shrink:0;}
+.yt-stat{text-align:center;}
+.yt-stat-num{font-family:'Fraunces',serif;font-size:1.5rem;font-weight:700;line-height:1;}
+.yt-stat-label{font-size:.62rem;text-transform:uppercase;letter-spacing:.08em;color:var(--hero-sub);margin-top:.1rem;}
+@media(max-width:600px){.yt-hero-stats{margin-left:0;gap:.9rem;}.yt-stat-num{font-size:1.2rem;}}
+
+/* WRAP */
+.page-wrap{max-width:960px;margin:0 auto;padding:2rem 1.5rem 5rem;}
+@media(max-width:600px){.page-wrap{padding:1.25rem .9rem 4rem;}}
+
+/* SECTION BLOCK */
+.yt-section{margin-bottom:2.5rem;}
+.yt-section-header{display:flex;align-items:center;gap:.65rem;margin-bottom:1.1rem;}
+.yt-section-icon{width:34px;height:34px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:1.1rem;flex-shrink:0;}
+.yt-section-title{font-family:'Fraunces',serif;font-size:1.15rem;font-weight:700;color:var(--accent2);}
+.yt-section-sub{font-size:.75rem;color:var(--muted);margin-top:.05rem;}
+
+/* VIDEO CARD grande (último video / más visto) */
+.yt-featured-card{background:var(--bg2);border:1.5px solid var(--border);border-radius:20px;overflow:hidden;box-shadow:0 4px 20px var(--shadow);transition:box-shadow .2s,transform .2s;}
+.yt-featured-card:hover{box-shadow:0 8px 32px var(--shadow);transform:translateY(-2px);}
+.yt-embed-wrap{position:relative;width:100%;padding-bottom:56.25%;background:#000;border-radius:20px 20px 0 0;overflow:hidden;}
+.yt-embed-wrap iframe{position:absolute;inset:0;width:100%;height:100%;border:none;}
+/* Thumbnail clickable que se convierte en iframe al pulsar — carga inmediata */
+.yt-thumb-wrap{position:absolute;inset:0;cursor:pointer;overflow:hidden;}
+.yt-thumb-wrap img{width:100%;height:100%;object-fit:cover;transition:transform .3s;}
+.yt-thumb-wrap:hover img{transform:scale(1.03);}
+.yt-play-btn{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:68px;height:48px;background:var(--yt);border-radius:12px;display:flex;align-items:center;justify-content:center;transition:transform .2s,background .2s;}
+.yt-thumb-wrap:hover .yt-play-btn{transform:translate(-50%,-50%) scale(1.1);background:#cc0000;}
+.yt-play-btn svg{width:22px;height:22px;fill:white;margin-left:4px;}
+.yt-featured-info{padding:1.1rem 1.25rem 1.25rem;}
+.yt-featured-title{font-family:'Fraunces',serif;font-size:1.05rem;font-weight:700;color:var(--text);line-height:1.3;margin-bottom:.4rem;}
+.yt-featured-meta{display:flex;align-items:center;gap:.75rem;flex-wrap:wrap;}
+.yt-meta-chip{font-size:.72rem;color:var(--muted);display:flex;align-items:center;gap:.25rem;}
+.yt-watch-btn{display:inline-flex;align-items:center;gap:.4rem;background:var(--yt);color:white;text-decoration:none;font-family:'DM Sans',sans-serif;font-size:.8rem;font-weight:600;padding:.42rem 1rem;border-radius:20px;margin-top:.75rem;transition:opacity .15s;}
+.yt-watch-btn:hover{opacity:.85;}
+
+/* GRID DE PLAYLISTS / CURSOS */
+.yt-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:1rem;}
+@media(max-width:500px){.yt-grid{grid-template-columns:1fr;}}
+.yt-playlist-card{background:var(--bg2);border:1.5px solid var(--border);border-radius:16px;overflow:hidden;transition:box-shadow .2s,border-color .2s,transform .2s;cursor:pointer;text-decoration:none;display:flex;flex-direction:column;}
+.yt-playlist-card:hover{box-shadow:0 6px 22px var(--shadow);border-color:var(--accent2);transform:translateY(-2px);}
+.yt-thumb-ratio{position:relative;width:100%;padding-bottom:56.25%;background:var(--bg3);overflow:hidden;}
+.yt-thumb-ratio img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;}
+.yt-thumb-ratio .yt-count-badge{position:absolute;bottom:.4rem;right:.4rem;background:rgba(0,0,0,.75);color:white;font-size:.65rem;font-weight:700;padding:.2rem .45rem;border-radius:6px;backdrop-filter:blur(4px);}
+.yt-playlist-info{padding:.75rem 1rem .9rem;flex:1;display:flex;flex-direction:column;}
+.yt-playlist-title{font-family:'Fraunces',serif;font-size:.88rem;font-weight:700;color:var(--accent2);line-height:1.3;margin-bottom:.2rem;}
+.yt-playlist-desc{font-size:.73rem;color:var(--muted);line-height:1.5;flex:1;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;}
+.yt-playlist-link{display:inline-flex;align-items:center;gap:.3rem;font-size:.73rem;font-weight:600;color:var(--accent2);margin-top:.55rem;}
+
+/* SKELETON */
+.yt-skeleton{background:var(--bg3);border-radius:12px;animation:pulse 1.4s ease-in-out infinite;}
+@keyframes pulse{0%,100%{opacity:1;}50%{opacity:.45;}}
+.sk-thumb{width:100%;padding-bottom:56.25%;border-radius:16px 16px 0 0;}
+.sk-line{height:14px;border-radius:6px;margin-top:.6rem;}
+.sk-line.w80{width:80%;}
+.sk-line.w50{width:50%;}
+
+/* ERROR */
+.yt-error{background:var(--bg2);border:1.5px solid var(--border);border-radius:16px;padding:1.5rem;text-align:center;color:var(--muted);font-size:.88rem;}
+.yt-error span{font-size:1.5rem;display:block;margin-bottom:.5rem;}
+
+/* NAV DRAWER */
+.nav-drawer-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.45);z-index:800;}
+.nav-drawer-overlay.open{display:block;}
+.nav-drawer{position:fixed;right:0;top:0;bottom:0;width:260px;background:var(--bg2);padding:1.5rem 1rem;overflow-y:auto;border-left:1px solid var(--border);}
+.nav-drawer-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:1rem;padding-bottom:.75rem;border-bottom:1px solid var(--border);}
+.btn-close-drawer{background:none;border:none;font-size:1.2rem;cursor:pointer;color:var(--muted);}
+.nav-drawer ul{list-style:none;}
+.nav-drawer ul a{display:flex;align-items:center;gap:.5rem;padding:.55rem .5rem;color:var(--muted);text-decoration:none;font-size:.88rem;border-radius:8px;transition:all .15s;}
+.nav-drawer ul a:hover,.nav-drawer ul a.active{background:var(--bg3);color:var(--accent2);}
+.s-emoji{font-size:.88rem;width:18px;text-align:center;flex-shrink:0;}
+footer{border-top:1px solid var(--border);background:var(--bg2);padding:2rem;text-align:center;color:var(--muted);font-size:.82rem;}
+footer a{color:var(--accent2);text-decoration:none;}
+
+/* AUTH modals (requeridos por firebase-auth.js) */
+.modal-overlay{position:fixed;inset:0;background:rgba(26,54,107,0.45);backdrop-filter:blur(4px);z-index:1000;display:none;align-items:center;justify-content:center;padding:1rem;}
+.modal-overlay.open{display:flex;}
+@keyframes scaleIn{from{opacity:0;transform:scale(.92)}to{opacity:1;transform:scale(1)}}
+.modal-overlay.open .modal{animation:scaleIn .22s cubic-bezier(.34,1.56,.64,1) both;}
+.modal{background:var(--bg2);border:1px solid var(--border);border-radius:20px;padding:2rem;width:100%;max-height:92vh;overflow:visible;box-shadow:0 8px 40px var(--shadow);position:relative;}
+.modal h2{font-family:'Fraunces',serif;font-size:1.4rem;margin-bottom:.4rem;color:var(--accent);}
+.form-group{margin-bottom:1rem;}
+.form-group label{display:block;font-size:.78rem;color:var(--muted);margin-bottom:.4rem;letter-spacing:.05em;text-transform:uppercase;}
+.form-group input,.form-group select{width:100%;background:var(--bg3);border:1.5px solid var(--border);border-radius:10px;padding:.65rem .9rem;color:var(--text);font-family:'DM Sans',sans-serif;font-size:.9rem;outline:none;transition:border-color .2s;}
+.form-group input:focus{border-color:var(--accent2);}
+.btn-submit{width:100%;background:var(--accent);color:#fff;font-family:'DM Sans',sans-serif;font-weight:600;font-size:.9rem;border:none;border-radius:10px;padding:.75rem;cursor:pointer;margin-top:.5rem;transition:background .2s;}
+.btn-submit:hover{background:var(--accent2);}
+.tab-btn{background:none;border:none;padding:.6rem 1.1rem;font-family:'DM Sans',sans-serif;font-size:.9rem;color:var(--muted);cursor:pointer;border-bottom:2px solid transparent;margin-bottom:-2px;transition:all .2s;}
+.tab-btn.active{color:var(--accent2);border-bottom-color:var(--accent2);font-weight:600;}
+.social-btn{display:flex;align-items:center;justify-content:center;gap:.4rem;padding:.55rem;border:1.5px solid var(--border);border-radius:10px;background:var(--bg2);cursor:pointer;font-family:'DM Sans',sans-serif;font-size:.82rem;color:var(--text);transition:background .2s;width:100%;}
+.social-btn:hover{background:var(--bg3);}
+.reg-layout{display:grid;grid-template-columns:100px 1fr 148px;gap:1rem;align-items:start;}
+.reg-avatar-col{display:flex;flex-direction:column;align-items:center;padding-top:1.25rem;width:100px;}
+.reg-fields-col{min-width:0;}
+.reg-picker-col{min-width:0;width:148px;}
+.avance-item{display:flex;align-items:center;gap:.75rem;padding:.55rem .75rem;border-radius:10px;cursor:pointer;transition:background .15s;border:1.5px solid var(--border);background:var(--bg2);}
+.avance-item:hover{background:var(--bg3);}
+@media(max-width:600px){.modal-overlay{padding:.75rem!important;align-items:center!important;}.modal{border-radius:14px!important;padding:1.25rem!important;max-width:calc(100vw - 1.5rem)!important;}.reg-layout{grid-template-columns:80px 1fr!important;grid-template-rows:auto auto!important;gap:.6rem!important;}.reg-avatar-col{grid-column:1!important;grid-row:1!important;width:80px!important;padding-top:0!important;}.reg-picker-col{grid-column:2!important;grid-row:1!important;width:100%!important;}.reg-fields-col{grid-column:1/-1!important;grid-row:2!important;width:100%!important;}}
+</style>
+</head>
+<body>
+
+<nav>
+  <a class="nav-logo" href="index.html">
+    <img src="logos/filosofia.png" alt="" onerror="this.style.display='none'">
+    <span class="nav-logo-text">Sin-Presupuesto</span>
+  </a>
+  <ul class="nav-links">
+    <li><a href="index.html">Inicio</a></li>
+    <li><a href="clases.html" class="active">Clases</a></li>
+    <li><a href="donativos.html">Comunidad</a></li>
+    <li><a href="materiales.html">Material</a></li>
+    <li><a href="ejercicios-practicas.html">Práctica</a></li>
+  </ul>
+  <div class="nav-right">
+    <button class="nav-hamburger" onclick="openNavDrawer()" aria-label="Menú"><span></span><span></span><span></span></button>
+    <button id="btn-tema" onclick="toggleTema()">🌙 Modo oscuro</button>
+    <button id="btn-avance" style="display:none;align-items:center;"></button>
+    <button id="btn-student-login">👤 Ingresar</button>
+  </div>
+</nav>
+
+<!-- HERO -->
+<div class="yt-hero">
+  <div class="yt-hero-inner">
+    <div class="yt-hero-icon">
+      <svg viewBox="0 0 24 17" xmlns="http://www.w3.org/2000/svg"><path d="M23.5 2.6S23.2.8 22.4.1C21.4-.9 20.3-.9 19.8-.8 16.5 0 12 0 12 0S7.5 0 4.2-.8C3.7-.9 2.6-.9 1.6.1.8.8.5 2.6.5 2.6S0 4.7 0 6.8v2c0 2.1.5 4.2.5 4.2s.3 1.8 1.1 2.5c1 1 2.4.9 3 1C6.6 16.7 12 17 12 17s4.5 0 7.8-.8c.5-.1 1.6-.2 2.6-1.1.8-.7 1.1-2.5 1.1-2.5S24 10.9 24 8.8v-2c0-2.1-.5-4.2-.5-4.2zM9.5 11.6V4.8l6.5 3.4-6.5 3.4z"/></svg>
+    </div>
+    <div class="yt-hero-texts">
+      <h1>📺 Clases SinPresupuesto</h1>
+      <p>Último video, cursos y lo más visto del canal — todo en un lugar</p>
+    </div>
+    <div class="yt-hero-stats">
+      <div class="yt-stat">
+        <div class="yt-stat-num" id="stat-subs">—</div>
+        <div class="yt-stat-label">Suscriptores</div>
+      </div>
+      <div class="yt-stat">
+        <div class="yt-stat-num" id="stat-videos">—</div>
+        <div class="yt-stat-label">Videos</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="page-wrap">
+
+  <!-- i. ÚLTIMO VIDEO -->
+  <div class="yt-section">
+    <div class="yt-section-header">
+      <div class="yt-section-icon" style="background:#fff0de;">🆕</div>
+      <div>
+        <div class="yt-section-title">Último video publicado</div>
+        <div class="yt-section-sub">Canal SinPresupuesto UN</div>
+      </div>
+    </div>
+    <div id="latest-video-wrap">
+      <!-- Skeleton -->
+      <div class="yt-featured-card">
+        <div class="yt-skeleton sk-thumb"></div>
+        <div style="padding:1rem 1.25rem 1.25rem">
+          <div class="yt-skeleton sk-line w80"></div>
+          <div class="yt-skeleton sk-line w50" style="margin-top:.5rem"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- iii. VIDEO MÁS VISTO -->
+  <div class="yt-section">
+    <div class="yt-section-header">
+      <div class="yt-section-icon" style="background:#fdecea;">🔥</div>
+      <div>
+        <div class="yt-section-title">Video más visto</div>
+        <div class="yt-section-sub">El más popular del canal</div>
+      </div>
+    </div>
+    <div id="top-video-wrap">
+      <div class="yt-featured-card">
+        <div class="yt-skeleton sk-thumb"></div>
+        <div style="padding:1rem 1.25rem 1.25rem">
+          <div class="yt-skeleton sk-line w80"></div>
+          <div class="yt-skeleton sk-line w50" style="margin-top:.5rem"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ii. CURSOS / PLAYLISTS -->
+  <div class="yt-section">
+    <div class="yt-section-header">
+      <div class="yt-section-icon" style="background:#e8f4e8;">📚</div>
+      <div>
+        <div class="yt-section-title">Cursos del canal</div>
+        <div class="yt-section-sub">Playlists organizadas por tema</div>
+      </div>
+    </div>
+    <div class="yt-grid" id="playlists-grid">
+      <!-- Skeletons -->
+      <div class="yt-featured-card"><div class="yt-skeleton sk-thumb" style="border-radius:14px 14px 0 0"></div><div style="padding:.75rem 1rem .9rem"><div class="yt-skeleton sk-line w80"></div><div class="yt-skeleton sk-line w50" style="margin-top:.5rem"></div></div></div>
+      <div class="yt-featured-card"><div class="yt-skeleton sk-thumb" style="border-radius:14px 14px 0 0"></div><div style="padding:.75rem 1rem .9rem"><div class="yt-skeleton sk-line w80"></div><div class="yt-skeleton sk-line w50" style="margin-top:.5rem"></div></div></div>
+      <div class="yt-featured-card"><div class="yt-skeleton sk-thumb" style="border-radius:14px 14px 0 0"></div><div style="padding:.75rem 1rem .9rem"><div class="yt-skeleton sk-line w80"></div><div class="yt-skeleton sk-line w50" style="margin-top:.5rem"></div></div></div>
+    </div>
+  </div>
+
+</div>
+
+<!-- NAV DRAWER -->
+<div class="nav-drawer-overlay" id="nav-drawer-overlay" onclick="closeNavDrawer()">
+  <div class="nav-drawer" onclick="event.stopPropagation()">
+    <div class="nav-drawer-header">
+      <span style="font-family:'Fraunces',serif;font-weight:700;color:var(--accent2)">Sin-Presupuesto</span>
+      <button class="btn-close-drawer" onclick="closeNavDrawer()">✕</button>
+    </div>
+    <ul>
+      <li><a href="index.html"><span class="s-emoji">🏠</span>Inicio</a></li>
+      <li><a href="clases.html" class="active"><span class="s-emoji">📺</span>Clases</a></li>
+      <li><a href="donativos.html"><span class="s-emoji">💬</span>Comunidad</a></li>
+      <li><a href="materiales.html"><span class="s-emoji">📖</span>Material</a></li>
+      <li><a href="ejercicios-practicas.html"><span class="s-emoji">✏️</span>Práctica</a></li>
+    </ul>
+    <div style="margin-top:1rem;padding-top:.75rem;border-top:1px solid var(--border);">
+      <button onclick="toggleTema();closeNavDrawer()" id="drawer-tema-btn" style="width:100%;background:none;border:1px solid var(--border);color:var(--muted);font-family:'DM Sans',sans-serif;font-size:.82rem;padding:.5rem .75rem;border-radius:10px;cursor:pointer;display:flex;align-items:center;gap:.5rem;transition:all .15s;">🌙 Modo oscuro</button>
+    </div>
+  </div>
+</div>
+
+<footer>
+  <p>Sin-Presupuesto · PreUniversitario gratuito y popular ❤️</p>
+  <p style="margin-top:.4rem"><a href="https://youtube.com/@sinpresupuestoun" target="_blank">▶ Canal de YouTube</a></p>
+  <p style="margin-top:.75rem;padding-top:.75rem;border-top:1px solid var(--border)">
+    <button id="btn-admin-footer" style="background:none;border:none;color:var(--border);font-size:.72rem;cursor:pointer;font-family:'DM Sans',sans-serif;" onmouseover="this.style.color='var(--muted)'" onmouseout="this.style.color='var(--border)'">Joaquín L. Cortés</button>
+  </p>
+</footer>
+
+<script src="editor.js"></script>
+<script type="module" src="firebase-auth.js"></script>
+
+<script>
+/* ══════════════════════════════════════════════════════════════
+   YouTube Data API v3 — SinPresupuesto UN
+   Canal ID: UCiIBTAcRbK9FotZ6N7EXGsQ
+   Uploads playlist: UUiIBTAcRbK9FotZ6N7EXGsQ  (UC→UU, sin llamada extra)
+   ══════════════════════════════════════════════════════════════ */
+
+const API_KEY      = 'AIzaSyAhlQr5ulNvGqPXMX0wEgc63KjdtvVzcpo'; // ← reemplazar con tu YouTube Data API key
+const CHANNEL_ID   = 'UCiIBTAcRbK9FotZ6N7EXGsQ';
+const UPLOADS_PL   = 'UUiIBTAcRbK9FotZ6N7EXGsQ'; // UC→UU, evita una llamada a la API
+const YT_BASE      = 'https://www.googleapis.com/youtube/v3';
+
+// ── Utilidades ─────────────────────────────────────────────────
+function fmtNum(n) {
+  n = parseInt(n) || 0;
+  if (n >= 1e6) return (n/1e6).toFixed(1).replace('.0','') + ' M';
+  if (n >= 1e3) return (n/1e3).toFixed(1).replace('.0','') + ' K';
+  return n.toString();
+}
+function timeAgo(dateStr) {
+  const diff = (Date.now() - new Date(dateStr)) / 1000;
+  if (diff < 3600)  return `hace ${Math.floor(diff/60)} min`;
+  if (diff < 86400) return `hace ${Math.floor(diff/3600)} h`;
+  if (diff < 2592000) return `hace ${Math.floor(diff/86400)} d`;
+  if (diff < 31536000) return `hace ${Math.floor(diff/2592000)} mes${Math.floor(diff/2592000)>1?'es':''}`;
+  return `hace ${Math.floor(diff/31536000)} año${Math.floor(diff/31536000)>1?'s':''}`;
+}
+function bestThumb(thumbnails) {
+  return (thumbnails.maxres || thumbnails.standard || thumbnails.high || thumbnails.medium || thumbnails.default || {}).url || '';
+}
+
+// ── Featured video card con thumbnail lazy → iframe al click ───
+function featuredCard(videoId, title, published, views, container) {
+  const thumb = `https://i.ytimg.com/vi/${videoId}/hqdefault.jpg`;
+  const url   = `https://www.youtube.com/watch?v=${videoId}`;
+
+  container.innerHTML = `
+    <div class="yt-featured-card">
+      <div class="yt-embed-wrap">
+        <div class="yt-thumb-wrap" id="thumb-${videoId}" onclick="playVideo('${videoId}')">
+          <img src="${thumb}" alt="${title.replace(/"/g,'&quot;')}" loading="eager" fetchpriority="high">
+          <div class="yt-play-btn">
+            <svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+          </div>
+        </div>
+      </div>
+      <div class="yt-featured-info">
+        <div class="yt-featured-title">${title}</div>
+        <div class="yt-featured-meta">
+          ${published ? `<span class="yt-meta-chip">🕐 ${timeAgo(published)}</span>` : ''}
+          ${views     ? `<span class="yt-meta-chip">👁 ${fmtNum(views)} vistas</span>` : ''}
+        </div>
+        <a class="yt-watch-btn" href="${url}" target="_blank" rel="noopener">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="white"><path d="M8 5v14l11-7z"/></svg>
+          Ver en YouTube
+        </a>
+      </div>
+    </div>`;
+}
+
+// Convierte thumbnail en iframe al hacer click (carga instantánea)
+window.playVideo = function(videoId) {
+  const wrap = document.getElementById('thumb-' + videoId);
+  if (!wrap) return;
+  const parent = wrap.closest('.yt-embed-wrap');
+  parent.innerHTML = `<iframe
+    src="https://www.youtube.com/embed/${videoId}?autoplay=1&rel=0&modestbranding=1"
+    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+    allowfullscreen loading="eager"></iframe>`;
+};
+
+// ── Playlist card ───────────────────────────────────────────────
+function playlistCard(pl) {
+  const thumb = bestThumb(pl.snippet.thumbnails);
+  const count = pl.contentDetails?.itemCount || '';
+  const url   = `https://www.youtube.com/playlist?list=${pl.id}`;
+  return `
+    <a class="yt-playlist-card" href="${url}" target="_blank" rel="noopener">
+      <div class="yt-thumb-ratio">
+        <img src="${thumb}" alt="${pl.snippet.title}" loading="lazy">
+        ${count ? `<div class="yt-count-badge">▶ ${count} videos</div>` : ''}
+      </div>
+      <div class="yt-playlist-info">
+        <div class="yt-playlist-title">${pl.snippet.title}</div>
+        <div class="yt-playlist-desc">${pl.snippet.description || 'Playlist del canal SinPresupuesto UN'}</div>
+        <span class="yt-playlist-link">Ver curso →</span>
+      </div>
+    </a>`;
+}
+
+function showError(container, msg) {
+  container.innerHTML = `<div class="yt-error"><span>⚠️</span>${msg}</div>`;
+}
+
+// ── CARGA PRINCIPAL ─────────────────────────────────────────────
+async function loadYouTubeData() {
+  const latestWrap    = document.getElementById('latest-video-wrap');
+  const topWrap       = document.getElementById('top-video-wrap');
+  const playlistsGrid = document.getElementById('playlists-grid');
+
+  try {
+    // 1. Info del canal (suscriptores + conteo de videos) — 1 llamada
+    const chRes  = await fetch(`${YT_BASE}/channels?part=statistics,snippet&id=${CHANNEL_ID}&key=${API_KEY}`);
+    const chData = await chRes.json();
+    if (chData.items?.length) {
+      const st = chData.items[0].statistics;
+      document.getElementById('stat-subs').textContent   = fmtNum(st.subscriberCount);
+      document.getElementById('stat-videos').textContent = fmtNum(st.videoCount);
+    }
+
+    // 2. Último video — playlistItems del uploads playlist, maxResults=1, ordenado desc — 1 llamada
+    //    El uploads playlist SIEMPRE está ordenado del más nuevo al más viejo.
+    const plRes  = await fetch(`${YT_BASE}/playlistItems?part=snippet,contentDetails&playlistId=${UPLOADS_PL}&maxResults=1&key=${API_KEY}`);
+    const plData = await plRes.json();
+
+    if (plData.items?.length) {
+      const item    = plData.items[0];
+      const videoId = item.contentDetails.videoId;
+      const title   = item.snippet.title;
+      const published = item.snippet.publishedAt;
+
+      // 3. Estadísticas del último video (views) — 1 llamada
+      const vRes  = await fetch(`${YT_BASE}/videos?part=statistics&id=${videoId}&key=${API_KEY}`);
+      const vData = await vRes.json();
+      const views = vData.items?.[0]?.statistics?.viewCount || 0;
+
+      featuredCard(videoId, title, published, views, latestWrap);
+    } else {
+      showError(latestWrap, 'No se pudo cargar el último video.');
+    }
+
+    // 4. Playlists / Cursos — 1 llamada
+    const plsRes  = await fetch(`${YT_BASE}/playlists?part=snippet,contentDetails&channelId=${CHANNEL_ID}&maxResults=20&key=${API_KEY}`);
+    const plsData = await plsRes.json();
+
+    if (plsData.items?.length) {
+      // Filtrar playlists con más de 1 video y que no sean "uploads"
+      const filtered = plsData.items.filter(p =>
+        (p.contentDetails?.itemCount || 0) > 1 &&
+        !p.snippet.title.toLowerCase().includes('favorito')
+      );
+      if (filtered.length) {
+        playlistsGrid.innerHTML = filtered.map(playlistCard).join('');
+      } else {
+        showError(playlistsGrid, 'No se encontraron cursos en el canal.');
+      }
+
+      // 5. Video más visto — buscar entre los primeros 50 videos del canal — 1 llamada
+      const recent50Res  = await fetch(`${YT_BASE}/playlistItems?part=contentDetails&playlistId=${UPLOADS_PL}&maxResults=50&key=${API_KEY}`);
+      const recent50Data = await recent50Res.json();
+
+      if (recent50Data.items?.length) {
+        const ids = recent50Data.items.map(i => i.contentDetails.videoId).join(',');
+        // 6. Stats de todos — 1 llamada batch (muy eficiente)
+        const statsRes  = await fetch(`${YT_BASE}/videos?part=statistics,snippet&id=${ids}&key=${API_KEY}`);
+        const statsData = await statsRes.json();
+
+        if (statsData.items?.length) {
+          // Ordenar por viewCount desc
+          const sorted = statsData.items.sort((a,b) =>
+            parseInt(b.statistics.viewCount||0) - parseInt(a.statistics.viewCount||0)
+          );
+          const top = sorted[0];
+          featuredCard(
+            top.id,
+            top.snippet.title,
+            top.snippet.publishedAt,
+            top.statistics.viewCount,
+            topWrap
+          );
+        } else {
+          showError(topWrap, 'No se pudo cargar el video más visto.');
+        }
+      }
+    } else {
+      showError(playlistsGrid, 'No se encontraron playlists en el canal.');
+      showError(topWrap, 'No se pudo cargar el video más visto.');
+    }
+
+  } catch(err) {
+    console.error('[SinPre YouTube]', err);
+    showError(latestWrap, 'Error de conexión. Verifica tu internet.');
+    showError(topWrap, 'Error de conexión.');
+    showError(playlistsGrid, 'Error de conexión.');
+  }
+}
+
+// Iniciar carga inmediatamente
+loadYouTubeData();
+
+/* ── Tema ── */
+(function(){
+  const s = localStorage.getItem('sp-tema') || 'light';
+  document.documentElement.setAttribute('data-theme', s);
+  function isDark(){ return document.documentElement.getAttribute('data-theme') === 'dark'; }
+  window.syncNav = function(){
+    const btn = document.getElementById('btn-tema');
+    const dBtn = document.getElementById('drawer-tema-btn');
+    if(btn) btn.textContent = isDark() ? '☀ Modo claro' : '🌙 Modo oscuro';
+    if(dBtn) dBtn.textContent = isDark() ? '☀ Modo claro' : '🌙 Modo oscuro';
+  };
+  window.toggleTema = function(){
+    const n = isDark() ? 'light' : 'dark';
+    document.documentElement.setAttribute('data-theme', n);
+    localStorage.setItem('sp-tema', n);
+    window.syncNav();
+  };
+  document.addEventListener('DOMContentLoaded', window.syncNav);
+})();
+
+/* ── Nav drawer ── */
+window.openNavDrawer  = () => document.getElementById('nav-drawer-overlay').classList.add('open');
+window.closeNavDrawer = () => document.getElementById('nav-drawer-overlay').classList.remove('open');
+</script>
+</body>
+</html>

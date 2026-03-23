@@ -160,6 +160,11 @@ nav{position:sticky;top:0;z-index:300;background:var(--nav-bg);backdrop-filter:b
 .cmt-author{font-size:.72rem;font-weight:600;color:var(--accent2);}
 .cmt-text{font-size:.82rem;color:var(--text);line-height:1.5;}
 .cmt-date{font-size:.65rem;color:var(--muted);margin-top:.1rem;}
+
+.cmt-dots-btn{background:none;border:none;color:var(--muted);cursor:pointer;padding:.15rem .3rem;border-radius:6px;font-size:.85rem;line-height:1;transition:background .15s;flex-shrink:0;margin-left:auto;}
+.cmt-dots-btn:hover{background:var(--bg3);color:var(--text);}
+.cmt-header{display:flex;align-items:center;gap:.3rem;}
+
 .cmt-compose{display:flex;gap:.5rem;margin-top:.5rem;}
 .cmt-inp{flex:1;background:var(--bg3);border:1.5px solid var(--border);border-radius:20px;padding:.38rem .85rem;color:var(--text);font-family:'DM Sans',sans-serif;font-size:.82rem;outline:none;transition:border-color .2s;}
 .cmt-inp:focus{border-color:var(--accent2);}
@@ -260,7 +265,7 @@ footer a{color:var(--accent2);text-decoration:none;}
   </a>
   <ul class="nav-links">
     <li><a href="index.html">Inicio</a></li>
-    <li><a href="clases-sin-pre.html">Clases</a></li>
+    <li><a href="clases.html">Clases</a></li>
     <li><a href="donativos.html" class="active">Comunidad</a></li>
     <li><a href="materiales.html">Material</a></li>
     <li><a href="ejercicios-practicas.html">Práctica</a></li>
@@ -300,8 +305,7 @@ footer a{color:var(--accent2);text-decoration:none;}
 
   <!-- Tabs -->
   <div class="tabs-row">
-    <button class="tab-pill active" onclick="setTab('general')" id="tab-general">💬 General</button>
-    <button class="tab-pill" onclick="setTab('feed')" id="tab-feed">📋 Feed</button>
+    <button class="tab-pill active" onclick="setTab('feed')" id="tab-feed">💬 Feed</button>
     <button class="tab-pill" onclick="setTab('apuntes')" id="tab-apuntes">📝 Apuntes</button>
     <button class="tab-pill" onclick="setTab('preguntas')" id="tab-preguntas">❓ Preguntas</button>
     <button class="tab-pill" onclick="setTab('quizzes')" id="tab-quizzes">🧠 Quizzes</button>
@@ -315,8 +319,7 @@ footer a{color:var(--accent2);text-decoration:none;}
     </div>
     <div class="compose-box" id="compose-box" style="display:none">
       <div class="compose-type-row">
-        <button class="ctype-btn active" onclick="setPostType('general')" id="ctype-general">💬 General</button>
-        <button class="ctype-btn" onclick="setPostType('apunte')" id="ctype-apunte">📝 Apunte</button>
+        <button class="ctype-btn active" onclick="setPostType('apunte')" id="ctype-apunte">📝 Apunte</button>
         <button class="ctype-btn" onclick="setPostType('pregunta')" id="ctype-pregunta">❓ Pregunta</button>
         <button class="ctype-btn" onclick="setPostType('quiz')" id="ctype-quiz">🧠 Quiz</button>
       </div>
@@ -432,11 +435,19 @@ const db  = getFirestore(app);
 const auth = getAuth(app);
 
 /* ── Estado global ── */
+
+const AVATAR_EMOJIS = {1:'🦁',2:'🐯',3:'🐻',4:'🐸',5:'🐢',6:'🐬',7:'🦋',8:'🦄',9:'🐙',10:'🦊',11:'🐺',12:'🦜',13:'🐧',14:'🦔',15:'🦅',16:'🦦',17:'🦩',18:'🪲'};
+function getAvatarEmoji(profile) {
+  if (!profile) return '👤';
+  if (profile.avatar && profile.avatar !== '👤') return profile.avatar;
+  return AVATAR_EMOJIS[profile.avatarId] || '👤';
+}
+
 let currentUser = null;
 let allPosts = [];
-let currentTab = 'general';
+let currentTab = 'feed';
 let currentSort = 'reciente';
-let currentPostType = 'general';
+let currentPostType = 'apunte';
 let quizAnswers = {}; // {postId: choiceIndex}
 const ADMIN_UID = 'Yx6LxvfXOZQMBU9nxszWZN3mtrz1';
 
@@ -569,7 +580,7 @@ function updateHeroStats() {
 /* ── Tabs y filtros ── */
 window.setTab = function(tab) {
   currentTab = tab;
-  ['general','feed','apuntes','preguntas','quizzes'].forEach(t => {
+  ['feed','apuntes','preguntas','quizzes'].forEach(t => {
     document.getElementById('tab-'+t).classList.toggle('active', t === tab);
   });
   renderFeed();
@@ -585,11 +596,11 @@ window.setSort = function(s) {
 /* ── Tipo de post ── */
 window.setPostType = function(type) {
   currentPostType = type;
-  ['general','apunte','pregunta','quiz'].forEach(t => {
+  ['apunte','pregunta','quiz'].forEach(t => {
     document.getElementById('ctype-'+t).classList.toggle('active', t === type);
   });
   document.getElementById('quiz-section').classList.toggle('visible', type === 'quiz');
-  const ph = { general:'Escribe un mensaje para la comunidad…', apunte:'Escribe aquí tu apunte (máx. 1500 palabras)…', pregunta:'Describe tu pregunta con detalle…', quiz:'Contexto o explicación adicional del quiz (opcional)…' };
+  const ph = { apunte:'Escribe aquí tu apunte (máx. 1500 palabras)…', pregunta:'Describe tu pregunta con detalle…', quiz:'Contexto o explicación adicional del quiz (opcional)…' };
   document.getElementById('compose-body').placeholder = ph[type];
 };
 
@@ -646,7 +657,7 @@ window.publishPost = async function() {
   const nombre   = profile ? (profile.nombre   || '') : '';
   const apellido  = profile ? (profile.apellido  || '') : '';
   const authorName = (nombre + ' ' + apellido).trim() || (profile && profile.displayName) || 'Anónimo';
-  const authorAvatar = profile ? (profile.avatar || '👤') : '👤';
+  const authorAvatar = getAvatarEmoji(profile);
 
   try {
     await addDoc(collection(db,'forum_posts'), {
@@ -684,11 +695,7 @@ window.renderFeed = function() {
   let posts = [...allPosts];
 
   // Filtro por tab
-  if (currentTab === 'feed') {
-    // todos
-  } else if (currentTab === 'general') {
-    posts = posts.filter(p => p.type === 'general');
-  } else {
+  if (currentTab !== 'feed') {
     const map = { apuntes:'apunte', quizzes:'quiz', preguntas:'pregunta' };
     posts = posts.filter(p => p.type === map[currentTab]);
   }
@@ -732,7 +739,7 @@ function renderPost(p) {
   const disliked = uid && (p.dislikes||[]).includes(uid);
   const likeCount  = (p.likes||[]).length;
   const dislikeCount = (p.dislikes||[]).length;
-  const typeBadge = { general:'badge-general General', apunte:'badge-apunte Apunte', quiz:'badge-quiz Quiz', pregunta:'badge-pregunta Pregunta' }[p.type] || 'badge-general General';
+  const typeBadge = { apunte:'badge-apunte Apunte', quiz:'badge-quiz Quiz', pregunta:'badge-pregunta Pregunta' }[p.type] || 'badge-general General';
   const [badgeClass, badgeLabel] = typeBadge.split(' ');
   const bodyTxt = (p.body||'').replace(/</g,'&lt;');
   const isLong  = (p.body||'').split(/\s+/).length > 80;
@@ -893,12 +900,20 @@ async function loadComments(pid) {
     const q = query(collection(db,'forum_posts',pid,'comments'), orderBy('createdAt','asc'));
     const snap = await getDocs(q);
     if (snap.empty) { listEl.innerHTML = '<p style="font-size:.78rem;color:var(--muted)">Sin comentarios aún.</p>'; return; }
+    const uid2 = currentUser ? currentUser.uid : null;
     listEl.innerHTML = snap.docs.map(d => {
       const c = d.data();
-      return `<div class="comment-item">
+      const canDelCmt = uid2 && (uid2 === ADMIN_UID || uid2 === c.authorId);
+      const dotsBtn = canDelCmt
+        ? `<button class="cmt-dots-btn" onclick="confirmDeleteComment('${d.id}','${pid.replace(/'/g,"\\'")}',event)" title="Eliminar comentario">⋯</button>`
+        : '';
+      return `<div class="comment-item" id="cmt-${d.id}">
         <div class="cmt-avatar">${c.authorAvatar||'👤'}</div>
         <div class="cmt-bubble">
-          <div class="cmt-author">${(c.authorName||'Anónimo').replace(/</g,'&lt;')}</div>
+          <div class="cmt-header">
+            <span class="cmt-author">${(c.authorName||'Anónimo').replace(/</g,'&lt;')}</span>
+            ${dotsBtn}
+          </div>
           <div class="cmt-text">${(c.text||'').replace(/</g,'&lt;')}</div>
           <div class="cmt-date">${timeAgo(c.createdAt)}</div>
         </div>
@@ -920,7 +935,7 @@ window.sendComment = async function(pid) {
   inp.value = '';
   const profile = window._getUserProfile ? window._getUserProfile() : null;
   const authorName   = profile ? (profile.nombre || profile.displayName || 'Anónimo') : 'Anónimo';
-  const authorAvatar = profile ? (profile.avatar || '👤') : '👤';
+  const authorAvatar = getAvatarEmoji(profile);
   try {
     await addDoc(collection(db,'forum_posts',pid,'comments'), {
       text, authorId: currentUser.uid, authorName, authorAvatar, createdAt: serverTimestamp()
@@ -929,6 +944,29 @@ window.sendComment = async function(pid) {
     await loadComments(pid);
   } catch(e) { showToast('Error al enviar comentario.'); }
 };
+
+
+/* ── Eliminar comentario ── */
+let _pendingDeleteCmt = null; // { cid, pid }
+window.confirmDeleteComment = function(cid, pid, e) {
+  if (e) e.stopPropagation();
+  _pendingDeleteCmt = { cid, pid };
+  // Reusar el mismo del-modal-overlay cambiando el texto
+  document.querySelector('.del-modal-title').textContent = '¿Eliminar comentario?';
+  document.querySelector('.del-modal-sub').textContent = 'Esta acción no se puede deshacer.';
+  document.getElementById('del-modal-overlay').classList.add('open');
+};
+
+async function deleteComment(cid, pid) {
+  const uid = currentUser ? currentUser.uid : null;
+  if (!uid) return;
+  try {
+    await deleteDoc(doc(db,'forum_posts',pid,'comments',cid));
+    await updateDoc(doc(db,'forum_posts',pid), { commentCount: increment(-1) });
+    await loadComments(pid);
+    showToast('🗑 Comentario eliminado');
+  } catch(e) { showToast('Error al eliminar comentario: ' + e.message); }
+}
 
 /* ── Compartir ── */
 window.toggleShare = function(pid, e) {
@@ -989,13 +1027,25 @@ window.confirmDelete = function(pid) {
 };
 window.closeDel = function() {
   _pendingDeleteId = null;
+  _pendingDeleteCmt = null;
+  document.querySelector('.del-modal-title').textContent = '¿Eliminar publicación?';
+  document.querySelector('.del-modal-sub').textContent = 'Esta acción no se puede deshacer. La publicación y sus comentarios serán eliminados permanentemente.';
   document.getElementById('del-modal-overlay').classList.remove('open');
 };
 document.getElementById('btn-del-confirm').addEventListener('click', async () => {
-  if (!_pendingDeleteId) return;
-  const pid = _pendingDeleteId;
-  closeDel();
-  await deletePost(pid);
+  if (_pendingDeleteCmt) {
+    const { cid, pid } = _pendingDeleteCmt;
+    _pendingDeleteCmt = null;
+    closeDel();
+    // Restaurar textos originales del modal
+    document.querySelector('.del-modal-title').textContent = '¿Eliminar publicación?';
+    document.querySelector('.del-modal-sub').textContent = 'Esta acción no se puede deshacer. La publicación y sus comentarios serán eliminados permanentemente.';
+    await deleteComment(cid, pid);
+  } else if (_pendingDeleteId) {
+    const pid = _pendingDeleteId;
+    closeDel();
+    await deletePost(pid);
+  }
 });
 // Cerrar al click fuera
 document.getElementById('del-modal-overlay').addEventListener('click', function(e){

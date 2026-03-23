@@ -5,7 +5,7 @@
   <link rel="icon" type="image/png" sizes="32x32" href="favicon.png">
   <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>I. Relámpago 2026 2026 · Sin-Presupuesto</title>
+<title>I. Relámpago 2026 · Sin-Presupuesto</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,700;1,9..144,400&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
@@ -238,7 +238,7 @@ footer a:hover{text-decoration:underline;}
   <a class="nav-logo" href="index.html">
     <img src="logos/filosofia.png" alt="" onerror="this.style.display='none'"><span class="nav-logo-text">Sin-Presupuesto</span>
   </a>
-  <ul class="nav-links"><li><a href="index.html">Inicio</a></li><li><a href="clases-sin-pre.html">Clases</a></li><li><a href="donativos.html">Comunidad</a></li><li><a href="materiales.html" class="active">Material</a></li><li><a href="ejercicios-practicas.html">Práctica</a></li></ul>
+  <ul class="nav-links"><li><a href="index.html">Inicio</a></li><li><a href="clases.html">Clases</a></li><li><a href="donativos.html">Comunidad</a></li><li><a href="materiales.html" class="active">Material</a></li><li><a href="ejercicios-practicas.html">Práctica</a></li></ul>
   <div class="nav-right">
     <button class="nav-hamburger" onclick="openNavDrawer()" aria-label="Menú"><span></span><span></span><span></span></button>
     <button id="btn-tema" onclick="toggleTema()">🌙 Modo oscuro</button>
@@ -398,8 +398,6 @@ footer a:hover{text-decoration:underline;}
 </footer>
 
 <script src="editor.js"></script>
-<script type="module" src="firebase-auth.js"></script>
-
 <script>
 const MODULES=[
   {"id":"temario_relampago","emoji":"📋","bg":"#dce8f8","title":"Temario Relámpago - SinPre","desc":"Temario del curso intensivo","files":[
@@ -434,7 +432,38 @@ const MODULES=[
     {"n":"Tomo III — Biología","url":"https://drive.google.com/file/d/1pa8i4x6bZLQvNU4HE1IpWFTwHjfvgGpo/view?usp=sharing","type":"PDF","ext":false},
     {"n":"Tomo IV — Física","url":"https://drive.google.com/file/d/12bH9qyzhWpdPdRGbBgFfl_H-FLh-lvTo/view?usp=sharing","type":"PDF","ext":false},
     {"n":"Tomo V — Física","url":"https://drive.google.com/file/d/1tF2wetBh6anVTeRWcoUgs_ULI0fNIqJg/view?usp=sharing","type":"PDF","ext":false}
-  ]}else{
+  ]}
+];
+const PAGE_KEY='relampago_sinpre';
+const HOLD_MS=400;
+let checked={},order=MODULES.map(m=>m.id),fileOrders={},heroMode='bar';
+window.MODULES=MODULES;window.order=order;window.fileOrders=fileOrders;window.checked=checked;
+let openCardId=null,activeModal=null,saveTimer=null;
+
+window._pageReady=async function(user,db,docFn,setFn,getFn){
+  window._fdb=db;window._fdoc=docFn;window._fset=setFn;window._cu=user;window._pageBooted=true;
+  MODULES.forEach(m=>{fileOrders[m.id]=m.files.map((_,i)=>i);});
+  if(user&&db&&getFn){
+    MODULES.forEach(m=>{checked[m.id]=JSON.parse(localStorage.getItem('sp_'+PAGE_KEY+'_'+m.id)||'null')||{};});
+    order=JSON.parse(localStorage.getItem('sp_'+PAGE_KEY+'_order')||'null')||MODULES.map(m=>m.id);
+    heroMode=localStorage.getItem('sp_global_hero')||'bar';
+    applyHeroMode();renderGrid();
+    try{
+      var ref=docFn(db,'usuarios',user.uid,'progress',PAGE_KEY);
+      var snap=await getFn(ref);
+      if(snap.exists()){
+        var d=snap.data();
+        if(d.checked)MODULES.forEach(m=>{if(d.checked[m.id]!==undefined)checked[m.id]=d.checked[m.id];});
+        if(d.order&&Array.isArray(d.order))order=d.order;
+        if(d.fileOrders)MODULES.forEach(m=>{if(d.fileOrders[m.id])fileOrders[m.id]=d.fileOrders[m.id];});
+        if(d.heroMode)heroMode=d.heroMode;
+        MODULES.forEach(m=>localStorage.setItem('sp_'+PAGE_KEY+'_'+m.id,JSON.stringify(checked[m.id])));
+        localStorage.setItem('sp_'+PAGE_KEY+'_order',JSON.stringify(order));
+        localStorage.setItem('sp_global_hero',heroMode);
+      }
+      applyHeroMode();renderGrid();
+    }catch(e){console.warn('[SP] Firestore error:',e);}
+  }else{
     MODULES.forEach(m=>{checked[m.id]=JSON.parse(localStorage.getItem('sp_'+PAGE_KEY+'_'+m.id)||'null')||{};});
     order=JSON.parse(localStorage.getItem('sp_'+PAGE_KEY+'_order')||'null')||MODULES.map(m=>m.id);
     heroMode=localStorage.getItem('sp_global_hero')||'bar';
@@ -585,6 +614,20 @@ function openNavDrawer(){document.getElementById('nav-drawer-overlay').classList
 function closeNavDrawer(){document.getElementById('nav-drawer-overlay').classList.remove('open');}
 window.openNavDrawer=openNavDrawer;window.closeNavDrawer=closeNavDrawer;
 
+// Renderizar inmediatamente con localStorage (sin esperar auth)
+document.addEventListener('DOMContentLoaded', function() {
+  if (!window._pageBooted) {
+    MODULES.forEach(m => {
+      checked[m.id] = JSON.parse(localStorage.getItem('sp_' + PAGE_KEY + '_' + m.id) || 'null') || {};
+      fileOrders[m.id] = m.files.map((_, i) => i);
+    });
+    order = JSON.parse(localStorage.getItem('sp_' + PAGE_KEY + '_order') || 'null') || MODULES.map(m => m.id);
+    heroMode = localStorage.getItem('sp_global_hero') || 'bar';
+    applyHeroMode();
+    renderGrid();
+  }
+});
+
 (function(){
   var s=localStorage.getItem('sp-tema')||'light';
   document.documentElement.setAttribute('data-theme',s);
@@ -595,5 +638,6 @@ window.openNavDrawer=openNavDrawer;window.closeNavDrawer=closeNavDrawer;
   window.toggleTema=function(){var n=isDark()?'light':'dark';document.documentElement.setAttribute('data-theme',n);localStorage.setItem('sp-tema',n);syncBtn();};
 })();
 </script>
+<script type="module" src="firebase-auth.js"></script>
 </body>
 </html>
