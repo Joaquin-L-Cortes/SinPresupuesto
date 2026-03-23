@@ -9,7 +9,7 @@
 
   // ── CONFIGURACIÓN ─────────────────────────────────
   const GEMINI_KEY = 'AIzaSyCSm8YJLqIocYlU5cmpty_f6xCEa2QL_7s'; // ← Pega aquí tu API key de Google AI Studio
-  const GEMINI_URL = 'https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent';
+  const GEMINI_URL = 'https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash-latest:generateContent';
   // ──────────────────────────────────────────────────
 
   // Catálogo completo de archivos (auto-generado)
