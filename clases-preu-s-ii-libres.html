@@ -431,11 +431,12 @@ function requireAuth(cb){
     clearTimeout(window._authToastTimer);
     window._authToastTimer=setTimeout(()=>toast.classList.remove('show'),2800);
   }
-  if(window.openStudentModal) window.openStudentModal();
-  else {
-    // firebase-auth.js aún no cargó — esperar un tick
-    setTimeout(()=>{if(window.openStudentModal)window.openStudentModal();},600);
+  // Abrir modal: si firebase-auth.js aún no cargó, usar cola de espera
+  function tryOpen() {
+    if(window.openStudentModal) { window.openStudentModal(); }
+    else { setTimeout(tryOpen, 50); }
   }
+  tryOpen();
 }
 
 /* ── DATOS ── */
