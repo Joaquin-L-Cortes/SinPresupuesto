@@ -275,7 +275,7 @@ footer a:hover{text-decoration:underline;}
       <span></span><span></span><span></span>
     </button>
     <button id="btn-tema" onclick="toggleTema()">🌙 Modo oscuro</button>
-    <button id="btn-avance" style="display:none">📋 Avance</button>
+    <button id="btn-avance" style="display:none;align-items:center;"></button>
     <button id="btn-student-login">👤 Ingresar</button>
   </div>
 </nav>
@@ -507,7 +507,7 @@ window._pageReady=function(user,db,docFn,setFn){
     fileOrders[m.id]=m.files.map((_,i)=>i);
   });
   order=JSON.parse(localStorage.getItem('sp_'+PAGE_KEY+'_order')||'null')||MODULES.map(m=>m.id);
-  heroMode=localStorage.getItem('sp_'+PAGE_KEY+'_hero')||'bar';
+  heroMode=localStorage.getItem('sp_global_hero')||'bar';
   // Si hay datos en Firestore los sobrescribe
   applyHeroMode();renderGrid();
 };
@@ -521,7 +521,7 @@ setTimeout(()=>{
       fileOrders[m.id]=m.files.map((_,i)=>i);
     });
     order=JSON.parse(localStorage.getItem('sp_'+PAGE_KEY+'_order')||'null')||MODULES.map(m=>m.id);
-    heroMode=localStorage.getItem('sp_'+PAGE_KEY+'_hero')||'bar';
+    heroMode=localStorage.getItem('sp_global_hero')||'bar';
     applyHeroMode();renderGrid();
   }
 },2000);
@@ -536,16 +536,41 @@ function showBadge(msg,cls){
 async function saveAll(){
   MODULES.forEach(m=>localStorage.setItem('sp_'+PAGE_KEY+'_'+m.id,JSON.stringify(checked[m.id])));
   localStorage.setItem('sp_'+PAGE_KEY+'_order',JSON.stringify(order));
-  localStorage.setItem('sp_'+PAGE_KEY+'_hero',heroMode);
-  var u=window._cu;if(!u||!window._fdb)return;
+  localStorage.setItem('sp_global_hero',heroMode);
+  var u=window._cu;if(!u||!window._fdb){
+    // Sin sesión: guardar solo en localStorage, sin badge de error
+    return;
+  }
   try{
     showBadge('⟳ Guardando…','');
-    await window._fset(window._fdoc(window._fdb,'users',u.uid,'progress',PAGE_KEY),
+    await window._fset(window._fdoc(window._fdb,'usuarios',u.uid,'progress',PAGE_KEY),
       {checked,order,heroMode,fileOrders,updatedAt:Date.now()},{merge:true});
     showBadge('✓ Guardado','ok');
-  }catch(e){showBadge('⚠ Local','err');}
+  }catch(e){
+    // Error real de red/Firestore: mostrar solo si había usuario
+    showBadge('⚠ Sin conexión','err');
+  }
 }
-function scheduleSave(){clearTimeout(saveTimer);saveTimer=setTimeout(saveAll,800);}
+function scheduleSave(){
+  clearTimeout(saveTimer);
+  saveTimer=setTimeout(async function(){
+    await saveAll();
+    // Actualizar botón de avance global con el progreso nuevo de esta página
+    if(window._loadSectionProgress&&window._cu){
+      var pageKey=PAGE_KEY;
+      var m=window._fdb?window._fdoc(window._fdb,'usuarios',window._cu.uid,'progress',pageKey):null;
+      // Actualizar _sectionProgress para esta página con datos locales
+      var done=0,tot=0;
+      MODULES.forEach(function(mod){
+        tot+=mod.files.length;
+        done+=doneOf(mod.id);
+      });
+      if(window._sectionProgress===undefined)window._sectionProgress={};
+      window._sectionProgress[pageKey]={done:done,total:tot};
+      window.updateAvanceBtn&&window.updateAvanceBtn(document.getElementById('btn-avance'),null);
+    }
+  },800);
+}
 
 /* ── HERO MODE ── */
 function toggleHeroMode(){heroMode=heroMode==='bar'?'ring':'bar';applyHeroMode();scheduleSave();renderGrid();}

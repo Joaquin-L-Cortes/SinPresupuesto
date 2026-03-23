@@ -59,33 +59,29 @@ const AVATARS = [
   { id:18, color:'#6c3483', bg:'#f0e8f8', emoji:'🪲' },
 ];
 
-// MATERIALES: pageKey = clave Firestore progress/{pageKey}, total = archivos en esa sección
 const MATERIALES = [
-  { id:'motivacion-guia',     label:'I. Motivación/Guía',            pageKey:'motivacion_guia',                           total:0   },
-  { id:'clases-sin-pre',      label:'II. Clases Sin-Pre',            pageKey:'clases_sin_pre',                            total:72  },
-  { id:'temarios',            label:'III. Temarios',                 pageKey:'temarios',                                  total:6   },
-  { id:'admision-y-examenes', label:'IV. Admisión y Exámenes',       pageKey:'admision_y_examenes_un',                    total:37  },
-  { id:'clases-preu-s-i',     label:"V. Clases PreU's I",           pageKey:'clases_preu_s_i',                           total:45  },
-  { id:'clases-preu-s-ii',    label:"VI. Clases PreU's II (Libres)", pageKey:'clases_preu_s_ii_libres',                   total:11  },
-  { id:'recursos-udea',       label:'VII. Recursos UdeA',            pageKey:'recursos_udea',                             total:30  },
-  { id:'diapositivas',        label:'VIII. Diapositivas con TODO',   pageKey:'diapositivas_con_todo',                     total:50  },
-  { id:'apuntes',             label:'IX. Apuntes Estudio',           pageKey:'apuntes_estudio_un',                        total:29  },
-  { id:'textos',              label:'X. Textos Varios',              pageKey:'textos_varios_practica_textual',            total:44  },
-  { id:'modulos-teoricos',    label:'XI. Módulos Teóricos',          pageKey:'modulos_teoricos',                          total:56  },
-  { id:'modulos-especiales',  label:'XII. Módulos Especiales',       pageKey:'modulos_especiales',                        total:58  },
-  { id:'ejercicios',          label:'XIII. Ejercicios Prácticas',    pageKey:'ejercicios_practicas',                      total:115 },
-  { id:'simulacros',          label:'XIV. Simulacros',               pageKey:'simulacros_un',                             total:28  },
-  { id:'simulacros-cal',      label:'XV. Simulacros Calificados',    pageKey:'simulacros_calificados_un',                 total:108 },
-  { id:'apps',                label:"XVI. App's Estudio (Android)", pageKey:'app_s_estudio_android',                     total:27  },
-  { id:'clases-vivo',         label:'Clases en vivo/grabadas',       pageKey:'clases_en_vivo_grabadas_sin_presupuesto_un',total:0   },
-  { id:'donativos',           label:'Donativos',                     pageKey:'donativos',                                 total:0   },
-  { id:'formulario',          label:'Formulario Económico',          pageKey:'formulario_economico_1',                    total:0   },
-  { id:'medios',              label:'Medios de Sin-Presupuesto',     pageKey:'medios_de_sin_presupuesto_un',              total:0   },
-  { id:'tomos',               label:'Tomos',                         pageKey:'tomos',                                     total:5   },
+  { id:'motivacion-guia',     label:'I. Motivación/Guía' },
+  { id:'clases-sin-pre',      label:'II. Clases Sin-Pre' },
+  { id:'temarios',            label:'III. Temarios' },
+  { id:'admision-y-examenes', label:'IV. Admisión y Exámenes' },
+  { id:'clases-preu-s-i',     label:"V. Clases PreU's I" },
+  { id:'clases-preu-s-ii',    label:"VI. Clases PreU's II (Libres)" },
+  { id:'recursos-udea',       label:'VII. Recursos UdeA' },
+  { id:'diapositivas',        label:'VIII. Diapositivas con TODO' },
+  { id:'apuntes',             label:'IX. Apuntes Estudio' },
+  { id:'textos',              label:'X. Textos Varios' },
+  { id:'modulos-teoricos',    label:'XI. Módulos Teóricos' },
+  { id:'modulos-especiales',  label:'XII. Módulos Especiales' },
+  { id:'ejercicios',          label:'XIII. Ejercicios Prácticas' },
+  { id:'simulacros',          label:'XIV. Simulacros' },
+  { id:'simulacros-cal',      label:'XV. Simulacros Calificados' },
+  { id:'apps',                label:"XVI. App's Estudio (Android)" },
+  { id:'clases-vivo',         label:'Clases en vivo/grabadas' },
+  { id:'donativos',           label:'Donativos' },
+  { id:'formulario',          label:'Formulario Económico' },
+  { id:'medios',              label:'Medios de Sin-Presupuesto' },
+  { id:'tomos',               label:'Tomos' },
 ];
-
-// Cache de progreso por sección (se llena al abrir el modal)
-let _sectionProgress = {}; // { pageKey: { done, total } }
 
 let currentUser  = null;
 let userProfile  = null;
@@ -185,10 +181,7 @@ function updateNav(user, profile) {
       btnIn.innerHTML = label;
       btnIn.style.cssText = `background:${av.bg};border:1.5px solid ${av.color};color:${av.color};font-family:'DM Sans',sans-serif;font-size:0.8rem;padding:0.35rem 0.75rem;border-radius:20px;cursor:pointer;display:flex;align-items:center;gap:0.3rem;white-space:nowrap;${isMobile ? 'max-width:72px;' : 'max-width:130px;'}overflow:hidden;height:2rem;line-height:1;flex-shrink:0;`;
       btnIn.onclick = openPerfilModal;
-      if (btnAv) {
-        btnAv.style.display = 'flex';
-        updateAvanceBtn(btnAv, userProfile);
-      }
+      if (btnAv)  btnAv.style.display = 'flex';
     }
   } else {
     // No logueado
@@ -394,118 +387,33 @@ async function doForgotPassword() {
   } catch(e) { err.textContent = 'No se encontró ese correo.'; err.style.color = '#c0392b'; }
 }
 
-// ─── AVANCE GLOBAL: calcula done/total leyendo Firestore ──────
-function _countDone(checkedObj) {
-  let n = 0;
-  Object.values(checkedObj || {}).forEach(sub => {
-    if (typeof sub === 'object') Object.values(sub).forEach(v => { if (v) n++; });
-    else if (sub) n++;
-  });
-  return n;
-}
-
-async function _loadSectionProgress(uid) {
-  if (!uid || !window._fdb) return;
-  const withFiles = MATERIALES.filter(m => m.total > 0);
-  await Promise.all(withFiles.map(async m => {
-    try {
-      const snap = await getDoc(doc(window._fdb, 'usuarios', uid, 'progress', m.pageKey));
-      const data = snap.exists() ? snap.data() : {};
-      const done = _countDone(data.checked);
-      _sectionProgress[m.pageKey] = { done, total: m.total };
-    } catch(e) {
-      _sectionProgress[m.pageKey] = { done: 0, total: m.total };
-    }
-  }));
-}
-
-function _globalPct() {
-  const withFiles = MATERIALES.filter(m => m.total > 0);
-  const totalAll  = withFiles.reduce((a, m) => a + m.total, 0);
-  const doneAll   = withFiles.reduce((a, m) => {
-    const sp = _sectionProgress[m.pageKey];
-    return a + (sp ? sp.done : 0);
-  }, 0);
-  return totalAll > 0 ? Math.round(doneAll / totalAll * 100) : 0;
-}
-
-function updateAvanceBtn(btn, profile) {
-  if (!btn) return;
-  const pct = _globalPct();
-  const pctLabel = String(pct).padStart(2, '0') + ' %';
-  const fillW = Math.max(pct, pct > 0 ? 4 : 0);
-  // Usar color del avatar del usuario, o accent2 como fallback
-  const p = profile || window._getUserProfile && window._getUserProfile();
-  const av = p ? getAvatar(p.avatarId || 1) : null;
-  const fillColor = av ? av.color : 'var(--accent2)';
-  btn.innerHTML = `
-    <span style="display:inline-flex;align-items:center;gap:.45rem;">
-      <span style="position:relative;display:inline-flex;align-items:center;width:26px;height:13px;flex-shrink:0;">
-        <span style="position:absolute;inset:0;border:2px solid ${fillColor};border-radius:3px;"></span>
-        <span style="position:absolute;right:-4px;top:50%;transform:translateY(-50%);width:3px;height:6px;background:${fillColor};border-radius:0 2px 2px 0;"></span>
-        <span style="position:absolute;left:2px;top:2px;bottom:2px;width:calc(${fillW}% - 4px + ${fillW/100}*18px);max-width:18px;min-width:0px;background:${fillColor};border-radius:1.5px;transition:width .5s ease;opacity:0.9;"></span>
-      </span>
-      <span style="font-variant-numeric:tabular-nums;font-weight:600;font-size:.78rem;color:${fillColor};">${pctLabel}</span>
-    </span>`;
-}
-
 // ─── MODAL AVANCE ─────────────────────────────────────────
-async function openAvanceModal() {
+function openAvanceModal() {
   if (!currentUser || !userProfile) return;
+  const avance = userProfile.avance || {};
+  const total  = MATERIALES.length;
+  const hechos = MATERIALES.filter(m => avance[m.id]).length;
+  const pct    = Math.round((hechos / total) * 100);
+  document.getElementById('avance-progress-bar').style.width = pct + '%';
+  document.getElementById('avance-progress-text').textContent = `${hechos} de ${total} completados (${pct}%)`;
+  document.getElementById('avance-list').innerHTML = MATERIALES.map(m => `
+    <label class="avance-item ${avance[m.id] ? 'done' : ''}">
+      <input type="checkbox" data-id="${m.id}" ${avance[m.id] ? 'checked' : ''}>
+      <span>${m.label}</span>
+    </label>`).join('');
   document.getElementById('avance-modal').classList.add('open');
-
-  // Mostrar skeleton mientras carga
-  const listEl = document.getElementById('avance-list');
-  listEl.innerHTML = '<p style="color:var(--muted);font-size:.85rem;text-align:center;padding:1rem">Cargando progreso…</p>';
-
-  // Cargar datos reales de Firestore
-  await _loadSectionProgress(currentUser.uid);
-
-  const withFiles = MATERIALES.filter(m => m.total > 0);
-  const totalAll  = withFiles.reduce((a, m) => a + m.total, 0);
-  const doneAll   = withFiles.reduce((a, m) => {
-    const sp = _sectionProgress[m.pageKey];
-    return a + (sp ? sp.done : 0);
-  }, 0);
-  const pctGlobal = totalAll > 0 ? Math.round(doneAll / totalAll * 100) : 0;
-
-  // Barra global
-  document.getElementById('avance-progress-bar').style.width = pctGlobal + '%';
-  document.getElementById('avance-progress-text').textContent =
-    `${doneAll} de ${totalAll} archivos completados · ${pctGlobal} %`;
-
-  // Lista de secciones
-  listEl.innerHTML = withFiles.map(m => {
-    const sp   = _sectionProgress[m.pageKey] || { done: 0, total: m.total };
-    const pct  = sp.total > 0 ? Math.round(sp.done / sp.total * 100) : 0;
-    const done = sp.done;
-    const tot  = sp.total;
-    const fillW = Math.max(pct, done > 0 ? 3 : 0);
-    const color = pct === 100 ? 'var(--green,#4ade80)' : 'var(--accent2)';
-    return `
-    <div class="avance-section-item ${pct===100?'done':''}">
-      <div class="asi-top">
-        <span class="asi-label">${m.label}</span>
-        <span class="asi-pct">${String(pct).padStart(2,'0')} %</span>
-      </div>
-      <div class="asi-track">
-        <div class="asi-fill" style="width:${fillW}%;background:${color};"></div>
-      </div>
-      <div class="asi-sub">${done} de ${tot} archivos</div>
-    </div>`;
-  }).join('');
-
-  // Actualizar botón del nav con color del avatar
-  const btnAv = document.getElementById('btn-avance');
-  updateAvanceBtn(btnAv, userProfile);
-  // También colorear mini-barras del modal con color del avatar
-  const av2 = userProfile ? getAvatar(userProfile.avatarId || 1) : null;
-  const avColor = av2 ? av2.color : 'var(--accent2)';
-  document.querySelectorAll('.asi-fill').forEach(el => {
-    if (!el.closest('.avance-section-item.done')) el.style.background = avColor;
+  document.querySelectorAll('.avance-item input').forEach(cb => {
+    cb.addEventListener('change', async () => {
+      userProfile.avance[cb.dataset.id] = cb.checked;
+      cb.closest('.avance-item').classList.toggle('done', cb.checked);
+      const h = MATERIALES.filter(m => userProfile.avance[m.id]).length;
+      const p = Math.round((h / total) * 100);
+      document.getElementById('avance-progress-bar').style.width = p + '%';
+      document.getElementById('avance-progress-text').textContent = `${h} de ${total} completados (${p}%)`;
+      await saveAvance(currentUser.uid, userProfile.avance);
+    });
   });
 }
-
 function closeAvanceModal() { document.getElementById('avance-modal').classList.remove('open'); }
 
 // ─── MODAL PERFIL ─────────────────────────────────────────
@@ -537,9 +445,9 @@ function renderPerfilView() {
   document.getElementById('perfil-edit-btns').style.display = 'none';
 }
 function enterEditMode() {
-  // Modo edición compacto — mismo tamaño de modal
+  // Ampliar modal con clase CSS
   const box = document.getElementById('perfil-modal-box');
-  // No ampliar el modal, el diseño cabe en el mismo ancho
+  if (box) box.classList.add('editing');
   tempAvatarId = userProfile.avatarId || 1;
   document.getElementById('edit-nombre').value   = userProfile.nombre   || '';
   document.getElementById('edit-apellido').value = userProfile.apellido || '';
@@ -555,15 +463,9 @@ function enterEditMode() {
     editPreview.style.borderColor  = currentAv.color;
   }
 
-  // Picker compacto: botones más pequeños para caber en 1 fila de 9
-  document.getElementById('edit-avatar-picker').innerHTML = AVATARS.map(a => `
-    <button class="avatar-opt ${a.id === tempAvatarId ? 'av-selected' : ''}"
-      data-id="${a.id}" data-color="${a.color}" data-bg="${a.bg}"
-      style="background:${a.bg};border:2px solid ${a.id === tempAvatarId ? a.color : 'transparent'};
-             width:100%;aspect-ratio:1;border-radius:50%;font-size:.95rem;cursor:pointer;transition:all .15s;padding:0;line-height:1;display:flex;align-items:center;justify-content:center;"
-    >${a.emoji}</button>`).join('');
+  document.getElementById('edit-avatar-picker').innerHTML = renderAvatarPicker(tempAvatarId);
 
-  // Inicializar picker
+  // Inicializar picker de avatares directamente aquí
   document.querySelectorAll('#edit-avatar-picker .avatar-opt').forEach(btn => {
     btn.addEventListener('click', () => {
       document.querySelectorAll('#edit-avatar-picker .avatar-opt').forEach(b => {
@@ -798,31 +700,18 @@ function injectModals() {
     </div>
   </div>
 
-  <!-- MODAL AVANCE -->
-  <style>
-    .avance-section-item{background:var(--bg3);border:1px solid var(--border);border-radius:12px;padding:.7rem .9rem;transition:border-color .2s;}
-    .avance-section-item.done{border-color:rgba(74,222,128,.4);}
-    .asi-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:.4rem;}
-    .asi-label{font-size:.82rem;font-weight:600;color:var(--text);}
-    .asi-pct{font-size:.82rem;font-weight:700;color:var(--accent2);font-variant-numeric:tabular-nums;}
-    .avance-section-item.done .asi-pct{color:var(--green,#4ade80);}
-    .asi-track{height:7px;background:var(--border);border-radius:100px;overflow:hidden;margin-bottom:.3rem;}
-    .asi-fill{height:100%;border-radius:100px;transition:width .5s ease;}
-    .asi-sub{font-size:.72rem;color:var(--muted);}
-  </style>
+  <!-- MODAL AVANCE --><!-- MODAL AVANCE -->
   <div class="modal-overlay" id="avance-modal">
-    <div class="modal" style="max-width:500px;overflow:hidden;">
-      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:1rem;position:sticky;top:0;background:var(--bg2);z-index:50;padding-top:.25rem;margin-left:-2rem;margin-right:-2rem;padding-left:2rem;padding-right:2rem">
+    <div class="modal" style="max-width:480px">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:1.25rem;position:sticky;top:0;background:var(--bg2);z-index:50;padding-top:.25rem;margin-left:-2rem;margin-right:-2rem;padding-left:2rem;padding-right:2rem">
         <h2 style="font-family:'Fraunces',serif;color:var(--accent)">Mi avance</h2>
         <button onclick="closeAvanceModal()" style="background:none;border:none;color:var(--muted);font-size:1.2rem;cursor:pointer;">✕</button>
       </div>
-      <!-- Barra global -->
-      <div style="background:var(--bg3);border-radius:100px;height:10px;margin-bottom:.4rem;overflow:hidden">
-        <div id="avance-progress-bar" style="height:100%;background:var(--accent2);border-radius:100px;transition:width .5s ease;width:0%"></div>
+      <div style="background:var(--bg3);border-radius:100px;height:10px;margin-bottom:.5rem;overflow:hidden">
+        <div id="avance-progress-bar" style="height:100%;background:var(--accent2);border-radius:100px;transition:width .4s;width:0%"></div>
       </div>
-      <p id="avance-progress-text" style="font-size:.78rem;color:var(--muted);margin-bottom:1rem;font-weight:500;"></p>
-      <!-- Lista de secciones -->
-      <div id="avance-list" style="display:flex;flex-direction:column;gap:.5rem;max-height:62vh;overflow-y:auto;padding-right:.25rem;"></div>
+      <p id="avance-progress-text" style="font-size:.82rem;color:var(--muted);margin-bottom:1.25rem"></p>
+      <div id="avance-list" style="display:flex;flex-direction:column;gap:.4rem"></div>
     </div>
   </div>
 
@@ -856,30 +745,35 @@ function injectModals() {
         <button class="btn-submit" style="background:#e74c3c" onclick="doLogout()">Cerrar sesión</button>
       </div>
 
-      <!-- VISTA EDICIÓN — compacta, sin scroll -->
+      <!-- VISTA EDICIÓN -->
       <div id="perfil-edit" style="display:none">
-        <!-- Fila superior: avatar preview pequeño + picker inline -->
-        <div style="display:flex;align-items:center;gap:.75rem;margin-bottom:.75rem;padding:.6rem;background:var(--bg3);border-radius:12px;">
-          <div id="edit-avatar-preview" style="font-size:2rem;width:52px;height:52px;border-radius:50%;display:flex;align-items:center;justify-content:center;background:var(--bg2);border:2px solid var(--border);transition:all .3s;flex-shrink:0;">🦁</div>
-          <div style="flex:1;min-width:0;">
-            <p style="font-size:.68rem;color:var(--muted);font-weight:600;text-transform:uppercase;letter-spacing:.05em;margin-bottom:.3rem;">Elige tu avatar</p>
-            <div id="edit-avatar-picker" style="display:grid;grid-template-columns:repeat(9,1fr);gap:.25rem;"></div>
+        <div class="reg-layout">
+          <!-- Columna izquierda: avatar preview grande -->
+          <div class="reg-avatar-col">
+            <div id="edit-avatar-preview" style="font-size:4rem;width:100px;height:100px;border-radius:50%;display:flex;align-items:center;justify-content:center;background:var(--bg3);border:2px solid var(--border);transition:all .3s;">🦁</div>
+            <p style="font-size:.75rem;color:var(--muted);margin-top:.5rem;text-align:center;">Tu avatar</p>
+          </div>
+          <!-- Columna centro: campos -->
+          <div class="reg-fields-col">
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:.6rem">
+              <div class="form-group"><label>Nombre</label><input type="text" id="edit-nombre" inputmode="text"></div>
+              <div class="form-group"><label>Apellido</label><input type="text" id="edit-apellido" inputmode="text"></div>
+            </div>
+            <div class="form-group"><label>Correo</label><input type="email" id="edit-email" inputmode="email"></div>
+            <div class="form-group"><label>Género</label>
+              <select id="edit-genero" style="width:100%;background:var(--bg3);border:1.5px solid var(--border);border-radius:10px;padding:.65rem .9rem;color:var(--text);font-family:'DM Sans',sans-serif;font-size:.9rem;outline:none;">
+                <option value="M">Masculino</option><option value="F">Femenino</option>
+                <option value="NB">No binario</option><option value="NR">Prefiero no responder</option>
+              </select>
+            </div>
+          </div>
+          <!-- Columna derecha: picker de avatares -->
+          <div class="reg-picker-col">
+            <p style="font-size:.75rem;color:var(--muted);margin-bottom:.5rem;font-weight:600;text-transform:uppercase;letter-spacing:.05em;">Elige tu avatar</p>
+            <div id="edit-avatar-picker" style="display:grid;grid-template-columns:repeat(3,1fr);gap:.35rem;"></div>
           </div>
         </div>
-        <!-- Campos compactos -->
-        <div style="display:grid;grid-template-columns:1fr 1fr;gap:.5rem;margin-bottom:.5rem;">
-          <div class="form-group" style="margin-bottom:0"><label>Nombre</label><input type="text" id="edit-nombre" inputmode="text"></div>
-          <div class="form-group" style="margin-bottom:0"><label>Apellido</label><input type="text" id="edit-apellido" inputmode="text"></div>
-        </div>
-        <div class="form-group" style="margin-bottom:.5rem;"><label>Correo</label><input type="email" id="edit-email" inputmode="email"></div>
-        <div class="form-group" style="margin-bottom:.5rem;">
-          <label>Género</label>
-          <select id="edit-genero" style="width:100%;background:var(--bg3);border:1.5px solid var(--border);border-radius:10px;padding:.5rem .9rem;color:var(--text);font-family:'DM Sans',sans-serif;font-size:.88rem;outline:none;">
-            <option value="M">Masculino</option><option value="F">Femenino</option>
-            <option value="NB">No binario</option><option value="NR">Prefiero no responder</option>
-          </select>
-        </div>
-        <p style="font-size:.82rem;min-height:1em;margin-top:.25rem" id="perfil-edit-err"></p>
+        <p style="font-size:.82rem;min-height:1.2em;margin-top:.75rem" id="perfil-edit-err"></p>
       </div>
       <!-- Botones: se muestran según el modo -->
       <div id="perfil-edit-btns" style="display:none;flex-direction:column;gap:.6rem;margin-top:.75rem;">
@@ -1117,10 +1011,6 @@ domReady(() => {
       userProfile = await ensureProfile(user);
       if (!isAdmin(user, userProfile)) {
         toast(saludo(userProfile.genero, 'bienvenido'), 'success');
-        // Cargar progreso en background para el botón de avance
-        _loadSectionProgress(user.uid).then(() => {
-          updateAvanceBtn(document.getElementById('btn-avance'), userProfile);
-        });
       }
     } else {
       userProfile = null;
@@ -1166,8 +1056,6 @@ window.showPhonePane         = showPhonePane;
 window.sendPhoneOTP          = sendPhoneOTP;
 window.verifyPhoneOTP        = verifyPhoneOTP;
 window.openAvanceModal       = openAvanceModal;
-window.updateAvanceBtn       = updateAvanceBtn;
-window._loadSectionProgress  = _loadSectionProgress;
 window.closeAvanceModal      = closeAvanceModal;
 window.openPerfilModal       = openPerfilModal;
 window.closePerfilModal      = closePerfilModal;
