@@ -52,6 +52,17 @@
   #sp-send:disabled{background:#94a3b8;cursor:not-allowed;}
   #sp-key-banner{background:#fff3cd;border-bottom:1px solid #ffc107;padding:.55rem .85rem;font-size:.75rem;color:#856404;display:flex;align-items:center;gap:.4rem;}
   @media(max-width:400px){#sp-panel{width:calc(100vw - 2rem);max-height:80vh;}}
+  /* ── Mini modal fallback para páginas sin modal nativo ── */
+  #sp-mini-modal{display:none;position:fixed;inset:0;z-index:10000;background:rgba(0,0,0,.55);align-items:center;justify-content:center;}
+  #sp-mini-modal.open{display:flex;}
+  #sp-mini-box{background:var(--bg2,#fff);border-radius:14px;width:min(780px,96vw);height:min(88vh,700px);display:flex;flex-direction:column;overflow:hidden;box-shadow:0 12px 48px rgba(0,0,0,.3);}
+  #sp-mini-bar{background:linear-gradient(135deg,#2a6cc4,#1a4fa0);padding:.6rem 1rem;display:flex;align-items:center;gap:.75rem;flex-shrink:0;}
+  #sp-mini-title{color:#fff;font-size:.88rem;font-weight:600;flex:1;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;font-family:'DM Sans',sans-serif;}
+  #sp-mini-drive{color:#fff;font-size:.78rem;text-decoration:none;background:rgba(255,255,255,.2);padding:.25rem .65rem;border-radius:6px;font-weight:600;white-space:nowrap;}
+  #sp-mini-close{background:none;border:none;color:rgba(255,255,255,.85);font-size:1.2rem;cursor:pointer;padding:.1rem .3rem;border-radius:6px;}
+  #sp-mini-close:hover{background:rgba(255,255,255,.15);}
+  #sp-mini-iframe{flex:1;border:none;width:100%;}
+  #sp-mini-loading{flex:1;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:.75rem;color:var(--muted,#64748b);font-size:.88rem;font-family:'DM Sans',sans-serif;}
   `;
 
   // ── INJECT CSS ────────────────────────────────────
@@ -77,6 +88,17 @@
       <div id="sp-form">
         <input id="sp-input" type="text" placeholder="¿Qué tema buscas? Ej: genética, derivadas…" autocomplete="off" />
         <button id="sp-send">➤</button>
+      </div>
+    </div>
+    <div id="sp-mini-modal" onclick="if(event.target===this)document.getElementById('sp-mini-modal').classList.remove('open')">
+      <div id="sp-mini-box">
+        <div id="sp-mini-bar">
+          <span id="sp-mini-title">Documento</span>
+          <a id="sp-mini-drive" href="#" target="_blank" rel="noopener">↗ Drive</a>
+          <button id="sp-mini-close" onclick="document.getElementById('sp-mini-modal').classList.remove('open');document.getElementById('sp-mini-iframe').src=''">✕</button>
+        </div>
+        <div id="sp-mini-loading"><span style="font-size:1.8rem">⏳</span><span>Cargando…</span></div>
+        <iframe id="sp-mini-iframe" allowfullscreen sandbox="allow-scripts allow-same-origin allow-popups allow-forms allow-popups-to-escape-sandbox" style="display:none;flex:1;border:none;width:100%;"></iframe>
       </div>
     </div>
     <button id="sp-btn" title="SinPesito — busca tu material"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" fill="none" style="width:30px;height:30px;flex-shrink:0"><defs><linearGradient id="spg" x1="0" y1="0" x2="64" y2="64" gradientUnits="userSpaceOnUse"><stop offset="0%" stop-color="#1a3a6b"/><stop offset="100%" stop-color="#2e6fc4"/></linearGradient></defs><rect width="64" height="64" rx="14" fill="url(#spg)"/><path d="M18 22c0-2.2 1.8-4 4-4h8c2.2 0 4 1.8 4 4v2c0 1.1-.9 2-2 2h-8c-2.2 0-4 1.8-4 4v2c0 2.2 1.8 4 4 4h8c1.1 0 2 .9 2 2v2c0 2.2-1.8 4-4 4h-8c-2.2 0-4-1.8-4-4" stroke="white" stroke-width="3" stroke-linecap="round"/><path d="M38 18h6c2.2 0 4 1.8 4 4v4c0 2.2-1.8 4-4 4h-6M38 18v28" stroke="white" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg><span class="sp-badge"></span></button>
@@ -119,6 +141,85 @@
     return div;
   }
 
+  function buildYoutubeCard(url) {
+    const card = document.createElement('a');
+    card.href = url;
+    card.target = '_blank';
+    card.rel = 'noopener';
+    card.style.cssText = 'display:flex;align-items:center;gap:.65rem;background:#ff000012;border:1.5px solid #ff000030;border-radius:10px;padding:.6rem .85rem;text-decoration:none;transition:border-color .15s;margin-top:.2rem;';
+    card.onmouseover = () => card.style.borderColor = '#ff0000aa';
+    card.onmouseout  = () => card.style.borderColor = '#ff000030';
+    card.innerHTML = `
+      <span style="font-size:1.4rem;flex-shrink:0">▶️</span>
+      <div style="flex:1;min-width:0;">
+        <div style="font-size:.82rem;font-weight:700;color:#cc0000;font-family:'DM Sans',sans-serif;">Canal SinPresupuesto</div>
+        <div style="font-size:.72rem;color:var(--muted,#64748b);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:220px;">${url.replace('https://www.youtube.com/','')}</div>
+      </div>
+      <span style="font-size:.72rem;font-weight:600;color:#cc0000;flex-shrink:0;">Ver →</span>`;
+    return card;
+  }
+
+  // Abrir preview usando el modal existente de la página, o fallback iframe propio
+  function openPreview(url, name, section) {
+    // Intentar usar el modal nativo de la página (openModal de ejercicios, etc.)
+    // La página expone openModal(mid, fi) pero con estructura propia.
+    // En su lugar usamos la función de bajo nivel que construye el iframe directamente.
+    const modal   = document.getElementById('modal');
+    const mIframe = document.getElementById('m-iframe');
+    const mName   = document.getElementById('m-name');
+    const mMeta   = document.getElementById('m-meta');
+    const mIcon   = document.getElementById('m-icon');
+    const mUrl    = document.getElementById('m-url');
+    const mLoad   = document.getElementById('m-loading');
+    const btnDrv  = document.querySelector('.btn-drive');
+
+    if (modal && mIframe) {
+      // Usar el modal nativo de la página
+      if (mIcon) mIcon.textContent = '📄';
+      if (mName) mName.textContent = name;
+      if (mMeta) mMeta.textContent = section;
+      if (btnDrv) { btnDrv.href = url; btnDrv.textContent = '↗ Abrir en Drive'; }
+
+      // Construir URL de preview
+      const fm = url.match(/\/file\/d\/([^/]+)/);
+      const previewUrl = fm
+        ? 'https://drive.google.com/file/d/' + fm[1] + '/preview'
+        : url;
+
+      if (mUrl) mUrl.textContent = previewUrl.replace('https://','');
+      if (mLoad) { mLoad.classList.remove('hidden'); }
+      mIframe.src = '';
+      setTimeout(() => { mIframe.src = previewUrl; }, 80);
+      mIframe.onload = () => { if (mLoad) mLoad.classList.add('hidden'); };
+
+      modal.classList.add('open');
+    } else {
+      // Fallback: mini-modal propio de SinPesito
+      const miniModal  = document.getElementById('sp-mini-modal');
+      const miniIframe = document.getElementById('sp-mini-iframe');
+      const miniTitle  = document.getElementById('sp-mini-title');
+      const miniDrive  = document.getElementById('sp-mini-drive');
+      const miniLoad   = document.getElementById('sp-mini-loading');
+      if (miniModal && miniIframe) {
+        if (miniTitle) miniTitle.textContent = name;
+        if (miniDrive) miniDrive.href = url;
+        const fm2 = url.match(/\/file\/d\/([^/]+)/);
+        const prev2 = fm2 ? 'https://drive.google.com/file/d/' + fm2[1] + '/preview' : url;
+        if (miniLoad) miniLoad.style.display = 'flex';
+        miniIframe.style.display = 'none';
+        miniIframe.src = '';
+        setTimeout(() => { miniIframe.src = prev2; }, 80);
+        miniIframe.onload = () => {
+          if (miniLoad) miniLoad.style.display = 'none';
+          miniIframe.style.display = 'block';
+        };
+        miniModal.classList.add('open');
+      } else {
+        window.open(url, '_blank');
+      }
+    }
+  }
+
   function buildResultCards(results) {
     const wrap = document.createElement('div');
     wrap.style.cssText = 'display:flex;flex-direction:column;gap:.4rem;margin-top:.2rem;';
@@ -139,8 +240,14 @@
         <div class="sp-rc-body">
           <div class="sp-rc-name" title="${r.n}">${r.n}</div>
           <div class="sp-rc-section">${r.s}</div>
-          <a href="${r.u}" target="_blank" rel="noopener">↗ Abrir en Drive</a>
         </div>`;
+      // Botón preview que usa el modal nativo
+      const btnPrev = document.createElement('button');
+      btnPrev.style.cssText = 'background:var(--accent2,#2a6cc4);color:white;border:none;border-radius:7px;padding:.3rem .65rem;font-size:.72rem;font-weight:600;cursor:pointer;flex-shrink:0;align-self:center;font-family:inherit;';
+      btnPrev.textContent = '▶ Ver';
+      btnPrev.onclick = () => openPreview(r.u, r.n, r.s);
+      card.style.cssText = card.style.cssText + 'display:flex;align-items:center;';
+      card.appendChild(btnPrev);
       wrap.appendChild(card);
     });
     return wrap;
@@ -168,10 +275,17 @@
       const answer = await askGemini(q);
       loading.remove();
       // Parse response: text + matched files
-      const { text, matched } = answer;
-      const extra = matched.length > 0 ? buildResultCards(matched) : null;
-      addMsg('bot', text, extra);
-      history.push({ role: 'model', parts: [{ text: text + (matched.length ? '\n[Archivos sugeridos mostrados como tarjetas]' : '') }] });
+      const { text, matched, youtubeUrl } = answer;
+      // Build extras: file cards + optional YouTube card
+      let extraWrap = null;
+      if (matched.length > 0 || youtubeUrl) {
+        extraWrap = document.createElement('div');
+        extraWrap.style.cssText = 'display:flex;flex-direction:column;gap:.5rem;margin-top:.3rem;';
+        if (matched.length > 0) extraWrap.appendChild(buildResultCards(matched));
+        if (youtubeUrl) extraWrap.appendChild(buildYoutubeCard(youtubeUrl));
+      }
+      addMsg('bot', text, extraWrap);
+      history.push({ role: 'model', parts: [{ text: text + (matched.length ? '\n[Archivos mostrados]' : '') + (youtubeUrl ? '\n[Video YouTube sugerido]' : '') }] });
     } catch (err) {
       loading.remove();
       addMsg('bot', '😕 Ocurrió un error. Verifica tu API key o intenta de nuevo.<br><small style="opacity:.6">' + err.message + '</small>');
@@ -186,32 +300,56 @@
     // Build catalog context (just names + sections, compact)
     const catalogText = CATALOG.map((f,i) => `${i+1}. [${f.s}] ${f.n}`).join('\n');
 
-    const systemPrompt = `Eres SinPesito, un buscador de material de SinPresupuesto (preuniversitario colombiano, Saber 11 y admisión UNAL).
+    const systemPrompt = `Eres SinPesito, el asistente académico de SinPresupuesto — un preuniversitario colombiano gratuito para el examen de admisión a la Universidad Nacional y otras universidades públicas.
 
-REGLA ABSOLUTA: SIEMPRE que el estudiante pida material, tema, recurso o archivo — DEBES incluir la línea ARCHIVOS al final. Sin excepción. Si pregunta "dime cuáles", "llévame", "muéstrame", "sugiéreme" — es OBLIGATORIO incluir ARCHIVOS.
+TIENES CUATRO CAPACIDADES — úsalas según lo que pida el estudiante:
 
-FORMATO EXACTO DE RESPUESTA (síguelo siempre):
-[Una oración corta y directa, máximo 20 palabras]
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+1. RESPONDER PREGUNTAS ACADÉMICAS
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+Si el estudiante pregunta sobre un tema (matemáticas, física, biología, química, sociales, lectura crítica, imagen, etc.):
+- Explica de forma clara, directa y precisa. Puedes usar ejemplos, fórmulas o pasos.
+- Responde como un buen tutor: sin rodeos, con profundidad suficiente.
+- Al final, si hay materiales del catálogo relacionados, agrégalos con ARCHIVOS:
 
-ARCHIVOS: [números del catálogo separados por comas, entre 3 y 8]
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+2. CITAR MATERIALES DEL CATÁLOGO
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+Si el estudiante pide material, recursos, archivos o documentos sobre un tema:
+- Identifica cuáles son los más relevantes según el nombre y la sección.
+- Responde con una línea breve y luego la línea ARCHIVOS obligatoriamente.
+- FORMATO OBLIGATORIO cuando hay archivos:
 
-Ejemplo:
-Aquí los mejores materiales de análisis de imagen:
+[Texto explicativo breve]
 
-ARCHIVOS: 45,46,47,48,49,50
+ARCHIVOS: 12,45,78,103
 
-CATÁLOGO (${CATALOG.length} archivos — formato "número. [Sección] Nombre"):
+CATÁLOGO (${CATALOG.length} archivos — formato "N. [Sección] Nombre"):
 ${catalogText}
 
-REGLAS ADICIONALES:
-- Usa SOLO números que existan en el catálogo. Nunca inventes.
-- Si el estudiante dice que no le mostraste archivos o pide más detalles, muestra los ARCHIVOS correctamente.
-- Responde siempre en español.`;
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+3. SUGERIR CLASES DE YOUTUBE
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+Si el estudiante pide clases, videos o quiere ver explicaciones en video:
+- Dirígelo al canal: https://youtube.com/@sinpresupuestoun
+- Sugiere buscar en el canal por el tema específico que necesita.
+- Formato de respuesta:
+  "Para clases en video sobre [tema], búscalo en el canal de YouTube de SinPresupuesto:"
+  YOUTUBE: https://www.youtube.com/@sinpresupuestoun/search?query=[tema-en-url]
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+4. REGLAS GENERALES
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+- NUNCA menciones el ICFES, Saber 11 ni pruebas ICFES. Si el contexto lo requiere, di simplemente "el examen" o "la prueba de admisión a la universidad".
+- Responde SIEMPRE en español colombiano, amigable y motivador.
+- Usa SOLO números del catálogo que existan. Nunca inventes archivos.
+- Si el estudiante pide más archivos o dice que no le mostraste, muéstralos con ARCHIVOS:
+- maxOutputTokens permite respuestas largas — úsalos bien para explicaciones académicas.`;
 
     const body = {
       system_instruction: { parts: [{ text: systemPrompt }] },
-      contents: [...history.slice(-6), { role: 'user', parts: [{ text: query }] }],
-      generationConfig: { temperature: 0.4, maxOutputTokens: 600 }
+      contents: [...history.slice(-8), { role: 'user', parts: [{ text: query }] }],
+      generationConfig: { temperature: 0.5, maxOutputTokens: 1200 }
     };
 
     const res = await fetch(`${GEMINI_URL}?key=${GEMINI_KEY}`, {
@@ -230,31 +368,37 @@ REGLAS ADICIONALES:
     const data = await res.json();
     const raw = data.candidates?.[0]?.content?.parts?.[0]?.text || 'No obtuve respuesta.';
 
-    // Parse ARCHIVOS: line — buscar en cualquier parte de la respuesta
+    // Parse ARCHIVOS: tag
     const archivosMatch = raw.match(/ARCHIVOS:\s*([\d,\s]+)/i);
     let matched = [];
-    let text = raw.replace(/ARCHIVOS:[\s\d,]+/gi, '').replace(/\n{3,}/g, '\n\n').trim();
+    // Parse YOUTUBE: tag
+    const youtubeMatch = raw.match(/YOUTUBE:\s*(https?:\/\/[^\s\n]+)/i);
+    let youtubeUrl = youtubeMatch ? youtubeMatch[1].trim() : null;
+
+    let text = raw
+      .replace(/ARCHIVOS:[\s\d,]+/gi, '')
+      .replace(/YOUTUBE:\s*https?:\/\/[^\s\n]+/gi, '')
+      .replace(/\n{3,}/g, '\n\n')
+      .trim();
 
     if (archivosMatch) {
       const indices = archivosMatch[1]
         .split(',')
         .map(n => parseInt(n.trim()) - 1)
         .filter(i => !isNaN(i) && i >= 0 && i < CATALOG.length);
-      // Deduplicar
-      const unique = [...new Set(indices)];
-      matched = unique.map(i => CATALOG[i]);
+      matched = [...new Set(indices)].map(i => CATALOG[i]);
     }
 
-    // Si no hay archivos pero la respuesta parece una búsqueda, intentar fallback por palabras clave
-    if (matched.length === 0 && text.length > 0) {
+    // Fallback por palabras clave si no hubo ARCHIVOS
+    if (matched.length === 0 && !youtubeUrl) {
       const words = query.toLowerCase().split(/\s+/).filter(w => w.length > 3);
       const fallback = CATALOG.filter(f =>
         words.some(w => f.n.toLowerCase().includes(w) || f.s.toLowerCase().includes(w))
-      ).slice(0, 6);
+      ).slice(0, 5);
       if (fallback.length > 0) matched = fallback;
     }
 
-    return { text, matched };
+    return { text, matched, youtubeUrl };
   }
 
   // ── Escuchar estado de auth de Firebase ──
