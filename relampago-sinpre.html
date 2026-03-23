@@ -882,19 +882,7 @@ function openNavDrawer(){document.getElementById('nav-drawer-overlay').classList
 function closeNavDrawer(){document.getElementById('nav-drawer-overlay').classList.remove('open');}
 window.openNavDrawer=openNavDrawer;window.closeNavDrawer=closeNavDrawer;
 
-// Renderizar inmediatamente con localStorage (sin esperar auth)
-document.addEventListener('DOMContentLoaded', function() {
-  if (!window._pageBooted) {
-    MODULES.forEach(m => {
-      checked[m.id] = JSON.parse(localStorage.getItem('sp_' + PAGE_KEY + '_' + m.id) || 'null') || {};
-      fileOrders[m.id] = m.files.map((_, i) => i);
-    });
-    order = JSON.parse(localStorage.getItem('sp_' + PAGE_KEY + '_order') || 'null') || MODULES.map(m => m.id);
-    heroMode = localStorage.getItem('sp_global_hero') || 'bar';
-    applyHeroMode();
-    renderGrid();
-  }
-});
+
 
 (function(){
   var s=localStorage.getItem('sp-tema')||'light';

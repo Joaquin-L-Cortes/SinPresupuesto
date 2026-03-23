@@ -8,7 +8,7 @@
   'use strict';
 
   // ── CONFIGURACIÓN ─────────────────────────────────
-  const GEMINI_KEY = 'AIzaSyBUSW-MPSM0iJOTgYPKP2iEVxXcz6SJk7E'; // ← Pega aquí tu API key // ← Pega aquí tu API key de Google AI Studio
+  const GEMINI_KEY = ''; // ← Pega aquí tu API key // ← Pega aquí tu API key de Google AI Studio
   const GEMINI_URL = 'https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent';
   // ──────────────────────────────────────────────────
 

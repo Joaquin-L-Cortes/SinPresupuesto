@@ -779,46 +779,35 @@ function injectModals() {
 
       <!-- REGISTRO COMPACTO -->
       <div id="pane-reg" style="display:none">
-
-        <!-- Fila 1: Avatar preview + picker horizontal en una sola fila -->
-        <div style="display:flex;align-items:center;gap:.75rem;margin-bottom:.85rem;">
-          <!-- Preview del avatar seleccionado -->
-          <div id="reg-avatar-preview"
-               style="font-size:2rem;width:52px;height:52px;min-width:52px;border-radius:50%;
-                      display:flex;align-items:center;justify-content:center;
-                      background:var(--bg3);border:2px solid var(--border);
-                      transition:all .25s;flex-shrink:0;">🦁</div>
-          <!-- Picker scrolleable horizontal -->
-          <div style="flex:1;min-width:0;">
-            <p style="font-size:.65rem;color:var(--muted);font-weight:600;text-transform:uppercase;
-                      letter-spacing:.06em;margin-bottom:.35rem;">Elige tu avatar</p>
-            <div id="reg-avatar-picker"
-                 style="display:flex;flex-wrap:wrap;gap:.3rem;max-height:80px;overflow-y:auto;
-                        padding:.1rem;"></div>
+        <div class="reg-layout">
+          <!-- Columna izquierda: avatar preview grande -->
+          <div class="reg-avatar-col">
+            <div id="reg-avatar-preview" style="font-size:4rem;width:100px;height:100px;border-radius:50%;display:flex;align-items:center;justify-content:center;background:var(--bg3);border:2px solid var(--border);transition:all .3s;">🦁</div>
+            <p style="font-size:.75rem;color:var(--muted);margin-top:.5rem;text-align:center;">Tu avatar</p>
+          </div>
+          <!-- Columna centro: campos -->
+          <div class="reg-fields-col">
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:.6rem">
+              <div class="form-group"><label>Nombre</label><input type="text" id="st-nombre" placeholder="Joaquín"></div>
+              <div class="form-group"><label>Apellido</label><input type="text" id="st-apellido" placeholder="Cortés"></div>
+            </div>
+            <div class="form-group"><label>Correo</label><input type="email" id="st-remail" placeholder="tucorreo@gmail.com"></div>
+            <div class="form-group"><label>Contraseña</label><input type="password" id="st-rpass" placeholder="Mínimo 6 caracteres"></div>
+            <div class="form-group"><label>Género</label>
+              <select id="st-genero" style="width:100%;background:var(--bg3);border:1.5px solid var(--border);border-radius:10px;padding:.65rem .9rem;color:var(--text);font-family:'DM Sans',sans-serif;font-size:.9rem;outline:none;">
+                <option value="M">Masculino</option><option value="F">Femenino</option>
+                <option value="NB">No binario</option><option value="NR">Prefiero no responder</option>
+              </select>
+            </div>
+          </div>
+          <!-- Columna derecha: picker de avatares -->
+          <div class="reg-picker-col">
+            <p style="font-size:.75rem;color:var(--muted);margin-bottom:.5rem;font-weight:600;text-transform:uppercase;letter-spacing:.05em;">Elige tu avatar</p>
+            <div id="reg-avatar-picker" style="display:grid;grid-template-columns:repeat(3,1fr);gap:.35rem;"></div>
           </div>
         </div>
-
-        <!-- Fila 2: Nombre + Apellido -->
-        <div style="display:grid;grid-template-columns:1fr 1fr;gap:.55rem;margin-bottom:0;">
-          <div class="form-group"><label>Nombre</label><input type="text" id="st-nombre" placeholder="Joaquín" autocomplete="given-name"></div>
-          <div class="form-group"><label>Apellido</label><input type="text" id="st-apellido" placeholder="Cortés" autocomplete="family-name"></div>
-        </div>
-
-        <!-- Fila 3: Correo -->
-        <div class="form-group"><label>Correo</label><input type="email" id="st-remail" placeholder="tucorreo@gmail.com" inputmode="email" autocomplete="email"></div>
-
-        <!-- Fila 4: Contraseña -->
-        <div class="form-group"><label>Contraseña</label><input type="password" id="st-rpass" placeholder="Mínimo 6 caracteres" autocomplete="new-password"></div>
-
-        <!-- Fila 5: Género -->
-        <div class="form-group"><label>Género</label>
-          <select id="st-genero" style="width:100%;background:var(--bg3);border:1.5px solid var(--border);border-radius:10px;padding:.65rem .9rem;color:var(--text);font-family:'DM Sans',sans-serif;font-size:.9rem;outline:none;">
-            <option value="M">Masculino</option><option value="F">Femenino</option>
-            <option value="NB">No binario</option><option value="NR">Prefiero no responder</option>
-          </select>
-        </div>
-
-        <p style="color:#c0392b;font-size:.82rem;min-height:1.2em;margin-top:.5rem" id="st-reg-err"></p>
+        <!-- Botón debajo de todo -->
+        <p style="color:#c0392b;font-size:.82rem;min-height:1.2em;margin-top:.75rem" id="st-reg-err"></p>
         <button class="btn-submit" onclick="doStudentRegister()">Crear cuenta</button>
       </div>
     </div>
