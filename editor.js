@@ -1,5 +1,5 @@
 // ─── URL del Cloudflare Worker ─────────────────────────────────────────────
-const WORKER_URL = 'https://sinpresupuesto-save01.jocortesca.workers.dev';
+const WORKER_URL = 'https://sinpresito-ai.jocortesca.workers.dev';
 
 // ─── TOAST ─────────────────────────────────────────────────────────────────
 function showToast(msg, duration, type) {
