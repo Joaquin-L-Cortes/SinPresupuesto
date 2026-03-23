@@ -561,7 +561,7 @@ function enterEditMode() {
     <button class="avatar-opt ${a.id === tempAvatarId ? 'av-selected' : ''}"
       data-id="${a.id}" data-color="${a.color}" data-bg="${a.bg}"
       style="background:${a.bg};border:2px solid ${a.id === tempAvatarId ? a.color : 'transparent'};
-             width:100%;aspect-ratio:1;border-radius:50%;font-size:.95rem;cursor:pointer;transition:all .15s;padding:0;line-height:1;display:flex;align-items:center;justify-content:center;"
+             width:100%;aspect-ratio:1;max-width:28px;border-radius:50%;font-size:.75rem;cursor:pointer;transition:all .15s;padding:0;line-height:1;display:flex;align-items:center;justify-content:center;"
     >${a.emoji}</button>`).join('');
 
   // Inicializar picker
@@ -859,12 +859,14 @@ function injectModals() {
 
       <!-- VISTA EDICIÓN — compacta, sin scroll -->
       <div id="perfil-edit" style="display:none">
-        <!-- Fila superior: avatar preview pequeño + picker inline -->
+        <!-- Fila superior: avatar preview + picker inline -->
         <div style="display:flex;align-items:center;gap:.75rem;margin-bottom:.75rem;padding:.6rem;background:var(--bg3);border-radius:12px;">
-          <div id="edit-avatar-preview" style="font-size:2rem;width:52px;height:52px;border-radius:50%;display:flex;align-items:center;justify-content:center;background:var(--bg2);border:2px solid var(--border);transition:all .3s;flex-shrink:0;">🦁</div>
-          <div style="flex:1;min-width:0;">
-            <p style="font-size:.68rem;color:var(--muted);font-weight:600;text-transform:uppercase;letter-spacing:.05em;margin-bottom:.3rem;">Elige tu avatar</p>
-            <div id="edit-avatar-picker" style="display:grid;grid-template-columns:repeat(9,1fr);gap:.25rem;"></div>
+          <!-- Preview grande: avatar seleccionado -->
+          <div id="edit-avatar-preview" style="font-size:2rem;width:56px;height:56px;border-radius:50%;display:flex;align-items:center;justify-content:center;background:var(--bg2);border:2px solid var(--border);transition:all .3s;flex-shrink:0;">🦁</div>
+          <!-- Picker: botones pequeños en grid -->
+          <div style="flex:1;min-width:0;overflow:hidden;">
+            <p style="font-size:.65rem;color:var(--muted);font-weight:600;text-transform:uppercase;letter-spacing:.05em;margin-bottom:.3rem;">Elige tu avatar</p>
+            <div id="edit-avatar-picker" style="display:grid;grid-template-columns:repeat(9,1fr);gap:.2rem;width:100%;max-width:100%;"></div>
           </div>
         </div>
         <!-- Campos compactos -->
