@@ -478,7 +478,8 @@ footer a:hover { text-decoration: underline; }
 }
 .nav-drawer-links a .link-icon { font-size: .88rem; width: 18px; text-align: center; flex-shrink: 0; }
 .nav-drawer ul { list-style: none; }
-.nav-drawer ul .s-emoji { font-size: .88rem; width: 18px; text-align: center; flex-shrink: 0; }
+.nav-drawer ul .s-emoji,
+.nav-drawer-links .s-emoji { font-size: .88rem; width: 18px; text-align: center; flex-shrink: 0; }
 
 /* ── REGISTRO HORIZONTAL ── */
 .reg-layout {
