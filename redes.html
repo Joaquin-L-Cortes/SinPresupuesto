@@ -73,8 +73,9 @@ nav{position:sticky;top:0;z-index:300;background:var(--nav-bg);backdrop-filter:b
 .sec-label{font-size:.68rem;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);margin-bottom:1.25rem;padding-bottom:.75rem;border-bottom:2px solid var(--bg3);font-weight:600;}
 
 /* RED CARDS */
-.redes-grid{display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-bottom:2.5rem;}
-@media(max-width:480px){.redes-grid{grid-template-columns:1fr;}}
+.redes-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1rem;margin-bottom:2.5rem;}
+@media(max-width:600px){.redes-grid{grid-template-columns:1fr 1fr;}}
+@media(max-width:380px){.redes-grid{grid-template-columns:1fr;}}
 .red-card{background:var(--card);border:1.5px solid var(--border);border-radius:16px;padding:1.25rem 1.25rem 1.25rem 1rem;text-decoration:none;display:flex;align-items:center;gap:1rem;transition:box-shadow .2s,border-color .2s,transform .15s;box-shadow:0 1px 6px var(--shadow);}
 .red-card:hover{box-shadow:0 4px 20px var(--shadow);border-color:var(--accent3);transform:translateY(-2px);}
 .red-icon{width:52px;height:52px;border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:1.6rem;flex-shrink:0;}
@@ -85,16 +86,16 @@ nav{position:sticky;top:0;z-index:300;background:var(--nav-bg);backdrop-filter:b
 .red-card:hover .red-arrow{transform:translateX(3px);color:var(--accent2);}
 
 /* DONATE BANNER */
-.donate-banner{background:linear-gradient(135deg,var(--hero-bg1) 0%,var(--hero-bg2) 100%);border-radius:20px;padding:1.75rem 2rem;color:var(--hero-text);}
-@media(max-width:500px){.donate-banner{padding:1.25rem 1.1rem;}}
+.donate-banner{background:linear-gradient(135deg,var(--hero-bg1) 0%,var(--hero-bg2) 100%);border-radius:20px;padding:1.75rem 2rem;color:var(--hero-text);display:flex;align-items:flex-start;gap:1.25rem;}
+@media(max-width:500px){.donate-banner{padding:1.25rem 1.1rem;gap:1rem;}}
+.donate-icon{width:48px;height:48px;background:rgba(255,255,255,.18);border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:1.6rem;flex-shrink:0;margin-top:.1rem;}
+.donate-texts{flex:1;}
 .donate-texts h2{font-family:'Fraunces',serif;font-size:clamp(1rem,3vw,1.25rem);font-weight:700;line-height:1.2;margin-bottom:.3rem;white-space:nowrap;}
 @media(max-width:600px){.donate-texts h2{white-space:normal;}}
 .donate-texts p{font-size:.82rem;color:var(--hero-sub);white-space:nowrap;}
 @media(max-width:600px){.donate-texts p{white-space:normal;}}
-.donate-num{display:inline-flex;align-items:center;gap:.45rem;background:rgba(255,255,255,.18);border:1px solid rgba(255,255,255,.3);border-radius:12px;padding:.45rem .9rem;font-size:.92rem;font-weight:700;letter-spacing:.04em;margin-top:.6rem;cursor:pointer;transition:background .2s;user-select:all;}
+.donate-num{display:inline-flex;align-items:center;gap:.45rem;background:rgba(255,255,255,.18);border:1px solid rgba(255,255,255,.3);border-radius:12px;padding:.45rem .9rem;font-size:.92rem;font-weight:700;letter-spacing:.04em;cursor:pointer;transition:background .2s;user-select:all;}
 .donate-num:hover{background:rgba(255,255,255,.28);}
-.donate-methods{display:flex;gap:.6rem;flex-wrap:wrap;margin-top:.5rem;}
-.donate-badge{background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.25);border-radius:20px;padding:.2rem .65rem;font-size:.72rem;font-weight:600;color:var(--hero-text);}
 
 /* AUTH MODAL */
 .modal-overlay{position:fixed;inset:0;background:rgba(26,54,107,.45);backdrop-filter:blur(4px);z-index:1000;display:none;align-items:center;justify-content:center;padding:1rem;}
@@ -196,7 +197,7 @@ nav{position:sticky;top:0;z-index:300;background:var(--nav-bg);backdrop-filter:b
       <span class="red-arrow">›</span>
     </a>
 
-    <a class="red-card" href="https://www.tiktok.com/@sinpreun" target="_blank" rel="noopener">
+    <a class="red-card" href="https://www.tiktok.com/@sinpreun" target="_blank" rel="noopener" style="grid-column:3;">
       <div class="red-icon" style="background:#f0f0f0;">🎵</div>
       <div class="red-info">
         <div class="red-name">TikTok</div>
@@ -210,18 +211,13 @@ nav{position:sticky;top:0;z-index:300;background:var(--nav-bg);backdrop-filter:b
   <!-- BANNER DONATIVOS -->
   <p class="sec-label">Apoya el proyecto</p>
   <div class="donate-banner">
+    <div class="donate-icon">❤️</div>
     <div class="donate-texts">
       <h2>¿Te ha servido SinPresupuesto? ¡Apóyanos con lo que puedas!</h2>
       <p>100% gratuito y popular. Cada donación nos ayuda a seguir produciendo contenido de calidad para todos.</p>
-      <div style="display:flex;flex-wrap:wrap;gap:.75rem;align-items:center;margin-top:.65rem;">
-        <div>
-          <div style="font-size:.68rem;color:var(--hero-sub);margin-bottom:.2rem;text-transform:uppercase;letter-spacing:.07em;">Nequi · Llaves</div>
-          <div class="donate-num" title="Toca para copiar" onclick="navigator.clipboard&&navigator.clipboard.writeText('3236948608');this.textContent='✓ Copiado';setTimeout(()=>this.textContent='323 694 8608',1800);">323 694 8608</div>
-        </div>
-        <div class="donate-methods">
-          <span class="donate-badge">Nequi</span>
-          <span class="donate-badge">Llaves</span>
-        </div>
+      <div style="margin-top:.65rem;">
+        <div style="font-size:.68rem;color:var(--hero-sub);margin-bottom:.2rem;text-transform:uppercase;letter-spacing:.07em;">Nequi · Llaves</div>
+        <div class="donate-num" title="Toca para copiar" onclick="navigator.clipboard&&navigator.clipboard.writeText('3236948608');this.textContent='✓ Copiado';setTimeout(()=>this.textContent='323 694 8608',1800);">323 694 8608</div>
       </div>
     </div>
   </div>
