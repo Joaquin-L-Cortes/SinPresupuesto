@@ -9,7 +9,7 @@
   <link rel="stylesheet" href="style.css">
 <style>
     /* Nav fluid */
-    nav{position:sticky;top:0;z-index:300;background:var(--nav-bg);backdrop-filter:blur(14px);border-bottom:1px solid var(--border);padding:0 clamp(.5rem,2vw,2rem);display:flex;align-items:center;height:clamp(46px,6vw,56px);box-shadow:0 2px 12px var(--shadow);}
+    nav{position:sticky;top:0;z-index:300;background:var(--nav-bg);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border-bottom:1px solid var(--border);padding:0 clamp(.5rem,2vw,2rem);display:flex;align-items:center;height:clamp(46px,6vw,56px);box-shadow:0 2px 12px var(--shadow);transform:translateZ(0);isolation:isolate;}
     .nav-logo{font-family:'Fraunces',serif;font-size:clamp(.82rem,1.8vw,1.1rem);font-weight:700;color:var(--accent2);text-decoration:none;padding-right:clamp(.5rem,1.2vw,1.1rem);border-right:1px solid var(--border);margin-right:clamp(.4rem,1vw,1.1rem);white-space:nowrap;display:flex;align-items:center;gap:clamp(.25rem,.6vw,.4rem);flex-shrink:0;}
     .nav-logo img{width:clamp(26px,3.5vw,40px);height:clamp(26px,3.5vw,40px);object-fit:contain;}
     .nav-links{display:flex;list-style:none;flex:1;overflow:hidden;}
@@ -27,6 +27,9 @@
       background: linear-gradient(135deg, var(--hero-bg1,#1a3a6b) 0%, var(--hero-bg2,#2e6fc4) 100%);
       color: var(--hero-text, #fff);
       padding: clamp(1.5rem,4vw,3rem) 2rem clamp(1.25rem,3vw,2.5rem);
+    }
+    [data-theme="dark"] .mat-hero {
+      background: linear-gradient(135deg, #0d1829 0%, #1a2d52 100%);
     }
     .mat-hero-inner { max-width: 960px; margin: 0 auto; }
     .mat-hero h1 {
@@ -266,6 +269,32 @@
   };
   </script>
 
+
+<script>
+/* ── TEMA (modo oscuro) ── */
+(function(){
+  var s = localStorage.getItem('sp-tema') || 'light';
+  document.documentElement.setAttribute('data-theme', s);
+
+  function isDark(){ return document.documentElement.getAttribute('data-theme') === 'dark'; }
+
+  window.syncNav = function(){
+    var btnTema   = document.getElementById('btn-tema');
+    var btnDrawer = document.getElementById('drawer-tema-btn') || document.querySelector('[onclick*="toggleTema"][style*="width:100%"]');
+    if(btnTema) btnTema.textContent = isDark() ? '☀ Modo claro' : '🌙 Modo oscuro';
+    if(btnDrawer) btnDrawer.textContent = isDark() ? '☀ Modo claro' : '🌙 Modo oscuro';
+  };
+
+  window.toggleTema = function(){
+    var n = isDark() ? 'light' : 'dark';
+    document.documentElement.setAttribute('data-theme', n);
+    localStorage.setItem('sp-tema', n);
+    window.syncNav();
+  };
+
+  document.addEventListener('DOMContentLoaded', function(){ window.syncNav(); });
+})();
+</script>
 <script src="sinpresito.js"></script>
 </body>
 </html>

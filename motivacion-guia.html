@@ -26,9 +26,15 @@
   --hero-text:#e8f0fc;--hero-sub:rgba(232,240,252,.65);--hero-track:rgba(255,255,255,.08);
 }
 *{margin:0;padding:0;box-sizing:border-box;}
+[data-theme="dark"] .module-card{
+  transition:box-shadow .18s,border-color .18s,transform .18s cubic-bezier(.4,0,.2,1);
+}
+[data-theme="dark"] nav{
+  backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);
+}
 body{background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;font-size:15px;line-height:1.7;min-height:100vh;}
 /* NAV — fluid, se adapta a cualquier pantalla */
-nav{position:sticky;top:0;z-index:300;background:var(--nav-bg);backdrop-filter:blur(14px);border-bottom:1px solid var(--border);padding:0 clamp(.5rem,2vw,2rem);display:flex;align-items:center;height:clamp(46px,6vw,56px);box-shadow:0 2px 12px var(--shadow);}
+nav{position:sticky;top:0;z-index:300;background:var(--nav-bg);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border-bottom:1px solid var(--border);padding:0 clamp(.5rem,2vw,2rem);display:flex;align-items:center;height:clamp(46px,6vw,56px);box-shadow:0 2px 12px var(--shadow);transform:translateZ(0);isolation:isolate;}
 .nav-logo{font-family:'Fraunces',serif;font-size:clamp(.82rem,1.8vw,1.1rem);font-weight:700;color:var(--accent2);text-decoration:none;padding-right:clamp(.5rem,1.2vw,1.1rem);border-right:1px solid var(--border);margin-right:clamp(.4rem,1vw,1.1rem);white-space:nowrap;display:flex;align-items:center;gap:clamp(.25rem,.6vw,.4rem);flex-shrink:0;}
 .nav-logo img{width:clamp(26px,3.5vw,40px);height:clamp(26px,3.5vw,40px);object-fit:contain;}
 .nav-links{display:flex;list-style:none;flex:1;overflow:hidden;}

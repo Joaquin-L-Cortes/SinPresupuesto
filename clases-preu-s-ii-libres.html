@@ -26,9 +26,15 @@
   --hero-text:#e8f0fc;--hero-sub:rgba(232,240,252,.65);--hero-track:rgba(255,255,255,.08);
 }
 *{margin:0;padding:0;box-sizing:border-box;}
+[data-theme="dark"] .module-card{
+  transition:box-shadow .18s,border-color .18s,transform .18s cubic-bezier(.4,0,.2,1);
+}
+[data-theme="dark"] nav{
+  backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);
+}
 body{background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;font-size:15px;line-height:1.7;min-height:100vh;}
 /* NAV — fluid, se adapta a cualquier pantalla */
-nav{position:sticky;top:0;z-index:300;background:var(--nav-bg);backdrop-filter:blur(14px);border-bottom:1px solid var(--border);padding:0 clamp(.5rem,2vw,2rem);display:flex;align-items:center;height:clamp(46px,6vw,56px);box-shadow:0 2px 12px var(--shadow);}
+nav{position:sticky;top:0;z-index:300;background:var(--nav-bg);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border-bottom:1px solid var(--border);padding:0 clamp(.5rem,2vw,2rem);display:flex;align-items:center;height:clamp(46px,6vw,56px);box-shadow:0 2px 12px var(--shadow);transform:translateZ(0);isolation:isolate;}
 .nav-logo{font-family:'Fraunces',serif;font-size:clamp(.82rem,1.8vw,1.1rem);font-weight:700;color:var(--accent2);text-decoration:none;padding-right:clamp(.5rem,1.2vw,1.1rem);border-right:1px solid var(--border);margin-right:clamp(.4rem,1vw,1.1rem);white-space:nowrap;display:flex;align-items:center;gap:clamp(.25rem,.6vw,.4rem);flex-shrink:0;}
 .nav-logo img{width:clamp(26px,3.5vw,40px);height:clamp(26px,3.5vw,40px);object-fit:contain;}
 .nav-links{display:flex;list-style:none;flex:1;overflow:hidden;}
@@ -151,7 +157,7 @@ aside{position:sticky;top:clamp(46px,6vw,56px);align-self:start;max-height:calc(
 .module-card.shift-down{transform:translateY(8px);}
 .module-card.open{grid-column:1/-1;}
 #modules-grid.has-open .module-card:not(.open){opacity:1;transform:none;}
-.mc-head{display:flex;align-items:center;gap:.75rem;padding:.85rem 1rem;cursor:pointer;background:var(--bg2);transition:background .15s;user-select:none;-webkit-user-select:none;}
+.mc-head{display:flex;align-items:center;gap:.75rem;padding:.85rem 1rem;cursor:pointer;background:var(--bg2);transition:background .15s;user-select:none;-webkit-user-select:none;touch-action:manipulation;}
 .mc-head:hover{background:var(--bg3);}
 .module-card.hold-ready .mc-head{cursor:grab;}
 .module-card.is-dragging .mc-head{cursor:grabbing;}
@@ -190,7 +196,7 @@ aside{position:sticky;top:clamp(46px,6vw,56px);align-self:start;max-height:calc(
   .file-card{transition:border-color .15s;}
   .file-card:hover{transform:none;}
 }
-.file-card{background:var(--bg3);border:1px solid var(--border);border-radius:11px;padding:.65rem .75rem;display:flex;align-items:flex-start;gap:.55rem;cursor:pointer;transition:all .17s;position:relative;user-select:none;-webkit-user-select:none;touch-action:pan-y;}
+.file-card{background:var(--bg3);border:1px solid var(--border);border-radius:11px;padding:.65rem .75rem;display:flex;align-items:flex-start;gap:.55rem;cursor:pointer;transition:all .17s;position:relative;user-select:none;-webkit-user-select:none;touch-action:manipulation;}
 .file-card::before{content:'';position:absolute;inset:0;border-radius:11px;background:linear-gradient(135deg,rgba(46,111,196,.08),transparent);opacity:0;transition:opacity .18s;}
 .file-card:hover{border-color:var(--accent2);box-shadow:0 3px 14px var(--shadow);transform:translateY(-1px);}
 .file-card:hover::before{opacity:1;}
@@ -367,8 +373,15 @@ footer a:hover{text-decoration:underline;}
   .modal-window{border-radius:0!important;height:100dvh!important;height:100vh!important;max-width:100vw!important;width:100vw!important;}
   .modal-info{padding:.5rem .75rem!important;gap:.35rem!important;flex-wrap:wrap!important;}
   .mi-name{font-size:.82rem!important;}
-  .btn-seen,.btn-fullscreen,.btn-drive{padding:.25rem .5rem!important;font-size:.7rem!important;}
-  .modal-chrome{padding:.4rem .6rem!important;}
+  .mi-body{width:100%!important;flex-basis:100%!important;order:-1!important;}
+  .mi-icon{display:none!important;}
+  .mi-name{font-size:.84rem!important;white-space:normal!important;}
+  .mi-meta{font-size:.7rem!important;}
+  .btn-fullscreen{padding:.28rem .5rem!important;font-size:.9rem!important;margin-left:auto!important;}
+  .btn-seen{padding:.28rem .6rem!important;font-size:.72rem!important;}
+  .btn-drive{padding:.28rem .6rem!important;font-size:.72rem!important;}
+  .modal-chrome{padding:.38rem .55rem!important;}
+  .modal-url{font-size:.62rem!important;}
   /* Hero bar */
   .global-track{height:7px!important;}
   .global-lbl{font-size:.62rem!important;}
@@ -929,13 +942,14 @@ function attachCard(card,m){
   head.addEventListener('pointerdown',function(e){
     if(openCardId===m.id) return;           // tarjeta abierta: no iniciar drag
     if(e.button && e.button!==0) return;    // solo botón izquierdo / toque
-    e.preventDefault();                     // evita selección de texto en PC
+    // (selección de texto controlada por CSS user-select)
     isDragging=false; ghostCreated=false; overMid=null; moved=false;
     startX=e.clientX; startY=e.clientY;
 
     // Escuchar movimiento temprano para cancelar si se mueve antes del hold
+    var CTHRESH='ontouchstart' in window?14:10;
     onEarly=function(ev){
-      if(Math.abs(ev.clientX-startX)>8 || Math.abs(ev.clientY-startY)>8){
+      if(Math.abs(ev.clientX-startX)>CTHRESH || Math.abs(ev.clientY-startY)>CTHRESH){
         moved=true;
         clearTimeout(holdTimer);
         cancelEarly();
@@ -945,24 +959,26 @@ function attachCard(card,m){
 
     holdTimer=setTimeout(function(){
       cancelEarly();
-      if(moved) return;            // se movió antes: no drag
+      if(moved) return;
       isDragging=true;
       if(navigator.vibrate) navigator.vibrate(45);
+      try{ head.setPointerCapture(e.pointerId); }catch(err){}
+      card.style.touchAction='none';
       card.classList.add('hold-ready');
 
-      // Pequeño delay para que el usuario vea el feedback antes del ghost
       setTimeout(function(){
         if(!isDragging) return;
         ghostCreated=true;
         card.classList.remove('hold-ready');
         card.classList.add('is-dragging');
         createGhost(card);
-        card.style.touchAction='none';
         head.style.cursor='grabbing';
 
+        var _px=e.clientX,_py=e.clientY,_raf=false;
         onMove=function(ev){
           ev.preventDefault();
-          moveGhost(ev.clientX, ev.clientY);
+          _px=ev.clientX;_py=ev.clientY;
+          if(!_raf){_raf=true;requestAnimationFrame(function(){_raf=false;moveGhost(_px,_py);});}
           var under=document.elementFromPoint(ev.clientX, ev.clientY);
           var tc=under ? under.closest('.module-card') : null;
           allCards().forEach(function(c2){ c2.classList.remove('drop-target','shift-up','shift-down'); });
@@ -983,7 +999,7 @@ function attachCard(card,m){
         document.addEventListener('pointerup',onUp);
       },60);
     },HOLD_MS);
-  },{passive:false});
+  },{passive:true});
 
   head.addEventListener('pointerup',function(e){
     if(isDragging){ return; }     // se soltó durante drag — cleanup lo maneja
