@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="es">
+<html lang="es" data-theme="light">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -15,6 +15,7 @@
     <ul class="nav-links"><li><a href="index.html" class="">Inicio</a></li><li><a href="clases-sin-pre.html" class="">Clases</a></li><li><a href="motivacion-guia.html" class="">Motivación</a></li><li><a href="modulos-teoricos.html" class="">Material</a></li><li><a href="ejercicios-practicas.html" class="">Práctica</a></li><li><a href="temarios.html" class="active">Recursos</a></li><li><a href="donativos.html" class="">Comunidad</a></li></ul>
     <div class="nav-right" style="display:flex;align-items:center;gap:0.5rem">
       <button class="nav-hamburger" id="nav-hamburger-btn" onclick="openNavDrawer()" aria-label="Menú"><span></span><span></span><span></span></button>
+      <button id="btn-tema" onclick="toggleTema()">🌙 Modo oscuro</button>
       <button id="btn-avance" style="display:none">📋 Avance</button>
       <button id="btn-student-login">👤 Ingresar</button>
     </div>
@@ -34,12 +35,12 @@
         <img class="page-header-logo" src="logos/quimica.png" alt="III. Temarios">
         <div class="page-header-text">
           <p class="page-label">Sección</p>
-          <h1>III. Temarios</h1>
+          <h1>III. Temarios</h1><div class="section-desc">Temarios y guías de contenido para orientar tu estudio según los temas evaluados en el examen de admisión.</div>
           <p class="page-date">2024-08-24</p>
         </div>
       </div>
       <div class="entry-body" id="entry-body">
-        <p><br /></p><p>En esta sección encontrará los <b>Temarios disponibles por</b><b> Sin-Presupuesto</b>, esperando que sean de ayuda para su examen de admisión a la Universidad Nacional de Colombia.</p><p><br /></p><p></p><h2>I. Temario Maestro - SinPre</h2><div>En esta sección encontrará el Temario Maestro; para el examen de admisión para la Universidad Nacional de Colombia.</div><div><br /></div><div><a href="https://drive.google.com/file/d/1_pN0TQIxDDDRYIdTZKfS1zadtQIO9WOe/view?usp=sharing" target="_blank"><b>Archivo 1</b></a><br /></div><div><br /></div><div><br /></div><div><h1 class="fOvfyc B7SYid VnOHwf-Tvm9db">II. Temario Dalton Academy </h1><div>En esta sección encontrará el ultimo temario <b>publicado por Dalton Academy, para el examen de admisión de la Universidad Nacional de Colombia.</b></div><div><b><br /></b></div><div><b><a href="https://drive.google.com/file/d/1uludmM1yExxvkK_OiQ_Y7Y-_IP5lWIh0/view?usp=sharing" target="_blank">Archivo 1</a><br /></b></div><div><br /></div><div><br /></div><div><h2>III. Temario 9-Septiembre (ICFES Saber 11)</h2><div>En esta sección encontrará el <b>temario del PreICFES 9S </b>utilizado en el colegio IED Laureano Gómez (II); que puede ser útil para el examen de admisión para la Universidad Nacional de Colombia.</div><div><br /></div><div><a href="https://docs.google.com/spreadsheets/d/1aIwrCK1YlCjyUWn8RKwg2Myn8GzFzk22/edit?usp=sharing&amp;ouid=117788783265632108784&amp;rtpof=true&amp;sd=true" target="_blank"><b>Archivo 1</b></a><br /></div><div><br /></div><div><br /></div><div><h1 class="fOvfyc B7SYid VnOHwf-Tvm9db">IV. Temarios Auxiliares</h1><div>En esta sección encontrará unos <b>Temarios Auxiliares</b>; para el examen de admisión para la Universidad Nacional de Colombia.</div><div><b><br /></b></div><div><a href="https://drive.google.com/file/d/1Ut6BiuWT7maipQH5SMUeFkwj5nKp0S7z/view?usp=sharing" target="_blank"><b>Archivo 1</b></a><br /></div><div><br /></div><div><br /></div><div><h2>V. Guía de Estudio  - Pol. Alpes</h2><div><br /></div><div>En está sección encontrará la <b>guía de estudio pública</b> hecha por el Politécnico Los Alpes; esperando que sea de ayuda para su proceso de admisión en la Universidad Nacional de Colombia.</div><div><b><br /></b></div><div><a href="https://drive.google.com/file/d/1-TxrOZX-j9B-psme3E567GfL2USW3TJb/view?usp=sharing" target="_blank"><b>Archivo 1</b></a><br /></div><div><br /></div><div><br /></div><div><h2>VI. Libro Pre-Universitario</h2><div>En esta sección encontrará un <b>libro Pre-Universitario</b>, esperando que sirva de ayuda para su examen de admisión a la Universidad Nacional de Colombia.</div><div><b><br /></b></div><div><a href="https://drive.google.com/file/d/1mr6lYfjF97JGeJ97EYaCnW6_6KDdyXEX/view?usp=sharing" target="_blank"><b>Archivo 1</b></a><br /></div></div></div></div></div></div>
+        <p><br /></p><p>En esta sección encontrará los <b>Temarios disponibles por</b><b> Sin-Presupuesto</b>, esperando que sean de ayuda para su examen de admisión a la Universidad Nacional de Colombia.</p><p><br /></p><p></p><h2>I. Temario Maestro - SinPre</h2><div>En esta sección encontrará el Temario Maestro; para el examen de admisión para la Universidad Nacional de Colombia.</div><div><br /></div><div><div class="file-box-grid"><a class="file-box" href="https://drive.google.com/file/d/1_pN0TQIxDDDRYIdTZKfS1zadtQIO9WOe/view?usp=sharing" target="_blank"><div class="file-box-icon">📄</div><div class="file-box-body"><div class="file-box-title">Guía de Estudio — Politécnico los Alpes</div><div class="file-box-sub">Abrir en Drive ↗</div></div></a></div></div><div><br /></div><div><br /></div><div><h1 class="fOvfyc B7SYid VnOHwf-Tvm9db">II. Temario Dalton Academy </h1><div>En esta sección encontrará el ultimo temario <b>publicado por Dalton Academy, para el examen de admisión de la Universidad Nacional de Colombia.</b></div><div><b><br /></b></div><div><div class="file-box-grid"><a class="file-box" href="https://drive.google.com/file/d/1uludmM1yExxvkK_OiQ_Y7Y-_IP5lWIh0/view?usp=sharing" target="_blank"><div class="file-box-icon">📋</div><div class="file-box-body"><div class="file-box-title">Temario Dalton Academy</div><div class="file-box-sub">Abrir en Drive ↗</div></div></a></div><div><br /></div><div><br /></div><div><h2>III. Temario 9-Septiembre (ICFES Saber 11)</h2><div>En esta sección encontrará el <b>temario del PreICFES 9S </b>utilizado en el colegio IED Laureano Gómez (II); que puede ser útil para el examen de admisión para la Universidad Nacional de Colombia.</div><div><br /></div><div><div class="file-box-grid"><a class="file-box" href="https://docs.google.com/spreadsheets/d/1aIwrCK1YlCjyUWn8RKwg2Myn8GzFzk22/edit?usp=sharing&amp;ouid=117788783265632108784&amp;rtpof=true&amp;sd=true" target="_blank"><div class="file-box-icon">📄</div><div class="file-box-body"><div class="file-box-title">Archivo 1</div><div class="file-box-sub">Abrir en Drive ↗</div></div></a></div></div><div><br /></div><div><br /></div><div><h1 class="fOvfyc B7SYid VnOHwf-Tvm9db">IV. Temarios Auxiliares</h1><div>En esta sección encontrará unos <b>Temarios Auxiliares</b>; para el examen de admisión para la Universidad Nacional de Colombia.</div><div><b><br /></b></div><div><div class="file-box-grid"><a class="file-box" href="https://drive.google.com/file/d/1Ut6BiuWT7maipQH5SMUeFkwj5nKp0S7z/view?usp=sharing" target="_blank"><div class="file-box-icon">📄</div><div class="file-box-body"><div class="file-box-title">Archivo 1</div><div class="file-box-sub">Abrir en Drive ↗</div></div></a></div></div><div><br /></div><div><br /></div><div><h2>V. Guía de Estudio  - Pol. Alpes</h2><div><br /></div><div>En está sección encontrará la <b>guía de estudio pública</b> hecha por el Politécnico Los Alpes; esperando que sea de ayuda para su proceso de admisión en la Universidad Nacional de Colombia.</div><div><b><br /></b></div><div><div class="file-box-grid"><a class="file-box" href="https://drive.google.com/file/d/1-TxrOZX-j9B-psme3E567GfL2USW3TJb/view?usp=sharing" target="_blank"><div class="file-box-icon">📄</div><div class="file-box-body"><div class="file-box-title">Archivo 1</div><div class="file-box-sub">Abrir en Drive ↗</div></div></a></div></div><div><br /></div><div><br /></div><div><h2>VI. Libro Pre-Universitario</h2><div>En esta sección encontrará un <b>libro Pre-Universitario</b>, esperando que sirva de ayuda para su examen de admisión a la Universidad Nacional de Colombia.</div><div><b><br /></b></div><div><div class="file-box-grid"><a class="file-box" href="https://drive.google.com/file/d/1mr6lYfjF97JGeJ97EYaCnW6_6KDdyXEX/view?usp=sharing" target="_blank"><div class="file-box-icon">📄</div><div class="file-box-body"><div class="file-box-title">Archivo 1</div><div class="file-box-sub">Abrir en Drive ↗</div></div></a></div></div></div></div></div></div></div>
       </div>
     </main>
     <aside class="sidebar">
@@ -125,5 +126,26 @@
   </script>
   <script src="editor.js"></script>
   <script type="module" src="firebase-auth.js"></script>
+
+<script>
+/* ── Tema oscuro/claro ── */
+(function(){
+  var saved = localStorage.getItem('sp-tema') || 'light';
+  document.documentElement.setAttribute('data-theme', saved);
+  function syncBtn(){
+    var btn = document.getElementById('btn-tema');
+    if(!btn) return;
+    btn.textContent = document.documentElement.getAttribute('data-theme')==='dark'
+      ? '☀ Modo claro' : '🌙 Modo oscuro';
+  }
+  document.addEventListener('DOMContentLoaded', syncBtn);
+  window.toggleTema = function(){
+    var next = document.documentElement.getAttribute('data-theme')==='dark' ? 'light' : 'dark';
+    document.documentElement.setAttribute('data-theme', next);
+    localStorage.setItem('sp-tema', next);
+    syncBtn();
+  };
+})();
+</script>
 </body>
 </html>

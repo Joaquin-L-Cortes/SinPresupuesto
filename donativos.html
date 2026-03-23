@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="es">
+<html lang="es" data-theme="light">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -15,6 +15,7 @@
     <ul class="nav-links"><li><a href="index.html" class="">Inicio</a></li><li><a href="clases-sin-pre.html" class="">Clases</a></li><li><a href="motivacion-guia.html" class="">Motivación</a></li><li><a href="modulos-teoricos.html" class="">Material</a></li><li><a href="ejercicios-practicas.html" class="">Práctica</a></li><li><a href="temarios.html" class="">Recursos</a></li><li><a href="donativos.html" class="active">Comunidad</a></li></ul>
     <div class="nav-right" style="display:flex;align-items:center;gap:0.5rem">
       <button class="nav-hamburger" id="nav-hamburger-btn" onclick="openNavDrawer()" aria-label="Menú"><span></span><span></span><span></span></button>
+      <button id="btn-tema" onclick="toggleTema()">🌙 Modo oscuro</button>
       <button id="btn-avance" style="display:none">📋 Avance</button>
       <button id="btn-student-login">👤 Ingresar</button>
     </div>
@@ -125,5 +126,26 @@
   </script>
   <script src="editor.js"></script>
   <script type="module" src="firebase-auth.js"></script>
+
+<script>
+/* ── Tema oscuro/claro ── */
+(function(){
+  var saved = localStorage.getItem('sp-tema') || 'light';
+  document.documentElement.setAttribute('data-theme', saved);
+  function syncBtn(){
+    var btn = document.getElementById('btn-tema');
+    if(!btn) return;
+    btn.textContent = document.documentElement.getAttribute('data-theme')==='dark'
+      ? '☀ Modo claro' : '🌙 Modo oscuro';
+  }
+  document.addEventListener('DOMContentLoaded', syncBtn);
+  window.toggleTema = function(){
+    var next = document.documentElement.getAttribute('data-theme')==='dark' ? 'light' : 'dark';
+    document.documentElement.setAttribute('data-theme', next);
+    localStorage.setItem('sp-tema', next);
+    syncBtn();
+  };
+})();
+</script>
 </body>
 </html>
