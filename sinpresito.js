@@ -425,33 +425,42 @@
   }
 
   async function askAI(query) {
-    // Pre-filtrar catalogo: solo los 20 archivos mas relevantes al AI
-    // para no desbordar el contexto del modelo (~8k tokens).
-    const candidates = localSearch(query, 20);
+    // Pre-filtrar catalogo: solo los 25 archivos mas relevantes al AI.
+    // IMPORTANTE: usamos el indice REAL del CATALOG global como ID,
+    // para que el parser pueda recuperar el archivo correcto.
+    const candidates = localSearch(query, 25);
+
+    // Si no hay candidatos por busqueda, tomar los primeros 25 del catalogo
+    const pool = candidates.length > 0
+      ? candidates
+      : CATALOG.slice(0, 25).map((f, i) => ({ f, i, score: 0 }));
 
     const sep = '\n';
-    const catalogText = candidates.length > 0
-      ? candidates.map(({ f, i }) => (i + 1) + '. [' + f.s + '] ' + f.n).join(sep)
-      : CATALOG.slice(0, 20).map((f, i) => (i + 1) + '. [' + f.s + '] ' + f.n).join(sep);
-
-    const numCandidates = candidates.length > 0 ? candidates.length : 20;
+    // Formato: "ID_REAL|[Seccion] Nombre"  — el AI devuelve los ID_REAL
+    const catalogText = pool
+      .map(({ f, i }) => (i + 1) + '|[' + f.s + '] ' + f.n)
+      .join(sep);
 
     const systemPrompt = [
       'Eres SinPesito, asistente de SinPresupuesto, preuniversitario colombiano gratuito para la prueba de admision a universidades publicas (UNAL, UdeA, etc.).',
+      '',
+      'IMPORTANTE SOBRE EL CATALOGO:',
+      'Cada linea tiene formato: ID|[Seccion] Nombre',
+      'El ID es unico y puede ser cualquier numero. USA ESE ID EXACTO al citar archivos.',
       '',
       'CAPACIDADES:',
       '',
       '1. RESPONDER PREGUNTAS ACADEMICAS',
       'Si pregunta sobre un tema (matematicas, fisica, biologia, quimica, sociales, lectura critica, imagen):',
       '- Explica claro y preciso. Usa ejemplos, formulas o pasos.',
-      '- Al final agrega materiales con ARCHIVOS: si los hay.',
+      '- Al final cita los materiales mas relevantes con ARCHIVOS:',
       '',
       '2. RECOMENDAR MATERIAL',
-      'Si pide archivos o recursos, escribe AL FINAL de tu respuesta:',
+      'Escribe AL FINAL de tu respuesta (solo si hay archivos relevantes):',
       'ARCHIVOS: 12,45,78',
-      '(solo numeros del catalogo, separados por coma)',
+      '(IDs del catalogo, separados por coma, maximo 5)',
       '',
-      'CATALOGO DISPONIBLE (' + numCandidates + ' archivos relevantes):',
+      'CATALOGO DISPONIBLE:',
       catalogText,
       '',
       '3. SUGERIR CLASES DE YOUTUBE',
@@ -460,7 +469,8 @@
       '',
       'REGLAS:',
       '- Responde en espanol colombiano, amigable y motivador.',
-      '- USA SOLO los numeros del catalogo de arriba. Nunca inventes archivos.',
+      '- USA SOLO los IDs del catalogo de arriba. Nunca inventes IDs.',
+      '- Elige los archivos que MAS coincidan con el tema pedido.',
       '- NUNCA menciones ICFES ni Saber 11.',
       '- Si no hay materiales relevantes, responde la pregunta igual.',
       '- Maximo 3 parrafos cortos.'
@@ -478,7 +488,7 @@
     const res = await fetch(CF_AI_URL, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ messages, max_tokens: 800, temperature: 0.4 })
+      body: JSON.stringify({ messages, max_tokens: 800, temperature: 0.3 })
     });
 
     if (!res.ok) {
@@ -509,6 +519,7 @@
       .trim();
 
     if (archivosMatch) {
+      // Los IDs que devuelve el AI son indices reales (1-based) del CATALOG global
       const indices = archivosMatch[1]
         .split(',')
         .map(n => parseInt(n.trim()) - 1)
@@ -516,9 +527,9 @@
       matched = [...new Set(indices)].map(i => CATALOG[i]);
     }
 
-    // Fallback: si el AI no devolvio ARCHIVOS pero habia candidatos locales relevantes
-    if (matched.length === 0 && !youtubeUrl && candidates.length > 0) {
-      matched = candidates.slice(0, 5).map(x => x.f);
+    // Fallback: si el AI no devolvio ARCHIVOS bien, usar top candidatos locales
+    if (matched.length === 0 && !youtubeUrl && pool.length > 0) {
+      matched = pool.slice(0, 4).map(x => x.f);
     }
 
     return { text, matched, youtubeUrl };
