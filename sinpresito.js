@@ -1,5 +1,5 @@
 /* =====================================================
-   SinPresito — Chatbot flotante con Gemini
+   SinPesito — Chatbot flotante con Gemini
    Pega tu API key de Google AI Studio en la variable
    GEMINI_KEY de abajo (o en el Cloudflare Worker).
    ===================================================== */
@@ -9,7 +9,7 @@
 
   // ── CONFIGURACIÓN ─────────────────────────────────
   const GEMINI_KEY = 'AIzaSyCSm8YJLqIocYlU5cmpty_f6xCEa2QL_7s'; // ← Pega aquí tu API key de Google AI Studio
-  const GEMINI_URL = 'https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent';
+  const GEMINI_URL = 'https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent';
   // ──────────────────────────────────────────────────
 
   // Catálogo completo de archivos (auto-generado)
@@ -65,9 +65,9 @@
   root.innerHTML = `
     <div id="sp-panel" style="display:none">
       <div id="sp-header">
-        <div class="sp-avatar">🤖</div>
+        <div class="sp-avatar" style="background:transparent;padding:0"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" fill="none" style="width:26px;height:26px;flex-shrink:0"><defs><linearGradient id="spg" x1="0" y1="0" x2="64" y2="64" gradientUnits="userSpaceOnUse"><stop offset="0%" stop-color="#1a3a6b"/><stop offset="100%" stop-color="#2e6fc4"/></linearGradient></defs><rect width="64" height="64" rx="14" fill="url(#spg)"/><path d="M18 22c0-2.2 1.8-4 4-4h8c2.2 0 4 1.8 4 4v2c0 1.1-.9 2-2 2h-8c-2.2 0-4 1.8-4 4v2c0 2.2 1.8 4 4 4h8c1.1 0 2 .9 2 2v2c0 2.2-1.8 4-4 4h-8c-2.2 0-4-1.8-4-4" stroke="white" stroke-width="3" stroke-linecap="round"/><path d="M38 18h6c2.2 0 4 1.8 4 4v4c0 2.2-1.8 4-4 4h-6M38 18v28" stroke="white" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
         <div class="sp-info">
-          <div class="sp-name">SinPresito</div>
+          <div class="sp-name">SinPesito</div>
           <div class="sp-sub">Busco el material que necesitas ✨</div>
         </div>
         <button id="sp-close" title="Cerrar">✕</button>
@@ -79,7 +79,7 @@
         <button id="sp-send">➤</button>
       </div>
     </div>
-    <button id="sp-btn" title="SinPresito — busca tu material">🎓<span class="sp-badge"></span></button>
+    <button id="sp-btn" title="SinPesito — busca tu material"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" fill="none" style="width:30px;height:30px;flex-shrink:0"><defs><linearGradient id="spg" x1="0" y1="0" x2="64" y2="64" gradientUnits="userSpaceOnUse"><stop offset="0%" stop-color="#1a3a6b"/><stop offset="100%" stop-color="#2e6fc4"/></linearGradient></defs><rect width="64" height="64" rx="14" fill="url(#spg)"/><path d="M18 22c0-2.2 1.8-4 4-4h8c2.2 0 4 1.8 4 4v2c0 1.1-.9 2-2 2h-8c-2.2 0-4 1.8-4 4v2c0 2.2 1.8 4 4 4h8c1.1 0 2 .9 2 2v2c0 2.2-1.8 4-4 4h-8c-2.2 0-4-1.8-4-4" stroke="white" stroke-width="3" stroke-linecap="round"/><path d="M38 18h6c2.2 0 4 1.8 4 4v4c0 2.2-1.8 4-4 4h-6M38 18v28" stroke="white" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg><span class="sp-badge"></span></button>
   `;
   document.body.appendChild(root);
 
@@ -99,7 +99,7 @@
     panel.style.display = open ? 'flex' : 'none';
     if (open) {
       if (!GEMINI_KEY) banner.style.display = 'flex';
-      if (msgs.children.length === 0) addMsg('bot', '¡Hola! 👋 Soy <b>SinPresito</b>, tu asistente de material SinPre.<br>Dime qué tema estás buscando y te recomiendo los archivos más útiles. Puedes ser específico: <i>"simulacros de matemática"</i>, <i>"biología célula"</i>, <i>"textos ICFES"</i>…');
+      if (msgs.children.length === 0) addMsg('bot', '¡Hola! 👋 Soy <b>SinPesito</b>, tu asistente de material SinPre.<br>Dime qué tema estás buscando y te recomiendo los archivos más útiles. Puedes ser específico: <i>"simulacros de matemática"</i>, <i>"biología célula"</i>, <i>"textos ICFES"</i>…');
       setTimeout(() => input.focus(), 100);
     }
   }
@@ -149,6 +149,11 @@
   async function handleSend() {
     const q = input.value.trim();
     if (!q) return;
+    // ── Verificar que el usuario está logueado ──
+    if (!window._spCurrentUser) {
+      addMsg('bot', '🔒 Para usar SinPesito debes estar registrado. <br><button onclick="window.openStudentModal&&window.openStudentModal()" style="margin-top:.4rem;background:#2a6cc4;color:white;border:none;border-radius:8px;padding:.4rem .85rem;font-size:.8rem;cursor:pointer;font-family:inherit">Ingresar / Registrarse</button>');
+      return;
+    }
     input.value = '';
     send.disabled = true;
 
@@ -180,7 +185,7 @@
     // Build catalog context (just names + sections, compact)
     const catalogText = CATALOG.map((f,i) => `${i+1}. [${f.s}] ${f.n}`).join('\n');
 
-    const systemPrompt = `Eres SinPresito, el asistente de estudio de SinPresupuesto, un preuniversitario gratuito colombiano para la prueba Saber 11 y el examen de admisión de la Universidad Nacional.
+    const systemPrompt = `Eres SinPesito, el asistente de estudio de SinPresupuesto, un preuniversitario gratuito colombiano para la prueba Saber 11 y el examen de admisión de la Universidad Nacional.
 
 Tu única tarea es ayudar a los estudiantes a encontrar material de estudio relevante dentro del catálogo de archivos disponibles.
 
@@ -226,6 +231,20 @@ INSTRUCCIONES:
 
     return { text, matched };
   }
+
+  // ── Escuchar estado de auth de Firebase ──
+  // firebase-auth.js expone el usuario a través de onAuthStateChanged
+  // Esperamos a que esté disponible y lo escuchamos
+  (function waitForAuth() {
+    if (window.firebase_auth_ready) {
+      // Ya está listo
+    } else {
+      // Escuchar cuando firebase-auth.js actualice el estado
+      document.addEventListener('sp-auth-changed', function(e) {
+        window._spCurrentUser = e.detail.user;
+      });
+    }
+  })();
 
   function escHtml(s) {
     return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');

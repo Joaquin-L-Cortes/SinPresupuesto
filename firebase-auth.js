@@ -1173,6 +1173,9 @@ domReady(() => {
     updateNav(user, userProfile);
     // Re-evaluar nav compacto tras cambio de botones
     setTimeout(() => window.syncNav && window.syncNav(), 50);
+    // Notificar a SinPesito del estado de auth
+    window._spCurrentUser = user || null;
+    document.dispatchEvent(new CustomEvent('sp-auth-changed', { detail: { user: user || null } }));
     // Notificar a la página que el estado de auth está listo
     if (window._pageReady) {
       window._pageReady(user, db, doc, setDoc, getDoc);
