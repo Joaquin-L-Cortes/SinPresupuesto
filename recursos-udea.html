@@ -344,7 +344,7 @@ footer a:hover{text-decoration:underline;}
         <span>Cargando documento…</span>
       </div>
       <iframe id="m-iframe" allowfullscreen loading="lazy"
-        sandbox="allow-scripts allow-same-origin allow-popups allow-forms"></iframe>
+        sandbox="allow-scripts allow-popups allow-forms allow-popups-to-escape-sandbox"></iframe>
     </div>
   </div>
 </div>
@@ -440,7 +440,7 @@ function requireAuth(cb){
 }
 
 /* ── DATOS ── */
-const MODULES=[{"id": "libro_ex_menes_udea", "emoji": "🏛️", "bg": "#fff0de", "title": "Libro Exámenes UdeA", "desc": "Libro Exámenes UdeA", "files": [{"n": "Material preparatorio UdeA", "url": "https://drive.google.com/file/d/1xlV-FkJmfBFiP3Iwn68IiMuTintXUIvV/view?usp=sharing", "type": "PDF", "ext": false}]}, {"id": "udea_comprensi_n_lec", "emoji": "📖", "bg": "#fff0de", "title": "UdeA Comprensión Lectora", "desc": "UdeA Comprensión Lectora", "files": [{"n": "Material preparatorio UdeA", "url": "https://drive.google.com/file/d/1VaniX3RgYzPfBsiySgU1n-gsgMG7RMoV/view?usp=sharing", "type": "PDF", "ext": false}, {"n": "UdeA Comprensión Lectora — N° 2", "url": "https://drive.google.com/file/d/17doSJ4x-uLKR8zNzWEDPQsCs97ZhmXK3/view?usp=sharing", "type": "PDF", "ext": false}, {"n": "UdeA Comprensión Lectora — N° 3", "url": "https://drive.google.com/file/d/1M1i-3aGYCl3EMdePiVDp6-FEsJj3SypT/view?usp=sharing", "type": "PDF", "ext": false}, {"n": "UdeA Comprensión Lectora — N° 4", "url": "https://drive.google.com/file/d/11jvX11wA-KsdqTvtHAe1nLoIuIV9fgeC/view?usp=sharing", "type": "PDF", "ext": false}, {"n": "UdeA Comprensión Lectora — N° 5", "url": "https://drive.google.com/file/d/19YSfj2I7g324I7bw9zZTezF6BRP53ivt/view?usp=sharing ", "type": "PDF", "ext": false}, {"n": "UdeA Comprensión Lectora — N° 6", "url": "https://drive.google.com/file/d/1aTTAcKLH4kT2B0ucmI6cXAT_p8ZC7aSI/view?usp=sharing ", "type": "PDF", "ext": false}, {"n": "UdeA Comprensión Lectora — N° 7", "url": "https://drive.google.com/file/d/1raaGlLp9yBWu3kLXWdxoPr_yJKC77VN6/view?usp=sharing ", "type": "PDF", "ext": false}, {"n": "UdeA Comprensión Lectora — N° 8", "url": "https://drive.google.com/file/d/1g19mCneLRs8BxGMq6zecqm4jg2In09ZC/view?usp=sharing", "type": "PDF", "ext": false}, {"n": "UdeA Comprensión Lectora — N° 9", "url": "https://drive.google.com/file/d/1MA8KydLgwiCmVl4e9CEuk5eg6fAFeSJm/view?usp=sharing", "type": "PDF", "ext": false}, {"n": "UdeA Comprensión Lectora — N° 10", "url": "https://drive.google.com/file/d/1avMtF0OwPVQoqSPb3D0f-kMG1y6VQEti/view?usp=sharing", "type": "PDF", "ext": false}, {"n": "UdeA Comprensión Lectora — N° 11", "url": "https://drive.google.com/file/d/1ZPQkGYUN2eNtJQa7NUkN79Wa2UVBJufN/view?usp=sharing", "type": "PDF", "ext": false}, {"n": "UdeA Comprensión Lectora — N° 12", "url": "https://drive.google.com/file/d/1rQbtI25dgYuFZp9bFHcEySkVT3_Rlmlp/view?usp=sharing", "type": "PDF", "ext": false}, {"n": "UdeA Comprensión Lectora — N° 13", "url": "https://drive.google.com/file/d/1RkyTLVihByYGq0UzK81xK_gPAjIEQueM/view?usp=sharing", "type": "PDF", "ext": false}, {"n": "UdeA Comprensión Lectora — N° 14", "url": "https://drive.google.com/file/d/1IQVPKeC6wRM5Yj7NAqD1HZ-_qz3_Va6a/view?usp=sharing", "type": "PDF", "ext": false}, {"n": "UdeA Comprensión Lectora — N° 15", "url": "https://drive.google.com/file/d/1wXeFSAf8oA4_Xn3XBff7zPEsVbhS3i9B/view?usp=sharing", "type": "PDF", "ext": false}, {"n": "UdeA Comprensión Lectora — N° 16", "url": "https://drive.google.com/file/d/1pVRoDcngRN2Y7qMsJ88EFoI3wbEbbNjf/view?usp=sharing", "type": "PDF", "ext": false}]}, {"id": "udea_razonamiento_l", "emoji": "🏛️", "bg": "#fff0de", "title": "UdeA Razonamiento Lógico", "desc": "UdeA Razonamiento Lógico", "files": [{"n": "Material preparatorio UdeA", "url": "https://drive.google.com/file/d/1LbcGVWcWGJ5L0V_3uCWfrhc3J2AmKUzB/view?usp=sharing", "type": "PDF", "ext": false}, {"n": "UdeA Razonamiento Lógico — N° 2", "url": "https://drive.google.com/file/d/1a-FAHG5hEtFLum6A4eBOmQJ2NzD5GqK1/view?usp=sharing", "type": "PDF", "ext": false}, {"n": "UdeA Razonamiento Lógico — N° 3", "url": "https://drive.google.com/file/d/1wLQO8taE6Q0OPajBeY-OrKsstMQuGrq4/view?usp=sharing", "type": "PDF", "ext": false}, {"n": "UdeA Razonamiento Lógico — N° 4", "url": "https://drive.google.com/file/d/1X3iXutAKHKta-aOmyEyZ1neNBhu4bEZ2/view?usp=sharing", "type": "PDF", "ext": false}, {"n": "UdeA Razonamiento Lógico — N° 5", "url": "https://drive.google.com/file/d/1jFAsTalh9qLpP1Hs-vtpraREHnAZKY63/view?usp=sharing ", "type": "PDF", "ext": false}, {"n": "UdeA Razonamiento Lógico — N° 6", "url": "https://drive.google.com/file/d/1et-37z2d777-B-HAiY8JiZzIXwQkyo7a/view?usp=sharing", "type": "PDF", "ext": false}, {"n": "UdeA Razonamiento Lógico — N° 7", "url": "https://drive.google.com/file/d/1ydXpfWVc2FZ2NN60614D3cdC6rAxvxg_/view?usp=sharing", "type": "PDF", "ext": false}, {"n": "UdeA Razonamiento Lógico — N° 8", "url": "https://drive.google.com/file/d/1CjdMcKCcV0X7KtDoOrlVDWxnbQKwYYxr/view?usp=sharing", "type": "PDF", "ext": false}, {"n": "UdeA Razonamiento Lógico — N° 9", "url": "https://drive.google.com/file/d/1yFFmZibGay2HwJeLwZvTgZ7kArKzSaij/view?usp=sharing", "type": "PDF", "ext": false}, {"n": "UdeA Razonamiento Lógico — N° 10", "url": "https://drive.google.com/file/d/1jqaoaJYVqUOAAN9QBjShlW9BX_08K8DX/view?usp=sharing", "type": "PDF", "ext": false}, {"n": "UdeA Razonamiento Lógico — N° 11", "url": "https://drive.google.com/file/d/1u8w8ZGTKPRNCmYJBp4qZDZWplhAYeouY/view?usp=sharing", "type": "PDF", "ext": false}, {"n": "UdeA Razonamiento Lógico — N° 12", "url": "https://drive.google.com/file/d/1OTNY7U_VWe4HRLIzGSEvFWWEgDKogmpS/view?usp=sharing", "type": "PDF", "ext": false}, {"n": "UdeA Razonamiento Lógico — N° 13", "url": "https://drive.google.com/file/d/1G9cEyxPn6HHwOd-q64tbOMjrt_2G1mMG/view?usp=sharing", "type": "PDF", "ext": false}]}];
+const MODULES=[{"id": "libro_ex_menes_udea", "emoji": "🏛️", "bg": "#fff0de", "title": "Libro Exámenes UdeA", "desc": "Libro Exámenes UdeA", "files": [{"n": "Material preparatorio UdeA — Introducción", "url": "https://drive.google.com/file/d/1xlV-FkJmfBFiP3Iwn68IiMuTintXUIvV/view?usp=sharing", "type": "PDF", "ext": false}]}, {"id": "udea_comprensi_n_lec", "emoji": "📖", "bg": "#fff0de", "title": "UdeA Comprensión Lectora", "desc": "UdeA Comprensión Lectora", "files": [{"n": "Material preparatorio UdeA", "url": "https://drive.google.com/file/d/1VaniX3RgYzPfBsiySgU1n-gsgMG7RMoV/view?usp=sharing", "type": "PDF", "ext": false}, {"n": "UdeA Comprensión Lectora — N° 2", "url": "https://drive.google.com/file/d/17doSJ4x-uLKR8zNzWEDPQsCs97ZhmXK3/view?usp=sharing", "type": "PDF", "ext": false}, {"n": "UdeA Comprensión Lectora — N° 3", "url": "https://drive.google.com/file/d/1M1i-3aGYCl3EMdePiVDp6-FEsJj3SypT/view?usp=sharing", "type": "PDF", "ext": false}, {"n": "UdeA Comprensión Lectora — N° 4", "url": "https://drive.google.com/file/d/11jvX11wA-KsdqTvtHAe1nLoIuIV9fgeC/view?usp=sharing", "type": "PDF", "ext": false}, {"n": "UdeA Comprensión Lectora — N° 5", "url": "https://drive.google.com/file/d/19YSfj2I7g324I7bw9zZTezF6BRP53ivt/view?usp=sharing ", "type": "PDF", "ext": false}, {"n": "UdeA Comprensión Lectora — N° 6", "url": "https://drive.google.com/file/d/1aTTAcKLH4kT2B0ucmI6cXAT_p8ZC7aSI/view?usp=sharing ", "type": "PDF", "ext": false}, {"n": "UdeA Comprensión Lectora — N° 7", "url": "https://drive.google.com/file/d/1raaGlLp9yBWu3kLXWdxoPr_yJKC77VN6/view?usp=sharing ", "type": "PDF", "ext": false}, {"n": "UdeA Comprensión Lectora — N° 8", "url": "https://drive.google.com/file/d/1g19mCneLRs8BxGMq6zecqm4jg2In09ZC/view?usp=sharing", "type": "PDF", "ext": false}, {"n": "UdeA Comprensión Lectora — N° 9", "url": "https://drive.google.com/file/d/1MA8KydLgwiCmVl4e9CEuk5eg6fAFeSJm/view?usp=sharing", "type": "PDF", "ext": false}, {"n": "UdeA Comprensión Lectora — N° 10", "url": "https://drive.google.com/file/d/1avMtF0OwPVQoqSPb3D0f-kMG1y6VQEti/view?usp=sharing", "type": "PDF", "ext": false}, {"n": "UdeA Comprensión Lectora — N° 11", "url": "https://drive.google.com/file/d/1ZPQkGYUN2eNtJQa7NUkN79Wa2UVBJufN/view?usp=sharing", "type": "PDF", "ext": false}, {"n": "UdeA Comprensión Lectora — N° 12", "url": "https://drive.google.com/file/d/1rQbtI25dgYuFZp9bFHcEySkVT3_Rlmlp/view?usp=sharing", "type": "PDF", "ext": false}, {"n": "UdeA Comprensión Lectora — N° 13", "url": "https://drive.google.com/file/d/1RkyTLVihByYGq0UzK81xK_gPAjIEQueM/view?usp=sharing", "type": "PDF", "ext": false}, {"n": "UdeA Comprensión Lectora — N° 14", "url": "https://drive.google.com/file/d/1IQVPKeC6wRM5Yj7NAqD1HZ-_qz3_Va6a/view?usp=sharing", "type": "PDF", "ext": false}, {"n": "UdeA Comprensión Lectora — N° 15", "url": "https://drive.google.com/file/d/1wXeFSAf8oA4_Xn3XBff7zPEsVbhS3i9B/view?usp=sharing", "type": "PDF", "ext": false}, {"n": "UdeA Comprensión Lectora — N° 16", "url": "https://drive.google.com/file/d/1pVRoDcngRN2Y7qMsJ88EFoI3wbEbbNjf/view?usp=sharing", "type": "PDF", "ext": false}]}, {"id": "udea_razonamiento_l", "emoji": "🏛️", "bg": "#fff0de", "title": "UdeA Razonamiento Lógico", "desc": "UdeA Razonamiento Lógico", "files": [{"n": "Material preparatorio UdeA", "url": "https://drive.google.com/file/d/1LbcGVWcWGJ5L0V_3uCWfrhc3J2AmKUzB/view?usp=sharing", "type": "PDF", "ext": false}, {"n": "UdeA Razonamiento Lógico — N° 2", "url": "https://drive.google.com/file/d/1a-FAHG5hEtFLum6A4eBOmQJ2NzD5GqK1/view?usp=sharing", "type": "PDF", "ext": false}, {"n": "UdeA Razonamiento Lógico — N° 3", "url": "https://drive.google.com/file/d/1wLQO8taE6Q0OPajBeY-OrKsstMQuGrq4/view?usp=sharing", "type": "PDF", "ext": false}, {"n": "UdeA Razonamiento Lógico — N° 4", "url": "https://drive.google.com/file/d/1X3iXutAKHKta-aOmyEyZ1neNBhu4bEZ2/view?usp=sharing", "type": "PDF", "ext": false}, {"n": "UdeA Razonamiento Lógico — N° 5", "url": "https://drive.google.com/file/d/1jFAsTalh9qLpP1Hs-vtpraREHnAZKY63/view?usp=sharing ", "type": "PDF", "ext": false}, {"n": "UdeA Razonamiento Lógico — N° 6", "url": "https://drive.google.com/file/d/1et-37z2d777-B-HAiY8JiZzIXwQkyo7a/view?usp=sharing", "type": "PDF", "ext": false}, {"n": "UdeA Razonamiento Lógico — N° 7", "url": "https://drive.google.com/file/d/1ydXpfWVc2FZ2NN60614D3cdC6rAxvxg_/view?usp=sharing", "type": "PDF", "ext": false}, {"n": "UdeA Razonamiento Lógico — N° 8", "url": "https://drive.google.com/file/d/1CjdMcKCcV0X7KtDoOrlVDWxnbQKwYYxr/view?usp=sharing", "type": "PDF", "ext": false}, {"n": "UdeA Razonamiento Lógico — N° 9", "url": "https://drive.google.com/file/d/1yFFmZibGay2HwJeLwZvTgZ7kArKzSaij/view?usp=sharing", "type": "PDF", "ext": false}, {"n": "UdeA Razonamiento Lógico — N° 10", "url": "https://drive.google.com/file/d/1jqaoaJYVqUOAAN9QBjShlW9BX_08K8DX/view?usp=sharing", "type": "PDF", "ext": false}, {"n": "UdeA Razonamiento Lógico — N° 11", "url": "https://drive.google.com/file/d/1u8w8ZGTKPRNCmYJBp4qZDZWplhAYeouY/view?usp=sharing", "type": "PDF", "ext": false}, {"n": "UdeA Razonamiento Lógico — N° 12", "url": "https://drive.google.com/file/d/1OTNY7U_VWe4HRLIzGSEvFWWEgDKogmpS/view?usp=sharing", "type": "PDF", "ext": false}, {"n": "UdeA Razonamiento Lógico — N° 13", "url": "https://drive.google.com/file/d/1G9cEyxPn6HHwOd-q64tbOMjrt_2G1mMG/view?usp=sharing", "type": "PDF", "ext": false}]}];
 const PAGE_KEY='recursos_udea';
 const HOLD_MS=300;
 let checked={},order=MODULES.map(m=>m.id),fileOrders={},heroMode='bar';
@@ -595,14 +595,17 @@ function removeGhost(){if(ghost){ghost.remove();ghost=null;}}
 
 function attachCard(card,m){
   var head=card.querySelector('.mc-head');
-  var holdTimer=null,dragActive=false,everDragged=false,overMid=null,docMH=null,docUH=null;
+  var holdTimer=null,dragActive=false,ghostCreated=false,overMid=null,docMH=null,docUH=null;
   head.addEventListener('pointerdown',function(e){
     if(openCardId===m.id)return;
-    e.preventDefault();everDragged=false;
+    e.preventDefault();
+    dragActive=false;ghostCreated=false;overMid=null;
     holdTimer=setTimeout(function(){
-      dragActive=true;everDragged=true;card.classList.add('hold-ready');
+      dragActive=true;
+      card.classList.add('hold-ready');
       setTimeout(function(){
         if(!dragActive)return;
+        ghostCreated=true;
         card.classList.remove('hold-ready');card.classList.add('is-dragging');createGhost(card);
         docMH=function(ev){
           ev.preventDefault();moveGhost(ev.clientX,ev.clientY);
@@ -628,17 +631,19 @@ function attachCard(card,m){
     },HOLD_MS);
   });
   head.addEventListener('pointerup',function(e){
-    if(dragActive||everDragged)return;
-    clearTimeout(holdTimer);cleanup(false);toggleCard(m.id);
+    clearTimeout(holdTimer);
+    if(dragActive){return;}
+    cleanup(false);toggleCard(m.id);
   });
-  head.addEventListener('pointercancel',function(){cleanup(false);});
+  head.addEventListener('pointercancel',function(){clearTimeout(holdTimer);cleanup(false);});
   function cleanup(commit){
     clearTimeout(holdTimer);
     if(docMH){document.removeEventListener('pointermove',docMH);docMH=null;}
     if(docUH){document.removeEventListener('pointerup',docUH);docUH=null;}
     removeGhost();
-    var wasActive=dragActive,landing=overMid;dragActive=false;overMid=null;clearDragClasses();
-    if(commit&&wasActive&&landing){
+    var wasGhost=ghostCreated,landing=overMid;
+    dragActive=false;ghostCreated=false;overMid=null;clearDragClasses();
+    if(commit&&wasGhost&&landing){
       var si=order.indexOf(m.id),di=order.indexOf(landing);
       if(si!==di){order.splice(si,1);order.splice(di,0,m.id);scheduleSave();_setJustDropped();renderGrid();}
     }
@@ -760,8 +765,19 @@ function openModal(mid,fi){
     document.querySelector('.btn-drive').href=driveUrl;
     var iframe=document.getElementById('m-iframe'),loading=document.getElementById('m-loading');
     if(loading)loading.classList.remove('hidden');
-    if(iframe){iframe.src='';setTimeout(function(){iframe.src=previewUrl;},80);}
-    if(iframe)iframe.onload=function(){if(loading)loading.classList.add('hidden');};
+    if(iframe){
+      iframe.src='';
+      setTimeout(function(){iframe.src=previewUrl;},80);
+    }
+    if(iframe){
+      iframe.onload=function(){if(loading)loading.classList.add('hidden');};
+      iframe.onerror=function(){
+        if(loading){
+          loading.classList.remove('hidden');
+          loading.innerHTML='<span style="font-size:1.5rem">⚠️</span><span style="text-align:center;max-width:260px">No se pudo cargar el documento.<br><small style="color:var(--muted)">Si tienes un bloqueador de anuncios, desactívalo para este sitio.</small></span>';
+        }
+      };
+    }
     syncSeen();
     document.getElementById('modal').classList.add('open');
   });

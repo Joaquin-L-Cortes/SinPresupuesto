@@ -344,7 +344,7 @@ footer a:hover{text-decoration:underline;}
         <span>Cargando documento…</span>
       </div>
       <iframe id="m-iframe" allowfullscreen loading="lazy"
-        sandbox="allow-scripts allow-same-origin allow-popups allow-forms"></iframe>
+        sandbox="allow-scripts allow-popups allow-forms allow-popups-to-escape-sandbox"></iframe>
     </div>
   </div>
 </div>
@@ -440,7 +440,7 @@ function requireAuth(cb){
 }
 
 /* ── DATOS ── */
-const MODULES=[{"id": "i__clases_michi__you", "emoji": "📹", "bg": "#e8f4fd", "title": "I. Clases Michi (YouTube - Proceso)", "desc": "I. Clases Michi (YouTube - Proceso)", "files": [{"n": "YouTube - MichiUN", "url": "https://www.youtube.com/@MichiUN", "type": "Video", "ext": true}]}, {"id": "ii__polit_cnico_los", "emoji": "📄", "bg": "#e4ecf7", "title": "II. Politécnico los Alpes (YouTube - Completo)", "desc": "II. Politécnico los Alpes (YouTube - Completo)", "files": [{"n": "YouTube - Alpes", "url": "https://www.youtube.com/playlist?list=PL22Eyc0Leed6e087WZ2ctVvl5dQ7EQ01J", "type": "Video", "ext": true}, {"n": "Mate' - Alpes", "url": "https://www.youtube.com/playlist?list=PL22Eyc0Leed7hws1CvYHa_cukmE8gZb2j", "type": "Video", "ext": true}, {"n": "Textual - Alpes", "url": "https://www.youtube.com/playlist?list=PL22Eyc0Leed6Ew1wvNLKDFLJnjbRtK62l", "type": "Video", "ext": true}, {"n": "Química - Alpes", "url": "https://www.youtube.com/playlist?list=PL22Eyc0Leed47KR7PLIZcvVmVSzvrZLwn", "type": "Video", "ext": true}, {"n": "Física - Alpes", "url": "https://www.youtube.com/playlist?list=PL22Eyc0Leed7RzSUEu2wnm34i17WO_WCV", "type": "Video", "ext": true}, {"n": "Biología - Alpes", "url": "https://www.youtube.com/playlist?list=PL22Eyc0Leed6Tj8M7ypHOIIfz-wZFQ6_i", "type": "Video", "ext": true}, {"n": "Sociales - Alpes", "url": "https://www.youtube.com/playlist?list=PL22Eyc0Leed4AYuK2X7EiNceiymEe1xPv", "type": "Video", "ext": true}, {"n": "Imagen - Alpes", "url": "https://www.youtube.com/playlist?list=PL22Eyc0Leed7YU3zSE6RSvSifo_NFhrrL", "type": "Video", "ext": true}]}, {"id": "iii__unprofesor_com", "emoji": "📄", "bg": "#e4ecf7", "title": "III. UnProfesor.com", "desc": "III. UnProfesor.com", "files": [{"n": "UnProfesor.com", "url": "https://www.unprofesor.com/", "type": "Enlace", "ext": false}]}, {"id": "iv__matem_ticas___co", "emoji": "🔢", "bg": "#dce8f8", "title": "IV. Matemáticas - Colaborador (Proceso)", "desc": "IV. Matemáticas - Colaborador (Proceso)", "files": [{"n": "Archivos - Colaborador", "url": "https://drive.google.com/drive/folders/1A6NIz4dbRxQd8ubMPUjU3Bfndcp7S_bg", "type": "PDF", "ext": false}]}];
+const MODULES=[{"id": "i__clases_michi__you", "emoji": "📹", "bg": "#e8f4fd", "title": "I. Clases Michi (YouTube - Proceso)", "desc": "I. Clases Michi (YouTube - Proceso)", "files": [{"n": "YouTube - MichiUN", "url": "https://www.youtube.com/@MichiUN", "type": "Video", "ext": true}]}, {"id": "ii__polit_cnico_los", "emoji": "📄", "bg": "#e4ecf7", "title": "II. Politécnico los Alpes (YouTube - Completo)", "desc": "II. Politécnico los Alpes (YouTube - Completo)", "files": [{"n": "YouTube - Alpes", "url": "https://www.youtube.com/playlist?list=PL22Eyc0Leed6e087WZ2ctVvl5dQ7EQ01J", "type": "Video", "ext": true}, {"n": "Mate' - Alpes", "url": "https://www.youtube.com/playlist?list=PL22Eyc0Leed7hws1CvYHa_cukmE8gZb2j", "type": "Video", "ext": true}, {"n": "Textual - Alpes", "url": "https://www.youtube.com/playlist?list=PL22Eyc0Leed6Ew1wvNLKDFLJnjbRtK62l", "type": "Video", "ext": true}, {"n": "Química - Alpes", "url": "https://www.youtube.com/playlist?list=PL22Eyc0Leed47KR7PLIZcvVmVSzvrZLwn", "type": "Video", "ext": true}, {"n": "Física - Alpes", "url": "https://www.youtube.com/playlist?list=PL22Eyc0Leed7RzSUEu2wnm34i17WO_WCV", "type": "Video", "ext": true}, {"n": "Biología - Alpes", "url": "https://www.youtube.com/playlist?list=PL22Eyc0Leed6Tj8M7ypHOIIfz-wZFQ6_i", "type": "Video", "ext": true}, {"n": "Sociales - Alpes", "url": "https://www.youtube.com/playlist?list=PL22Eyc0Leed4AYuK2X7EiNceiymEe1xPv", "type": "Video", "ext": true}, {"n": "Imagen - Alpes", "url": "https://www.youtube.com/playlist?list=PL22Eyc0Leed7YU3zSE6RSvSifo_NFhrrL", "type": "Video", "ext": true}]}, {"id": "iii__unprofesor_com", "emoji": "📄", "bg": "#e4ecf7", "title": "III. UnProfesor.com", "desc": "III. UnProfesor.com", "files": [{"n": "UnProfesor.com", "url": "https://www.unprofesor.com/", "type": "Enlace", "ext": false}]}, {"id": "iv__matem_ticas___co", "emoji": "🔢", "bg": "#dce8f8", "title": "IV. Matemáticas - Colaborador (Proceso)", "desc": "IV. Matemáticas - Colaborador (Proceso)", "files": [{"n": "Material colaborador — Sin-Pre", "url": "https://drive.google.com/drive/folders/1A6NIz4dbRxQd8ubMPUjU3Bfndcp7S_bg", "type": "PDF", "ext": false}]}];
 const PAGE_KEY='clases_preu_s_ii_libres';
 const HOLD_MS=300;
 let checked={},order=MODULES.map(m=>m.id),fileOrders={},heroMode='bar';
@@ -595,14 +595,17 @@ function removeGhost(){if(ghost){ghost.remove();ghost=null;}}
 
 function attachCard(card,m){
   var head=card.querySelector('.mc-head');
-  var holdTimer=null,dragActive=false,everDragged=false,overMid=null,docMH=null,docUH=null;
+  var holdTimer=null,dragActive=false,ghostCreated=false,overMid=null,docMH=null,docUH=null;
   head.addEventListener('pointerdown',function(e){
     if(openCardId===m.id)return;
-    e.preventDefault();everDragged=false;
+    e.preventDefault();
+    dragActive=false;ghostCreated=false;overMid=null;
     holdTimer=setTimeout(function(){
-      dragActive=true;everDragged=true;card.classList.add('hold-ready');
+      dragActive=true;
+      card.classList.add('hold-ready');
       setTimeout(function(){
         if(!dragActive)return;
+        ghostCreated=true;
         card.classList.remove('hold-ready');card.classList.add('is-dragging');createGhost(card);
         docMH=function(ev){
           ev.preventDefault();moveGhost(ev.clientX,ev.clientY);
@@ -628,17 +631,19 @@ function attachCard(card,m){
     },HOLD_MS);
   });
   head.addEventListener('pointerup',function(e){
-    if(dragActive||everDragged)return;
-    clearTimeout(holdTimer);cleanup(false);toggleCard(m.id);
+    clearTimeout(holdTimer);
+    if(dragActive){return;}
+    cleanup(false);toggleCard(m.id);
   });
-  head.addEventListener('pointercancel',function(){cleanup(false);});
+  head.addEventListener('pointercancel',function(){clearTimeout(holdTimer);cleanup(false);});
   function cleanup(commit){
     clearTimeout(holdTimer);
     if(docMH){document.removeEventListener('pointermove',docMH);docMH=null;}
     if(docUH){document.removeEventListener('pointerup',docUH);docUH=null;}
     removeGhost();
-    var wasActive=dragActive,landing=overMid;dragActive=false;overMid=null;clearDragClasses();
-    if(commit&&wasActive&&landing){
+    var wasGhost=ghostCreated,landing=overMid;
+    dragActive=false;ghostCreated=false;overMid=null;clearDragClasses();
+    if(commit&&wasGhost&&landing){
       var si=order.indexOf(m.id),di=order.indexOf(landing);
       if(si!==di){order.splice(si,1);order.splice(di,0,m.id);scheduleSave();_setJustDropped();renderGrid();}
     }
@@ -760,8 +765,19 @@ function openModal(mid,fi){
     document.querySelector('.btn-drive').href=driveUrl;
     var iframe=document.getElementById('m-iframe'),loading=document.getElementById('m-loading');
     if(loading)loading.classList.remove('hidden');
-    if(iframe){iframe.src='';setTimeout(function(){iframe.src=previewUrl;},80);}
-    if(iframe)iframe.onload=function(){if(loading)loading.classList.add('hidden');};
+    if(iframe){
+      iframe.src='';
+      setTimeout(function(){iframe.src=previewUrl;},80);
+    }
+    if(iframe){
+      iframe.onload=function(){if(loading)loading.classList.add('hidden');};
+      iframe.onerror=function(){
+        if(loading){
+          loading.classList.remove('hidden');
+          loading.innerHTML='<span style="font-size:1.5rem">⚠️</span><span style="text-align:center;max-width:260px">No se pudo cargar el documento.<br><small style="color:var(--muted)">Si tienes un bloqueador de anuncios, desactívalo para este sitio.</small></span>';
+        }
+      };
+    }
     syncSeen();
     document.getElementById('modal').classList.add('open');
   });

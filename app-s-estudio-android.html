@@ -344,7 +344,7 @@ footer a:hover{text-decoration:underline;}
         <span>Cargando documento…</span>
       </div>
       <iframe id="m-iframe" allowfullscreen loading="lazy"
-        sandbox="allow-scripts allow-same-origin allow-popups allow-forms"></iframe>
+        sandbox="allow-scripts allow-popups allow-forms allow-popups-to-escape-sandbox"></iframe>
     </div>
   </div>
 </div>
@@ -440,7 +440,7 @@ function requireAuth(cb){
 }
 
 /* ── DATOS ── */
-const MODULES=[{"id": "app_s___textual", "emoji": "📖", "bg": "#dceef7", "title": "App's - Textual", "desc": "App's - Textual", "files": [{"n": "App 1", "url": "https://drive.google.com/file/d/1X3yQaFBN4MkOvmvX89ejZrH4EgJ-hqTT/view?usp=sharing", "type": "PDF", "ext": false}]}, {"id": "app_s___matem_ticas", "emoji": "🔢", "bg": "#dce8f8", "title": "App's - Matemáticas", "desc": "App's - Matemáticas", "files": [{"n": "App 1", "url": "https://drive.google.com/file/d/1dygwkucdKeq1Hn6EC_FPsoiENqgCzwPW/view?usp=sharing", "type": "PDF", "ext": false}, {"n": "App 2", "url": "https://drive.google.com/file/d/1AGSw5-bUXLHxnOIhwtwaE6xEXW9WTqjl/view?usp=sharing", "type": "PDF", "ext": false}, {"n": "App 3", "url": "https://drive.google.com/file/d/1ou6JIVjsnCchZwaXP-Wa7z47y0rNvIPv/view?usp=sharing", "type": "PDF", "ext": false}, {"n": "App 4", "url": "https://drive.google.com/file/d/1jzKZAJdsLNWWK8RzA2sLuLKN4cy3lXVh/view?usp=sharing", "type": "PDF", "ext": false}, {"n": "App 5", "url": "https://drive.google.com/file/d/14f70co07i03pdL9nqFXQxhmj0d0pJ86G/view?usp=sharing", "type": "PDF", "ext": false}, {"n": "App 6", "url": "https://drive.google.com/file/d/14JBZrOAxnh061tsy1SgMR4cJYbvtBtJE/view?usp=sharing", "type": "PDF", "ext": false}, {"n": "App 7", "url": "https://drive.google.com/file/d/1Hl2e4Q5UHxyvY1iFuQK36lKVFI0SI9Td/view?usp=sharing", "type": "PDF", "ext": false}, {"n": "App 8", "url": "https://drive.google.com/file/d/1WucTjrLq65N2AZjvBHPZVRxG7QFbPM9Y/view?usp=sharing", "type": "PDF", "ext": false}]}, {"id": "app_s___ciencias__f", "emoji": "⚡", "bg": "#fef3e2", "title": "App's - Ciencias (Física)", "desc": "App's - Ciencias (Física)", "files": [{"n": "App 1", "url": "https://drive.google.com/file/d/1UDiG95MjGOq8wACyYKL3VK2XfIuBRaJl/view?usp=sharing", "type": "PDF", "ext": false}, {"n": "App 2", "url": "https://drive.google.com/file/d/1CM3d-ZTaJk78Up5RiAfPkIyF7UIIa0dh/view?usp=sharing", "type": "PDF", "ext": false}, {"n": "App 3", "url": "https://drive.google.com/file/d/1I04c0SGAMfC7LBUX78DH9Bpd-pZGNXk_/view?usp=sharing", "type": "PDF", "ext": false}]}, {"id": "app_s___ciencias__bi", "emoji": "🧬", "bg": "#d8f4e8", "title": "App's - Ciencias (Biología)", "desc": "App's - Ciencias (Biología)", "files": [{"n": "App 1", "url": "https://drive.google.com/file/d/1wwXITnOd41vaYgJlmktFpBZg_X_w3J9k/view?usp=sharing", "type": "PDF", "ext": false}, {"n": "App 2", "url": "https://drive.google.com/file/d/1zXYiQ64aivpV5QaIcSvcLe_wx8ha7E-n/view?usp=sharing", "type": "PDF", "ext": false}, {"n": "App 3", "url": "https://drive.google.com/file/d/1U7gn8N-CKVdmduDWj4_eEz6zGtl1DLlc/view?usp=sharing", "type": "PDF", "ext": false}]}, {"id": "app_s___ciencias__qu", "emoji": "🧪", "bg": "#fce0ee", "title": "App's - Ciencias (Química)", "desc": "App's - Ciencias (Química)", "files": [{"n": "App 1", "url": "https://drive.google.com/file/d/1Trjg6iFnB5fciMCc5iAPH6hhuR1YU7M_/view?usp=sharing", "type": "PDF", "ext": false}, {"n": "App 2", "url": "https://drive.google.com/file/d/1b84mVmwD8Y4IL-eB_xcJ_WPCZ-XLTDVg/view?usp=sharing", "type": "PDF", "ext": false}, {"n": "App 3", "url": "https://drive.google.com/file/d/1Au7uUC5RcBvZiB5rpS6GROoHSsOioDsI/view?usp=sharing", "type": "PDF", "ext": false}, {"n": "App 4", "url": "https://drive.google.com/file/d/1tR2UQ99vARUM9WSsXJl-0g5SOz7c6omK/view?usp=sharing", "type": "PDF", "ext": false}]}, {"id": "app_s___sociales", "emoji": "🌍", "bg": "#ece0fc", "title": "App's - Sociales", "desc": "App's - Sociales", "files": [{"n": "App 1", "url": "https://drive.google.com/file/d/1Di0_12MDvVBIhmwCCuqJpmgAYbGoQIzA/view?usp=sharing", "type": "PDF", "ext": false}, {"n": "App 2", "url": "https://drive.google.com/file/d/1q0RDHsu7m5LxpJAYitrqFwdCnvUc_iZ0/view?usp=sharing", "type": "PDF", "ext": false}, {"n": "App 3", "url": "https://drive.google.com/file/d/1eRHo4Mya7eEJR7oUrOI4zlqwhAeJpBFz/view?usp=sharing", "type": "PDF", "ext": false}, {"n": "App 4", "url": "https://drive.google.com/file/d/1l_DNlIpHo2qgazIzoxZW5kZhu9NUQen3/view?usp=sharing", "type": "PDF", "ext": false}, {"n": "App 5", "url": "https://drive.google.com/file/d/18N92Lb_ht4vHEf_pN--_PBUhKRs_AfpB/view?usp=sharing", "type": "PDF", "ext": false}]}, {"id": "app_s___imagen", "emoji": "🖼️", "bg": "#d8faf4", "title": "App's - Imagen", "desc": "App's - Imagen", "files": [{"n": "Link 1", "url": "http://www.educacionplastica.net/MenuDie.htm", "type": "Enlace", "ext": false}, {"n": "App 1", "url": "https://drive.google.com/file/d/1SIRnTua1MEw2HCJwz1Jg9ZPbOTR2KkYj/view?usp=sharing", "type": "PDF", "ext": false}, {"n": "App 2", "url": "https://drive.google.com/file/d/1S5vA0iMBWUjm6IeptG8I099CBaHB5e0k/view?usp=sharing", "type": "PDF", "ext": false}]}];
+const MODULES=[{"id": "app_s___textual", "emoji": "📖", "bg": "#dceef7", "title": "App's - Textual", "desc": "App's - Textual", "files": [{"n": "App de estudio — Recomendada", "url": "https://drive.google.com/file/d/1X3yQaFBN4MkOvmvX89ejZrH4EgJ-hqTT/view?usp=sharing", "type": "PDF", "ext": false}]}, {"id": "app_s___matem_ticas", "emoji": "🔢", "bg": "#dce8f8", "title": "App's - Matemáticas", "desc": "App's - Matemáticas", "files": [{"n": "App 1", "url": "https://drive.google.com/file/d/1dygwkucdKeq1Hn6EC_FPsoiENqgCzwPW/view?usp=sharing", "type": "PDF", "ext": false}, {"n": "App 2", "url": "https://drive.google.com/file/d/1AGSw5-bUXLHxnOIhwtwaE6xEXW9WTqjl/view?usp=sharing", "type": "PDF", "ext": false}, {"n": "App 3", "url": "https://drive.google.com/file/d/1ou6JIVjsnCchZwaXP-Wa7z47y0rNvIPv/view?usp=sharing", "type": "PDF", "ext": false}, {"n": "App 4", "url": "https://drive.google.com/file/d/1jzKZAJdsLNWWK8RzA2sLuLKN4cy3lXVh/view?usp=sharing", "type": "PDF", "ext": false}, {"n": "App 5", "url": "https://drive.google.com/file/d/14f70co07i03pdL9nqFXQxhmj0d0pJ86G/view?usp=sharing", "type": "PDF", "ext": false}, {"n": "App 6", "url": "https://drive.google.com/file/d/14JBZrOAxnh061tsy1SgMR4cJYbvtBtJE/view?usp=sharing", "type": "PDF", "ext": false}, {"n": "App 7", "url": "https://drive.google.com/file/d/1Hl2e4Q5UHxyvY1iFuQK36lKVFI0SI9Td/view?usp=sharing", "type": "PDF", "ext": false}, {"n": "App 8", "url": "https://drive.google.com/file/d/1WucTjrLq65N2AZjvBHPZVRxG7QFbPM9Y/view?usp=sharing", "type": "PDF", "ext": false}]}, {"id": "app_s___ciencias__f", "emoji": "⚡", "bg": "#fef3e2", "title": "App's - Ciencias (Física)", "desc": "App's - Ciencias (Física)", "files": [{"n": "App 1", "url": "https://drive.google.com/file/d/1UDiG95MjGOq8wACyYKL3VK2XfIuBRaJl/view?usp=sharing", "type": "PDF", "ext": false}, {"n": "App 2", "url": "https://drive.google.com/file/d/1CM3d-ZTaJk78Up5RiAfPkIyF7UIIa0dh/view?usp=sharing", "type": "PDF", "ext": false}, {"n": "App 3", "url": "https://drive.google.com/file/d/1I04c0SGAMfC7LBUX78DH9Bpd-pZGNXk_/view?usp=sharing", "type": "PDF", "ext": false}]}, {"id": "app_s___ciencias__bi", "emoji": "🧬", "bg": "#d8f4e8", "title": "App's - Ciencias (Biología)", "desc": "App's - Ciencias (Biología)", "files": [{"n": "App 1", "url": "https://drive.google.com/file/d/1wwXITnOd41vaYgJlmktFpBZg_X_w3J9k/view?usp=sharing", "type": "PDF", "ext": false}, {"n": "App 2", "url": "https://drive.google.com/file/d/1zXYiQ64aivpV5QaIcSvcLe_wx8ha7E-n/view?usp=sharing", "type": "PDF", "ext": false}, {"n": "App 3", "url": "https://drive.google.com/file/d/1U7gn8N-CKVdmduDWj4_eEz6zGtl1DLlc/view?usp=sharing", "type": "PDF", "ext": false}]}, {"id": "app_s___ciencias__qu", "emoji": "🧪", "bg": "#fce0ee", "title": "App's - Ciencias (Química)", "desc": "App's - Ciencias (Química)", "files": [{"n": "App 1", "url": "https://drive.google.com/file/d/1Trjg6iFnB5fciMCc5iAPH6hhuR1YU7M_/view?usp=sharing", "type": "PDF", "ext": false}, {"n": "App 2", "url": "https://drive.google.com/file/d/1b84mVmwD8Y4IL-eB_xcJ_WPCZ-XLTDVg/view?usp=sharing", "type": "PDF", "ext": false}, {"n": "App 3", "url": "https://drive.google.com/file/d/1Au7uUC5RcBvZiB5rpS6GROoHSsOioDsI/view?usp=sharing", "type": "PDF", "ext": false}, {"n": "App 4", "url": "https://drive.google.com/file/d/1tR2UQ99vARUM9WSsXJl-0g5SOz7c6omK/view?usp=sharing", "type": "PDF", "ext": false}]}, {"id": "app_s___sociales", "emoji": "🌍", "bg": "#ece0fc", "title": "App's - Sociales", "desc": "App's - Sociales", "files": [{"n": "App 1", "url": "https://drive.google.com/file/d/1Di0_12MDvVBIhmwCCuqJpmgAYbGoQIzA/view?usp=sharing", "type": "PDF", "ext": false}, {"n": "App 2", "url": "https://drive.google.com/file/d/1q0RDHsu7m5LxpJAYitrqFwdCnvUc_iZ0/view?usp=sharing", "type": "PDF", "ext": false}, {"n": "App 3", "url": "https://drive.google.com/file/d/1eRHo4Mya7eEJR7oUrOI4zlqwhAeJpBFz/view?usp=sharing", "type": "PDF", "ext": false}, {"n": "App 4", "url": "https://drive.google.com/file/d/1l_DNlIpHo2qgazIzoxZW5kZhu9NUQen3/view?usp=sharing", "type": "PDF", "ext": false}, {"n": "App 5", "url": "https://drive.google.com/file/d/18N92Lb_ht4vHEf_pN--_PBUhKRs_AfpB/view?usp=sharing", "type": "PDF", "ext": false}]}, {"id": "app_s___imagen", "emoji": "🖼️", "bg": "#d8faf4", "title": "App's - Imagen", "desc": "App's - Imagen", "files": [{"n": "Link 1", "url": "http://www.educacionplastica.net/MenuDie.htm", "type": "Enlace", "ext": false}, {"n": "App 1", "url": "https://drive.google.com/file/d/1SIRnTua1MEw2HCJwz1Jg9ZPbOTR2KkYj/view?usp=sharing", "type": "PDF", "ext": false}, {"n": "App 2", "url": "https://drive.google.com/file/d/1S5vA0iMBWUjm6IeptG8I099CBaHB5e0k/view?usp=sharing", "type": "PDF", "ext": false}]}];
 const PAGE_KEY='app_s_estudio_android';
 const HOLD_MS=300;
 let checked={},order=MODULES.map(m=>m.id),fileOrders={},heroMode='bar';
@@ -595,14 +595,17 @@ function removeGhost(){if(ghost){ghost.remove();ghost=null;}}
 
 function attachCard(card,m){
   var head=card.querySelector('.mc-head');
-  var holdTimer=null,dragActive=false,everDragged=false,overMid=null,docMH=null,docUH=null;
+  var holdTimer=null,dragActive=false,ghostCreated=false,overMid=null,docMH=null,docUH=null;
   head.addEventListener('pointerdown',function(e){
     if(openCardId===m.id)return;
-    e.preventDefault();everDragged=false;
+    e.preventDefault();
+    dragActive=false;ghostCreated=false;overMid=null;
     holdTimer=setTimeout(function(){
-      dragActive=true;everDragged=true;card.classList.add('hold-ready');
+      dragActive=true;
+      card.classList.add('hold-ready');
       setTimeout(function(){
         if(!dragActive)return;
+        ghostCreated=true;
         card.classList.remove('hold-ready');card.classList.add('is-dragging');createGhost(card);
         docMH=function(ev){
           ev.preventDefault();moveGhost(ev.clientX,ev.clientY);
@@ -628,17 +631,19 @@ function attachCard(card,m){
     },HOLD_MS);
   });
   head.addEventListener('pointerup',function(e){
-    if(dragActive||everDragged)return;
-    clearTimeout(holdTimer);cleanup(false);toggleCard(m.id);
+    clearTimeout(holdTimer);
+    if(dragActive){return;}
+    cleanup(false);toggleCard(m.id);
   });
-  head.addEventListener('pointercancel',function(){cleanup(false);});
+  head.addEventListener('pointercancel',function(){clearTimeout(holdTimer);cleanup(false);});
   function cleanup(commit){
     clearTimeout(holdTimer);
     if(docMH){document.removeEventListener('pointermove',docMH);docMH=null;}
     if(docUH){document.removeEventListener('pointerup',docUH);docUH=null;}
     removeGhost();
-    var wasActive=dragActive,landing=overMid;dragActive=false;overMid=null;clearDragClasses();
-    if(commit&&wasActive&&landing){
+    var wasGhost=ghostCreated,landing=overMid;
+    dragActive=false;ghostCreated=false;overMid=null;clearDragClasses();
+    if(commit&&wasGhost&&landing){
       var si=order.indexOf(m.id),di=order.indexOf(landing);
       if(si!==di){order.splice(si,1);order.splice(di,0,m.id);scheduleSave();_setJustDropped();renderGrid();}
     }
@@ -760,8 +765,19 @@ function openModal(mid,fi){
     document.querySelector('.btn-drive').href=driveUrl;
     var iframe=document.getElementById('m-iframe'),loading=document.getElementById('m-loading');
     if(loading)loading.classList.remove('hidden');
-    if(iframe){iframe.src='';setTimeout(function(){iframe.src=previewUrl;},80);}
-    if(iframe)iframe.onload=function(){if(loading)loading.classList.add('hidden');};
+    if(iframe){
+      iframe.src='';
+      setTimeout(function(){iframe.src=previewUrl;},80);
+    }
+    if(iframe){
+      iframe.onload=function(){if(loading)loading.classList.add('hidden');};
+      iframe.onerror=function(){
+        if(loading){
+          loading.classList.remove('hidden');
+          loading.innerHTML='<span style="font-size:1.5rem">⚠️</span><span style="text-align:center;max-width:260px">No se pudo cargar el documento.<br><small style="color:var(--muted)">Si tienes un bloqueador de anuncios, desactívalo para este sitio.</small></span>';
+        }
+      };
+    }
     syncSeen();
     document.getElementById('modal').classList.add('open');
   });
