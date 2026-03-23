@@ -579,6 +579,8 @@ const MODULES=[{"id": "i__temario_maestro", "emoji": "📋", "bg": "#e4ecf7", "t
 const PAGE_KEY='temarios';
 const HOLD_MS=400;
 let checked={},order=MODULES.map(m=>m.id),fileOrders={},heroMode='bar';
+// Exponer para el editor
+window.MODULES=MODULES; window.order=order; window.fileOrders=fileOrders; window.checked=checked;
 let openCardId=null,activeModal=null,saveTimer=null;
 
 /* ── BOOT — llamado por firebase-auth.js vía window._pageReady ── */
