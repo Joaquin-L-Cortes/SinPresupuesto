@@ -126,7 +126,7 @@ aside{position:sticky;top:clamp(46px,6vw,56px);align-self:start;max-height:calc(
 @media(max-width:700px){#modules-grid{grid-template-columns:1fr;}}
 @media(min-width:701px) and (max-width:900px){#modules-grid{grid-template-columns:repeat(2,1fr);}}
 /* MODULE CARD */
-.module-card{background:var(--bg2);border:1px solid var(--border);border-radius:16px;overflow:hidden;transition:box-shadow .22s,border-color .22s,opacity .22s ease,transform .22s cubic-bezier(.4,0,.2,1);grid-column:span 1;user-select:none;touch-action:none;}
+.module-card{background:var(--bg2);border:1px solid var(--border);border-radius:16px;overflow:hidden;transition:box-shadow .22s,border-color .22s,opacity .22s ease,transform .22s cubic-bezier(.4,0,.2,1);grid-column:span 1;user-select:none;touch-action:pan-y;}
 .module-card:hover{box-shadow:0 6px 20px var(--shadow);}
 .module-card.complete{border-color:rgba(29,185,125,.4);}
 .module-card.hold-ready{box-shadow:0 0 0 2px var(--accent2),0 8px 28px rgba(0,0,0,.45);transform:scale(1.025);}
@@ -175,7 +175,7 @@ aside{position:sticky;top:clamp(46px,6vw,56px);align-self:start;max-height:calc(
   .file-card{transition:border-color .15s;}
   .file-card:hover{transform:none;}
 }
-.file-card{background:var(--bg3);border:1px solid var(--border);border-radius:11px;padding:.65rem .75rem;display:flex;align-items:flex-start;gap:.55rem;cursor:pointer;transition:all .17s;position:relative;user-select:none;touch-action:none;}
+.file-card{background:var(--bg3);border:1px solid var(--border);border-radius:11px;padding:.65rem .75rem;display:flex;align-items:flex-start;gap:.55rem;cursor:pointer;transition:all .17s;position:relative;user-select:none;touch-action:pan-y;}
 .file-card::before{content:'';position:absolute;inset:0;border-radius:11px;background:linear-gradient(135deg,rgba(46,111,196,.08),transparent);opacity:0;transition:opacity .18s;}
 .file-card:hover{border-color:var(--accent2);box-shadow:0 3px 14px var(--shadow);transform:translateY(-1px);}
 .file-card:hover::before{opacity:1;}
@@ -299,7 +299,7 @@ footer a:hover{text-decoration:underline;}
   <a class="nav-logo" href="index.html">
     <img src="logos/filosofia.png" alt="" onerror="this.style.display='none'"><span class="nav-logo-text">Sin-Presupuesto</span>
   </a>
-  <ul class="nav-links"><li><a href="index.html">Inicio</a></li><li><a href="clases-sin-pre.html">Clases</a></li><li><a href="motivacion-guia.html">Motivación</a></li><li><a href="modulos-teoricos.html">Material</a></li><li><a href="ejercicios-practicas.html">Práctica</a></li><li><a href="temarios.html">Recursos</a></li><li><a href="donativos.html">Comunidad</a></li></ul>
+  <ul class="nav-links"><li><a href="index.html">Inicio</a></li><li><a href="clases-sin-pre.html">Clases</a></li><li><a href="motivacion-guia.html">Motivación</a></li><li><a href="materiales.html">Material</a></li><li><a href="ejercicios-practicas.html">Práctica</a></li><li><a href="temarios.html">Recursos</a></li><li><a href="donativos.html">Comunidad</a></li></ul>
   <div class="nav-right">
     <button class="nav-hamburger" onclick="openNavDrawer()" aria-label="Menú">
       <span></span><span></span><span></span>
@@ -355,7 +355,7 @@ footer a:hover{text-decoration:underline;}
 
 <!-- LAYOUT -->
 <div class="layout">
-  <aside id="sidebar-aside">
+  <aside id="sidebar-aside" class="sidebar-collapsed">
     <p class="sidebar-title">Secciones</p>
     <button class="sidebar-toggle" onclick="toggleSidebar()" id="sidebar-toggle-btn">
       <span>📋 Secciones</span>
@@ -571,7 +571,7 @@ function requireAuth(cb){
 /* ── DATOS ── */
 const MODULES=[{"id": "clases_en_vivo__vari", "emoji": "📹", "bg": "#e8f4fd", "title": "Clases en vivo: Variadas, por Luis Millán", "desc": "Clases en vivo: Variadas, por Luis Millán", "files": [{"n": "Luis Millán — Clase variada 1", "url": "https://drive.google.com/file/d/1zb5jHfFLAH-P3t9H3KFQ-SCkVgXtQFiz/view?usp=classroom_web&amp;authuser=0", "type": "PDF", "ext": false}]}, {"id": "i__clases_nacho___te", "emoji": "📖", "bg": "#dceef7", "title": "I. Clases Nacho - Textual", "desc": "I. Clases Nacho - Textual", "files": [{"n": "Nacho — Textual: Sesión 1", "url": "https://drive.google.com/file/d/1xhVQZLYtHlVcqwAV498edZ4V_pmGA4cc/view?usp=classroom_web&amp;authuser=0", "type": "PDF", "ext": false}, {"n": "Nacho — Textual: Sesión 2", "url": "https://drive.google.com/file/d/1muQ5SX2ie38XlO1zyKu2ABQ6nutFOt3Y/view?usp=classroom_web&amp;authuser=0", "type": "PDF", "ext": false}, {"n": "Nacho — Textual: Sesión 3", "url": "https://drive.google.com/file/d/1fzs8fhqNv0FdAx-Q4dq9J5SuEijQbbxR/view?usp=classroom_web&amp;authuser=0", "type": "PDF", "ext": false}, {"n": "Nacho — Textual: Sesión 4", "url": "https://drive.google.com/file/d/1ByNqeFoC2k0uzMDub6TmbQ-nOY8E-l8z/view?usp=classroom_web&amp;authuser=0", "type": "PDF", "ext": false}, {"n": "Clases Luis Millán — Sesión 5", "url": "https://drive.google.com/file/d/1WrHI16Byqw0144e6B4z9wJKVGNpRu5Zk/view?usp=classroom_web&amp;authuser=0", "type": "PDF", "ext": false}]}, {"id": "ii__clases_nacho___m", "emoji": "🔢", "bg": "#dce8f8", "title": "II. Clases Nacho - Matemáticas", "desc": "II. Clases Nacho - Matemáticas", "files": [{"n": "Álgebra — Ecuaciones y sistemas", "url": "https://drive.google.com/file/d/1aYUqWhU9GBWMP60ERjTZAuJBa6K7hGQ2/view?usp=classroom_web&amp;authuser=0", "type": "PDF", "ext": false}, {"n": "Geometría plana y espacial", "url": "https://drive.google.com/file/d/1CRTQkSyDoCGpNeaZZK2rYwgK0wQqEEyl/view?usp=classroom_web&amp;authuser=0", "type": "PDF", "ext": false}, {"n": "Trigonometría esencial", "url": "https://drive.google.com/file/d/11YL5OjbhHyGWvnlCIbEFRqILcpoNX22f/view?usp=classroom_web&amp;authuser=0", "type": "PDF", "ext": false}, {"n": "Estadística y probabilidad", "url": "https://drive.google.com/file/d/1ehslpB82OfnaH4p5CGA5SVYs5cbqcbeK/view?usp=classroom_web&amp;authuser=0", "type": "PDF", "ext": false}, {"n": "Funciones y gráficas", "url": "https://drive.google.com/file/d/1HPiL0GTJw8FIVww28hZPaMjz7fGvT4Lv/view?usp=classroom_web&amp;authuser=0", "type": "PDF", "ext": false}, {"n": "Aritmética y números", "url": "https://drive.google.com/file/d/1gLJ2lds3-buBXZhgzWstUYUMN0_khZMw/view?usp=classroom_web&amp;authuser=0", "type": "PDF", "ext": false}, {"n": "Cálculo diferencial básico", "url": "https://drive.google.com/file/d/1DyNotlw_xZLQapxyPwZuFHB8NaBbtZMy/view?usp=classroom_web&amp;authuser=0", "type": "PDF", "ext": false}, {"n": "Combinatoria y conteo", "url": "https://drive.google.com/file/d/1WC_bBgMiSvqQyXL31uYoPjIwP-19qmBv/view?usp=classroom_web&amp;authuser=0", "type": "PDF", "ext": false}, {"n": "Geometría analítica", "url": "https://drive.google.com/file/d/1obH_Db-PJAx-rjrlKxEbrWq5pCuRXv4t/view?usp=classroom_web&amp;authuser=0", "type": "PDF", "ext": false}, {"n": "Sucesiones y series", "url": "https://drive.google.com/file/d/1d4OgONCNNjc39VoreTWTie35pFMsCQIZ/view?usp=classroom_web&amp;authuser=0", "type": "PDF", "ext": false}, {"n": "Lógica matemática", "url": "https://drive.google.com/file/d/1jU9x4QK1ySStykeQx7sM0pqRF2LYIDRO/view?usp=classroom_web&amp;authuser=0", "type": "PDF", "ext": false}, {"n": "Vectores y matrices", "url": "https://drive.google.com/file/d/1OSMKiXAguFCoqLy2YILoO8E4hcZ3SaPc/view?usp=classroom_web&amp;authuser=0", "type": "PDF", "ext": false}, {"n": "Clases Nacho Matemáticas — Sesión 14", "url": "https://drive.google.com/file/d/13oqlerH4xmDno3NVP5w1sIBD3_GrdskB/view?usp=classroom_web&amp;authuser=0", "type": "PDF", "ext": false}, {"n": "Módulo integrador Matemáticas", "url": "https://drive.google.com/file/d/1pYQWTiiE4diCUJmqXBKN3otXQYQejQVk/view?usp=classroom_web&amp;authuser=0", "type": "PDF", "ext": false}, {"n": "Nacho — Matemáticas: Sesión 15", "url": "https://drive.google.com/file/d/1e09uUnmbkMI49y-mRZeg8QQGh9-H1hMt/view?usp=classroom_web&amp;authuser=0", "type": "PDF", "ext": false}, {"n": "Nacho — Matemáticas: Sesión 16", "url": "https://drive.google.com/file/d/1U-j2LfFq5vjGsqn4rluVsPG184m-qGxj/view?usp=classroom_web&amp;authuser=0", "type": "PDF", "ext": false}, {"n": "Clases Nacho Matemáticas — Sesión 18", "url": "https://drive.google.com/file/d/1PUxNimp0CdlFp1WeGLLu2ULcEBsZMxMI/view?usp=classroom_web&amp;authuser=0", "type": "PDF", "ext": false}]}, {"id": "iii__clases_nacho", "emoji": "🔬", "bg": "#e0f7fa", "title": "III. Clases Nacho - Ciencias", "desc": "III. Clases Nacho - Ciencias", "files": [{"n": "Nacho — Ciencias: Sesión 1", "url": "https://drive.google.com/file/d/1td3UDxuOCuc-Xy-7OgUUbloSXBo7np6U/view?usp=classroom_web&amp;authuser=0", "type": "PDF", "ext": false}, {"n": "Nacho — Ciencias: Sesión 2", "url": "https://drive.google.com/file/d/1_V1UA7dZXpvGI97G5YlV4JtiQEoR6D-n/view?usp=classroom_web&amp;authuser=0", "type": "PDF", "ext": false}, {"n": "Nacho — Ciencias: Sesión 3", "url": "https://drive.google.com/file/d/1GUf5VUYKeII6A8ffzXwzp2z-740pkQMk/view?usp=classroom_web&amp;authuser=0", "type": "PDF", "ext": false}, {"n": "Nacho — Ciencias: Sesión 4", "url": "https://drive.google.com/file/d/1qKAHFiZyybZ7dXnMB_2RWlFkBYd8tFVt/view?usp=classroom_web&amp;authuser=0", "type": "PDF", "ext": false}, {"n": "Nacho — Ciencias: Sesión 5", "url": "https://drive.google.com/file/d/1kxZ49VK7pPJT8mVQ0MY59NzrahNSnHzZ/view?usp=classroom_web&amp;authuser=0", "type": "PDF", "ext": false}, {"n": "Nacho — Ciencias: Sesión 6", "url": "https://drive.google.com/file/d/1sxtMwpgpiIVTCaAAUo1ecQddJCmpjtRL/view?usp=classroom_web&amp;authuser=0", "type": "PDF", "ext": false}, {"n": "Nacho — Ciencias: Sesión 7", "url": "https://drive.google.com/file/d/1EBX7RELBNQT6em_AHaZL7svM1L5vgcIi/view?usp=classroom_web&amp;authuser=0", "type": "PDF", "ext": false}]}, {"id": "iv__clases_nacho___s", "emoji": "🌍", "bg": "#ece0fc", "title": "IV. Clases Nacho - Sociales", "desc": "IV. Clases Nacho - Sociales", "files": [{"n": "Historia de Colombia", "url": "https://drive.google.com/file/d/1gJZcEB88iNctuYt2Bvby_u_JgzQn5WtE/view?usp=classroom_web&amp;authuser=0", "type": "PDF", "ext": false}, {"n": "Geografía y territorio", "url": "https://drive.google.com/file/d/1PisGlPOK65uCBJBcYQGWvlmBxgR-gtup/view?usp=classroom_web&amp;authuser=0", "type": "PDF", "ext": false}, {"n": "Ciencias Políticas y democracia", "url": "https://drive.google.com/file/d/1uOVVzjAW8-MzgRMfH90_w_clXTg1kcsh/view?usp=classroom_web&amp;authuser=0", "type": "PDF", "ext": false}, {"n": "Economía básica", "url": "https://drive.google.com/file/d/1le0HmYJ7G-MUDET960Oef-TcgX7dlfda/view?usp=classroom_web&amp;authuser=0", "type": "PDF", "ext": false}, {"n": "Historia universal", "url": "https://drive.google.com/file/d/11lthTdS9haOHu75uPwusmufEhRYNNWNz/view?usp=classroom_web&amp;authuser=0", "type": "PDF", "ext": false}, {"n": "Constitución y ciudadanía", "url": "https://drive.google.com/file/d/1te2rnrYRdpZQUsZCOYM1sm4gc3hGR0tH/view?usp=classroom_web&amp;authuser=0", "type": "PDF", "ext": false}, {"n": "Filosofía e historia del pensamiento", "url": "https://drive.google.com/file/d/1_7j9Y1bzkJus_MqnrpNsCs2RTz63Kru8/view?usp=classroom_web&amp;authuser=0", "type": "PDF", "ext": false}, {"n": "Geografía humana y social", "url": "https://drive.google.com/file/d/10qKR8iwEXyFYIYB6nKMMgYSq0zbgHrwF/view?usp=classroom_web&amp;authuser=0", "type": "PDF", "ext": false}]}, {"id": "v__clases_nacho___im", "emoji": "🖼️", "bg": "#d8faf4", "title": "V. Clases Nacho - Imagen", "desc": "V. Clases Nacho - Imagen", "files": [{"n": "Lectura de imagen — elementos visuales", "url": "https://drive.google.com/file/d/1k6dDMxfPoL-fEdtDJSAhcjkTwW5zaekW/view?usp=classroom_web&amp;authuser=0", "type": "PDF", "ext": false}, {"n": "Composición y encuadre fotográfico", "url": "https://drive.google.com/file/d/19KiQd408XUuamrb3GPLarcsyJdfVniro/view?usp=classroom_web&amp;authuser=0", "type": "PDF", "ext": false}, {"n": "Arte y movimientos pictóricos", "url": "https://drive.google.com/file/d/1jBfOX5napeWO1PYPoSLHpCAbi9ToR-6f/view?usp=classroom_web&amp;authuser=0", "type": "PDF", "ext": false}, {"n": "Análisis de cine y fotografía", "url": "https://drive.google.com/file/d/1Cw9xI_zgiCEM9lKhuinOC1hH18LZTpwY/view?usp=classroom_web&amp;authuser=0", "type": "PDF", "ext": false}, {"n": "Semiótica visual", "url": "https://drive.google.com/file/d/1irhmGw9F5MZa1zbyb0rBYSREJ5vpHJQ0/view?usp=classroom_web&amp;authuser=0", "type": "PDF", "ext": false}, {"n": "Imagen publicitaria y retórica visual", "url": "https://drive.google.com/file/d/1ldCMoH7P3spAofL1lJFpaJEjZWRcJHVG/view?usp=classroom_web&amp;authuser=0", "type": "PDF", "ext": false}, {"n": "Módulo integrador Imagen", "url": "https://drive.google.com/file/d/14zOPDsmhiuVi6q-MR-1fqTElaj4-SeXR/view?usp=classroom_web&amp;authuser=0", "type": "PDF", "ext": false}]}];
 const PAGE_KEY='clases_preu_s_i';
-const HOLD_MS=300;
+const HOLD_MS=400;
 let checked={},order=MODULES.map(m=>m.id),fileOrders={},heroMode='bar';
 let openCardId=null,activeModal=null,saveTimer=null;
 
@@ -783,7 +783,7 @@ function attachCard(card,m){
   var holdTimer=null,dragActive=false,ghostCreated=false,overMid=null,docMH=null,docUH=null;
   head.addEventListener('pointerdown',function(e){
     if(openCardId===m.id)return;
-    e.preventDefault();
+    // No preventDefault aquí — permite scroll. Se cancela solo si drag activa
     dragActive=false;ghostCreated=false;overMid=null;
     holdTimer=setTimeout(function(){
       dragActive=true;
@@ -792,6 +792,8 @@ function attachCard(card,m){
         if(!dragActive)return;
         ghostCreated=true;
         card.classList.remove('hold-ready');card.classList.add('is-dragging');createGhost(card);
+        // Ahora que el drag está activo, cancelar eventos de touch para evitar scroll
+        card.style.touchAction='none';
         docMH=function(ev){
           ev.preventDefault();moveGhost(ev.clientX,ev.clientY);
           var under=document.elementFromPoint(ev.clientX,ev.clientY);
@@ -828,6 +830,7 @@ function attachCard(card,m){
     removeGhost();
     var wasGhost=ghostCreated,landing=overMid;
     dragActive=false;ghostCreated=false;overMid=null;clearDragClasses();
+    card.style.touchAction='';
     if(commit&&wasGhost&&landing){
       var si=order.indexOf(m.id),di=order.indexOf(landing);
       if(si!==di){order.splice(si,1);order.splice(di,0,m.id);scheduleSave();_setJustDropped();renderGrid();}
@@ -842,7 +845,8 @@ function clearFileClasses(){allFileCards().forEach(function(c){c.classList.remov
 function attachFile(fc,m){
   var holdTimer=null,dragActive=false,ghostCreated=false,overFi=null,srcFi=parseInt(fc.dataset.fi),docMF=null,docUF=null;
   fc.addEventListener('pointerdown',function(e){
-    e.stopPropagation();e.preventDefault();
+    e.stopPropagation();
+    // No preventDefault aquí — permite scroll nativo
     dragActive=false;ghostCreated=false;overFi=null;
     holdTimer=setTimeout(function(){
       dragActive=true;
@@ -851,6 +855,7 @@ function attachFile(fc,m){
         if(!dragActive)return;
         ghostCreated=true;
         fc.classList.remove('fc-hold-ready');fc.classList.add('fc-dragging');
+        fc.style.touchAction='none';
         docMF=function(ev){
           ev.preventDefault();
           var under=document.elementFromPoint(ev.clientX,ev.clientY);
@@ -879,6 +884,7 @@ function attachFile(fc,m){
     if(docUF){document.removeEventListener('pointerup',docUF);docUF=null;}
     var wasGhost=ghostCreated,landing=overFi;
     dragActive=false;ghostCreated=false;overFi=null;clearFileClasses();
+    fc.style.touchAction='';
     if(commit&&wasGhost&&landing!=null&&landing!==srcFi){
       var fo=fileOrders[m.id];
       var si=fo.indexOf(srcFi),di=fo.indexOf(landing);

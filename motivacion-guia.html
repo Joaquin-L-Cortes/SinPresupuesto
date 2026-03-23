@@ -126,7 +126,7 @@ aside{position:sticky;top:clamp(46px,6vw,56px);align-self:start;max-height:calc(
 @media(max-width:700px){#modules-grid{grid-template-columns:1fr;}}
 @media(min-width:701px) and (max-width:900px){#modules-grid{grid-template-columns:repeat(2,1fr);}}
 /* MODULE CARD */
-.module-card{background:var(--bg2);border:1px solid var(--border);border-radius:16px;overflow:hidden;transition:box-shadow .22s,border-color .22s,opacity .22s ease,transform .22s cubic-bezier(.4,0,.2,1);grid-column:span 1;user-select:none;touch-action:none;}
+.module-card{background:var(--bg2);border:1px solid var(--border);border-radius:16px;overflow:hidden;transition:box-shadow .22s,border-color .22s,opacity .22s ease,transform .22s cubic-bezier(.4,0,.2,1);grid-column:span 1;user-select:none;touch-action:pan-y;}
 .module-card:hover{box-shadow:0 6px 20px var(--shadow);}
 .module-card.complete{border-color:rgba(29,185,125,.4);}
 .module-card.hold-ready{box-shadow:0 0 0 2px var(--accent2),0 8px 28px rgba(0,0,0,.45);transform:scale(1.025);}
@@ -175,7 +175,7 @@ aside{position:sticky;top:clamp(46px,6vw,56px);align-self:start;max-height:calc(
   .file-card{transition:border-color .15s;}
   .file-card:hover{transform:none;}
 }
-.file-card{background:var(--bg3);border:1px solid var(--border);border-radius:11px;padding:.65rem .75rem;display:flex;align-items:flex-start;gap:.55rem;cursor:pointer;transition:all .17s;position:relative;user-select:none;touch-action:none;}
+.file-card{background:var(--bg3);border:1px solid var(--border);border-radius:11px;padding:.65rem .75rem;display:flex;align-items:flex-start;gap:.55rem;cursor:pointer;transition:all .17s;position:relative;user-select:none;touch-action:pan-y;}
 .file-card::before{content:'';position:absolute;inset:0;border-radius:11px;background:linear-gradient(135deg,rgba(46,111,196,.08),transparent);opacity:0;transition:opacity .18s;}
 .file-card:hover{border-color:var(--accent2);box-shadow:0 3px 14px var(--shadow);transform:translateY(-1px);}
 .file-card:hover::before{opacity:1;}
@@ -299,7 +299,7 @@ footer a:hover{text-decoration:underline;}
   <a class="nav-logo" href="index.html">
     <img src="logos/filosofia.png" alt="" onerror="this.style.display='none'"><span class="nav-logo-text">Sin-Presupuesto</span>
   </a>
-  <ul class="nav-links"><li><a href="index.html">Inicio</a></li><li><a href="clases-sin-pre.html">Clases</a></li><li><a href="motivacion-guia.html" class="active">Motivación</a></li><li><a href="modulos-teoricos.html">Material</a></li><li><a href="ejercicios-practicas.html">Práctica</a></li><li><a href="temarios.html">Recursos</a></li><li><a href="donativos.html">Comunidad</a></li></ul>
+  <ul class="nav-links"><li><a href="index.html">Inicio</a></li><li><a href="clases-sin-pre.html">Clases</a></li><li><a href="motivacion-guia.html" class="active">Motivación</a></li><li><a href="materiales.html">Material</a></li><li><a href="ejercicios-practicas.html">Práctica</a></li><li><a href="temarios.html">Recursos</a></li><li><a href="donativos.html">Comunidad</a></li></ul>
   <div class="nav-right">
     <button class="nav-hamburger" onclick="openNavDrawer()" aria-label="Menú">
       <span></span><span></span><span></span>
@@ -355,7 +355,7 @@ footer a:hover{text-decoration:underline;}
 
 <!-- LAYOUT -->
 <div class="layout">
-  <aside id="sidebar-aside">
+  <aside id="sidebar-aside" class="sidebar-collapsed">
     <p class="sidebar-title">Secciones</p>
     <button class="sidebar-toggle" onclick="toggleSidebar()" id="sidebar-toggle-btn">
       <span>📋 Secciones</span>
@@ -568,7 +568,7 @@ function requireAuth(cb){
 /* ── DATOS ── */
 const MODULES=[];
 const PAGE_KEY='motivacion_guia';
-const HOLD_MS=300;
+const HOLD_MS=400;
 let checked={},order=MODULES.map(m=>m.id),fileOrders={},heroMode='bar';
 let openCardId=null,activeModal=null,saveTimer=null;
 
@@ -780,7 +780,7 @@ function attachCard(card,m){
   var holdTimer=null,dragActive=false,ghostCreated=false,overMid=null,docMH=null,docUH=null;
   head.addEventListener('pointerdown',function(e){
     if(openCardId===m.id)return;
-    e.preventDefault();
+    // No preventDefault aquí — permite scroll. Se cancela solo si drag activa
     dragActive=false;ghostCreated=false;overMid=null;
     holdTimer=setTimeout(function(){
       dragActive=true;
@@ -789,6 +789,8 @@ function attachCard(card,m){
         if(!dragActive)return;
         ghostCreated=true;
         card.classList.remove('hold-ready');card.classList.add('is-dragging');createGhost(card);
+        // Ahora que el drag está activo, cancelar eventos de touch para evitar scroll
+        card.style.touchAction='none';
         docMH=function(ev){
           ev.preventDefault();moveGhost(ev.clientX,ev.clientY);
           var under=document.elementFromPoint(ev.clientX,ev.clientY);
@@ -825,6 +827,7 @@ function attachCard(card,m){
     removeGhost();
     var wasGhost=ghostCreated,landing=overMid;
     dragActive=false;ghostCreated=false;overMid=null;clearDragClasses();
+    card.style.touchAction='';
     if(commit&&wasGhost&&landing){
       var si=order.indexOf(m.id),di=order.indexOf(landing);
       if(si!==di){order.splice(si,1);order.splice(di,0,m.id);scheduleSave();_setJustDropped();renderGrid();}
@@ -839,7 +842,8 @@ function clearFileClasses(){allFileCards().forEach(function(c){c.classList.remov
 function attachFile(fc,m){
   var holdTimer=null,dragActive=false,ghostCreated=false,overFi=null,srcFi=parseInt(fc.dataset.fi),docMF=null,docUF=null;
   fc.addEventListener('pointerdown',function(e){
-    e.stopPropagation();e.preventDefault();
+    e.stopPropagation();
+    // No preventDefault aquí — permite scroll nativo
     dragActive=false;ghostCreated=false;overFi=null;
     holdTimer=setTimeout(function(){
       dragActive=true;
@@ -848,6 +852,7 @@ function attachFile(fc,m){
         if(!dragActive)return;
         ghostCreated=true;
         fc.classList.remove('fc-hold-ready');fc.classList.add('fc-dragging');
+        fc.style.touchAction='none';
         docMF=function(ev){
           ev.preventDefault();
           var under=document.elementFromPoint(ev.clientX,ev.clientY);
@@ -876,6 +881,7 @@ function attachFile(fc,m){
     if(docUF){document.removeEventListener('pointerup',docUF);docUF=null;}
     var wasGhost=ghostCreated,landing=overFi;
     dragActive=false;ghostCreated=false;overFi=null;clearFileClasses();
+    fc.style.touchAction='';
     if(commit&&wasGhost&&landing!=null&&landing!==srcFi){
       var fo=fileOrders[m.id];
       var si=fo.indexOf(srcFi),di=fo.indexOf(landing);

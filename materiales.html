@@ -3,11 +3,35 @@
 <head>
   <link rel="icon" type="image/x-icon" href="favicon.ico">
   <link rel="icon" type="image/png" sizes="32x32" href="favicon.png">
-  
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Sin-Presupuesto · PreUniversitario gratuito</title>
+  <title>Materiales · Sin-Presupuesto</title>
   <link rel="stylesheet" href="style.css">
+  <style>
+    .mat-hero {
+      background: linear-gradient(135deg, var(--hero-bg1,#1a3a6b) 0%, var(--hero-bg2,#2e6fc4) 100%);
+      color: var(--hero-text, #fff);
+      padding: clamp(1.5rem,4vw,3rem) 2rem clamp(1.25rem,3vw,2.5rem);
+    }
+    .mat-hero-inner { max-width: 960px; margin: 0 auto; }
+    .mat-hero h1 {
+      font-family: 'Fraunces', serif;
+      font-size: clamp(1.6rem, 4vw, 2.8rem);
+      font-weight: 700; line-height: 1.1; margin-bottom: .6rem;
+    }
+    .mat-hero p { font-size: .95rem; opacity: .85; max-width: 520px; }
+    .mat-wrap { max-width: 1100px; margin: 0 auto; padding: 2rem 2rem 5rem; }
+    .mat-title {
+      font-size: .68rem; letter-spacing: .12em; text-transform: uppercase;
+      color: var(--muted); margin-bottom: 1.5rem; padding-bottom: .75rem;
+      border-bottom: 2px solid var(--bg3); font-weight: 600;
+    }
+    /* Card progress bar */
+    .card-progress-wrap { margin-top:.45rem; height:5px; background:var(--bg3); border-radius:100px; overflow:hidden; }
+    .card-progress-fill { height:100%; border-radius:100px; background:var(--accent2); transition:width .5s ease; }
+    .card-pct { font-size:.65rem; color:var(--muted); margin-top:.2rem; font-variant-numeric:tabular-nums; font-weight:600; }
+    @media(max-width:600px){ .mat-wrap{ padding:1.25rem 1rem 4rem; } }
+  </style>
 </head>
 <body>
   <nav>
@@ -15,7 +39,15 @@
       <img src="logos/filosofia.png" alt="" onerror="this.style.display='none'">
       <span class="nav-logo-text">Sin-Presupuesto</span>
     </a>
-    <ul class="nav-links"><li><a href="index.html" class="active">Inicio</a></li><li><a href="clases-sin-pre.html" class="">Clases</a></li><li><a href="motivacion-guia.html" class="">Motivación</a></li><li><a href="modulos-teoricos.html" class="">Material</a></li><li><a href="ejercicios-practicas.html" class="">Práctica</a></li><li><a href="temarios.html" class="">Recursos</a></li><li><a href="donativos.html" class="">Comunidad</a></li></ul>
+    <ul class="nav-links">
+      <li><a href="index.html">Inicio</a></li>
+      <li><a href="clases-sin-pre.html">Clases</a></li>
+      <li><a href="motivacion-guia.html">Motivación</a></li>
+      <li><a href="materiales.html" class="active">Material</a></li>
+      <li><a href="ejercicios-practicas.html">Práctica</a></li>
+      <li><a href="temarios.html">Recursos</a></li>
+      <li><a href="donativos.html">Comunidad</a></li>
+    </ul>
     <div class="nav-right" style="display:flex;align-items:center;gap:0.5rem">
       <button class="nav-hamburger" id="nav-hamburger-btn" onclick="openNavDrawer()" aria-label="Menú"><span></span><span></span><span></span></button>
       <button id="btn-tema" onclick="toggleTema()">🌙 Modo oscuro</button>
@@ -24,34 +56,16 @@
     </div>
   </nav>
 
-  <div class="editing-badge" id="editing-badge">✦ Modo edición activo</div>
-  <div class="editor-bar" id="editor-bar">
-    <span>Editar:</span>
-    <button class="editor-btn" onclick="document.execCommand('bold')"><b>N</b></button>
-    <button class="editor-btn" onclick="document.execCommand('italic')"><i>I</i></button>
-    <button class="editor-btn" onclick="document.execCommand('underline')"><u>S</u></button>
-    <button class="editor-btn cancel-btn">Descartar</button>
-    <button class="editor-btn save-btn">Guardar ✓</button>
-  </div>
-  <section class="hero">
-    <img class="hero-logo" src="logos/filosofia.png" alt="Sin-Presupuesto">
-    <div class="hero-text">
-      <p class="hero-eyebrow">PreUniversitario gratuito · Popular · Colombia</p>
-      <h1>Del pueblo,<br>hecho para<br><em>el pueblo.</em></h1>
-      <p class="hero-desc">Somos Sin-Presupuesto — un preuniversitario 100% gratuito y popular. Clases, módulos teóricos, simulacros, ejercicios y más.</p>
-      <div class="hero-badges">
-        <span class="badge hot">✦ Completamente gratis</span>
-        <span class="badge">Clases grabadas</span>
-        <span class="badge">Simulacros</span>
-        <span class="badge">Módulos teóricos</span>
-        <span class="badge">Recursos</span>
-        <span class="badge">Apps de estudio</span>
-      </div>
+  <div class="mat-hero">
+    <div class="mat-hero-inner">
+      <h1>📚 Materiales</h1>
+      <p>Todas las secciones de estudio — clases, módulos, simulacros, ejercicios y más.</p>
     </div>
-  </section>
-  <div class="sections-wrap">
-    <p class="sections-title">Todas las secciones — 21 recursos disponibles</p>
-    <div class="sections-grid"><a class="section-card" href="motivacion-guia.html">
+  </div>
+
+  <div class="mat-wrap">
+    <p class="mat-title">Todas las secciones — 21 recursos disponibles</p>
+    <div class="sections-grid" id="sections-grid-mat"><a class="section-card" href="motivacion-guia.html">
           <img src="logos/imagen.png" alt="Motivación/Guía">
           <div class="card-info"><div class="card-num">I.</div><div class="card-title">Motivación/Guía</div></div>
         </a><a class="section-card" href="clases-sin-pre.html" data-page-key="clases_sin_pre" data-total="72">
@@ -114,8 +128,9 @@
         </a><a class="section-card" href="tomos.html" data-page-key="tomos" data-total="5">
           <img src="logos/textual.png" alt="Tomos">
           <div class="card-info"><div class="card-title">Tomos</div><div class="card-progress-wrap"><div class="card-progress-fill" style="width:0%"></div></div></div>
-        </a></div></div>
+        </a></div>
   </div>
+
   <footer>
     <p>Sin-Presupuesto · PreUniversitario gratuito y popular ❤️</p>
     <p style="margin-top:0.4rem"><a href="donativos.html">Apoya el proyecto</a> · <a href="medios-de-sin-presupuesto-un.html">Redes sociales</a></p>
@@ -126,44 +141,7 @@
     </p>
   </footer>
 
-  <!-- Modal admin COMPLETO -->
-  <div class="modal-overlay" id="admin-modal">
-    <div class="modal" style="max-width:360px">
-      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:1.25rem">
-        <h2 style="font-family:'Fraunces',serif;color:var(--accent)">Joaquín L. Cortés</h2>
-        <button onclick="closeAdminModal()" style="background:none;border:none;color:var(--muted);font-size:1.2rem;cursor:pointer;">✕</button>
-      </div>
-      <div class="form-group">
-        <label>Correo</label>
-        <input type="email" id="admin-email" placeholder="tucorreo@gmail.com">
-      </div>
-      <div class="form-group">
-        <label>Contraseña</label>
-        <input type="password" id="admin-pass" placeholder="••••••••">
-      </div>
-      <p style="color:#c0392b;font-size:0.82rem;min-height:1.2em" id="admin-err"></p>
-      <button class="btn-submit" id="admin-submit">Ingresar</button>
-      <p style="text-align:center;margin-top:0.85rem">
-        <button onclick="adminForgotPassword()" style="background:none;border:none;color:var(--muted);font-size:0.8rem;cursor:pointer;text-decoration:underline;">¿Olvidaste tu contraseña?</button>
-      </p>
-    </div>
-  </div>
-
-  <!-- Modal confirmación logout admin -->
-  <div class="modal-overlay" id="admin-logout-modal">
-    <div class="modal" style="max-width:340px;text-align:center">
-      <p style="font-size:1.5rem;margin-bottom:0.5rem">⚙️</p>
-      <h2 style="font-family:'Fraunces',serif;color:var(--accent);margin-bottom:0.5rem">¿Salir del editor?</h2>
-      <p style="color:var(--muted);font-size:0.88rem;margin-bottom:1.5rem">Los cambios no guardados se perderán.</p>
-      <div style="display:flex;gap:0.75rem">
-        <button onclick="closeAdminLogoutModal()" class="btn-submit" style="background:var(--bg3);color:var(--text);flex:1">Cancelar</button>
-        <button onclick="doAdminLogout()" class="btn-submit" style="background:#c0392b;flex:1">Salir</button>
-      </div>
-    </div>
-  </div>
-
-  
-  <!-- Drawer menú móvil -->
+  <!-- Drawer móvil -->
   <div class="nav-drawer-overlay" id="nav-drawer-overlay" onclick="closeNavDrawer()">
     <div class="nav-drawer" onclick="event.stopPropagation()">
       <div class="nav-drawer-header">
@@ -172,13 +150,15 @@
         </div>
         <button class="nav-drawer-close" onclick="closeNavDrawer()">✕</button>
       </div>
-      <ul class="nav-drawer-links">        <li><a href="index.html"><span class="link-icon">🏠</span>Inicio</a></li>
+      <ul class="nav-drawer-links">
+        <li><a href="index.html"><span class="link-icon">🏠</span>Inicio</a></li>
         <li><a href="clases-sin-pre.html"><span class="link-icon">📚</span>Clases</a></li>
         <li><a href="motivacion-guia.html"><span class="link-icon">💡</span>Motivación</a></li>
-        <li><a href="materiales.html"><span class="link-icon">📖</span>Material</a></li>
+        <li><a href="materiales.html" class="active"><span class="link-icon">📖</span>Material</a></li>
         <li><a href="ejercicios-practicas.html"><span class="link-icon">✏️</span>Práctica</a></li>
         <li><a href="temarios.html"><span class="link-icon">🔎</span>Recursos</a></li>
-        <li><a href="donativos.html"><span class="link-icon">❤️</span>Comunidad</a></li></ul>
+        <li><a href="donativos.html"><span class="link-icon">❤️</span>Comunidad</a></li>
+      </ul>
       <div style="margin-top:1rem;padding-top:.75rem;border-top:1px solid var(--border);">
         <button onclick="toggleTema();closeNavDrawer()" style="width:100%;background:none;border:1px solid var(--border);color:var(--muted);font-family:'DM Sans',sans-serif;font-size:.82rem;padding:.5rem .75rem;border-radius:10px;cursor:pointer;display:flex;align-items:center;gap:.5rem;transition:all .15s;">🌙 Modo oscuro</button>
       </div>
@@ -186,14 +166,8 @@
   </div>
 
   <script>
-  function openNavDrawer() {
-    document.getElementById('nav-drawer-overlay').classList.add('open');
-    document.body.style.overflow = 'hidden';
-  }
-  function closeNavDrawer() {
-    document.getElementById('nav-drawer-overlay').classList.remove('open');
-    document.body.style.overflow = '';
-  }
+  function openNavDrawer(){ document.getElementById('nav-drawer-overlay').classList.add('open'); }
+  function closeNavDrawer(){ document.getElementById('nav-drawer-overlay').classList.remove('open'); }
   </script>
   <script src="editor.js"></script>
   <script type="module" src="firebase-auth.js"></script>
@@ -249,47 +223,5 @@
   };
   </script>
 
-<script>
-/* ── Tema oscuro/claro ── */
-(function(){
-  var saved = localStorage.getItem('sp-tema') || 'light';
-  document.documentElement.setAttribute('data-theme', saved);
-  function isDark(){ return document.documentElement.getAttribute('data-theme')==='dark'; }
-  window.syncNav = function(){
-    var nav = document.querySelector('nav');
-    var btnTema = document.getElementById('btn-tema');
-    if(!nav || !btnTema) return;
-    // Poner texto completo para medir
-    btnTema.textContent = isDark() ? '☀ Modo claro' : '🌙 Modo oscuro';
-    btnTema.style.removeProperty('padding');
-    requestAnimationFrame(function(){
-      var overflowing = nav.scrollWidth > nav.clientWidth + 4;
-      if(overflowing){
-        btnTema.textContent = isDark() ? '☀' : '🌙';
-        btnTema.style.padding = '.3rem .45rem';
-        window._navCompact = true;
-      } else {
-        window._navCompact = false;
-      }
-      // Re-render avance btn if visible
-      var btnAv = document.getElementById('btn-avance');
-      if(btnAv && btnAv.style.display !== 'none'){
-        var profile = window._getUserProfile ? window._getUserProfile() : null;
-        window.updateAvanceBtn && window.updateAvanceBtn(btnAv, profile);
-      }
-    });
-  };
-  document.addEventListener('DOMContentLoaded', function(){
-    window.syncNav();
-    window.addEventListener('resize', function(){ clearTimeout(window._navResizeT); window._navResizeT = setTimeout(window.syncNav, 120); });
-  });
-  window.toggleTema = function(){
-    var next = isDark() ? 'light' : 'dark';
-    document.documentElement.setAttribute('data-theme', next);
-    localStorage.setItem('sp-tema', next);
-    window.syncNav();
-  };
-})();
-</script>
 </body>
 </html>

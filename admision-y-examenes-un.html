@@ -126,7 +126,7 @@ aside{position:sticky;top:clamp(46px,6vw,56px);align-self:start;max-height:calc(
 @media(max-width:700px){#modules-grid{grid-template-columns:1fr;}}
 @media(min-width:701px) and (max-width:900px){#modules-grid{grid-template-columns:repeat(2,1fr);}}
 /* MODULE CARD */
-.module-card{background:var(--bg2);border:1px solid var(--border);border-radius:16px;overflow:hidden;transition:box-shadow .22s,border-color .22s,opacity .22s ease,transform .22s cubic-bezier(.4,0,.2,1);grid-column:span 1;user-select:none;touch-action:none;}
+.module-card{background:var(--bg2);border:1px solid var(--border);border-radius:16px;overflow:hidden;transition:box-shadow .22s,border-color .22s,opacity .22s ease,transform .22s cubic-bezier(.4,0,.2,1);grid-column:span 1;user-select:none;touch-action:pan-y;}
 .module-card:hover{box-shadow:0 6px 20px var(--shadow);}
 .module-card.complete{border-color:rgba(29,185,125,.4);}
 .module-card.hold-ready{box-shadow:0 0 0 2px var(--accent2),0 8px 28px rgba(0,0,0,.45);transform:scale(1.025);}
@@ -175,7 +175,7 @@ aside{position:sticky;top:clamp(46px,6vw,56px);align-self:start;max-height:calc(
   .file-card{transition:border-color .15s;}
   .file-card:hover{transform:none;}
 }
-.file-card{background:var(--bg3);border:1px solid var(--border);border-radius:11px;padding:.65rem .75rem;display:flex;align-items:flex-start;gap:.55rem;cursor:pointer;transition:all .17s;position:relative;user-select:none;touch-action:none;}
+.file-card{background:var(--bg3);border:1px solid var(--border);border-radius:11px;padding:.65rem .75rem;display:flex;align-items:flex-start;gap:.55rem;cursor:pointer;transition:all .17s;position:relative;user-select:none;touch-action:pan-y;}
 .file-card::before{content:'';position:absolute;inset:0;border-radius:11px;background:linear-gradient(135deg,rgba(46,111,196,.08),transparent);opacity:0;transition:opacity .18s;}
 .file-card:hover{border-color:var(--accent2);box-shadow:0 3px 14px var(--shadow);transform:translateY(-1px);}
 .file-card:hover::before{opacity:1;}
@@ -299,7 +299,7 @@ footer a:hover{text-decoration:underline;}
   <a class="nav-logo" href="index.html">
     <img src="logos/filosofia.png" alt="" onerror="this.style.display='none'"><span class="nav-logo-text">Sin-Presupuesto</span>
   </a>
-  <ul class="nav-links"><li><a href="index.html">Inicio</a></li><li><a href="clases-sin-pre.html">Clases</a></li><li><a href="motivacion-guia.html">Motivación</a></li><li><a href="modulos-teoricos.html">Material</a></li><li><a href="ejercicios-practicas.html">Práctica</a></li><li><a href="temarios.html">Recursos</a></li><li><a href="donativos.html">Comunidad</a></li></ul>
+  <ul class="nav-links"><li><a href="index.html">Inicio</a></li><li><a href="clases-sin-pre.html">Clases</a></li><li><a href="motivacion-guia.html">Motivación</a></li><li><a href="materiales.html">Material</a></li><li><a href="ejercicios-practicas.html">Práctica</a></li><li><a href="temarios.html">Recursos</a></li><li><a href="donativos.html">Comunidad</a></li></ul>
   <div class="nav-right">
     <button class="nav-hamburger" onclick="openNavDrawer()" aria-label="Menú">
       <span></span><span></span><span></span>
@@ -355,7 +355,7 @@ footer a:hover{text-decoration:underline;}
 
 <!-- LAYOUT -->
 <div class="layout">
-  <aside id="sidebar-aside">
+  <aside id="sidebar-aside" class="sidebar-collapsed">
     <p class="sidebar-title">Secciones</p>
     <button class="sidebar-toggle" onclick="toggleSidebar()" id="sidebar-toggle-btn">
       <span>📋 Secciones</span>
@@ -571,7 +571,7 @@ function requireAuth(cb){
 /* ── DATOS ── */
 const MODULES=[{"id": "gratuidad__matricula", "emoji": "📄", "bg": "#e4ecf7", "title": "Gratuidad (Matricula 0)", "desc": "Gratuidad (Matricula 0)", "files": [{"n": "Gratuidad (Matricula 0) — N° 1", "url": "https://drive.google.com/file/d/1YTFgvUgk0Uglwok0uMje16RthXA57LMj/view?usp=sharing", "type": "PDF", "ext": false}, {"n": "Gratuidad (Matricula 0) — N° 2", "url": "https://www.icbf.gov.co/cargues/avance/compilacion/docs/decreto_2271_2023.htm?authuser=0#:~:text=Objeto.,de%20equidad%20poblacional%20y%20territorial", "type": "Enlace", "ext": false}, {"n": "Gratuidad (Matricula 0) — N° 3", "url": "https://www.mineducacion.gov.co/portal/Educacion-superior/Pol%C3%ADtica-de-Gratuidad/409830:Politica-de-Gratuidad-en-la-Educacion-Superior", "type": "Enlace", "ext": false}]}, {"id": "puntajes_de_admisi_n", "emoji": "📄", "bg": "#e4ecf7", "title": "Puntajes de Admisión 2024-1", "desc": "Puntajes de Admisión 2024-1", "files": [{"n": "Puntajes de Admisión 2024-1 — N° 1", "url": "https://drive.google.com/file/d/1o3vwThiBqbGpBi9kfO7qV7FvU3twVEWO/view?usp=sharing", "type": "PDF", "ext": false}, {"n": "Puntajes de Admisión 2024-1 — N° 2", "url": "https://drive.google.com/file/d/1YctxbIfK-CpGKMu_1IfIja3DrmqqEoj2/view?usp=sharing", "type": "PDF", "ext": false}, {"n": "Puntajes de Admisión 2024-1 — N° 3", "url": "https://drive.google.com/file/d/1TlSkQUXp8skN_nVxouNq-OeTIvBalA1e/view?usp=sharing", "type": "PDF", "ext": false}, {"n": "Puntajes de Admisión 2024-1 — N° 4", "url": "https://drive.google.com/file/d/1P-n_0lp2XhXXWBX4eJTT7E7_DyKCN_rO/view?usp=sharing", "type": "PDF", "ext": false}, {"n": "Puntajes de Admisión 2024-1 — N° 5", "url": "https://drive.google.com/file/d/12bScVHZEcMPbh9teaFwrXkQusMrCNbLM/view?usp=sharing", "type": "PDF", "ext": false}, {"n": "Puntajes de Admisión 2024-1 — N° 6", "url": "https://drive.google.com/file/d/1CBwar6WWny2dwUlSh0mMUrlIFQHxiWqA/view?usp=sharing", "type": "PDF", "ext": false}]}, {"id": "ex_menes_2011_2_a_20", "emoji": "📄", "bg": "#e4ecf7", "title": "Exámenes 2011-2 a 2020-2", "desc": "Exámenes 2011-2 a 2020-2", "files": [{"n": "Beneficios Matrícula Cero — Doc 1", "url": "https://drive.google.com/file/d/1wKhO7HAvihL0VG3gn_VN3Kaq8NjOslPN/view?usp=sharing", "type": "PDF", "ext": false}, {"n": "Beneficios Matrícula Cero — Doc 2", "url": "https://drive.google.com/file/d/1DQWXNVJKtkFWz0QMtXzIe412G8RbSRSg/view?usp=sharing", "type": "PDF", "ext": false}, {"n": "Beneficios Matrícula Cero — Doc 4", "url": "https://drive.google.com/file/d/1OYHD61aW6VyMbLNeG2GVBp-MdNUjxxXj/view?usp=sharing", "type": "PDF", "ext": false}, {"n": "Examen UNAL — Doc 5", "url": "https://drive.google.com/file/d/12Rd1AglggiSUjJgs9qZN-vu2SkApNizC/view?usp=sharing", "type": "PDF", "ext": false}, {"n": "Beneficios Matrícula Cero — Doc 6", "url": "https://drive.google.com/file/d/1G2Lj94g2TYzQe29xv3ZSnYBB1yA7t3zq/view?usp=classroom_web&amp;authuser=0", "type": "PDF", "ext": false}, {"n": "Beneficios Matrícula Cero — Doc 8", "url": "https://drive.google.com/file/d/1nwMnF6LS4FHhZYBS2mj4EEvVeGCPRQMP/view?usp=classroom_web&amp;authuser=0", "type": "PDF", "ext": false}, {"n": "Beneficios Matrícula Cero — Doc 9", "url": "https://drive.google.com/file/d/1z1ynTDGJrq_Sq4I24rB6cLiBoIfYWQzz/view?usp=classroom_web&amp;authuser=0", "type": "PDF", "ext": false}, {"n": "Puntajes Admisión — Doc 11", "url": "https://drive.google.com/file/d/1tSK1Wg0usXnOQOyyfDXSJSd2pARkMOKf/view?usp=classroom_web&amp;authuser=0", "type": "PDF", "ext": false}, {"n": "Puntajes Admisión — Doc 12", "url": "https://drive.google.com/file/d/1m23RlLtg1P-Ju9BnsM_6F6b38aKXIF4N/view?usp=classroom_web&amp;authuser=0", "type": "PDF", "ext": false}, {"n": "Puntajes Admisión — Doc 13", "url": "https://drive.google.com/file/d/14vqu9gx8-UXsoOlrQfirqa9bpOfR2CiY/view?usp=classroom_web&amp;authuser=0", "type": "PDF", "ext": false}, {"n": "Puntajes Admisión — Doc 14", "url": "https://drive.google.com/file/d/1xq_bor_3NcIQk5UIN8lMaO2W_wcnEfBh/view?usp=classroom_web&amp;authuser=0", "type": "PDF", "ext": false}, {"n": "Puntajes Admisión — Doc 15", "url": "https://drive.google.com/file/d/12479CAe-8HbuGxKsrIiZmnQV6jsb4CgL/view?usp=classroom_web&amp;authuser=0", "type": "PDF", "ext": false}, {"n": "Puntajes Admisión — Doc 16", "url": "https://drive.google.com/file/d/12aQ1LRYJOIyOQNJJR18y2KropJtI7KKy/view?usp=classroom_web&amp;authuser=0", "type": "PDF", "ext": false}, {"n": "Puntajes Admisión — Doc 17", "url": "https://drive.google.com/file/d/1y4YSUvUPfnaJ55JRBaiV_8MDm1IbOEVc/view?usp=classroom_web&amp;authuser=0", "type": "PDF", "ext": false}, {"n": "Exámenes 2011-2 a 2020-2 — N° 15", "url": "https://drive.google.com/file/d/1vK7VlqwsV4GOW2JCvuuWIIhSP8bSaq5A/view?usp=classroom_web&amp;authuser=0", "type": "PDF", "ext": false}]}, {"id": "ex_menes_2004_2_a_20", "emoji": "📄", "bg": "#e4ecf7", "title": "Exámenes 2004-2 a 2010-2", "desc": "Exámenes 2004-2 a 2010-2", "files": [{"n": "Examen UNAL 2004", "url": "https://drive.google.com/file/d/1KbFKSwepi9gJS4p5PE7fGlcsF31ROCkT/view?usp=classroom_web&amp;authuser=0", "type": "PDF", "ext": false}, {"n": "Examen UNAL 2005", "url": "https://drive.google.com/file/d/1RSzYOKL8nipiqButHILuiCpGe8WpWFPf/view?usp=classroom_web&amp;authuser=0", "type": "PDF", "ext": false}, {"n": "Examen UNAL 2006", "url": "https://drive.google.com/file/d/1To0DhJU4PZYBHpDZebQbvCJWXwH8kXIG/view?usp=classroom_web&amp;authuser=0", "type": "PDF", "ext": false}, {"n": "Examen UNAL 2007", "url": "https://drive.google.com/file/d/1HAVShETtvmj9_7O4ICHp3qhiMyA4XK2G/view?usp=classroom_web&amp;authuser=0", "type": "PDF", "ext": false}, {"n": "Archivos 5", "url": "https://drive.google.com/file/d/13sqNXICqnWQYg9KcV3mzgfSMt1zYLCqk/view?usp=classroom_web&amp;authuser=0", "type": "PDF", "ext": false}, {"n": "Archivos 6", "url": "https://drive.google.com/file/d/1092oRhUKagW0iM2B67DiHVq9it9dgoVY/view?usp=classroom_web&amp;authuser=0", "type": "PDF", "ext": false}, {"n": "Archivos 8", "url": "https://drive.google.com/file/d/160CIclproPIVsFKoAiIJVLBsBiJRrCNl/view?usp=classroom_web&amp;authuser=0", "type": "PDF", "ext": false}, {"n": "Exámenes 2004-2 a 2010-2 — N° 8", "url": "https://drive.google.com/file/d/1EZDMlYwKF25DeMbBloowODp66Um9Uz2_/view?usp=classroom_web&amp;authuser=0", "type": "PDF", "ext": false}, {"n": "Exámenes 2004-2 a 2010-2 — N° 9", "url": "https://drive.google.com/file/d/1Jj-U_9M0OStoKb3Mr3kT6BZxIl-3xHe5/view?usp=classroom_web&amp;authuser=0", "type": "PDF", "ext": false}, {"n": "Archivos 12", "url": "https://drive.google.com/file/d/1oRkg_Vibt08tZiUAvkCnY-pbEvnclQq6/view?usp=classroom_web&amp;authuser=0", "type": "PDF", "ext": false}]}, {"id": "libros_de_ex_menes", "emoji": "📄", "bg": "#e4ecf7", "title": "Libros de Exámenes", "desc": "Libros de Exámenes", "files": [{"n": "Libro Exámenes UNAL — Compilado", "url": "https://drive.google.com/file/d/1gX8NfzKzwiVodMsaPG9GAzFPheIRe-nh/view?usp=classroom_web&amp;authuser=0", "type": "PDF", "ext": false}, {"n": "Libros de Exámenes — N° 2", "url": "https://drive.google.com/file/d/1doCtXQePlwMNPvs-RSHgvmKUOZnUJf_0/view?usp=classroom_web&amp;authuser=0", "type": "PDF", "ext": false}]}, {"id": "libros_de_ex_menes_u", "emoji": "🏛️", "bg": "#fff0de", "title": "Libros de Exámenes UdeA", "desc": "Libros de Exámenes UdeA", "files": [{"n": "Material preparatorio UdeA", "url": "https://drive.google.com/file/d/1xlV-FkJmfBFiP3Iwn68IiMuTintXUIvV/view?usp=classroom_web&amp;authuser=0", "type": "PDF", "ext": false}]}];
 const PAGE_KEY='admision_y_examenes_un';
-const HOLD_MS=300;
+const HOLD_MS=400;
 let checked={},order=MODULES.map(m=>m.id),fileOrders={},heroMode='bar';
 let openCardId=null,activeModal=null,saveTimer=null;
 
@@ -783,7 +783,7 @@ function attachCard(card,m){
   var holdTimer=null,dragActive=false,ghostCreated=false,overMid=null,docMH=null,docUH=null;
   head.addEventListener('pointerdown',function(e){
     if(openCardId===m.id)return;
-    e.preventDefault();
+    // No preventDefault aquí — permite scroll. Se cancela solo si drag activa
     dragActive=false;ghostCreated=false;overMid=null;
     holdTimer=setTimeout(function(){
       dragActive=true;
@@ -792,6 +792,8 @@ function attachCard(card,m){
         if(!dragActive)return;
         ghostCreated=true;
         card.classList.remove('hold-ready');card.classList.add('is-dragging');createGhost(card);
+        // Ahora que el drag está activo, cancelar eventos de touch para evitar scroll
+        card.style.touchAction='none';
         docMH=function(ev){
           ev.preventDefault();moveGhost(ev.clientX,ev.clientY);
           var under=document.elementFromPoint(ev.clientX,ev.clientY);
@@ -828,6 +830,7 @@ function attachCard(card,m){
     removeGhost();
     var wasGhost=ghostCreated,landing=overMid;
     dragActive=false;ghostCreated=false;overMid=null;clearDragClasses();
+    card.style.touchAction='';
     if(commit&&wasGhost&&landing){
       var si=order.indexOf(m.id),di=order.indexOf(landing);
       if(si!==di){order.splice(si,1);order.splice(di,0,m.id);scheduleSave();_setJustDropped();renderGrid();}
@@ -842,7 +845,8 @@ function clearFileClasses(){allFileCards().forEach(function(c){c.classList.remov
 function attachFile(fc,m){
   var holdTimer=null,dragActive=false,ghostCreated=false,overFi=null,srcFi=parseInt(fc.dataset.fi),docMF=null,docUF=null;
   fc.addEventListener('pointerdown',function(e){
-    e.stopPropagation();e.preventDefault();
+    e.stopPropagation();
+    // No preventDefault aquí — permite scroll nativo
     dragActive=false;ghostCreated=false;overFi=null;
     holdTimer=setTimeout(function(){
       dragActive=true;
@@ -851,6 +855,7 @@ function attachFile(fc,m){
         if(!dragActive)return;
         ghostCreated=true;
         fc.classList.remove('fc-hold-ready');fc.classList.add('fc-dragging');
+        fc.style.touchAction='none';
         docMF=function(ev){
           ev.preventDefault();
           var under=document.elementFromPoint(ev.clientX,ev.clientY);
@@ -879,6 +884,7 @@ function attachFile(fc,m){
     if(docUF){document.removeEventListener('pointerup',docUF);docUF=null;}
     var wasGhost=ghostCreated,landing=overFi;
     dragActive=false;ghostCreated=false;overFi=null;clearFileClasses();
+    fc.style.touchAction='';
     if(commit&&wasGhost&&landing!=null&&landing!==srcFi){
       var fo=fileOrders[m.id];
       var si=fo.indexOf(srcFi),di=fo.indexOf(landing);
