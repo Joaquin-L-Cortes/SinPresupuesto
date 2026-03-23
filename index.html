@@ -12,78 +12,79 @@
 /* ═══════════════════════════════════════════════════
    SCHEDULE — Horario Relámpago
    ═══════════════════════════════════════════════════ */
+/* ── CRONOGRAMA — contenedor externo ── */
+.schedule-outer{
+  max-width:1100px;
+  margin:0 auto;
+  padding:0 2rem 1.5rem;
+  box-sizing:border-box;
+}
 .schedule-wrap{
-  margin-top:1.25rem;
-  /* Modo claro: fondo sólido visible, borde azul */
-  background:rgba(255,255,255,.15);
-  border:1.5px solid rgba(255,255,255,.35);
-  border-radius:14px;
-  padding:.85rem 1rem .9rem;
-  backdrop-filter:blur(6px);
+  background:var(--card);
+  border:1.5px solid var(--border);
+  border-radius:16px;
+  padding:1.1rem 1.25rem 1.2rem;
+  box-shadow:0 1px 6px var(--shadow);
   width:100%;
-  max-width:100%;
   box-sizing:border-box;
 }
 [data-theme="dark"] .schedule-wrap{
-  background:rgba(255,255,255,.07);
-  border-color:rgba(255,255,255,.12);
+  background:var(--bg2);
+  border-color:var(--border);
 }
 .schedule-header{
   display:flex;align-items:center;justify-content:space-between;
-  margin-bottom:.65rem;
+  margin-bottom:.75rem;
 }
 .schedule-title{
-  font-family:'Fraunces',serif;font-size:.9rem;font-weight:700;
-  color:#fff;letter-spacing:.01em;
-  text-shadow:0 1px 4px rgba(0,0,0,.25);
+  font-family:'Fraunces',serif;font-size:.92rem;font-weight:700;
+  color:var(--accent);letter-spacing:.01em;
 }
 .schedule-dates{
-  font-size:.7rem;color:rgba(255,255,255,.85);
-  background:rgba(255,255,255,.18);border-radius:20px;
-  padding:.18rem .6rem;font-weight:500;
-  text-shadow:none;
+  font-size:.7rem;color:var(--muted);
+  background:var(--bg3);border-radius:20px;
+  padding:.18rem .65rem;font-weight:500;
 }
 .schedule-grid{
   display:grid;
-  grid-template-columns:3.2rem repeat(7,1fr);
-  gap:3px;
+  grid-template-columns:3.4rem repeat(7,1fr);
+  gap:4px;
 }
 .sch-head{
   font-size:.65rem;font-weight:700;
-  color:rgba(255,255,255,.9);
-  text-shadow:0 1px 3px rgba(0,0,0,.2);
+  color:var(--muted);
   text-align:center;padding:.2rem .05rem;text-transform:uppercase;
   letter-spacing:.04em;
 }
 .sch-time{
-  font-size:.65rem;color:rgba(255,255,255,.85);font-weight:600;
-  display:flex;align-items:center;padding-right:.25rem;
-  line-height:1.2;text-shadow:0 1px 3px rgba(0,0,0,.2);
+  font-size:.66rem;color:var(--muted);font-weight:600;
+  display:flex;align-items:center;padding-right:.3rem;
+  line-height:1.2;
 }
 .sch-cell{
-  border-radius:7px;padding:.35rem .15rem;
-  font-size:.63rem;font-weight:700;text-align:center;
+  border-radius:8px;padding:.38rem .15rem;
+  font-size:.64rem;font-weight:700;text-align:center;
   line-height:1.2;color:#fff;
   text-shadow:0 1px 3px rgba(0,0,0,.3);
-  background:rgba(255,255,255,.1);
-  min-height:2.4rem;display:flex;flex-direction:column;
+  min-height:2.5rem;display:flex;flex-direction:column;
   align-items:center;justify-content:center;gap:.12rem;
-  border:1px solid rgba(255,255,255,.08);
+  border:1px solid rgba(255,255,255,.12);
 }
 .sch-cell span{font-size:.55rem;opacity:.85;font-weight:500;}
-.sch-cell:empty{background:transparent;border-color:transparent;}
+.sch-cell:empty{background:var(--bg3);border-color:var(--border);}
+[data-theme="dark"] .sch-cell:empty{background:var(--bg3);border-color:var(--border);}
 .sch-logo{width:20px;height:20px;object-fit:contain;border-radius:50%;opacity:.95;filter:drop-shadow(0 1px 2px rgba(0,0,0,.3));}
-/* Colores por materia — sólidos para mejor visibilidad en modo claro */
-.c-filo  {background:rgba(30,90,180,.55);}   /* Azul marino — Filosofía    */
-.c-orien {background:rgba(30,120,200,.45);}  /* Azul — Orientación         */
-.c-imagen{background:rgba(120,40,170,.55);}  /* Morado — Imagen            */
-.c-bio   {background:rgba(15,100,35,.58);}   /* Verde oscuro — Biología    */
-.c-mat   {background:rgba(15,35,110,.62);}   /* Azul oscuro — Matemáticas  */
-.c-quim  {background:rgba(40,140,55,.55);}   /* Verde claro — Química      */
-.c-text  {background:rgba(140,15,30,.58);}   /* Rojo borgoña — Textual     */
-.c-fis   {background:rgba(165,30,115,.55);}  /* Rosado/magenta — Física    */
-.c-soc   {background:rgba(180,85,10,.58);}   /* Naranja — Sociales         */
-.c-ing   {background:rgba(130,85,10,.58);}   /* Dorado — Inglés            */
+/* Colores por materia */
+.c-filo  {background:rgba(30,90,180,.72);}
+.c-orien {background:rgba(30,120,200,.65);}
+.c-imagen{background:rgba(120,40,170,.72);}
+.c-bio   {background:rgba(15,100,35,.75);}
+.c-mat   {background:rgba(15,35,110,.80);}
+.c-quim  {background:rgba(40,140,55,.72);}
+.c-text  {background:rgba(140,15,30,.75);}
+.c-fis   {background:rgba(165,30,115,.72);}
+.c-soc   {background:rgba(180,85,10,.75);}
+.c-ing   {background:rgba(130,85,10,.75);}
 
 /* ═══════════════════════════════════════════════════
    RESPONSIVO EXTRA — index.html
@@ -94,14 +95,15 @@
   .hero-desc{font-size:.88rem!important;margin-bottom:1.25rem!important;}
   .hero-badges{gap:.35rem!important;}
   .badge{font-size:.7rem!important;padding:.28rem .65rem!important;}
-  .schedule-wrap{width:100%!important;padding:.65rem .6rem .7rem!important;}
+  .schedule-outer{padding:0 .75rem 1rem!important;}
+  .schedule-wrap{padding:.65rem .7rem .75rem!important;}
   .schedule-grid{grid-template-columns:2.6rem repeat(7,1fr)!important;gap:2px!important;}
-  .sch-cell{font-size:.52rem!important;padding:.18rem .08rem!important;min-height:2rem!important;}
+  .sch-cell{font-size:.52rem!important;padding:.18rem .06rem!important;min-height:2rem!important;}
   .sch-cell span{font-size:.46rem!important;}
   .sch-time{font-size:.54rem!important;}
   .sch-head{font-size:.54rem!important;}
   .sch-logo{width:13px!important;height:13px!important;}
-  .schedule-title{font-size:.78rem!important;}
+  .schedule-title{font-size:.8rem!important;}
   .sections-wrap{padding:0 .75rem 2.5rem!important;}
   .sections-title{font-size:.62rem!important;}
   .sections-grid{grid-template-columns:1fr 1fr!important;gap:.6rem!important;}
@@ -143,6 +145,9 @@
       <p class="hero-eyebrow">PreUniversitario gratuito · Popular · Colombia</p>
       <h1>Del pueblo,<br>hecho para<br><em>el pueblo.</em></h1>
       <p class="hero-desc">Somos Sin-Presupuesto — un preuniversitario 100% gratuito y popular. Clases, módulos teóricos, simulacros, ejercicios y más.</p>
+    </div>
+  </section>
+  <div class="schedule-outer">
       <div class="schedule-wrap">
         <div class="schedule-header">
           <span class="schedule-title">⚡ SinPre Relámpago — 2026</span>
@@ -177,8 +182,7 @@
           <div class="sch-cell c-ing"><img src="logos/ingles.png" class="sch-logo" alt="">Inglés<span>cada 15</span></div>
         </div>
       </div>
-    </div>
-  </section>
+  </div>
   <div class="sections-wrap">
     <p class="sections-title">Todas las secciones</p>
     <div class="sections-grid"><a class="section-card" href="relampago-sinpre.html" data-page-key="relampago_sinpre" data-total="13">
@@ -279,17 +283,34 @@
   <div class="nav-drawer-overlay" id="nav-drawer-overlay" onclick="closeNavDrawer()">
     <div class="nav-drawer" onclick="event.stopPropagation()">
       <div class="nav-drawer-header">
-        <div class="nav-drawer-title">
-          <img src="logos/filosofia.png" style="width:28px;height:28px;" onerror="this.style.display='none'"> Sin-Presupuesto
-        </div>
-        <button class="nav-drawer-close" onclick="closeNavDrawer()">✕</button>
+        <span style="font-family:'Fraunces',serif;font-weight:700;color:var(--accent2)">Sin-Presupuesto</span>
+        <button class="btn-close-drawer" onclick="closeNavDrawer()">✕</button>
       </div>
-      <ul class="nav-drawer-links">        <li><a href="index.html"><span class="link-icon">🏠</span>Inicio</a></li>
-        <li><a href="clases.html"><span class="link-icon">📚</span>Clases</a></li>
-        <li><a href="comunidad.html"><span class="link-icon">💬</span>Comunidad</a></li>
-        <li><a href="materiales.html"><span class="link-icon">📖</span>Material</a></li>
-        <li><a href="ejercicios-practicas.html"><span class="link-icon">✏️</span>Práctica</a></li>
-        </ul>
+      <ul>
+        <li class="drawer-group-title">Navegación</li>
+        <li><a href="index.html" class="active"><span class="s-emoji">🏠</span>Inicio</a></li>
+        <li><a href="clases.html"><span class="s-emoji">📺</span>Clases</a></li>
+        <li><a href="comunidad.html"><span class="s-emoji">💬</span>Comunidad</a></li>
+        <li><a href="materiales.html"><span class="s-emoji">📖</span>Material</a></li>
+        <li><a href="ejercicios-practicas.html"><span class="s-emoji">✏️</span>Práctica</a></li>
+        <li class="drawer-separator"></li>
+        <li class="drawer-group-title">Secciones de material</li>
+        <li><a href="relampago-sinpre.html"><span class="s-emoji">⚡</span>I. Relámpago 2026</a></li>
+        <li><a href="formulario-economico-1.html"><span class="s-emoji">📑</span>II. Exclusivos SinPre</a></li>
+        <li><a href="temarios.html"><span class="s-emoji">📋</span>III. Temarios</a></li>
+        <li><a href="simulacros-calificados-un.html"><span class="s-emoji">🏆</span>IV. Simulacros Cal. UN</a></li>
+        <li><a href="admision-y-examenes-un.html"><span class="s-emoji">🎓</span>V. Admisión y Exámenes</a></li>
+        <li><a href="clases-preu-s-ii-libres.html"><span class="s-emoji">🏫</span>VI. Clases PreU's</a></li>
+        <li><a href="recursos-udea.html"><span class="s-emoji">🦁</span>VII. Recursos UdeA</a></li>
+        <li><a href="diapositivas-con-todo.html"><span class="s-emoji">📊</span>VIII. Diapositivas</a></li>
+        <li><a href="apuntes-estudio-un.html"><span class="s-emoji">📓</span>IX. Apuntes Estudio</a></li>
+        <li><a href="textos-varios-practica-textual.html"><span class="s-emoji">📰</span>X. Textos Varios</a></li>
+        <li><a href="modulos-teoricos.html"><span class="s-emoji">📚</span>XI. Módulos Teóricos</a></li>
+        <li><a href="modulos-especiales.html"><span class="s-emoji">⭐</span>XII. Módulos Especiales</a></li>
+        <li><a href="ejercicios-practicas.html"><span class="s-emoji">✏️</span>XIII. Ejercicios</a></li>
+        <li><a href="simulacros-un.html"><span class="s-emoji">🧪</span>XIV. Simulacros UN</a></li>
+        <li><a href="app-s-estudio-android.html"><span class="s-emoji">📱</span>XV. App's Estudio</a></li>
+      </ul>
       <div style="margin-top:1rem;padding-top:.75rem;border-top:1px solid var(--border);">
         <button onclick="toggleTema();closeNavDrawer()" style="width:100%;background:none;border:1px solid var(--border);color:var(--muted);font-family:'DM Sans',sans-serif;font-size:.82rem;padding:.5rem .75rem;border-radius:10px;cursor:pointer;display:flex;align-items:center;gap:.5rem;transition:all .15s;">🌙 Modo oscuro</button>
       </div>

@@ -456,8 +456,11 @@ footer a:hover { text-decoration: underline; }
   border-radius: 6px; transition: background 0.15s;
 }
 .nav-drawer-close:hover { background: var(--bg3); }
+.btn-close-drawer { background: none; border: none; font-size: 1.2rem; cursor: pointer; color: var(--muted); padding: 0.2rem; border-radius: 6px; transition: background 0.15s; }
+.btn-close-drawer:hover { background: var(--bg3); }
 .nav-drawer-links { list-style: none; display: flex; flex-direction: column; gap: 2px; flex: 1; }
-.nav-drawer-links a {
+.nav-drawer-links a,
+.nav-drawer ul a {
   display: flex; align-items: center; gap: 0.75rem;
   padding: 0.75rem 0.75rem;
   color: var(--text); text-decoration: none;
@@ -465,10 +468,13 @@ footer a:hover { text-decoration: underline; }
   border-radius: 10px;
   transition: background 0.15s, color 0.15s;
 }
-.nav-drawer-links a:hover, .nav-drawer-links a.active {
+.nav-drawer-links a:hover, .nav-drawer-links a.active,
+.nav-drawer ul a:hover, .nav-drawer ul a.active {
   background: var(--bg3); color: var(--accent2);
 }
 .nav-drawer-links a .link-icon { font-size: 1.1rem; width: 24px; text-align: center; }
+.nav-drawer ul { list-style: none; }
+.nav-drawer ul .s-emoji { font-size: .88rem; width: 18px; text-align: center; flex-shrink: 0; }
 
 /* ── REGISTRO HORIZONTAL ── */
 .reg-layout {
@@ -519,15 +525,17 @@ footer a:hover { text-decoration: underline; }
   }
   .reg-picker-col > p { font-size: .62rem !important; margin-bottom: .15rem !important; }
   #reg-avatar-picker, #edit-avatar-picker {
-    grid-template-columns: repeat(7, 1fr) !important;
-    gap: 0.18rem !important;
+    grid-template-columns: repeat(6, 1fr) !important;
+    grid-template-rows: repeat(3, 1fr) !important;
+    gap: 0.22rem !important;
+    overflow: hidden !important;
   }
   .reg-picker-col .avatar-opt,
   #reg-avatar-picker .avatar-opt,
   #edit-avatar-picker .avatar-opt {
-    width: 28px !important;
-    height: 28px !important;
-    font-size: .82rem !important;
+    width: 30px !important;
+    height: 30px !important;
+    font-size: .88rem !important;
   }
   /* Campos: columna 1-2 (full width), fila 2 */
   .reg-fields-col {
