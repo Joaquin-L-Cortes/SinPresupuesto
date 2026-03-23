@@ -93,13 +93,29 @@ nav{position:sticky;top:0;z-index:300;background:var(--nav-bg);backdrop-filter:b
 aside{position:sticky;top:clamp(46px,6vw,56px);align-self:start;max-height:calc(100vh - 80px);overflow-y:auto;}
 @media(max-width:900px){
   aside{position:static;max-height:none;overflow-y:visible;}
-  .sidebar-toggle{display:flex;align-items:center;justify-content:space-between;width:100%;background:var(--bg3);border:1px solid var(--border);border-radius:10px;padding:.55rem .85rem;font-family:'DM Sans',sans-serif;font-size:.82rem;font-weight:600;color:var(--accent2);cursor:pointer;margin-bottom:.5rem;}
-  .sidebar-toggle-arrow{transition:transform .2s;}
-  .sidebar-collapsed .sidebar-toggle-arrow{transform:rotate(-90deg);}
-  .sidebar-collapsed .sidebar-links{display:none;}
+  /* Sidebar como modal en móvil */
+  .sidebar-toggle{display:flex;align-items:center;gap:.5rem;background:var(--bg3);border:1px solid var(--border);border-radius:10px;padding:.5rem .85rem;font-family:'DM Sans',sans-serif;font-size:.82rem;font-weight:600;color:var(--accent2);cursor:pointer;margin-bottom:.75rem;width:100%;}
   .sidebar-title{display:none;}
+  /* Ocultar aside normal en móvil — usar modal */
+  #sidebar-aside > .sidebar-links,
+  #sidebar-aside > .sidebar-title{ display:none; }
 }
-@media(min-width:901px){.sidebar-toggle{display:none;}}
+@media(min-width:901px){
+  .sidebar-toggle{display:none;}
+  #sidebar-aside > .sidebar-links{ display:block!important; }
+  #sidebar-aside > .sidebar-title{ display:block!important; }
+}
+/* Modal de secciones */
+.sections-modal-overlay{display:none;position:fixed;inset:0;background:rgba(26,54,107,0.45);backdrop-filter:blur(4px);z-index:1000;align-items:center;justify-content:center;padding:1rem;}
+.sections-modal-overlay.open{display:flex;}
+.sections-modal-overlay.open .sections-modal-box{animation:scaleIn .22s cubic-bezier(.34,1.56,.64,1) both;}
+.sections-modal-box{background:var(--bg2);border:1px solid var(--border);border-radius:20px;padding:1.5rem 1.75rem;width:100%;max-width:360px;max-height:82vh;overflow-y:auto;box-shadow:0 8px 40px var(--shadow);}
+.sections-modal-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:1rem;padding-bottom:.75rem;border-bottom:1px solid var(--border);}
+.sections-modal-header h3{font-family:'Fraunces',serif;font-size:1.1rem;color:var(--accent);}
+.sections-modal-close{background:none;border:none;color:var(--muted);font-size:1.2rem;cursor:pointer;}
+.sections-modal-list{list-style:none;}
+.sections-modal-list li a{display:flex;align-items:center;gap:.5rem;padding:.42rem .5rem;border-radius:8px;color:var(--muted);text-decoration:none;font-size:.85rem;transition:all .15s;}
+.sections-modal-list li a:hover,.sections-modal-list li a.current{background:var(--bg3);color:var(--accent2);}
 .sidebar-title{font-size:.68rem;font-weight:600;text-transform:uppercase;letter-spacing:.09em;color:var(--muted);margin-bottom:.55rem;padding:0 .5rem;}
 .sidebar-links{list-style:none;}
 .sidebar-links li a{display:flex;align-items:center;gap:.5rem;padding:.36rem .6rem;border-radius:8px;color:var(--muted);text-decoration:none;font-size:.8rem;transition:all .15s;}
@@ -780,16 +796,25 @@ function attachCard(card,m){
   var holdTimer=null,dragActive=false,ghostCreated=false,overMid=null,docMH=null,docUH=null;
   head.addEventListener('pointerdown',function(e){
     if(openCardId===m.id)return;
-    // No preventDefault aquí — permite scroll. Se cancela solo si drag activa
     dragActive=false;ghostCreated=false;overMid=null;
+    var startX=e.clientX,startY=e.clientY,scrollIntent=false,intentChecked=false;
+    // Escuchar el primer movimiento para decidir scroll vs drag
+    var earlyMove=function(ev){
+      if(intentChecked)return;
+      intentChecked=true;
+      var dx=Math.abs(ev.clientX-startX),dy=Math.abs(ev.clientY-startY);
+      if(dy>dx&&dy>6){scrollIntent=true;clearTimeout(holdTimer);dragActive=false;}
+      head.removeEventListener('pointermove',earlyMove);
+    };
+    head.addEventListener('pointermove',earlyMove,{passive:true});
     holdTimer=setTimeout(function(){
+      if(scrollIntent){dragActive=false;return;}
       dragActive=true;
       card.classList.add('hold-ready');
       setTimeout(function(){
         if(!dragActive)return;
         ghostCreated=true;
         card.classList.remove('hold-ready');card.classList.add('is-dragging');createGhost(card);
-        // Ahora que el drag está activo, cancelar eventos de touch para evitar scroll
         card.style.touchAction='none';
         docMH=function(ev){
           ev.preventDefault();moveGhost(ev.clientX,ev.clientY);
@@ -843,9 +868,18 @@ function attachFile(fc,m){
   var holdTimer=null,dragActive=false,ghostCreated=false,overFi=null,srcFi=parseInt(fc.dataset.fi),docMF=null,docUF=null;
   fc.addEventListener('pointerdown',function(e){
     e.stopPropagation();
-    // No preventDefault aquí — permite scroll nativo
+    var startX=e.clientX,startY=e.clientY,scrollIntent=false,intentChecked=false;
+    var earlyMoveFC=function(ev){
+      if(intentChecked)return;
+      intentChecked=true;
+      var dx=Math.abs(ev.clientX-startX),dy=Math.abs(ev.clientY-startY);
+      if(dy>dx&&dy>6){scrollIntent=true;clearTimeout(holdTimer);dragActive=false;}
+      fc.removeEventListener('pointermove',earlyMoveFC);
+    };
+    fc.addEventListener('pointermove',earlyMoveFC,{passive:true});
     dragActive=false;ghostCreated=false;overFi=null;
     holdTimer=setTimeout(function(){
+      if(scrollIntent){dragActive=false;return;}
       dragActive=true;
       fc.classList.add('fc-hold-ready');
       setTimeout(function(){
@@ -918,6 +952,17 @@ function toggleSortMenu(e){
   if(isOpen)document.addEventListener('click',function(){menu.classList.remove('open');btn&&btn.classList.remove('active');},{once:true});
 }
 window.toggleSortMenu=toggleSortMenu;
+/* ── Sidebar como modal en móvil ── */
+function toggleSidebar(){
+  var overlay=document.getElementById('sections-modal-overlay');
+  if(overlay) overlay.classList.toggle('open');
+}
+function closeSectionsModal(){
+  var overlay=document.getElementById('sections-modal-overlay');
+  if(overlay) overlay.classList.remove('open');
+}
+window.toggleSidebar=toggleSidebar;
+window.closeSectionsModal=closeSectionsModal;
 function applySort(c){
   var s=[...MODULES].sort(function(a,b){
     switch(c){
