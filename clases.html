@@ -292,55 +292,63 @@ footer a{color:var(--accent2);text-decoration:none;}
 
 <script>
 /* ══════════════════════════════════════════════════════════════
-   YouTube Data API v3 — SinPresupuesto UN
-   Canal ID: UCiIBTAcRbK9FotZ6N7EXGsQ
-   Uploads playlist: UUiIBTAcRbK9FotZ6N7EXGsQ  (UC→UU, sin llamada extra)
+   SinPresupuesto UN — YouTube sin API key
+   Canal: UCiIBTAcRbK9FotZ6N7EXGsQ
+   Técnica: RSS feed público de YouTube a través de proxy CORS
    ══════════════════════════════════════════════════════════════ */
 
-const API_KEY      = 'AIzaSyAhlQr5ulNvGqPXMX0wEgc63KjdtvVzcpo'; // ← reemplazar con tu YouTube Data API key
-const CHANNEL_ID   = 'UCiIBTAcRbK9FotZ6N7EXGsQ';
-const UPLOADS_PL   = 'UUiIBTAcRbK9FotZ6N7EXGsQ'; // UC→UU, evita una llamada a la API
-const YT_BASE      = 'https://www.googleapis.com/youtube/v3';
+const CHANNEL_ID = 'UCiIBTAcRbK9FotZ6N7EXGsQ';
+const CHANNEL_URL = 'https://www.youtube.com/@sinpresupuestoun';
 
-// ── Utilidades ─────────────────────────────────────────────────
+// Proxy CORS gratuito que devuelve el RSS como JSON
+// allorigins.win es un proxy público estable sin límites estrictos
+const RSS_URL   = `https://www.youtube.com/feeds/videos.xml?channel_id=${CHANNEL_ID}`;
+const PROXY_URL = `https://api.allorigins.win/get?url=${encodeURIComponent(RSS_URL)}`;
+
+// Para playlists usamos un segundo proxy con la URL de playlists de la página
+// (YouTube no tiene RSS de playlists, así que las definimos manualmente
+//  o las cargamos de la página del canal via allorigins)
+const CHANNEL_PAGE_URL = `https://api.allorigins.win/get?url=${encodeURIComponent('https://www.youtube.com/' + CHANNEL_URL.split('youtube.com/')[1] + '/playlists')}`;
+
+/* ── Utilidades ─────────────────────────────────────────────── */
 function fmtNum(n) {
   n = parseInt(n) || 0;
   if (n >= 1e6) return (n/1e6).toFixed(1).replace('.0','') + ' M';
-  if (n >= 1e3) return (n/1e3).toFixed(1).replace('.0','') + ' K';
+  if (n >= 1e3) return Math.round(n/1e3) + ' K';
   return n.toString();
 }
 function timeAgo(dateStr) {
+  if (!dateStr) return '';
   const diff = (Date.now() - new Date(dateStr)) / 1000;
-  if (diff < 3600)  return `hace ${Math.floor(diff/60)} min`;
-  if (diff < 86400) return `hace ${Math.floor(diff/3600)} h`;
+  if (diff < 3600)    return `hace ${Math.floor(diff/60)} min`;
+  if (diff < 86400)   return `hace ${Math.floor(diff/3600)} h`;
   if (diff < 2592000) return `hace ${Math.floor(diff/86400)} d`;
-  if (diff < 31536000) return `hace ${Math.floor(diff/2592000)} mes${Math.floor(diff/2592000)>1?'es':''}`;
+  if (diff < 31536000)return `hace ${Math.floor(diff/2592000)} mes${Math.floor(diff/2592000)>1?'es':''}`;
   return `hace ${Math.floor(diff/31536000)} año${Math.floor(diff/31536000)>1?'s':''}`;
 }
-function bestThumb(thumbnails) {
-  return (thumbnails.maxres || thumbnails.standard || thumbnails.high || thumbnails.medium || thumbnails.default || {}).url || '';
-}
 
-// ── Featured video card con thumbnail lazy → iframe al click ───
-function featuredCard(videoId, title, published, views, container) {
+/* ── Featured card con thumbnail → iframe al click ─────────── */
+function featuredCard(videoId, title, published, container) {
+  // HQ default thumbnail de YouTube — carga instantánea sin API
   const thumb = `https://i.ytimg.com/vi/${videoId}/hqdefault.jpg`;
   const url   = `https://www.youtube.com/watch?v=${videoId}`;
-
   container.innerHTML = `
     <div class="yt-featured-card">
       <div class="yt-embed-wrap">
         <div class="yt-thumb-wrap" id="thumb-${videoId}" onclick="playVideo('${videoId}')">
-          <img src="${thumb}" alt="${title.replace(/"/g,'&quot;')}" loading="eager" fetchpriority="high">
+          <img src="${thumb}" alt="${(title||'').replace(/"/g,'&quot;')}"
+               loading="eager" fetchpriority="high"
+               onerror="this.src='https://i.ytimg.com/vi/${videoId}/mqdefault.jpg'">
           <div class="yt-play-btn">
             <svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
           </div>
         </div>
       </div>
       <div class="yt-featured-info">
-        <div class="yt-featured-title">${title}</div>
+        <div class="yt-featured-title">${title || 'Video de SinPresupuesto UN'}</div>
         <div class="yt-featured-meta">
           ${published ? `<span class="yt-meta-chip">🕐 ${timeAgo(published)}</span>` : ''}
-          ${views     ? `<span class="yt-meta-chip">👁 ${fmtNum(views)} vistas</span>` : ''}
+          <span class="yt-meta-chip">📺 SinPresupuesto UN</span>
         </div>
         <a class="yt-watch-btn" href="${url}" target="_blank" rel="noopener">
           <svg width="14" height="14" viewBox="0 0 24 24" fill="white"><path d="M8 5v14l11-7z"/></svg>
@@ -350,134 +358,183 @@ function featuredCard(videoId, title, published, views, container) {
     </div>`;
 }
 
-// Convierte thumbnail en iframe al hacer click (carga instantánea)
 window.playVideo = function(videoId) {
   const wrap = document.getElementById('thumb-' + videoId);
   if (!wrap) return;
-  const parent = wrap.closest('.yt-embed-wrap');
-  parent.innerHTML = `<iframe
+  wrap.closest('.yt-embed-wrap').innerHTML = `<iframe
     src="https://www.youtube.com/embed/${videoId}?autoplay=1&rel=0&modestbranding=1"
     allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
     allowfullscreen loading="eager"></iframe>`;
 };
 
-// ── Playlist card ───────────────────────────────────────────────
+function showError(container, msg) {
+  container.innerHTML = `<div class="yt-error"><span>⚠️</span>${msg}</div>`;
+}
+
+/* ── Parsear XML del RSS ────────────────────────────────────── */
+function parseRSS(xmlStr) {
+  const parser = new DOMParser();
+  const doc    = parser.parseFromString(xmlStr, 'application/xml');
+  const entries = [...doc.querySelectorAll('entry')];
+  return entries.map(e => {
+    const videoId   = e.querySelector('videoId')?.textContent
+                   || e.querySelector('id')?.textContent?.split(':').pop() || '';
+    const title     = e.querySelector('title')?.textContent || '';
+    const published = e.querySelector('published')?.textContent || '';
+    const views     = e.querySelector('statistics')?.getAttribute('views') || '0';
+    return { videoId, title, published, views: parseInt(views) || 0 };
+  });
+}
+
+/* ── Extraer playlist IDs del HTML de la página de playlists ── */
+function parsePlaylistsFromHTML(html) {
+  // Buscar bloques de playlist en el ytInitialData embebido
+  const playlists = [];
+  const seen = new Set();
+
+  // Buscar IDs de playlist (PLxxxxxxx) en el HTML
+  const plIdRegex = /"playlistId":"(PL[A-Za-z0-9_-]{10,})"/g;
+  const titleRegex = /"title":\{"runs":\[\{"text":"([^"]{3,80})"\}\]/g;
+
+  let m;
+  while ((m = plIdRegex.exec(html)) !== null) {
+    if (!seen.has(m[1])) {
+      seen.add(m[1]);
+      playlists.push({ id: m[1], title: '' });
+    }
+  }
+
+  // Extraer títulos cerca de cada ID
+  // Búsqueda más robusta: bloque JSON con playlistId + title juntos
+  const blockRegex = /"playlistId":"(PL[A-Za-z0-9_-]{10,})"[^}]{0,400}?"title":\{"runs":\[\{"text":"([^"]+)"/g;
+  const titleMap = {};
+  while ((m = blockRegex.exec(html)) !== null) {
+    titleMap[m[1]] = m[2];
+  }
+  // También buscar en el otro orden
+  const blockRegex2 = /"title":\{"runs":\[\{"text":"([^"]+)"\}\][^}]{0,400}?"playlistId":"(PL[A-Za-z0-9_-]{10,})"/g;
+  while ((m = blockRegex2.exec(html)) !== null) {
+    titleMap[m[2]] = m[1];
+  }
+
+  return playlists.slice(0, 12).map(p => ({
+    id: p.id,
+    title: titleMap[p.id] || 'Playlist SinPresupuesto'
+  }));
+}
+
+/* ── Render de playlist card ───────────────────────────────── */
 function playlistCard(pl) {
-  const thumb = bestThumb(pl.snippet.thumbnails);
-  const count = pl.contentDetails?.itemCount || '';
+  const thumb = `https://i.ytimg.com/vi/0/hqdefault.jpg`; // fallback
   const url   = `https://www.youtube.com/playlist?list=${pl.id}`;
+  // Thumbnail de playlist — YouTube no tiene endpoint directo, usamos el de yt-img
+  const plThumb = `https://i.ytimg.com/vi/${pl.firstVideoId || '0'}/hqdefault.jpg`;
   return `
     <a class="yt-playlist-card" href="${url}" target="_blank" rel="noopener">
       <div class="yt-thumb-ratio">
-        <img src="${thumb}" alt="${pl.snippet.title}" loading="lazy">
-        ${count ? `<div class="yt-count-badge">▶ ${count} videos</div>` : ''}
+        <img src="${pl.thumb || plThumb}" alt="${pl.title}"
+             loading="lazy"
+             onerror="this.src='logos/filosofia.png';this.style.objectFit='contain';this.style.padding='2rem'">
+        <div class="yt-count-badge">📋 Playlist</div>
       </div>
       <div class="yt-playlist-info">
-        <div class="yt-playlist-title">${pl.snippet.title}</div>
-        <div class="yt-playlist-desc">${pl.snippet.description || 'Playlist del canal SinPresupuesto UN'}</div>
+        <div class="yt-playlist-title">${pl.title}</div>
+        <div class="yt-playlist-desc">Curso del canal SinPresupuesto UN</div>
         <span class="yt-playlist-link">Ver curso →</span>
       </div>
     </a>`;
 }
 
-function showError(container, msg) {
-  container.innerHTML = `<div class="yt-error"><span>⚠️</span>${msg}</div>`;
-}
-
-// ── CARGA PRINCIPAL ─────────────────────────────────────────────
+/* ══════════════════════════════════════════════════════════════
+   CARGA PRINCIPAL
+   ══════════════════════════════════════════════════════════════ */
 async function loadYouTubeData() {
   const latestWrap    = document.getElementById('latest-video-wrap');
   const topWrap       = document.getElementById('top-video-wrap');
-  const playlistsGrid = document.getElementById('playlists-grid');
+  const plGrid        = document.getElementById('playlists-grid');
 
+  /* ── 1. RSS del canal — último video y más visto ── */
   try {
-    // 1. Info del canal (suscriptores + conteo de videos) — 1 llamada
-    const chRes  = await fetch(`${YT_BASE}/channels?part=statistics,snippet&id=${CHANNEL_ID}&key=${API_KEY}`);
-    const chData = await chRes.json();
-    if (chData.items?.length) {
-      const st = chData.items[0].statistics;
-      document.getElementById('stat-subs').textContent   = fmtNum(st.subscriberCount);
-      document.getElementById('stat-videos').textContent = fmtNum(st.videoCount);
-    }
+    const res  = await fetch(PROXY_URL, { cache: 'default' });
+    const data = await res.json();
 
-    // 2. Último video — playlistItems del uploads playlist, maxResults=1, ordenado desc — 1 llamada
-    //    El uploads playlist SIEMPRE está ordenado del más nuevo al más viejo.
-    const plRes  = await fetch(`${YT_BASE}/playlistItems?part=snippet,contentDetails&playlistId=${UPLOADS_PL}&maxResults=1&key=${API_KEY}`);
-    const plData = await plRes.json();
+    if (!data.contents) throw new Error('Sin contenido en proxy');
 
-    if (plData.items?.length) {
-      const item    = plData.items[0];
-      const videoId = item.contentDetails.videoId;
-      const title   = item.snippet.title;
-      const published = item.snippet.publishedAt;
+    const videos = parseRSS(data.contents);
 
-      // 3. Estadísticas del último video (views) — 1 llamada
-      const vRes  = await fetch(`${YT_BASE}/videos?part=statistics&id=${videoId}&key=${API_KEY}`);
-      const vData = await vRes.json();
-      const views = vData.items?.[0]?.statistics?.viewCount || 0;
-
-      featuredCard(videoId, title, published, views, latestWrap);
+    if (!videos.length) {
+      showError(latestWrap, 'No hay videos en el feed.');
+      showError(topWrap, 'No hay videos en el feed.');
     } else {
-      showError(latestWrap, 'No se pudo cargar el último video.');
+      // Último video = primero en el RSS (ya ordenado por fecha desc)
+      const latest = videos[0];
+      featuredCard(latest.videoId, latest.title, latest.published, latestWrap);
+
+      // Más visto = el que tenga más views en los últimos 15
+      const top = [...videos.slice(0, 15)].sort((a,b) => b.views - a.views)[0];
+      featuredCard(top.videoId, top.title, top.published, topWrap);
+
+      // Stats del canal del RSS (tiene channelId pero no suscriptores)
+      // Mostrar conteo de videos del feed
+      document.getElementById('stat-videos').textContent = videos.length + '+';
     }
+  } catch(err) {
+    console.warn('[SinPre RSS]', err);
+    showError(latestWrap, 'No se pudo cargar el feed. <a href="' + CHANNEL_URL + '" target="_blank" style="color:var(--accent2)">Ver canal →</a>');
+    showError(topWrap, 'No se pudo cargar el feed.');
+  }
 
-    // 4. Playlists / Cursos — 1 llamada
-    const plsRes  = await fetch(`${YT_BASE}/playlists?part=snippet,contentDetails&channelId=${CHANNEL_ID}&maxResults=20&key=${API_KEY}`);
-    const plsData = await plsRes.json();
+  /* ── 2. Playlists — scraping de la página via allorigins ── */
+  try {
+    const plProxy = `https://api.allorigins.win/get?url=${encodeURIComponent('https://www.youtube.com/channel/' + CHANNEL_ID + '/playlists')}`;
+    const plRes   = await fetch(plProxy, { cache: 'default' });
+    const plData  = await plRes.json();
 
-    if (plsData.items?.length) {
-      // Filtrar playlists con más de 1 video y que no sean "uploads"
-      const filtered = plsData.items.filter(p =>
-        (p.contentDetails?.itemCount || 0) > 1 &&
-        !p.snippet.title.toLowerCase().includes('favorito')
-      );
-      if (filtered.length) {
-        playlistsGrid.innerHTML = filtered.map(playlistCard).join('');
-      } else {
-        showError(playlistsGrid, 'No se encontraron cursos en el canal.');
-      }
+    if (!plData.contents) throw new Error('Sin contenido de playlists');
 
-      // 5. Video más visto — buscar entre los primeros 50 videos del canal — 1 llamada
-      const recent50Res  = await fetch(`${YT_BASE}/playlistItems?part=contentDetails&playlistId=${UPLOADS_PL}&maxResults=50&key=${API_KEY}`);
-      const recent50Data = await recent50Res.json();
+    const playlists = parsePlaylistsFromHTML(plData.contents);
 
-      if (recent50Data.items?.length) {
-        const ids = recent50Data.items.map(i => i.contentDetails.videoId).join(',');
-        // 6. Stats de todos — 1 llamada batch (muy eficiente)
-        const statsRes  = await fetch(`${YT_BASE}/videos?part=statistics,snippet&id=${ids}&key=${API_KEY}`);
-        const statsData = await statsRes.json();
-
-        if (statsData.items?.length) {
-          // Ordenar por viewCount desc
-          const sorted = statsData.items.sort((a,b) =>
-            parseInt(b.statistics.viewCount||0) - parseInt(a.statistics.viewCount||0)
-          );
-          const top = sorted[0];
-          featuredCard(
-            top.id,
-            top.snippet.title,
-            top.snippet.publishedAt,
-            top.statistics.viewCount,
-            topWrap
-          );
-        } else {
-          showError(topWrap, 'No se pudo cargar el video más visto.');
+    if (playlists.length) {
+      // Para el thumbnail de cada playlist buscamos el primer video
+      // Extraer thumbnails del HTML
+      const thumbRegex = /"playlistId":"(PL[A-Za-z0-9_-]{10,})"[^}]{0,600}?"thumbnails":\[\{"url":"(https:\/\/i\.ytimg\.com\/vi\/([^/]+)\/[^"]+)"/g;
+      const thumbMap = {};
+      let tm;
+      while ((tm = thumbRegex.exec(plData.contents)) !== null) {
+        if (!thumbMap[tm[1]]) {
+          thumbMap[tm[1]] = { thumb: tm[2], firstVideoId: tm[3] };
         }
       }
-    } else {
-      showError(playlistsGrid, 'No se encontraron playlists en el canal.');
-      showError(topWrap, 'No se pudo cargar el video más visto.');
-    }
 
+      plGrid.innerHTML = playlists.map(pl => {
+        const t = thumbMap[pl.id] || {};
+        return playlistCard({ ...pl, thumb: t.thumb, firstVideoId: t.firstVideoId });
+      }).join('');
+
+      document.getElementById('stat-subs').textContent = playlists.length + ' cursos';
+    } else {
+      // Fallback: mostrar link directo al canal
+      plGrid.innerHTML = `
+        <a class="yt-playlist-card" href="${CHANNEL_URL}/playlists" target="_blank" rel="noopener" style="grid-column:1/-1;justify-content:center;align-items:center;min-height:120px;">
+          <div class="yt-playlist-info" style="text-align:center;padding:1.5rem;">
+            <div class="yt-playlist-title" style="font-size:1rem">Ver todas las playlists en YouTube</div>
+            <span class="yt-playlist-link" style="justify-content:center;margin-top:.5rem">Ver canal →</span>
+          </div>
+        </a>`;
+    }
   } catch(err) {
-    console.error('[SinPre YouTube]', err);
-    showError(latestWrap, 'Error de conexión. Verifica tu internet.');
-    showError(topWrap, 'Error de conexión.');
-    showError(playlistsGrid, 'Error de conexión.');
+    console.warn('[SinPre Playlists]', err);
+    plGrid.innerHTML = `
+      <a class="yt-playlist-card" href="${CHANNEL_URL}/playlists" target="_blank" rel="noopener" style="grid-column:1/-1;">
+        <div class="yt-playlist-info" style="text-align:center;padding:1.5rem;">
+          <div class="yt-playlist-title">Ver playlists en YouTube</div>
+          <span class="yt-playlist-link" style="justify-content:center;margin-top:.5rem">Ver canal →</span>
+        </div>
+      </a>`;
   }
 }
 
-// Iniciar carga inmediatamente
+// Iniciar carga al cargar la página
 loadYouTubeData();
 
 /* ── Tema ── */
@@ -486,9 +543,9 @@ loadYouTubeData();
   document.documentElement.setAttribute('data-theme', s);
   function isDark(){ return document.documentElement.getAttribute('data-theme') === 'dark'; }
   window.syncNav = function(){
-    const btn = document.getElementById('btn-tema');
+    const btn  = document.getElementById('btn-tema');
     const dBtn = document.getElementById('drawer-tema-btn');
-    if(btn) btn.textContent = isDark() ? '☀ Modo claro' : '🌙 Modo oscuro';
+    if(btn)  btn.textContent  = isDark() ? '☀ Modo claro' : '🌙 Modo oscuro';
     if(dBtn) dBtn.textContent = isDark() ? '☀ Modo claro' : '🌙 Modo oscuro';
   };
   window.toggleTema = function(){
