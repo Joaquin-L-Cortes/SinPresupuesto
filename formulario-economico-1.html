@@ -717,6 +717,8 @@ window._pageReady=function(user,db,docFn,setFn){
   // Guardar referencias a Firebase para saves
   window._fdb=db; window._fdoc=docFn; window._fset=setFn;
   window._cu=user;
+  // Si ya fue inicializado (ej: re-auth), no reiniciar estado
+  if(window._pageBooted){return;}
   // Cargar progreso
   MODULES.forEach(m=>{
     checked[m.id]=JSON.parse(localStorage.getItem('sp_'+PAGE_KEY+'_'+m.id)||'null')||{};
