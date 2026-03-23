@@ -326,6 +326,10 @@ footer a:hover { text-decoration: underline; }
   /* Hamburguesa visible, nav-links se van al drawer */
   .nav-links { display: none; }
   .nav-hamburger { display: flex !important; }
+  /* Botón tema: solo ícono en móvil — ocultar el texto vía CSS */
+  #btn-tema { font-size: 0 !important; padding: .3rem .45rem !important; gap: 0 !important; }
+  #btn-tema::before { font-size: .95rem; content: attr(data-icon-light); }
+  [data-theme="dark"] #btn-tema::before { content: attr(data-icon-dark); }
 }
 @media (max-width: 480px) {
   .sections-grid { grid-template-columns: 1fr; }

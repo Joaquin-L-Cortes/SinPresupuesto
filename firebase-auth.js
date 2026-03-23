@@ -441,8 +441,8 @@ function updateAvanceBtn(btn, profile) {
       <span style="position:absolute;left:2px;top:2px;bottom:2px;width:calc(${fillW}% - 4px + ${fillW/100}*18px);max-width:18px;min-width:0px;background:${fillColor};border-radius:1.5px;transition:width .5s ease;opacity:0.9;"></span>
     </span>`;
 
-  // Modo compacto: sincNav() ya midió si el nav desborda
-  const compact = !!window._navCompact;
+  // Modo compacto: pantalla pequeña (<=640px) o _navCompact explícito
+  const compact = window.innerWidth <= 640 || !!window._navCompact;
 
   if (compact) {
     // Solo porcentaje en texto, sin batería — mínimo espacio
@@ -450,16 +450,6 @@ function updateAvanceBtn(btn, profile) {
   } else {
     // Batería + porcentaje completo
     btn.innerHTML = `<span style="display:inline-flex;align-items:center;gap:.45rem;">${battery}<span style="font-variant-numeric:tabular-nums;font-weight:600;font-size:.78rem;color:${fillColor};">${pctLabel}</span></span>`;
-    // Re-verificar overflow tras render
-    requestAnimationFrame(() => {
-      const nav = document.querySelector('nav');
-      if (!nav) return;
-      if (nav.scrollWidth > nav.clientWidth + 4) {
-        window._navCompact = true;
-        btn.innerHTML = `<span style="font-variant-numeric:tabular-nums;font-weight:700;font-size:.78rem;color:${fillColor};">${pctLabel}</span>`;
-        window.syncNav && window.syncNav();
-      }
-    });
   }
 }
 
