@@ -60,12 +60,9 @@ const AVATARS = [
 ];
 
 // MATERIALES: pageKey = clave Firestore progress/{pageKey}, total = archivos en esa sección
-const MATERIALES = [
-  { id:'motivacion-guia',     label:'I. Motivación/Guía',            pageKey:'motivacion_guia',                           total:0,   href:'motivacion-guia.html'                            },
-  { id:'clases-sin-pre',      label:'II. Clases Sin-Pre',            pageKey:'clases_sin_pre',                            total:72,  href:'clases-sin-pre.html'                             },
+const MATERIALES = [{ id:'clases-sin-pre',      label:'II. Clases Sin-Pre',            pageKey:'clases_sin_pre',                            total:72,  href:'clases-sin-pre.html'                             },
   { id:'temarios',            label:'III. Temarios',                 pageKey:'temarios',                                  total:6,   href:'temarios.html'                                   },
   { id:'admision-y-examenes', label:'IV. Admisión y Exámenes',       pageKey:'admision_y_examenes_un',                    total:37,  href:'admision-y-examenes-un.html'                     },
-  { id:'clases-preu-s-i',     label:"V. Clases PreU's I",           pageKey:'clases_preu_s_i',                           total:45,  href:'clases-preu-s-i.html'                            },
   { id:'clases-preu-s-ii',    label:"VI. Clases PreU's II (Libres)", pageKey:'clases_preu_s_ii_libres',                   total:11,  href:'clases-preu-s-ii-libres.html'                    },
   { id:'recursos-udea',       label:'VII. Recursos UdeA',            pageKey:'recursos_udea',                             total:30,  href:'recursos-udea.html'                              },
   { id:'diapositivas',        label:'VIII. Diapositivas con TODO',   pageKey:'diapositivas_con_todo',                     total:50,  href:'diapositivas-con-todo.html'                      },
@@ -77,10 +74,7 @@ const MATERIALES = [
   { id:'simulacros',          label:'XIV. Simulacros',               pageKey:'simulacros_un',                             total:28,  href:'simulacros-un.html'                              },
   { id:'simulacros-cal',      label:'XV. Simulacros Calificados',    pageKey:'simulacros_calificados_un',                 total:108, href:'simulacros-calificados-un.html'                  },
   { id:'apps',                label:"XVI. App's Estudio (Android)", pageKey:'app_s_estudio_android',                     total:27,  href:'app-s-estudio-android.html'                      },
-  { id:'clases-vivo',         label:'Clases en vivo/grabadas',       pageKey:'clases_en_vivo_grabadas_sin_presupuesto_un',total:0,   href:'clases-en-vivo-grabadas-sin-presupuesto-un.html' },
-  { id:'donativos',           label:'Donativos',                     pageKey:'donativos',                                 total:0,   href:'donativos.html'                                  },
   { id:'formulario',          label:'Formulario Económico',          pageKey:'formulario_economico_1',                    total:0,   href:'formulario-economico-1.html'                     },
-  { id:'medios',              label:'Medios de Sin-Presupuesto',     pageKey:'medios_de_sin_presupuesto_un',              total:0,   href:'medios-de-sin-presupuesto-un.html'               },
   { id:'tomos',               label:'Tomos',                         pageKey:'tomos',                                     total:5,   href:'tomos.html'                                      },
 ];
 
