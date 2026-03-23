@@ -493,6 +493,12 @@ async function openAvanceModal() {
   document.getElementById('avance-progress-text').textContent =
     `${doneAll} de ${totalAll} archivos completados · ${pctGlobal} %`;
 
+  // Color del avatar del usuario para las barras
+  const _av = userProfile ? getAvatar(userProfile.avatarId || 1) : null;
+  const avColor = _av ? _av.color : 'var(--accent2)';
+  // También colorear barra global con color del avatar
+  document.getElementById('avance-progress-bar').style.background = avColor;
+
   // Lista de secciones en orden numérico original (sin reordenar)
   listEl.innerHTML = withFiles.map(m => {
     const sp   = _sectionProgress[m.pageKey] || { done: 0, total: m.total };
@@ -500,7 +506,7 @@ async function openAvanceModal() {
     const done = sp.done;
     const tot  = sp.total;
     const fillW = Math.max(pct, done > 0 ? 3 : 0);
-    const color = pct === 100 ? 'var(--green,#4ade80)' : 'var(--accent2)';
+    const color = pct === 100 ? 'var(--green,#4ade80)' : avColor;
     const chevron = `<span class="asi-chevron">→</span>`;
     return `
     <a class="avance-section-item ${pct===100?'done':''}" href="${m.href}" onclick="closeAvanceModal()">
@@ -521,12 +527,7 @@ async function openAvanceModal() {
   // Actualizar botón del nav con color del avatar
   const btnAv = document.getElementById('btn-avance');
   updateAvanceBtn(btnAv, userProfile);
-  // También colorear mini-barras del modal con color del avatar
-  const av2 = userProfile ? getAvatar(userProfile.avatarId || 1) : null;
-  const avColor = av2 ? av2.color : 'var(--accent2)';
-  document.querySelectorAll('.asi-fill').forEach(el => {
-    if (!el.closest('.avance-section-item.done')) el.style.background = avColor;
-  });
+  // Las barras ya tienen el color correcto desde el render inicial
 }
 
 function closeAvanceModal() { document.getElementById('avance-modal').classList.remove('open'); }

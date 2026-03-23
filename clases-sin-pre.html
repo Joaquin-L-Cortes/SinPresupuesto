@@ -91,7 +91,15 @@ nav{position:sticky;top:0;z-index:300;background:var(--nav-bg);backdrop-filter:b
 .layout{display:grid;grid-template-columns:210px 1fr;max-width:1080px;margin:0 auto;padding:1.5rem 1.5rem 6rem;gap:1.5rem;}
 @media(max-width:900px){.layout{grid-template-columns:1fr;}}
 aside{position:sticky;top:clamp(46px,6vw,56px);align-self:start;max-height:calc(100vh - 80px);overflow-y:auto;}
-@media(max-width:900px){aside{position:static;max-height:none;overflow-y:visible;}}
+@media(max-width:900px){
+  aside{position:static;max-height:none;overflow-y:visible;}
+  .sidebar-toggle{display:flex;align-items:center;justify-content:space-between;width:100%;background:var(--bg3);border:1px solid var(--border);border-radius:10px;padding:.55rem .85rem;font-family:'DM Sans',sans-serif;font-size:.82rem;font-weight:600;color:var(--accent2);cursor:pointer;margin-bottom:.5rem;}
+  .sidebar-toggle-arrow{transition:transform .2s;}
+  .sidebar-collapsed .sidebar-toggle-arrow{transform:rotate(-90deg);}
+  .sidebar-collapsed .sidebar-links{display:none;}
+  .sidebar-title{display:none;}
+}
+@media(min-width:901px){.sidebar-toggle{display:none;}}
 .sidebar-title{font-size:.68rem;font-weight:600;text-transform:uppercase;letter-spacing:.09em;color:var(--muted);margin-bottom:.55rem;padding:0 .5rem;}
 .sidebar-links{list-style:none;}
 .sidebar-links li a{display:flex;align-items:center;gap:.5rem;padding:.36rem .6rem;border-radius:8px;color:var(--muted);text-decoration:none;font-size:.8rem;transition:all .15s;}
@@ -157,6 +165,16 @@ aside{position:sticky;top:clamp(46px,6vw,56px);align-self:start;max-height:calc(
 .module-card.open .file-card:nth-child(3){animation-delay:.10s;}
 .module-card.open .file-card:nth-child(n+4){animation-delay:.13s;}
 @keyframes fcIn{from{opacity:0;transform:translateY(10px) scale(.97);}to{opacity:1;transform:translateY(0) scale(1);}}
+/* Móvil: eliminar transiciones costosas para mejorar rendimiento */
+@media(max-width:700px){
+  .mc-files{transition:opacity .2s ease;max-height:none!important;display:none;}
+  .module-card.open .mc-files{display:grid;opacity:1;}
+  .module-card.open .file-card{animation:none;}
+  .module-card{transition:box-shadow .15s,border-color .15s;}
+  .module-card.shift-up,.module-card.shift-down{transform:none;}
+  .file-card{transition:border-color .15s;}
+  .file-card:hover{transform:none;}
+}
 .file-card{background:var(--bg3);border:1px solid var(--border);border-radius:11px;padding:.65rem .75rem;display:flex;align-items:flex-start;gap:.55rem;cursor:pointer;transition:all .17s;position:relative;user-select:none;touch-action:none;}
 .file-card::before{content:'';position:absolute;inset:0;border-radius:11px;background:linear-gradient(135deg,rgba(46,111,196,.08),transparent);opacity:0;transition:opacity .18s;}
 .file-card:hover{border-color:var(--accent2);box-shadow:0 3px 14px var(--shadow);transform:translateY(-1px);}
@@ -337,8 +355,12 @@ footer a:hover{text-decoration:underline;}
 
 <!-- LAYOUT -->
 <div class="layout">
-  <aside>
+  <aside id="sidebar-aside">
     <p class="sidebar-title">Secciones</p>
+    <button class="sidebar-toggle" onclick="toggleSidebar()" id="sidebar-toggle-btn">
+      <span>📋 Secciones</span>
+      <span class="sidebar-toggle-arrow">▾</span>
+    </button>
     <ul class="sidebar-links">
       <li><a href="motivacion-guia.html"><span class="s-emoji">💡</span>I. Motivación/Guía</a></li>
       <li><a href="clases-sin-pre.html" class="current"><span class="s-emoji">📹</span>II. Clases Sin-Pre</a></li>
