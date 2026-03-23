@@ -582,16 +582,23 @@ window._pageReady=async function(user,db,docFn,setFn,getFn){
     fileOrders[m.id]=m.files.map((_,i)=>i);
   });
   order=JSON.parse(localStorage.getItem('sp_'+PAGE_KEY+'_order')||'null')||MODULES.map(m=>m.id);
-  heroMode=localStorage.getItem('sp_'+PAGE_KEY+'_hero')||'bar';
+  heroMode=localStorage.getItem('sp_global_hero')||'bar';
   applyHeroMode();renderGrid();
   // Luego cargar desde Firestore y actualizar si hay datos más recientes
   if(user&&getFn&&db&&docFn){
+    getFn(docFn(db,'usuarios',user.uid)).then(usnap=>{
+      if(usnap.exists()&&usnap.data().heroMode){
+        heroMode=usnap.data().heroMode;
+        localStorage.setItem('sp_global_hero',heroMode);
+        applyHeroMode();
+      }
+    }).catch(()=>{});
     getFn(docFn(db,'usuarios',user.uid,'progress',PAGE_KEY)).then(snap=>{
       if(!snap.exists())return;
       var d=snap.data();
       if(d.heroMode&&d.heroMode!==heroMode){
         heroMode=d.heroMode;
-        localStorage.setItem('sp_'+PAGE_KEY+'_hero',heroMode);
+        localStorage.setItem('sp_global_hero',heroMode);
         applyHeroMode();
       }
       if(d.checked){Object.assign(checked,d.checked);MODULES.forEach(m=>localStorage.setItem('sp_'+PAGE_KEY+'_'+m.id,JSON.stringify(checked[m.id])));}
@@ -611,7 +618,7 @@ setTimeout(()=>{
       fileOrders[m.id]=m.files.map((_,i)=>i);
     });
     order=JSON.parse(localStorage.getItem('sp_'+PAGE_KEY+'_order')||'null')||MODULES.map(m=>m.id);
-    heroMode=localStorage.getItem('sp_'+PAGE_KEY+'_hero')||'bar';
+    heroMode=localStorage.getItem('sp_global_hero')||'bar';
     applyHeroMode();renderGrid();
   }
 },2000);
@@ -626,7 +633,7 @@ function showBadge(msg,cls){
 async function saveAll(){
   MODULES.forEach(m=>localStorage.setItem('sp_'+PAGE_KEY+'_'+m.id,JSON.stringify(checked[m.id])));
   localStorage.setItem('sp_'+PAGE_KEY+'_order',JSON.stringify(order));
-  localStorage.setItem('sp_'+PAGE_KEY+'_hero',heroMode);
+  localStorage.setItem('sp_global_hero',heroMode);
   var u=window._cu;if(!u||!window._fdb)return;
   try{
     showBadge('⟳ Guardando…','');
@@ -642,8 +649,10 @@ function toggleHeroMode(){
   heroMode=heroMode==='bar'?'ring':'bar';
   applyHeroMode();
   // Guardar inmediatamente (sin debounce) para no perder el cambio al navegar
-  localStorage.setItem('sp_'+PAGE_KEY+'_hero',heroMode);
+  localStorage.setItem('sp_global_hero',heroMode);
   if(window._cu&&window._fdb){
+    window._fset(window._fdoc(window._fdb,'usuarios',window._cu.uid),
+      {heroMode:heroMode,updatedAt:Date.now()},{merge:true}).catch(()=>{});
     window._fset(window._fdoc(window._fdb,'usuarios',window._cu.uid,'progress',PAGE_KEY),
       {heroMode:heroMode,updatedAt:Date.now()},{merge:true}).catch(()=>{});
   }
