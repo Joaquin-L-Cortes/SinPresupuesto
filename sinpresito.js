@@ -403,10 +403,10 @@
     input.focus();
   }
 
-  // ── Búsqueda local por relevancia (pre-filtra catálogo antes de enviar al AI) ──
+  // Busqueda local: pre-filtra catalogo antes de enviar al AI
   function localSearch(query, maxResults) {
-    const normalize = s => s.toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '');
-    const words = normalize(query).split(/s+/).filter(w => w.length > 2);
+    const normalize = s => s.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+    const words = normalize(query).split(/\s+/).filter(w => w.length > 2);
     if (words.length === 0) return [];
     return CATALOG.map((f, i) => {
       const name = normalize(f.n);
@@ -425,63 +425,46 @@
   }
 
   async function askAI(query) {
-    // Pre-filtrar: enviar solo los archivos más relevantes al AI
-    // para NO desbordar el contexto del modelo (~8k tokens).
+    // Pre-filtrar catalogo: solo los 20 archivos mas relevantes al AI
+    // para no desbordar el contexto del modelo (~8k tokens).
     const candidates = localSearch(query, 20);
 
+    const sep = '\n';
     const catalogText = candidates.length > 0
-      ? candidates.map(({ f, i }) => (i + 1) + '. [' + f.s + '] ' + f.n).join('
-')
-      : CATALOG.slice(0, 20).map((f, i) => (i + 1) + '. [' + f.s + '] ' + f.n).join('
-');
+      ? candidates.map(({ f, i }) => (i + 1) + '. [' + f.s + '] ' + f.n).join(sep)
+      : CATALOG.slice(0, 20).map((f, i) => (i + 1) + '. [' + f.s + '] ' + f.n).join(sep);
 
-    const systemPrompt = 'Eres SinPesito, asistente de SinPresupuesto, preuniversitario colombiano gratuito para la prueba de admision a universidades publicas (UNAL, UdeA, etc.).
+    const numCandidates = candidates.length > 0 ? candidates.length : 20;
 
-' +
-      'CAPACIDADES:
-
-' +
-      '1. RESPONDER PREGUNTAS ACADEMICAS
-' +
-      'Si pregunta sobre un tema (matematicas, fisica, biologia, quimica, sociales, lectura critica, imagen, etc.):
-' +
-      '- Explica claro y preciso. Usa ejemplos, formulas o pasos.
-' +
-      '- Al final agrega materiales relacionados con ARCHIVOS: si los hay.
-
-' +
-      '2. RECOMENDAR MATERIAL
-' +
-      'Si pide archivos, recursos o documentos, escribe al final de tu respuesta exactamente:
-' +
-      'ARCHIVOS: 12,45,78
-' +
-      '(solo numeros separados por coma)
-
-' +
-      'CATALOGO DISPONIBLE (' + (candidates.length > 0 ? candidates.length : 20) + ' archivos relevantes):
-' +
-      catalogText + '
-
-' +
-      '3. SUGERIR CLASES DE YOUTUBE
-' +
-      'Si pide clases o videos, escribe al final:
-' +
-      'YOUTUBE: https://www.youtube.com/@sinpresupuestoun/search?query=TEMA
-
-' +
-      'REGLAS:
-' +
-      '- Responde en espanol colombiano, amigable y motivador.
-' +
-      '- USA SOLO los numeros del catalogo de arriba. Nunca inventes archivos.
-' +
-      '- NUNCA digas ICFES ni Saber 11.
-' +
-      '- Si no hay materiales relevantes, responde la pregunta de todas formas.
-' +
-      '- Respuestas concisas, maximo 3 parrafos.';
+    const systemPrompt = [
+      'Eres SinPesito, asistente de SinPresupuesto, preuniversitario colombiano gratuito para la prueba de admision a universidades publicas (UNAL, UdeA, etc.).',
+      '',
+      'CAPACIDADES:',
+      '',
+      '1. RESPONDER PREGUNTAS ACADEMICAS',
+      'Si pregunta sobre un tema (matematicas, fisica, biologia, quimica, sociales, lectura critica, imagen):',
+      '- Explica claro y preciso. Usa ejemplos, formulas o pasos.',
+      '- Al final agrega materiales con ARCHIVOS: si los hay.',
+      '',
+      '2. RECOMENDAR MATERIAL',
+      'Si pide archivos o recursos, escribe AL FINAL de tu respuesta:',
+      'ARCHIVOS: 12,45,78',
+      '(solo numeros del catalogo, separados por coma)',
+      '',
+      'CATALOGO DISPONIBLE (' + numCandidates + ' archivos relevantes):',
+      catalogText,
+      '',
+      '3. SUGERIR CLASES DE YOUTUBE',
+      'Si pide clases o videos, escribe al final:',
+      'YOUTUBE: https://www.youtube.com/@sinpresupuestoun/search?query=TEMA',
+      '',
+      'REGLAS:',
+      '- Responde en espanol colombiano, amigable y motivador.',
+      '- USA SOLO los numeros del catalogo de arriba. Nunca inventes archivos.',
+      '- NUNCA menciones ICFES ni Saber 11.',
+      '- Si no hay materiales relevantes, responde la pregunta igual.',
+      '- Maximo 3 parrafos cortos.'
+    ].join('\n');
 
     const messages = [
       { role: 'system', content: systemPrompt },
@@ -505,9 +488,6 @@
     }
 
     const data = await res.json();
-
-    // El Worker devuelve { result: { response: '...' } }
-    // También soportamos formato OpenAI por compatibilidad
     const raw = (
       data?.result?.response ||
       data?.choices?.[0]?.message?.content ||
@@ -515,25 +495,17 @@
       ''
     ).trim();
 
-    if (!raw) throw new Error('El modelo devolvio una respuesta vacia. Intenta de nuevo.');
+    if (!raw) throw new Error('El modelo devolvio respuesta vacia. Intenta de nuevo.');
 
-    // Parsear ARCHIVOS:
-    const archivosMatch = raw.match(/ARCHIVOS:s*([d,s]+)/i);
+    const archivosMatch = raw.match(/ARCHIVOS:\s*([\d,\s]+)/i);
     let matched = [];
-
-    // Parsear YOUTUBE:
-    const youtubeMatch = raw.match(/YOUTUBE:s*(https?://[^s
-]+)/i);
+    const youtubeMatch = raw.match(/YOUTUBE:\s*(https?:\/\/[^\s\n]+)/i);
     const youtubeUrl = youtubeMatch ? youtubeMatch[1].trim() : null;
 
     let text = raw
-      .replace(/ARCHIVOS:[sd,]+/gi, '')
-      .replace(/YOUTUBE:s*https?://[^s
-]+/gi, '')
-      .replace(/
-{3,}/g, '
-
-')
+      .replace(/ARCHIVOS:[\s\d,]+/gi, '')
+      .replace(/YOUTUBE:\s*https?:\/\/[^\s\n]+/gi, '')
+      .replace(/\n{3,}/g, '\n\n')
       .trim();
 
     if (archivosMatch) {
@@ -544,7 +516,7 @@
       matched = [...new Set(indices)].map(i => CATALOG[i]);
     }
 
-    // Fallback: si el AI no devolvio ARCHIVOS pero habia candidatos locales
+    // Fallback: si el AI no devolvio ARCHIVOS pero habia candidatos locales relevantes
     if (matched.length === 0 && !youtubeUrl && candidates.length > 0) {
       matched = candidates.slice(0, 5).map(x => x.f);
     }
