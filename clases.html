@@ -530,7 +530,7 @@ window.closeNavDrawer = () => document.getElementById('nav-drawer-overlay').clas
 
 <script>
 /* ── CLASES DATA LOADER ── */
-fetch('_data/clases.json').then(r=>r.json()).then(function(d){
+fetch('/_data/clases.json').then(r=>r.json()).then(function(d){
   TOP_VIDEO_ID    = d.top_video.id;
   TOP_VIDEO_TITLE = d.top_video.title;
   TOP_VIDEO_META  = d.top_video.meta;
