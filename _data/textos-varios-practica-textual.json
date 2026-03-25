@@ -1,0 +1,314 @@
+{
+  "page_key": "textos_varios_practica_textual",
+  "modules": [
+    {
+      "id": "i__textos_de_pr_ctic",
+      "emoji": "✏️",
+      "bg": "#e4ecf7",
+      "title": "I. Textos de Práctica",
+      "desc": "I. Textos de Práctica",
+      "files": [
+        {
+          "n": "Texto de práctica 1",
+          "url": "https://drive.google.com/file/d/1PW3S9z7DLMLM3k-neYV6uvLUDgdijiO9/view?usp=classroom_web&amp;authuser=0",
+          "type": "PDF",
+          "ext": false
+        },
+        {
+          "n": "Texto de práctica 2",
+          "url": "https://drive.google.com/file/d/1xsVfdT3cVVk3ShTd-3h4nuds1ARF7tuE/view?usp=classroom_web&amp;authuser=0",
+          "type": "PDF",
+          "ext": false
+        },
+        {
+          "n": "Texto de práctica 3",
+          "url": "https://drive.google.com/file/d/15n4BsiQ7NfturO-6VClUxEjmZrPgbfGv/view?usp=classroom_web&amp;authuser=0",
+          "type": "PDF",
+          "ext": false
+        },
+        {
+          "n": "Texto de práctica 4",
+          "url": "https://drive.google.com/file/d/1nWPKS_T35nKBawp5b5HkLMBeYJ6yEtgY/view?usp=classroom_web&amp;authuser=0",
+          "type": "PDF",
+          "ext": false
+        },
+        {
+          "n": "Texto de práctica 5",
+          "url": "https://drive.google.com/file/d/1_ttfr5flKgg_mZo86glDvC-RJ_aglCfi/view?usp=classroom_web&amp;authuser=0",
+          "type": "PDF",
+          "ext": false
+        },
+        {
+          "n": "Texto de práctica 6",
+          "url": "https://drive.google.com/file/d/1LV8BoyMsXjyIlN7I_QBVfW3973xNRwaR/view?usp=classroom_web&amp;authuser=0",
+          "type": "PDF",
+          "ext": false
+        },
+        {
+          "n": "Texto de práctica 7",
+          "url": "https://drive.google.com/file/d/1cxeeFka-Byap2kw1EVoXQDgAIlFsb2ze/view?usp=classroom_web&amp;authuser=0",
+          "type": "PDF",
+          "ext": false
+        },
+        {
+          "n": "Texto de práctica 8",
+          "url": "https://drive.google.com/file/d/1vjMIyCVV9Nq-iJ-Ck1bmfYwQDpTp4m6I/view?usp=classroom_web&amp;authuser=0",
+          "type": "PDF",
+          "ext": false
+        },
+        {
+          "n": "Texto de práctica 9",
+          "url": "https://drive.google.com/file/d/1BKOSRZbgO0HI83gzi7PZ4zrLHw_gn5hE/view?usp=classroom_web&amp;authuser=0",
+          "type": "PDF",
+          "ext": false
+        },
+        {
+          "n": "Texto de práctica 10",
+          "url": "https://drive.google.com/file/d/1WQyLAt6LoC9iHHQ_ljIDuI8Xrb1M-TUn/view?usp=classroom_web&amp;authuser=0",
+          "type": "PDF",
+          "ext": false
+        },
+        {
+          "n": "Texto de práctica 11",
+          "url": "https://drive.google.com/file/d/1nLABbImFoMFCIEzn_LIbqsgFj6TeGMkh/view?usp=classroom_web&amp;authuser=0",
+          "type": "PDF",
+          "ext": false
+        },
+        {
+          "n": "Texto de práctica 12",
+          "url": "https://drive.google.com/file/d/1ot0JYBrt4rTZABfo6tb7MtL8DAM4niYQ/view?usp=classroom_web&amp;authuser=0",
+          "type": "PDF",
+          "ext": false
+        },
+        {
+          "n": "Texto de práctica 13",
+          "url": "https://drive.google.com/file/d/1yWsnC31y6oCTEUsdRvkQ4LqM9IXvOiZP/view?usp=classroom_web&amp;authuser=0",
+          "type": "PDF",
+          "ext": false
+        }
+      ]
+    },
+    {
+      "id": "ii__textos_con_senti",
+      "emoji": "📄",
+      "bg": "#e4ecf7",
+      "title": "II. Textos con Sentido Social",
+      "desc": "II. Textos con Sentido Social",
+      "files": [
+        {
+          "n": "Texto con sentido social 1",
+          "url": "https://drive.google.com/file/d/1fdaWa2z-Q-gibZQdVIUwUwKjIh1NXJ8Z/view?usp=classroom_web&amp;authuser=0",
+          "type": "PDF",
+          "ext": false
+        },
+        {
+          "n": "Texto con sentido social 2",
+          "url": "https://drive.google.com/file/d/1HpqgX5xfSy6dHoDQPe28hBw7D4wl4riX/view?usp=classroom_web&amp;authuser=0",
+          "type": "PDF",
+          "ext": false
+        },
+        {
+          "n": "Texto con sentido social 3",
+          "url": "https://drive.google.com/file/d/1aoTPSkos_J54aD6z2Ib74qKLH9euj5tT/view?usp=classroom_web&amp;authuser=0",
+          "type": "PDF",
+          "ext": false
+        },
+        {
+          "n": "Texto con sentido social 4",
+          "url": "https://drive.google.com/file/d/1a5ukStaKeXqPXlYbk4Wpxyu2jQ3P9NlV/view?usp=classroom_web&amp;authuser=0",
+          "type": "PDF",
+          "ext": false
+        },
+        {
+          "n": "Texto con sentido social 5",
+          "url": "https://drive.google.com/file/d/1JsOcYMWDz-n6bFsYAre8hMWf-wXnpcak/view?usp=classroom_web&amp;authuser=0",
+          "type": "PDF",
+          "ext": false
+        },
+        {
+          "n": "Texto con sentido social 6",
+          "url": "https://drive.google.com/file/d/1PEQmfpFGqmta8cH0-gthSa9rvpMg2jTM/view?usp=classroom_web&amp;authuser=0",
+          "type": "PDF",
+          "ext": false
+        },
+        {
+          "n": "Texto con sentido social 7",
+          "url": "https://drive.google.com/file/d/1jKCkHrQ6bS9w0HSr11r5mc7FM32KTqys/view?usp=classroom_web&amp;authuser=0",
+          "type": "PDF",
+          "ext": false
+        },
+        {
+          "n": "Texto con sentido social 8",
+          "url": "https://drive.google.com/file/d/1EfgtPpR5CWBTQhqtq7qsdAfi61tYKaX6/view?usp=classroom_web&amp;authuser=0",
+          "type": "PDF",
+          "ext": false
+        }
+      ]
+    },
+    {
+      "id": "iii__art_culos___tex",
+      "emoji": "📖",
+      "bg": "#dceef7",
+      "title": "III. Artículos - Textual",
+      "desc": "III. Artículos - Textual",
+      "files": [
+        {
+          "n": "Artículo textual 1",
+          "url": "https://drive.google.com/file/d/1gNmBRapImFDyxFXJtILK9gXPraNx7hcC/view?usp=classroom_web&amp;authuser=0",
+          "type": "PDF",
+          "ext": false
+        },
+        {
+          "n": "Artículo textual 2",
+          "url": "https://drive.google.com/file/d/1qdgt34xFdAxsWVNK0fA_O3cmJm3U014J/view?usp=classroom_web&amp;authuser=0",
+          "type": "PDF",
+          "ext": false
+        },
+        {
+          "n": "Artículo textual 3",
+          "url": "https://drive.google.com/file/d/1QDU_gCyBPOp4MaU5JvnK_p2T7YKpifYu/view?usp=classroom_web&amp;authuser=0",
+          "type": "PDF",
+          "ext": false
+        }
+      ]
+    },
+    {
+      "id": "iv__art_culos___biol",
+      "emoji": "🧬",
+      "bg": "#d8f4e8",
+      "title": "IV. Artículos - Biología/Médicas",
+      "desc": "IV. Artículos - Biología/Médicas",
+      "files": [
+        {
+          "n": "Artículo Biología/Médicas 1",
+          "url": "https://drive.google.com/file/d/1Lvf3-olUmjoif4ax7ewarY-2NLp4bAPK/view?usp=classroom_web&amp;authuser=0",
+          "type": "PDF",
+          "ext": false
+        },
+        {
+          "n": "Artículo Biología/Médicas 2",
+          "url": "https://drive.google.com/file/d/1D_mxFjc-JP-FuzZxzed2aww69HKf_ak8/view?usp=classroom_web&amp;authuser=0",
+          "type": "PDF",
+          "ext": false
+        },
+        {
+          "n": "Artículo Biología/Médicas 3",
+          "url": "https://drive.google.com/file/d/16YHF8PzHowxn-20oA7uQeKWNM93dgT7t/view?usp=classroom_web&amp;authuser=0",
+          "type": "PDF",
+          "ext": false
+        },
+        {
+          "n": "Artículo Biología/Médicas 4",
+          "url": "https://drive.google.com/file/d/1OyY9j7JDvR9sNcRZtze0c2EuabLRDO12/view?usp=classroom_web&amp;authuser=0",
+          "type": "PDF",
+          "ext": false
+        },
+        {
+          "n": "Artículo Biología/Médicas 5",
+          "url": "https://drive.google.com/file/d/1kkxdtc3u1VbPY6ffsFzt1Z0gHnuihQoW/view?usp=classroom_web&amp;authuser=0",
+          "type": "PDF",
+          "ext": false
+        },
+        {
+          "n": "Artículo Biología/Médicas 6",
+          "url": "https://drive.google.com/file/d/1voqgGSE1eWwEv3tPbSqRL-8B88sLfv2G/view?usp=classroom_web&amp;authuser=0",
+          "type": "PDF",
+          "ext": false
+        },
+        {
+          "n": "Artículo Biología/Médicas 7",
+          "url": "https://drive.google.com/file/d/1ZhemC5U6tcZeonlqzW14RGc6kkEiQSQ6/view?usp=classroom_web&amp;authuser=0",
+          "type": "PDF",
+          "ext": false
+        },
+        {
+          "n": "Artículo Biología/Médicas 8",
+          "url": "https://drive.google.com/file/d/1VALD0XR_3kwJqWAlyO7PFYbk12imrrNG/view?usp=classroom_web&amp;authuser=0",
+          "type": "PDF",
+          "ext": false
+        }
+      ]
+    },
+    {
+      "id": "v__art_culos___socia",
+      "emoji": "🌍",
+      "bg": "#ece0fc",
+      "title": "V. Artículos - Sociales",
+      "desc": "V. Artículos - Sociales",
+      "files": [
+        {
+          "n": "Historia de Colombia",
+          "url": "https://drive.google.com/file/d/12bUxzkTHqm5tutcEftNYbyL2E9CJI5Pt/view?usp=classroom_web&amp;authuser=0",
+          "type": "PDF",
+          "ext": false
+        },
+        {
+          "n": "Geografía y territorio",
+          "url": "https://drive.google.com/file/d/1sYpRC1G3A_8XXGXD2X6aJRsF34h2RK4P/view?usp=classroom_web&amp;authuser=0",
+          "type": "PDF",
+          "ext": false
+        },
+        {
+          "n": "Ciencias Políticas y democracia",
+          "url": "https://drive.google.com/file/d/10Kb3bA9rPIN9SK2tciqmMwc-jgMNIehU/view?usp=classroom_web&amp;authuser=0",
+          "type": "PDF",
+          "ext": false
+        },
+        {
+          "n": "Economía básica",
+          "url": "https://drive.google.com/file/d/1r_Yx4ttMbnZoEdRoXULaAAK3Awku75T4/view?usp=classroom_web&amp;authuser=0",
+          "type": "PDF",
+          "ext": false
+        },
+        {
+          "n": "Historia universal",
+          "url": "https://drive.google.com/file/d/1VhHysN42LsaID3RE23yMsrTjTWJ3ljEf/view?usp=classroom_web&amp;authuser=0",
+          "type": "PDF",
+          "ext": false
+        },
+        {
+          "n": "Constitución y ciudadanía",
+          "url": "https://drive.google.com/file/d/1YIANm8Wv-0m62ddzHgEnSP2P2ybTtfU0/view?usp=classroom_web&amp;authuser=0",
+          "type": "PDF",
+          "ext": false
+        },
+        {
+          "n": "Filosofía e historia del pensamiento",
+          "url": "https://drive.google.com/file/d/1RGAAOiIbRPx014vujuI6gPqA7fsL3Pn8/view?usp=classroom_web&amp;authuser=0",
+          "type": "PDF",
+          "ext": false
+        },
+        {
+          "n": "Geografía humana y social",
+          "url": "https://drive.google.com/file/d/1QJKtS1hKarak0xqsgqTAcy32MdD_dox2/view?usp=classroom_web&amp;authuser=0",
+          "type": "PDF",
+          "ext": false
+        },
+        {
+          "n": "Geopolítica y relaciones internacionales",
+          "url": "https://drive.google.com/file/d/1019rLtbmxvs5tknDZ7NwMQAHmJ8M2Yr5/view?usp=classroom_web&amp;authuser=0",
+          "type": "PDF",
+          "ext": false
+        },
+        {
+          "n": "Medio ambiente y desarrollo sostenible",
+          "url": "https://drive.google.com/file/d/1YuvkSh-Vzv4xozis-BwOqyBrALhnYTDX/view?usp=classroom_web&amp;authuser=0",
+          "type": "PDF",
+          "ext": false
+        },
+        {
+          "n": "Sociología y cultura",
+          "url": "https://drive.google.com/file/d/1K8TJSAtXGKMLR7G6aI7lJo4YdkHgwRwF/view?usp=classroom_web&amp;authuser=0",
+          "type": "PDF",
+          "ext": false
+        },
+        {
+          "n": "Ética y valores",
+          "url": "https://drive.google.com/file/d/1P3AZygu2NCI4PInUZGDjpTC78aJ0tmap/view?usp=classroom_web&amp;authuser=0",
+          "type": "PDF",
+          "ext": false
+        }
+      ]
+    }
+  ]
+}

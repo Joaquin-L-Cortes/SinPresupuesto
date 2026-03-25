@@ -1,0 +1,124 @@
+{
+  "sections": [
+    {
+      "num": "I.",
+      "title": "Relámpago 2026",
+      "href": "relampago-sinpre.html",
+      "img": "logos/sociales.png",
+      "page_key": "relampago_sinpre",
+      "total": 13
+    },
+    {
+      "num": "II.",
+      "title": "Exclusivos SinPre",
+      "href": "formulario-economico-1.html",
+      "img": "logos/matematicas.png",
+      "page_key": "",
+      "total": 0
+    },
+    {
+      "num": "III.",
+      "title": "Temarios",
+      "href": "temarios.html",
+      "img": "logos/quimica.png",
+      "page_key": "temarios",
+      "total": 6
+    },
+    {
+      "num": "IV.",
+      "title": "Simulacros Calificados UN",
+      "href": "simulacros-calificados-un.html",
+      "img": "logos/fisica.png",
+      "page_key": "simulacros_calificados_un",
+      "total": 108
+    },
+    {
+      "num": "V.",
+      "title": "Admisión y Exámenes UN",
+      "href": "admision-y-examenes-un.html",
+      "img": "logos/ingles.png",
+      "page_key": "admision_y_examenes_un",
+      "total": 37
+    },
+    {
+      "num": "VI.",
+      "title": "Clases PreU's (Libres)",
+      "href": "clases-preu-s-ii-libres.html",
+      "img": "logos/sociales.png",
+      "page_key": "clases_preu_s_ii_libres",
+      "total": 11
+    },
+    {
+      "num": "VII.",
+      "title": "Recursos UdeA",
+      "href": "recursos-udea.html",
+      "img": "logos/biologia.png",
+      "page_key": "recursos_udea",
+      "total": 30
+    },
+    {
+      "num": "VIII.",
+      "title": "Diapositivas con TODO",
+      "href": "diapositivas-con-todo.html",
+      "img": "logos/filosofia.png",
+      "page_key": "diapositivas_con_todo",
+      "total": 50
+    },
+    {
+      "num": "IX.",
+      "title": "Apuntes Estudio UN",
+      "href": "apuntes-estudio-un.html",
+      "img": "logos/filosofia.png",
+      "page_key": "apuntes_estudio_un",
+      "total": 29
+    },
+    {
+      "num": "X.",
+      "title": "Textos Varios (Práctica Textual)",
+      "href": "textos-varios-practica-textual.html",
+      "img": "logos/textual.png",
+      "page_key": "textos_varios_practica_textual",
+      "total": 44
+    },
+    {
+      "num": "XI.",
+      "title": "Módulos Teóricos",
+      "href": "modulos-teoricos.html",
+      "img": "logos/filosofia.png",
+      "page_key": "modulos_teoricos",
+      "total": 56
+    },
+    {
+      "num": "XII.",
+      "title": "Módulos Especiales",
+      "href": "modulos-especiales.html",
+      "img": "logos/filosofia.png",
+      "page_key": "modulos_especiales",
+      "total": 58
+    },
+    {
+      "num": "XIII.",
+      "title": "Ejercicios Práctica",
+      "href": "ejercicios-practicas.html",
+      "img": "logos/matematicas.png",
+      "page_key": "ejercicios_practicas",
+      "total": 115
+    },
+    {
+      "num": "XIV.",
+      "title": "Simulacros UN",
+      "href": "simulacros-un.html",
+      "img": "logos/fisica.png",
+      "page_key": "simulacros_un",
+      "total": 28
+    },
+    {
+      "num": "XV.",
+      "title": "App's Estudio (Android)",
+      "href": "app-s-estudio-android.html",
+      "img": "logos/matematicas.png",
+      "page_key": "app_s_estudio_android",
+      "total": 27
+    }
+  ]
+}
