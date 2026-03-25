@@ -1,9 +1,11 @@
 // Cloudflare Worker — SinPresupuesto
-// Maneja cuatro rutas:
+// Maneja cuatro rutas propias:
 //   GET  /auth      → inicia OAuth con GitHub (para Decap CMS)
 //   GET  /callback  → intercambia el code por access_token (para Decap CMS)
 //   POST /          → guarda archivos HTML en GitHub (editor web propio)
 //   POST /ai        → proxy hacia Cloudflare Workers AI
+//
+// Cualquier otra petición se pasa al origin (GitHub Pages) sin modificación.
 //
 // Variables de entorno necesarias (Settings → Variables en el dashboard):
 //   GITHUB_TOKEN        — Personal Access Token (para el editor web, ruta POST /)
@@ -128,21 +130,70 @@ export default {
       });
     }
 
-    // ── A partir de aquí solo se aceptan POST ──────────────────────────────
-    if (request.method !== 'POST') {
-      return new Response(JSON.stringify({ error: 'Método no permitido' }), {
-        status: 405,
-        headers: { ...corsHeaders, 'Content-Type': 'application/json' },
-      });
-    }
+    // ─── RUTAS POST ────────────────────────────────────────────────────────
 
-    // ─── RUTA POST /ai — Proxy hacia Cloudflare Workers AI ───────────────
-    if (url.pathname === '/ai' || url.pathname === '/ai/') {
-      const aiToken   = env.AI_API_TOKEN;
-      const accountId = env.CF_ACCOUNT_ID;
+    if (request.method === 'POST') {
 
-      if (!aiToken || !accountId) {
-        return new Response(JSON.stringify({ error: 'AI no configurada en el Worker' }), {
+      // ─── RUTA POST /ai — Proxy hacia Cloudflare Workers AI ───────────────
+      if (url.pathname === '/ai' || url.pathname === '/ai/') {
+        const aiToken   = env.AI_API_TOKEN;
+        const accountId = env.CF_ACCOUNT_ID;
+
+        if (!aiToken || !accountId) {
+          return new Response(JSON.stringify({ error: 'AI no configurada en el Worker' }), {
+            status: 500, headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+          });
+        }
+
+        let body;
+        try { body = await request.json(); }
+        catch (e) {
+          return new Response(JSON.stringify({ error: 'JSON inválido' }), {
+            status: 400, headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+          });
+        }
+
+        const { messages, max_tokens, temperature } = body;
+        if (!messages || !Array.isArray(messages)) {
+          return new Response(JSON.stringify({ error: 'Falta campo messages' }), {
+            status: 400, headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+          });
+        }
+
+        const aiRes = await fetch(
+          `https://api.cloudflare.com/client/v4/accounts/${accountId}/ai/run/${AI_MODEL}`,
+          {
+            method: 'POST',
+            headers: {
+              'Authorization': `Bearer ${aiToken}`,
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+              messages,
+              max_tokens:  max_tokens  || 1200,
+              temperature: temperature || 0.5,
+            }),
+          }
+        );
+
+        if (!aiRes.ok) {
+          const errBody = await aiRes.json().catch(() => ({}));
+          return new Response(JSON.stringify({ error: 'Error de AI: ' + (errBody?.errors?.[0]?.message || aiRes.status) }), {
+            status: 502, headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+          });
+        }
+
+        const aiData = await aiRes.json();
+        const responseText = aiData.result?.response || aiData.choices?.[0]?.message?.content || '';
+        return new Response(JSON.stringify({ result: { response: responseText } }), {
+          status: 200, headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+        });
+      }
+
+      // ─── RUTA POST / — Guardar archivos HTML en GitHub ───────────────────
+      const token = env.GITHUB_TOKEN;
+      if (!token) {
+        return new Response(JSON.stringify({ error: 'GITHUB_TOKEN no configurado' }), {
           status: 500, headers: { ...corsHeaders, 'Content-Type': 'application/json' },
         });
       }
@@ -155,121 +206,75 @@ export default {
         });
       }
 
-      const { messages, max_tokens, temperature } = body;
-      if (!messages || !Array.isArray(messages)) {
-        return new Response(JSON.stringify({ error: 'Falta campo messages' }), {
+      let { filename, content } = body;
+
+      if (!filename) {
+        return new Response(JSON.stringify({ error: 'Falta nombre de archivo' }), {
+          status: 400, headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+        });
+      }
+      if (!filename.endsWith('.html')) filename = filename + '.html';
+      if (filename === '.html') filename = 'index.html';
+      if (!filename.match(/^[\w\-\.]+\.html$/)) {
+        return new Response(JSON.stringify({ error: 'Archivo no válido: ' + filename }), {
           status: 400, headers: { ...corsHeaders, 'Content-Type': 'application/json' },
         });
       }
 
-      const aiRes = await fetch(
-        `https://api.cloudflare.com/client/v4/accounts/${accountId}/ai/run/${AI_MODEL}`,
-        {
-          method: 'POST',
-          headers: {
-            'Authorization': `Bearer ${aiToken}`,
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({
-            messages,
-            max_tokens:  max_tokens  || 1200,
-            temperature: temperature || 0.5,
-          }),
+      try {
+        const getRes = await fetch(
+          `${GITHUB_API}/repos/${GITHUB_OWNER}/${GITHUB_REPO}/contents/${filename}`,
+          { headers: { 'Authorization': `Bearer ${token}`, 'Accept': 'application/vnd.github+json' } }
+        );
+        if (!getRes.ok) {
+          return new Response(JSON.stringify({ error: 'Archivo no encontrado: ' + filename }), {
+            status: 404, headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+          });
         }
-      );
+        const fileData = await getRes.json();
+        const sha = fileData.sha;
 
-      if (!aiRes.ok) {
-        const errBody = await aiRes.json().catch(() => ({}));
-        return new Response(JSON.stringify({ error: 'Error de AI: ' + (errBody?.errors?.[0]?.message || aiRes.status) }), {
-          status: 502, headers: { ...corsHeaders, 'Content-Type': 'application/json' },
-        });
-      }
+        const encoded = btoa(unescape(encodeURIComponent(content)));
 
-      const aiData = await aiRes.json();
-      const responseText = aiData.result?.response || aiData.choices?.[0]?.message?.content || '';
-      return new Response(JSON.stringify({ result: { response: responseText } }), {
-        status: 200, headers: { ...corsHeaders, 'Content-Type': 'application/json' },
-      });
-    }
+        const putRes = await fetch(
+          `${GITHUB_API}/repos/${GITHUB_OWNER}/${GITHUB_REPO}/contents/${filename}`,
+          {
+            method: 'PUT',
+            headers: {
+              'Authorization': `Bearer ${token}`,
+              'Accept': 'application/vnd.github+json',
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+              message: `Actualizar ${filename} desde editor web`,
+              content: encoded,
+              sha,
+            }),
+          }
+        );
 
-    // ─── RUTA POST / — Guardar archivos HTML en GitHub ───────────────────
-    const token = env.GITHUB_TOKEN;
-    if (!token) {
-      return new Response(JSON.stringify({ error: 'GITHUB_TOKEN no configurado' }), {
-        status: 500, headers: { ...corsHeaders, 'Content-Type': 'application/json' },
-      });
-    }
-
-    let body;
-    try { body = await request.json(); }
-    catch (e) {
-      return new Response(JSON.stringify({ error: 'JSON inválido' }), {
-        status: 400, headers: { ...corsHeaders, 'Content-Type': 'application/json' },
-      });
-    }
-
-    let { filename, content } = body;
-
-    if (!filename) {
-      return new Response(JSON.stringify({ error: 'Falta nombre de archivo' }), {
-        status: 400, headers: { ...corsHeaders, 'Content-Type': 'application/json' },
-      });
-    }
-    if (!filename.endsWith('.html')) filename = filename + '.html';
-    if (filename === '.html') filename = 'index.html';
-    if (!filename.match(/^[\w\-\.]+\.html$/)) {
-      return new Response(JSON.stringify({ error: 'Archivo no válido: ' + filename }), {
-        status: 400, headers: { ...corsHeaders, 'Content-Type': 'application/json' },
-      });
-    }
-
-    try {
-      const getRes = await fetch(
-        `${GITHUB_API}/repos/${GITHUB_OWNER}/${GITHUB_REPO}/contents/${filename}`,
-        { headers: { 'Authorization': `Bearer ${token}`, 'Accept': 'application/vnd.github+json' } }
-      );
-      if (!getRes.ok) {
-        return new Response(JSON.stringify({ error: 'Archivo no encontrado: ' + filename }), {
-          status: 404, headers: { ...corsHeaders, 'Content-Type': 'application/json' },
-        });
-      }
-      const fileData = await getRes.json();
-      const sha = fileData.sha;
-
-      const encoded = btoa(unescape(encodeURIComponent(content)));
-
-      const putRes = await fetch(
-        `${GITHUB_API}/repos/${GITHUB_OWNER}/${GITHUB_REPO}/contents/${filename}`,
-        {
-          method: 'PUT',
-          headers: {
-            'Authorization': `Bearer ${token}`,
-            'Accept': 'application/vnd.github+json',
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({
-            message: `Actualizar ${filename} desde editor web`,
-            content: encoded,
-            sha,
-          }),
+        if (!putRes.ok) {
+          const err = await putRes.json();
+          return new Response(JSON.stringify({ error: 'Error al guardar: ' + (err.message || '') }), {
+            status: 500, headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+          });
         }
-      );
 
-      if (!putRes.ok) {
-        const err = await putRes.json();
-        return new Response(JSON.stringify({ error: 'Error al guardar: ' + (err.message || '') }), {
+        return new Response(JSON.stringify({ ok: true }), {
+          status: 200, headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+        });
+
+      } catch (err) {
+        return new Response(JSON.stringify({ error: err.message }), {
           status: 500, headers: { ...corsHeaders, 'Content-Type': 'application/json' },
         });
       }
 
-      return new Response(JSON.stringify({ ok: true }), {
-        status: 200, headers: { ...corsHeaders, 'Content-Type': 'application/json' },
-      });
+    } // fin bloque POST
 
-    } catch (err) {
-      return new Response(JSON.stringify({ error: err.message }), {
-        status: 500, headers: { ...corsHeaders, 'Content-Type': 'application/json' },
-      });
-    }
+    // ─── FALLBACK: pasar la petición al origin (GitHub Pages) ─────────────
+    // Cualquier GET, HEAD u otro método no manejado arriba se reenvía
+    // directamente al origin sin modificación, preservando headers y URL.
+    return fetch(request);
   },
 };
