@@ -461,8 +461,10 @@ function renderWidgets(widgets){
 }
 
 
+function renderSections(sections){
   var grid=document.getElementById('sections-grid');
-  if(!grid)return;
+  if(!grid) return;
+  
   grid.innerHTML=sections.map(function(s){
     var prog=s.page_key?'data-page-key="'+s.page_key+'" data-total="'+s.total+'"':'';
     var bar=s.page_key?'<div class="card-progress-wrap"><div class="card-progress-fill" style="width:0%"></div></div>':'';
