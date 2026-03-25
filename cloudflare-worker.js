@@ -94,6 +94,9 @@ export default {
       const token    = tokenData.access_token;
       const provider = 'github';
 
+      // Serializar de forma segura para embeber en JS
+      const tokenJSON = JSON.stringify(JSON.stringify({ token, provider }));
+
       // Devolver HTML con postMessage — así Decap CMS recibe el token en el popup
       const html = `<!DOCTYPE html>
 <html>
@@ -102,20 +105,29 @@ export default {
 <p>Autenticando, por favor espera...</p>
 <script>
   (function() {
-    function receiveMessage(e) {
-      console.log('[Decap OAuth] receiveMessage:', e.origin, e.data);
-    }
-    window.addEventListener('message', receiveMessage, false);
+    var provider = 'github';
+    var data = JSON.parse(${tokenJSON});
+    var msg = 'authorization:' + provider + ':success:' + JSON.stringify(data);
 
-    const msg = 'authorization:${provider}:success:${JSON.stringify({ token, provider })}';
-
-    // Intentar enviar al opener (popup flow)
     if (window.opener) {
-      window.opener.postMessage(msg, '${SITE_ORIGIN}');
-      window.close();
+      // Paso 1: avisar al padre que estamos iniciando
+      window.opener.postMessage('authorizing:github', '*');
+
+      // Paso 2: escuchar la respuesta del padre, luego enviar el token
+      function receiveMessage(e) {
+        window.opener.postMessage(msg, e.origin || '*');
+        window.removeEventListener('message', receiveMessage);
+        setTimeout(function() { window.close(); }, 500);
+      }
+      window.addEventListener('message', receiveMessage, false);
+
+      // Fallback: si el padre no responde en 3s, enviar igual
+      setTimeout(function() {
+        window.opener.postMessage(msg, '*');
+        setTimeout(function() { window.close(); }, 500);
+      }, 3000);
     } else {
-      // Fallback: mostrar mensaje de éxito
-      document.body.innerHTML = '<h2>✓ Autenticado con GitHub</h2><p>Puedes cerrar esta ventana.</p>';
+      document.body.innerHTML = '<h2>Autenticado</h2><p>Cierra esta ventana y recarga el CMS.</p>';
     }
   })();
 </script>
