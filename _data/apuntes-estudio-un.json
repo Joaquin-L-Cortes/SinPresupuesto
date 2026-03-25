@@ -1,0 +1,206 @@
+{
+  "page_key": "apuntes_estudio_un",
+  "modules": [
+    {
+      "id": "i__apuntes___matem_t",
+      "emoji": "🔢",
+      "bg": "#dce8f8",
+      "title": "I. Apuntes - Matemáticas",
+      "desc": "I. Apuntes - Matemáticas",
+      "files": [
+        {
+          "n": "Álgebra — Ecuaciones y sistemas",
+          "url": "https://drive.google.com/file/d/1N3yUlnOgmAOxGVvtqB610V_Yhm10VS-p/view?usp=classroom_web&amp;authuser=0",
+          "type": "PDF",
+          "ext": false
+        },
+        {
+          "n": "Geometría plana y espacial",
+          "url": "https://drive.google.com/file/d/1SQBzTHr_5PhkY6HWmSUXGcmgXlBi6Rq1/view?usp=classroom_web&amp;authuser=0",
+          "type": "PDF",
+          "ext": false
+        },
+        {
+          "n": "Trigonometría esencial",
+          "url": "https://drive.google.com/file/d/1JhBXNblwAvryL2bGywPB3y2dRbRe4l_X/view?usp=classroom_web&amp;authuser=0",
+          "type": "PDF",
+          "ext": false
+        },
+        {
+          "n": "Estadística y probabilidad",
+          "url": "https://drive.google.com/file/d/1nVxTEZfXggwxBtAQx_N5qWRDTUZQGrcy/view?usp=classroom_web&amp;authuser=0",
+          "type": "PDF",
+          "ext": false
+        }
+      ]
+    },
+    {
+      "id": "ii__apuntes___social",
+      "emoji": "🌍",
+      "bg": "#ece0fc",
+      "title": "II. Apuntes - Sociales",
+      "desc": "II. Apuntes - Sociales",
+      "files": [
+        {
+          "n": "Historia de Colombia",
+          "url": "https://drive.google.com/file/d/149oUKDm9T_WuvXW9B7kvcd3ynrUPf7_J/view?usp=classroom_web&amp;authuser=0",
+          "type": "PDF",
+          "ext": false
+        },
+        {
+          "n": "Geografía y territorio",
+          "url": "https://drive.google.com/file/d/1WFlMEpNesXF_YJb194C7tXraGZj-9iYw/view?usp=classroom_web&amp;authuser=0",
+          "type": "PDF",
+          "ext": false
+        },
+        {
+          "n": "Ciencias Políticas y democracia",
+          "url": "https://drive.google.com/file/d/1-qi6TWBA2G17xAZPeJ5M3D2TMuPnZtEw/view?usp=classroom_web&amp;authuser=0",
+          "type": "PDF",
+          "ext": false
+        },
+        {
+          "n": "Economía básica",
+          "url": "https://drive.google.com/file/d/1vLy4FFc6PWqIVJEHFZaIHLY9crlvbQl2/view?usp=classroom_web&amp;authuser=0",
+          "type": "PDF",
+          "ext": false
+        },
+        {
+          "n": "Historia universal",
+          "url": "https://drive.google.com/file/d/1KbhQh8Io-KbUYDJQ2NFJjb9YcOnjea0n/view?usp=classroom_web&amp;authuser=0",
+          "type": "PDF",
+          "ext": false
+        },
+        {
+          "n": "Constitución y ciudadanía",
+          "url": "https://drive.google.com/file/d/15HB3ltCtSPSWSx5MesKywrgdbiE3pxXO/view?usp=classroom_web&amp;authuser=0",
+          "type": "PDF",
+          "ext": false
+        },
+        {
+          "n": "Filosofía e historia del pensamiento",
+          "url": "https://drive.google.com/file/d/1t7qaiYVN14LPDHFWqCHMdspzBY7G25M9/view?usp=classroom_web&amp;authuser=0",
+          "type": "PDF",
+          "ext": false
+        },
+        {
+          "n": "Geografía humana y social",
+          "url": "https://drive.google.com/file/d/1RbShY6WUQ_S3BayEvPK_8B8JY9KEv_eu/view?usp=classroom_web&amp;authuser=0",
+          "type": "PDF",
+          "ext": false
+        },
+        {
+          "n": "Geopolítica y relaciones internacionales",
+          "url": "https://drive.google.com/file/d/1ST4UiaV05XHxLQgDxOGp4ZVSsZ31M2MD/view?usp=classroom_web&amp;authuser=0",
+          "type": "PDF",
+          "ext": false
+        },
+        {
+          "n": "Medio ambiente y desarrollo sostenible",
+          "url": "https://drive.google.com/file/d/16sPTk8xnPJKKWZyDpgjiaF911he2AoXL/view?usp=classroom_web&amp;authuser=0",
+          "type": "PDF",
+          "ext": false
+        },
+        {
+          "n": "Sociología y cultura",
+          "url": "https://drive.google.com/file/d/12Qse0CHY3pVZTx8sEE4ZtHILUv6hDH-R/view?usp=classroom_web&amp;authuser=0",
+          "type": "PDF",
+          "ext": false
+        },
+        {
+          "n": "Ética y valores",
+          "url": "https://drive.google.com/file/d/1MBvI1m6GElatZn6T_dts6T4InXVZ7KcE/view?usp=classroom_web&amp;authuser=0",
+          "type": "PDF",
+          "ext": false
+        },
+        {
+          "n": "Módulo integrador Sociales",
+          "url": "https://drive.google.com/file/d/157kEjejTKdf43yTukOPClmOePXAmz4VQ/view?usp=classroom_web&amp;authuser=0",
+          "type": "PDF",
+          "ext": false
+        },
+        {
+          "n": "Apuntes Sociales — Economía política",
+          "url": "https://drive.google.com/file/d/13j7Ng0tGqwl5oPGTCbpJisEG4DnFRRvA/view?usp=classroom_web&amp;authuser=0",
+          "type": "PDF",
+          "ext": false
+        },
+        {
+          "n": "Apuntes Sociales — Historia del arte",
+          "url": "https://drive.google.com/file/d/13jNa8cSKU8K9sQHOVVJCbhOoV5nRTBJF/view?usp=classroom_web&amp;authuser=0",
+          "type": "PDF",
+          "ext": false
+        },
+        {
+          "n": "Apuntes Sociales — Pensamiento crítico",
+          "url": "https://drive.google.com/file/d/1pJ42EikYI_MQpzJUWiBaAyc4scGC8Zvi/view?usp=classroom_web&amp;authuser=0",
+          "type": "PDF",
+          "ext": false
+        }
+      ]
+    },
+    {
+      "id": "iii__apuntes___image",
+      "emoji": "🖼️",
+      "bg": "#d8faf4",
+      "title": "III. Apuntes - Imagen",
+      "desc": "III. Apuntes - Imagen",
+      "files": [
+        {
+          "n": "Lectura de imagen — elementos visuales",
+          "url": "https://drive.google.com/file/d/1tQqvNYn18AvZErop1XZKVX1UwIoCtAhF/view?usp=classroom_web&amp;authuser=0",
+          "type": "PDF",
+          "ext": false
+        },
+        {
+          "n": "Composición y encuadre fotográfico",
+          "url": "https://drive.google.com/file/d/15_YtJz29_1PIuwV8w3JiHu0XjGwNBDYs/view?usp=classroom_web&amp;authuser=0",
+          "type": "PDF",
+          "ext": false
+        },
+        {
+          "n": "Arte y movimientos pictóricos",
+          "url": "https://drive.google.com/file/d/1tVKDt2qRSbJJEZ4SY3M9TdKsYFB3z71k/view?usp=classroom_web&amp;authuser=0",
+          "type": "PDF",
+          "ext": false
+        },
+        {
+          "n": "Análisis de cine y fotografía",
+          "url": "https://drive.google.com/file/d/1RNC3E4HMWyVBPzXr_YQ8dEeeHTjJKHku/view?usp=classroom_web&amp;authuser=0",
+          "type": "PDF",
+          "ext": false
+        },
+        {
+          "n": "Semiótica visual",
+          "url": "https://drive.google.com/file/d/1vZfiSaWGtrBZHM12XIQSFmJrwetphg9b/view?usp=classroom_web&amp;authuser=0",
+          "type": "PDF",
+          "ext": false
+        },
+        {
+          "n": "Imagen publicitaria y retórica visual",
+          "url": "https://drive.google.com/file/d/1WTRSYM3pc5ZZtMnskuotcmTTkGGHgAWt/view?usp=classroom_web&amp;authuser=0",
+          "type": "PDF",
+          "ext": false
+        },
+        {
+          "n": "Módulo integrador Imagen",
+          "url": "https://drive.google.com/file/d/1fqiKR9rQ8rBJvyrMddF2hjWaNfNnE9o1/view?usp=classroom_web&amp;authuser=0",
+          "type": "PDF",
+          "ext": false
+        },
+        {
+          "n": "Apuntes Imagen — Narrativa visual",
+          "url": "https://drive.google.com/file/d/1gZrnXcM6jo_TYI0Pq_rvQpfl15UscRlQ/view?usp=classroom_web&amp;authuser=0",
+          "type": "PDF",
+          "ext": false
+        },
+        {
+          "n": "Apuntes Imagen — Publicidad y signos",
+          "url": "https://drive.google.com/file/d/1IF6_qkv4LPitcaXWz-3pusWPv_nLQKuq/view?usp=classroom_web&amp;authuser=0",
+          "type": "PDF",
+          "ext": false
+        }
+      ]
+    }
+  ]
+}

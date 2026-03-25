@@ -1,0 +1,230 @@
+{
+  "page_key": "app_s_estudio_android",
+  "modules": [
+    {
+      "id": "app_s___textual",
+      "emoji": "📖",
+      "bg": "#dceef7",
+      "title": "App's - Textual",
+      "desc": "App's - Textual",
+      "files": [
+        {
+          "n": "App de estudio — Recomendada",
+          "url": "https://drive.google.com/file/d/1X3yQaFBN4MkOvmvX89ejZrH4EgJ-hqTT/view?usp=sharing",
+          "type": "PDF",
+          "ext": false
+        }
+      ]
+    },
+    {
+      "id": "app_s___matem_ticas",
+      "emoji": "🔢",
+      "bg": "#dce8f8",
+      "title": "App's - Matemáticas",
+      "desc": "App's - Matemáticas",
+      "files": [
+        {
+          "n": "App 1",
+          "url": "https://drive.google.com/file/d/1dygwkucdKeq1Hn6EC_FPsoiENqgCzwPW/view?usp=sharing",
+          "type": "PDF",
+          "ext": false
+        },
+        {
+          "n": "App 2",
+          "url": "https://drive.google.com/file/d/1AGSw5-bUXLHxnOIhwtwaE6xEXW9WTqjl/view?usp=sharing",
+          "type": "PDF",
+          "ext": false
+        },
+        {
+          "n": "App 3",
+          "url": "https://drive.google.com/file/d/1ou6JIVjsnCchZwaXP-Wa7z47y0rNvIPv/view?usp=sharing",
+          "type": "PDF",
+          "ext": false
+        },
+        {
+          "n": "App 4",
+          "url": "https://drive.google.com/file/d/1jzKZAJdsLNWWK8RzA2sLuLKN4cy3lXVh/view?usp=sharing",
+          "type": "PDF",
+          "ext": false
+        },
+        {
+          "n": "App 5",
+          "url": "https://drive.google.com/file/d/14f70co07i03pdL9nqFXQxhmj0d0pJ86G/view?usp=sharing",
+          "type": "PDF",
+          "ext": false
+        },
+        {
+          "n": "App 6",
+          "url": "https://drive.google.com/file/d/14JBZrOAxnh061tsy1SgMR4cJYbvtBtJE/view?usp=sharing",
+          "type": "PDF",
+          "ext": false
+        },
+        {
+          "n": "App 7",
+          "url": "https://drive.google.com/file/d/1Hl2e4Q5UHxyvY1iFuQK36lKVFI0SI9Td/view?usp=sharing",
+          "type": "PDF",
+          "ext": false
+        },
+        {
+          "n": "App 8",
+          "url": "https://drive.google.com/file/d/1WucTjrLq65N2AZjvBHPZVRxG7QFbPM9Y/view?usp=sharing",
+          "type": "PDF",
+          "ext": false
+        }
+      ]
+    },
+    {
+      "id": "app_s___ciencias__f",
+      "emoji": "⚡",
+      "bg": "#fef3e2",
+      "title": "App's - Ciencias (Física)",
+      "desc": "App's - Ciencias (Física)",
+      "files": [
+        {
+          "n": "App 1",
+          "url": "https://drive.google.com/file/d/1UDiG95MjGOq8wACyYKL3VK2XfIuBRaJl/view?usp=sharing",
+          "type": "PDF",
+          "ext": false
+        },
+        {
+          "n": "App 2",
+          "url": "https://drive.google.com/file/d/1CM3d-ZTaJk78Up5RiAfPkIyF7UIIa0dh/view?usp=sharing",
+          "type": "PDF",
+          "ext": false
+        },
+        {
+          "n": "App 3",
+          "url": "https://drive.google.com/file/d/1I04c0SGAMfC7LBUX78DH9Bpd-pZGNXk_/view?usp=sharing",
+          "type": "PDF",
+          "ext": false
+        }
+      ]
+    },
+    {
+      "id": "app_s___ciencias__bi",
+      "emoji": "🧬",
+      "bg": "#d8f4e8",
+      "title": "App's - Ciencias (Biología)",
+      "desc": "App's - Ciencias (Biología)",
+      "files": [
+        {
+          "n": "App 1",
+          "url": "https://drive.google.com/file/d/1wwXITnOd41vaYgJlmktFpBZg_X_w3J9k/view?usp=sharing",
+          "type": "PDF",
+          "ext": false
+        },
+        {
+          "n": "App 2",
+          "url": "https://drive.google.com/file/d/1zXYiQ64aivpV5QaIcSvcLe_wx8ha7E-n/view?usp=sharing",
+          "type": "PDF",
+          "ext": false
+        },
+        {
+          "n": "App 3",
+          "url": "https://drive.google.com/file/d/1U7gn8N-CKVdmduDWj4_eEz6zGtl1DLlc/view?usp=sharing",
+          "type": "PDF",
+          "ext": false
+        }
+      ]
+    },
+    {
+      "id": "app_s___ciencias__qu",
+      "emoji": "🧪",
+      "bg": "#fce0ee",
+      "title": "App's - Ciencias (Química)",
+      "desc": "App's - Ciencias (Química)",
+      "files": [
+        {
+          "n": "App 1",
+          "url": "https://drive.google.com/file/d/1Trjg6iFnB5fciMCc5iAPH6hhuR1YU7M_/view?usp=sharing",
+          "type": "PDF",
+          "ext": false
+        },
+        {
+          "n": "App 2",
+          "url": "https://drive.google.com/file/d/1b84mVmwD8Y4IL-eB_xcJ_WPCZ-XLTDVg/view?usp=sharing",
+          "type": "PDF",
+          "ext": false
+        },
+        {
+          "n": "App 3",
+          "url": "https://drive.google.com/file/d/1Au7uUC5RcBvZiB5rpS6GROoHSsOioDsI/view?usp=sharing",
+          "type": "PDF",
+          "ext": false
+        },
+        {
+          "n": "App 4",
+          "url": "https://drive.google.com/file/d/1tR2UQ99vARUM9WSsXJl-0g5SOz7c6omK/view?usp=sharing",
+          "type": "PDF",
+          "ext": false
+        }
+      ]
+    },
+    {
+      "id": "app_s___sociales",
+      "emoji": "🌍",
+      "bg": "#ece0fc",
+      "title": "App's - Sociales",
+      "desc": "App's - Sociales",
+      "files": [
+        {
+          "n": "App 1",
+          "url": "https://drive.google.com/file/d/1Di0_12MDvVBIhmwCCuqJpmgAYbGoQIzA/view?usp=sharing",
+          "type": "PDF",
+          "ext": false
+        },
+        {
+          "n": "App 2",
+          "url": "https://drive.google.com/file/d/1q0RDHsu7m5LxpJAYitrqFwdCnvUc_iZ0/view?usp=sharing",
+          "type": "PDF",
+          "ext": false
+        },
+        {
+          "n": "App 3",
+          "url": "https://drive.google.com/file/d/1eRHo4Mya7eEJR7oUrOI4zlqwhAeJpBFz/view?usp=sharing",
+          "type": "PDF",
+          "ext": false
+        },
+        {
+          "n": "App 4",
+          "url": "https://drive.google.com/file/d/1l_DNlIpHo2qgazIzoxZW5kZhu9NUQen3/view?usp=sharing",
+          "type": "PDF",
+          "ext": false
+        },
+        {
+          "n": "App 5",
+          "url": "https://drive.google.com/file/d/18N92Lb_ht4vHEf_pN--_PBUhKRs_AfpB/view?usp=sharing",
+          "type": "PDF",
+          "ext": false
+        }
+      ]
+    },
+    {
+      "id": "app_s___imagen",
+      "emoji": "🖼️",
+      "bg": "#d8faf4",
+      "title": "App's - Imagen",
+      "desc": "App's - Imagen",
+      "files": [
+        {
+          "n": "Link 1",
+          "url": "http://www.educacionplastica.net/MenuDie.htm",
+          "type": "Enlace",
+          "ext": false
+        },
+        {
+          "n": "App 1",
+          "url": "https://drive.google.com/file/d/1SIRnTua1MEw2HCJwz1Jg9ZPbOTR2KkYj/view?usp=sharing",
+          "type": "PDF",
+          "ext": false
+        },
+        {
+          "n": "App 2",
+          "url": "https://drive.google.com/file/d/1S5vA0iMBWUjm6IeptG8I099CBaHB5e0k/view?usp=sharing",
+          "type": "PDF",
+          "ext": false
+        }
+      ]
+    }
+  ]
+}
