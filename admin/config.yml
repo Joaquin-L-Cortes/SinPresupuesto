@@ -63,6 +63,7 @@ collections:
   # ── SECCIONES DEL INICIO ─────────────────────────────────────────────
   - name: "index_sections"
     label: "Secciones del inicio"
+    description: "Tarjetas de seccion que aparecen en la pagina de inicio. Cada una enlaza a una seccion de materiales."
     files:
       - name: "sections"
         label: "Tarjetas de secciones"
@@ -71,14 +72,14 @@ collections:
           - label: "Secciones"
             name: "sections"
             widget: "list"
-            summary: "{{fields.emoji}} {{fields.title}}"
+            summary: "{{fields.num}} {{fields.title}}"
             fields:
-              - { label: "ID", name: "id", widget: "string" }
-              - { label: "Emoji", name: "emoji", widget: "string" }
-              - { label: "Titulo", name: "title", widget: "string" }
-              - { label: "Descripcion", name: "desc", widget: "text" }
-              - { label: "URL", name: "href", widget: "string" }
-              - { label: "Color de fondo", name: "bg", widget: "color" }
+              - { label: "Numero (ej: I.)", name: "num", widget: "string" }
+              - { label: "Titulo de la seccion", name: "title", widget: "string" }
+              - { label: "URL de destino (ej: relampago-sinpre.html)", name: "href", widget: "string" }
+              - { label: "Imagen / logo (ej: logos/matematicas.png)", name: "img", widget: "string", required: false }
+              - { label: "Page key para progreso (ej: relampago_sinpre)", name: "page_key", widget: "string", required: false }
+              - { label: "Total de archivos", name: "total", widget: "number", required: false, default: 0 }
 
   # ── CRONOGRAMA DEL INICIO ────────────────────────────────────────────
   - name: "index_schedule"
