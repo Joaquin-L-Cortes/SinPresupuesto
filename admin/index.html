@@ -8,5 +8,100 @@
 </head>
 <body>
   <script src="https://unpkg.com/decap-cms@^3.0.0/dist/decap-cms.js"></script>
+  <script>
+  const previewCSS = `
+    @import url('https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,700;1,9..144,400&family=DM+Sans:wght@400;500;600&display=swap');
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'DM Sans', sans-serif; background: #f0f4fa; color: #1a2640; padding: 1.5rem; }
+    .preview-header { display: flex; align-items: center; gap: .75rem; margin-bottom: 1.5rem; padding-bottom: 1rem; border-bottom: 2px solid #c5d4eb; }
+    .preview-header h1 { font-family: 'Fraunces', serif; font-size: 1.3rem; color: #1a3a6b; }
+    .preview-count { background: #e4ecf7; color: #2e6fc4; font-size: .75rem; font-weight: 600; padding: .2rem .6rem; border-radius: 20px; }
+    .modules-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 1rem; }
+    .module-card { background: #ffffff; border: 1.5px solid #c5d4eb; border-radius: 14px; overflow: hidden; box-shadow: 0 2px 8px rgba(26,58,107,0.08); }
+    .card-header { display: flex; align-items: center; gap: .75rem; padding: .9rem 1rem; border-bottom: 1px solid #e4ecf7; }
+    .card-emoji { font-size: 1.6rem; width: 2.5rem; height: 2.5rem; display: flex; align-items: center; justify-content: center; border-radius: 10px; flex-shrink: 0; }
+    .card-meta { flex: 1; min-width: 0; }
+    .card-id { font-size: .7rem; color: #5b9bd5; font-style: italic; font-family: 'Fraunces', serif; margin-bottom: .15rem; }
+    .card-title { font-size: .92rem; font-weight: 600; color: #1a3a6b; line-height: 1.3; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .card-desc { padding: .6rem 1rem; font-size: .8rem; color: #5a6e8a; line-height: 1.4; border-bottom: 1px solid #e4ecf7; }
+    .card-files { padding: .6rem 1rem .9rem; }
+    .files-label { font-size: .7rem; font-weight: 600; text-transform: uppercase; letter-spacing: .04em; color: #5a6e8a; margin-bottom: .4rem; }
+    .file-pill { display: inline-flex; align-items: center; gap: .3rem; background: #e4ecf7; color: #1a3a6b; font-size: .72rem; font-weight: 500; padding: .2rem .55rem; border-radius: 20px; margin: .15rem .15rem 0 0; }
+    .type-badge { background: #2e6fc4; color: #fff; font-size: .62rem; padding: .05rem .3rem; border-radius: 10px; font-weight: 600; }
+    .no-files { font-size: .75rem; color: #5a6e8a; font-style: italic; }
+    .empty-state { text-align: center; padding: 3rem 1rem; color: #5a6e8a; }
+    .empty-state span { font-size: 2.5rem; display: block; margin-bottom: .75rem; }
+  `;
+
+  const ModulesPreview = createClass({
+    render: function() {
+      const entry   = this.props.entry;
+      const modules = entry.getIn(['data', 'modules']);
+      if (!modules || modules.size === 0) {
+        return h('div', { className: 'empty-state' },
+          h('span', {}, '📭'),
+          h('p', {}, 'Sin módulos todavía.')
+        );
+      }
+      const modArray = modules.toJS ? modules.toJS() : [];
+      return h('div', {},
+        h('div', { className: 'preview-header' },
+          h('h1', {}, entry.getIn(['data', 'page_key']) || 'Módulos'),
+          h('span', { className: 'preview-count' }, modArray.length + ' módulos')
+        ),
+        h('div', { className: 'modules-grid' },
+          modArray.map(function(mod, i) {
+            const files = mod.files || [];
+            return h('div', { key: i, className: 'module-card' },
+              h('div', { className: 'card-header' },
+                h('div', { className: 'card-emoji', style: { background: mod.bg || '#e4ecf7' } }, mod.emoji || '📁'),
+                h('div', { className: 'card-meta' },
+                  h('div', { className: 'card-id' }, mod.id || ''),
+                  h('div', { className: 'card-title' }, mod.title || '(sin título)')
+                )
+              ),
+              mod.desc ? h('div', { className: 'card-desc' }, mod.desc) : null,
+              h('div', { className: 'card-files' },
+                files.length > 0
+                  ? h('div', {},
+                      h('div', { className: 'files-label' }, files.length + ' archivo' + (files.length !== 1 ? 's' : '')),
+                      files.map(function(f, j) {
+                        return h('span', { key: j, className: 'file-pill' },
+                          h('span', { className: 'type-badge' }, f.type || '?'),
+                          f.n || f.name || 'Archivo'
+                        );
+                      })
+                    )
+                  : h('span', { className: 'no-files' }, 'Sin archivos')
+              )
+            );
+          })
+        )
+      );
+    }
+  });
+
+  const GenericPreview = createClass({
+    render: function() {
+      const data = this.props.entry.get('data');
+      if (!data) return h('div', { className: 'empty-state' }, h('span', {}, '📝'), h('p', {}, 'Sin datos.'));
+      return h('pre', { style: { background: '#e4ecf7', borderRadius: '10px', padding: '1rem', fontSize: '.78rem', color: '#1a2640', whiteSpace: 'pre-wrap', wordBreak: 'break-word', fontFamily: 'monospace' } },
+        JSON.stringify(data.toJS ? data.toJS() : data, null, 2)
+      );
+    }
+  });
+
+  CMS.registerPreviewStyle(previewCSS, { raw: true });
+
+  ['relampago','exclusivos','temarios','simulacros_cal','admision','clases_preu_ii',
+   'recursos_udea','diapositivas','apuntes','textos','modulos_teoricos','modulos_especiales',
+   'ejercicios','simulacros_un','apps','redes','tomos'].forEach(function(name) {
+    CMS.registerPreviewTemplate(name, ModulesPreview);
+  });
+
+  ['page_meta','index_sections','index_schedule'].forEach(function(name) {
+    CMS.registerPreviewTemplate(name, GenericPreview);
+  });
+  </script>
 </body>
 </html>
