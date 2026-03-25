@@ -222,7 +222,7 @@ window.closeNavDrawer = () => document.getElementById('nav-drawer-overlay').clas
 
 <script>
 /* ── REDES DATA LOADER ── */
-fetch('_data/redes.json').then(r=>r.json()).then(function(d){
+fetch('/_data/redes.json').then(r=>r.json()).then(function(d){
   var grid=document.getElementById('redes-grid');
   if(grid) grid.innerHTML=d.redes.map(function(r){
     var extra=r.extra_style?'style="'+r.extra_style+'"':'';
