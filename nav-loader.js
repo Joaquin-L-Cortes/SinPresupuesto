@@ -11,7 +11,14 @@
   var thisPage = location.pathname.split('/').pop() || 'index.html';
   if (thisPage === '') thisPage = 'index.html';
 
-  fetch('_data/nav.json')
+  /* Convierte "clases.html" → "/clases.html" para que los enlaces
+     funcionen desde cualquier ruta, no solo desde la raíz */
+  function abs(href) {
+    if (!href) return '#';
+    return href.startsWith('/') || href.startsWith('http') ? href : '/' + href;
+  }
+
+  fetch('/_data/nav.json')
     .then(function (r) { return r.json(); })
     .then(function (nav) {
 
@@ -20,7 +27,7 @@
       if (ulTop) {
         ulTop.innerHTML = (nav.nav_principal || []).map(function (item) {
           var active = item.href === thisPage ? ' class="active"' : '';
-          return '<li><a href="' + item.href + '"' + active + '>' + item.label + '</a></li>';
+          return '<li><a href="' + abs(item.href) + '"' + active + '>' + item.label + '</a></li>';
         }).join('');
       }
 
@@ -29,7 +36,7 @@
       if (ulDrawerNav) {
         ulDrawerNav.innerHTML = (nav.nav_principal || []).map(function (item) {
           var active = item.href === thisPage ? ' class="active"' : '';
-          return '<li><a href="' + item.href + '"' + active + '>'
+          return '<li><a href="' + abs(item.href) + '"' + active + '>'
             + '<span class="s-emoji">' + (item.emoji || '') + '</span>'
             + item.label + '</a></li>';
         }).join('');
@@ -39,7 +46,7 @@
       var ulDrawerSecs = document.getElementById('drawer-secciones-dynamic');
       if (ulDrawerSecs) {
         ulDrawerSecs.innerHTML = (nav.secciones_material || []).map(function (item) {
-          return '<li><a href="' + item.href + '">'
+          return '<li><a href="' + abs(item.href) + '">'
             + '<span class="s-emoji">' + (item.emoji || '') + '</span>'
             + item.label + '</a></li>';
         }).join('');
