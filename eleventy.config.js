@@ -2,6 +2,7 @@ module.exports = function(eleventyConfig) {
   // Copiar archivos estáticos tal cual al output
   eleventyConfig.addPassthroughCopy("style.css");
   eleventyConfig.addPassthroughCopy("sinpresito.js");
+  eleventyConfig.addPassthroughCopy("nav-loader.js");
   eleventyConfig.addPassthroughCopy("firebase-auth.js");
   eleventyConfig.addPassthroughCopy("editor.js");
   eleventyConfig.addPassthroughCopy("cloudflare-worker.js");

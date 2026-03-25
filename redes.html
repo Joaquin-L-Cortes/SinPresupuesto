@@ -132,14 +132,7 @@ nav{position:sticky;top:0;z-index:300;background:var(--nav-bg);backdrop-filter:b
     <img src="logos/filosofia.png" alt="" onerror="this.style.display='none'">
     <span class="nav-logo-text">Sin-Presupuesto</span>
   </a>
-  <ul class="nav-links">
-    <li><a href="index.html">Inicio</a></li>
-    <li><a href="clases.html">Clases</a></li>
-    <li><a href="comunidad.html">Comunidad</a></li>
-    <li><a href="materiales.html">Material</a></li>
-    <li><a href="ejercicios-practicas.html">Práctica</a></li>
-    <li><a href="redes.html" class="active">Redes</a></li>
-  </ul>
+  <ul class="nav-links" id="nav-links-dynamic"></ul>
   <div class="nav-right">
     <button class="nav-hamburger" onclick="openNavDrawer()" aria-label="Menú"><span></span><span></span><span></span></button>
     <button id="btn-tema" onclick="toggleTema()">🌙 Modo oscuro</button>
@@ -181,29 +174,10 @@ nav{position:sticky;top:0;z-index:300;background:var(--nav-bg);backdrop-filter:b
     </div>
     <ul>
       <li class="drawer-group-title">Navegación</li>
-      <li><a href="index.html"><span class="s-emoji">🏠</span>Inicio</a></li>
-      <li><a href="clases.html"><span class="s-emoji">📺</span>Clases</a></li>
-      <li><a href="comunidad.html"><span class="s-emoji">💬</span>Comunidad</a></li>
-      <li><a href="materiales.html"><span class="s-emoji">📖</span>Material</a></li>
-      <li><a href="ejercicios-practicas.html"><span class="s-emoji">✏️</span>Práctica</a></li>
-      <li><a href="redes.html" class="active"><span class="s-emoji">📲</span>Redes</a></li>
+      <ul id="drawer-nav-dynamic" style="list-style:none;padding:0"></ul>
       <li class="drawer-separator"></li>
       <li class="drawer-group-title">Secciones de material</li>
-      <li><a href="relampago-sinpre.html"><span class="s-emoji">⚡</span>I. Relámpago 2026</a></li>
-      <li><a href="formulario-economico-1.html"><span class="s-emoji">📑</span>II. Exclusivos SinPre</a></li>
-      <li><a href="temarios.html"><span class="s-emoji">📋</span>III. Temarios</a></li>
-      <li><a href="simulacros-calificados-un.html"><span class="s-emoji">🏆</span>IV. Simulacros Cal. UN</a></li>
-      <li><a href="admision-y-examenes-un.html"><span class="s-emoji">🎓</span>V. Admisión y Exámenes</a></li>
-      <li><a href="clases-preu-s-ii-libres.html"><span class="s-emoji">🏫</span>VI. Clases PreU's</a></li>
-      <li><a href="recursos-udea.html"><span class="s-emoji">🦁</span>VII. Recursos UdeA</a></li>
-      <li><a href="diapositivas-con-todo.html"><span class="s-emoji">📊</span>VIII. Diapositivas</a></li>
-      <li><a href="apuntes-estudio-un.html"><span class="s-emoji">📓</span>IX. Apuntes Estudio</a></li>
-      <li><a href="textos-varios-practica-textual.html"><span class="s-emoji">📰</span>X. Textos Varios</a></li>
-      <li><a href="modulos-teoricos.html"><span class="s-emoji">📚</span>XI. Módulos Teóricos</a></li>
-      <li><a href="modulos-especiales.html"><span class="s-emoji">⭐</span>XII. Módulos Especiales</a></li>
-      <li><a href="ejercicios-practicas.html"><span class="s-emoji">✏️</span>XIII. Ejercicios</a></li>
-      <li><a href="simulacros-un.html"><span class="s-emoji">🧪</span>XIV. Simulacros UN</a></li>
-      <li><a href="app-s-estudio-android.html"><span class="s-emoji">📱</span>XV. App's Estudio</a></li>
+      <ul id="drawer-secciones-dynamic" style="list-style:none;padding:0"></ul>
     </ul>
     <div style="margin-top:1rem;padding-top:.75rem;border-top:1px solid var(--border);">
       <button onclick="toggleTema();closeNavDrawer()" id="drawer-tema-btn" style="width:100%;background:none;border:1px solid var(--border);color:var(--muted);font-family:'DM Sans',sans-serif;font-size:.82rem;padding:.5rem .75rem;border-radius:10px;cursor:pointer;display:flex;align-items:center;gap:.5rem;transition:all .15s;">🌙 Modo oscuro</button>
@@ -268,5 +242,7 @@ fetch('_data/redes.json').then(r=>r.json()).then(function(d){
     +d.donate.number_display+'</div></div></div>';
 });
 </script>
+
+<script src="nav-loader.js"></script>
 </body>
 </html>
