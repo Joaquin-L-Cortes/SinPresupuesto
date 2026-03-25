@@ -14,9 +14,9 @@
   /* Convierte "clases.html" → "/clases.html" para que los enlaces
      funcionen desde cualquier ruta, no solo desde la raíz */
   function abs(href) {
-    if (!href) return '#';
-    return href.startsWith('/') || href.startsWith('http') ? href : '/' + href;
-  }
+  if (!href) return '#';
+  return href.startsWith('http') ? href : href;
+}
 
   fetch('/_data/nav.json')
     .then(function (r) { return r.json(); })
