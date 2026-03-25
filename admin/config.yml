@@ -103,6 +103,88 @@ collections:
               - { label: "Sabado", name: "sat", widget: "string", required: false }
               - { label: "Domingo", name: "sun", widget: "string", required: false }
 
+
+  # ── WIDGETS DEL INICIO ──────────────────────────────────────────────
+  - name: "inicio_widgets"
+    label: "Widgets del inicio"
+    description: "Bloques visuales que aparecen en la pagina de inicio: banners, enlaces, estadisticas y tarjetas de seccion"
+    files:
+      - name: "widgets"
+        label: "Widgets"
+        file: "_data/widgets.json"
+        fields:
+          - label: "Widgets"
+            name: "widgets"
+            widget: "list"
+            summary: "{{fields.type}} — {{fields.title}}"
+            types:
+              - label: "Banner / Anuncio"
+                name: "banner"
+                widget: "object"
+                summary: "📢 {{fields.title}}"
+                fields:
+                  - { label: "Titulo", name: "title", widget: "string" }
+                  - { label: "Texto", name: "text", widget: "text", required: false }
+                  - { label: "URL del boton", name: "link_url", widget: "string", required: false }
+                  - { label: "Texto del boton", name: "link_label", widget: "string", required: false }
+                  - label: "Tamaño"
+                    name: "size"
+                    widget: "select"
+                    options:
+                      - { label: "Ancho completo", value: "full" }
+                      - { label: "Mitad", value: "half" }
+                      - { label: "Un tercio", value: "third" }
+                    default: "full"
+              - label: "Enlace externo"
+                name: "link"
+                widget: "object"
+                summary: "🔗 {{fields.title}}"
+                fields:
+                  - { label: "Emoji", name: "emoji", widget: "string", default: "🔗" }
+                  - { label: "Titulo", name: "title", widget: "string" }
+                  - { label: "URL", name: "url", widget: "string" }
+                  - label: "Tamaño"
+                    name: "size"
+                    widget: "select"
+                    options:
+                      - { label: "Ancho completo", value: "full" }
+                      - { label: "Mitad", value: "half" }
+                      - { label: "Un tercio", value: "third" }
+                    default: "half"
+              - label: "Contador / Estadistica"
+                name: "stat"
+                widget: "object"
+                summary: "📊 {{fields.number}} {{fields.label}}"
+                fields:
+                  - { label: "Numero (ej: 500+)", name: "number", widget: "string" }
+                  - { label: "Etiqueta", name: "label", widget: "string" }
+                  - { label: "Descripcion", name: "desc", widget: "string", required: false }
+                  - label: "Tamaño"
+                    name: "size"
+                    widget: "select"
+                    options:
+                      - { label: "Ancho completo", value: "full" }
+                      - { label: "Mitad", value: "half" }
+                      - { label: "Un tercio", value: "third" }
+                    default: "half"
+              - label: "Tarjeta de seccion"
+                name: "section"
+                widget: "object"
+                summary: "📚 {{fields.title}}"
+                fields:
+                  - { label: "Numero (ej: I.)", name: "num", widget: "string", required: false }
+                  - { label: "Titulo de la seccion", name: "title", widget: "string" }
+                  - { label: "URL", name: "href", widget: "string" }
+                  - { label: "Total de archivos", name: "total", widget: "number", required: false }
+                  - label: "Tamaño"
+                    name: "size"
+                    widget: "select"
+                    options:
+                      - { label: "Ancho completo", value: "full" }
+                      - { label: "Mitad", value: "half" }
+                      - { label: "Un tercio", value: "third" }
+                    default: "third"
+
   # ── MODULOS DE CONTENIDO ─────────────────────────────────────────────
   - name: "relampago"
     label: "I. Relampago 2026"
