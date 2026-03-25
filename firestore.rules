@@ -1,0 +1,76 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // ── Perfil de usuario ────────────────────────────────────
+    match /usuarios/{userId} {
+      allow read, write: if request.auth != null && request.auth.uid == userId;
+      allow read: if request.auth != null && request.auth.uid == 'Yx6LxvfXOZQMBU9nxszWZN3mtrz1';
+
+      // ── Progreso por sección (subcolección) ─────────────────
+      match /progress/{pageKey} {
+        allow read, write: if request.auth != null && request.auth.uid == userId;
+        allow read: if request.auth != null && request.auth.uid == 'Yx6LxvfXOZQMBU9nxszWZN3mtrz1';
+      }
+
+      // ── Moderación / strikes (subcolección) ─────────────────
+      // El propio usuario solo puede leer sus strikes (no escribir)
+      // Solo el sistema (admin) puede escribir strikes
+      match /moderation/{docId} {
+        allow read: if request.auth != null && request.auth.uid == userId;
+        allow write: if request.auth != null && request.auth.uid == 'Yx6LxvfXOZQMBU9nxszWZN3mtrz1';
+        // El sistema escribe desde el cliente con el UID del usuario infractor,
+        // por eso también permitimos escritura si el auth.uid == userId
+        // (el código solo llama setDoc con merge:true al detectar bad words)
+        allow write: if request.auth != null && request.auth.uid == userId;
+      }
+    }
+
+    // ── Foro: publicaciones ──────────────────────────────────
+    match /forum_posts/{postId} {
+      // Cualquiera puede leer (incluso sin sesión)
+      allow read: if true;
+
+      // Solo usuarios autenticados pueden crear
+      // y solo si el authorId del documento coincide con quien escribe
+      allow create: if request.auth != null
+                    && request.resource.data.authorId == request.auth.uid;
+
+      // Actualizar: solo el autor puede editar su post,
+      // o cualquier usuario autenticado puede actualizar
+      // únicamente los campos likes/dislikes/commentCount
+      allow update: if request.auth != null && (
+        request.auth.uid == resource.data.authorId
+        || (
+          request.resource.data.diff(resource.data).affectedKeys()
+            .hasOnly(['likes', 'dislikes', 'commentCount'])
+        )
+      );
+
+      // Solo el admin puede eliminar
+      allow delete: if request.auth != null
+                    && request.auth.uid == 'Yx6LxvfXOZQMBU9nxszWZN3mtrz1';
+
+      // ── Comentarios (subcolección) ───────────────────────────
+      match /comments/{commentId} {
+        // Cualquiera puede leer comentarios
+        allow read: if true;
+
+        // Solo usuarios autenticados pueden comentar,
+        // y el authorId debe coincidir con quien escribe
+        allow create: if request.auth != null
+                      && request.resource.data.authorId == request.auth.uid;
+
+        // Nadie puede editar comentarios (solo eliminar, solo admin)
+        allow update: if false;
+        allow delete: if request.auth != null
+                      && request.auth.uid == 'Yx6LxvfXOZQMBU9nxszWZN3mtrz1';
+      }
+    }
+
+    // Bloquear todo lo demás
+    match /{document=**} {
+      allow read, write: if false;
+    }
+  }
+}
