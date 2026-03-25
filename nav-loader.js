@@ -18,7 +18,7 @@
   return href.startsWith('http') ? href : href;
 }
 
-  fetch('/_data/nav.json')
+  fetch('_data/nav.json')
     .then(function (r) { return r.json(); })
     .then(function (nav) {
 
