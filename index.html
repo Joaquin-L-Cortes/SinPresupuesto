@@ -119,6 +119,58 @@
   .sections-grid{grid-template-columns:1fr!important;}
   .hero h1{font-size:1.5rem!important;}
 }
+
+/* ═══════════════════════════════════════════════════
+   WIDGETS DEL INICIO
+   ═══════════════════════════════════════════════════ */
+#widgets-container{
+  max-width:1100px;
+  margin:0 auto;
+  padding:1.5rem 2rem .5rem;
+  box-sizing:border-box;
+}
+.widgets-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fill,minmax(260px,1fr));
+  gap:.85rem;
+}
+.widget-card{
+  background:var(--card,var(--bg2));
+  border:1.5px solid var(--border);
+  border-radius:14px;
+  overflow:hidden;
+  position:relative;
+}
+/* Banner */
+.w-banner{padding:1.25rem 1.5rem;border-left:4px solid var(--accent2);}
+.w-banner-title{font-family:'Fraunces',serif;font-size:1.05rem;font-weight:700;color:var(--accent);margin-bottom:.3rem;}
+.w-banner-text{font-size:.85rem;color:var(--muted);}
+.w-banner-link{display:inline-flex;align-items:center;gap:.35rem;margin-top:.6rem;font-size:.78rem;font-weight:600;color:var(--accent2);text-decoration:none;}
+.w-banner-link:hover{text-decoration:underline;}
+/* Enlace externo */
+.w-link{display:flex;align-items:center;gap:1rem;padding:1rem 1.25rem;text-decoration:none;color:inherit;}
+.w-link:hover .w-link-title{text-decoration:underline;}
+.w-link-icon{width:44px;height:44px;border-radius:12px;background:var(--bg3);display:flex;align-items:center;justify-content:center;font-size:1.4rem;flex-shrink:0;}
+.w-link-title{font-family:'Fraunces',serif;font-size:.95rem;font-weight:700;color:var(--accent2);}
+.w-link-url{font-size:.72rem;color:var(--muted);margin-top:.1rem;}
+.w-link-arrow{margin-left:auto;font-size:1.1rem;color:var(--muted);flex-shrink:0;}
+/* Estadística */
+.w-stat{display:flex;align-items:center;gap:1.25rem;padding:1.1rem 1.5rem;}
+.w-stat-num{font-family:'Fraunces',serif;font-size:2.2rem;font-weight:700;color:var(--accent2);line-height:1;}
+.w-stat-label{font-size:.85rem;color:var(--text);}
+.w-stat-desc{font-size:.78rem;color:var(--muted);margin-top:.2rem;}
+/* Sección */
+.w-section-link{display:flex;align-items:center;gap:.85rem;padding:.9rem 1.25rem;text-decoration:none;color:inherit;}
+.w-section-link:hover .w-section-title{text-decoration:underline;}
+.w-section-num{font-family:'Fraunces',serif;font-size:.8rem;color:var(--muted);width:28px;flex-shrink:0;}
+.w-section-title{font-family:'Fraunces',serif;font-size:.95rem;font-weight:700;color:var(--accent2);flex:1;}
+.w-section-count{font-size:.7rem;color:var(--muted);background:var(--bg3);border-radius:20px;padding:.15rem .5rem;}
+/* Tamaños */
+.widget-size-full{grid-column:1/-1;}
+@media(max-width:600px){
+  #widgets-container{padding:1rem .75rem .25rem;}
+  .widgets-grid{grid-template-columns:1fr;}
+}
 </style>
 </head>
 <body>
@@ -156,6 +208,9 @@
     <div class="schedule-outer" id="schedule-container">
     <!-- Cronograma cargado desde _data/index_schedule.json -->
   </div>
+  <!-- Widgets del inicio — cargados desde _data/widgets.json -->
+  <div id="widgets-container"></div>
+
     <div class="sections-wrap">
     <p class="sections-title">Todas las secciones</p>
     <div class="sections-grid" id="sections-grid">
@@ -351,9 +406,11 @@
 /* ── INDEX DATA LOADER ── */
 Promise.all([
   fetch('_data/index_schedule.json').then(r=>r.json()),
-  fetch('_data/index_sections.json').then(r=>r.json())
-]).then(function([sched, sectData]){
+  fetch('_data/index_sections.json').then(r=>r.json()),
+  fetch('_data/widgets.json').then(r=>r.json()).catch(function(){ return { widgets: [] }; })
+]).then(function([sched, sectData, widgData]){
   renderSchedule(sched);
+  renderWidgets(widgData.widgets || []);
   renderSections(sectData.sections);
 });
 
@@ -381,7 +438,48 @@ function renderSchedule(s){
     +'</div>';
 }
 
-function renderSections(sections){
+function renderWidgets(widgets){
+  var wrap=document.getElementById('widgets-container');
+  if(!wrap||!widgets||!widgets.length){ if(wrap) wrap.style.display='none'; return; }
+  var typeIcon={'banner':'📢','link':'🔗','stat':'📊','section':'📚'};
+  var html='<div class="widgets-grid">';
+  widgets.forEach(function(w){
+    var sizeClass=w.size==='full'?' widget-size-full':'';
+    var inlineStyle=w.size==='full'?' style="grid-column:1/-1"':'';
+    html+='<div class="widget-card'+sizeClass+'"'+inlineStyle+'>';
+    if(w.type==='banner'){
+      html+='<div class="w-banner">'
+        +'<div class="w-banner-title">'+(w.title||'')+'</div>'
+        +(w.text?'<p class="w-banner-text">'+w.text+'</p>':'')
+        +(w.link_url?'<a class="w-banner-link" href="'+w.link_url+'">→ '+(w.link_label||w.link_url)+'</a>':'')
+        +'</div>';
+    } else if(w.type==='link'){
+      html+='<a class="w-link" href="'+(w.url||'#')+'" target="_blank" rel="noopener">'
+        +'<div class="w-link-icon">'+(w.emoji||'🔗')+'</div>'
+        +'<div><div class="w-link-title">'+(w.title||'Enlace')+'</div>'
+        +'<div class="w-link-url">'+(w.url||'')+'</div></div>'
+        +'<span class="w-link-arrow">↗</span>'
+        +'</a>';
+    } else if(w.type==='stat'){
+      html+='<div class="w-stat">'
+        +'<div class="w-stat-num">'+(w.number||'—')+'</div>'
+        +'<div><div class="w-stat-label">'+(w.label||'')+'</div>'
+        +(w.desc?'<div class="w-stat-desc">'+w.desc+'</div>':'')
+        +'</div></div>';
+    } else if(w.type==='section'){
+      html+='<a class="w-section-link" href="'+(w.href||'#')+'">'
+        +'<span class="w-section-num">'+(w.num||'')+'</span>'
+        +'<span class="w-section-title">'+(w.title||'Sección')+'</span>'
+        +(w.total?'<span class="w-section-count">'+w.total+' archivos</span>':'')
+        +'</a>';
+    }
+    html+='</div>';
+  });
+  html+='</div>';
+  wrap.innerHTML=html;
+}
+
+
   var grid=document.getElementById('sections-grid');
   if(!grid)return;
   grid.innerHTML=sections.map(function(s){
