@@ -1,0 +1,51 @@
+{
+  "hero": {
+    "title": "📲 Nuestras Redes",
+    "subtitle": "Síguenos, únete a la comunidad y mantente al día con todo SinPresupuesto"
+  },
+  "redes": [
+    {
+      "emoji": "▶️",
+      "bg": "#fff0f0",
+      "name": "YouTube",
+      "handle": "@SinPresupuestoUN",
+      "url": "https://www.youtube.com/@SinPresupuestoUN"
+    },
+    {
+      "emoji": "💬",
+      "bg": "#e8f9f1",
+      "name": "Comunidad WhatsApp",
+      "handle": "Unirse al grupo",
+      "url": "https://chat.whatsapp.com/JITO3QNW4K86oZCD1F0e7B"
+    },
+    {
+      "emoji": "📹",
+      "bg": "#e8f0fe",
+      "name": "Google Meet",
+      "handle": "meet.google.com/efp-ocww-oao",
+      "url": "http://meet.google.com/efp-ocww-oao"
+    },
+    {
+      "emoji": "📸",
+      "bg": "#fdf0f8",
+      "name": "Instagram",
+      "handle": "@sinpre.un",
+      "url": "https://www.instagram.com/sinpre.un"
+    },
+    {
+      "emoji": "🎵",
+      "bg": "#f0f0f0",
+      "name": "TikTok",
+      "handle": "@sinpreun",
+      "url": "https://www.tiktok.com/@sinpreun",
+      "extra_style": "grid-column:3"
+    }
+  ],
+  "donate": {
+    "title": "¿Te ha servido SinPresupuesto? ¡Apóyanos con lo que puedas!",
+    "subtitle": "100% gratuito y popular. Cada donación nos ayuda a seguir produciendo contenido de calidad para todos.",
+    "method_label": "Nequi · Llaves",
+    "number": "3236948608",
+    "number_display": "323 694 8608"
+  }
+}

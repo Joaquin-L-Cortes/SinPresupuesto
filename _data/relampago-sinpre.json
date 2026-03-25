@@ -1,0 +1,176 @@
+{
+  "page_key": "relampago_sinpre",
+  "modules": [
+    {
+      "id": "temario_relampago",
+      "emoji": "📋",
+      "bg": "#dce8f8",
+      "title": "Temario Relámpago - SinPre",
+      "desc": "Temario del curso intensivo",
+      "files": [
+        {
+          "n": "Temario Relámpago - SinPre",
+          "url": "https://drive.google.com/file/d/1ujBg_4OK0LUyfUMPoR5BPMxe53YKSV7q/view?usp=classroom_web&authuser=0",
+          "type": "PDF",
+          "ext": false
+        }
+      ]
+    },
+    {
+      "id": "meet_relampago",
+      "emoji": "🎥",
+      "bg": "#e8f4e8",
+      "title": "Meet Relámpago - SinPre",
+      "desc": "Enlace de clase en vivo",
+      "files": [
+        {
+          "n": "Meet Relámpago - SinPre",
+          "url": "https://meet.google.com/efp-ocww-oao?hs=179&authuser=0",
+          "type": "Meet",
+          "ext": true
+        }
+      ]
+    },
+    {
+      "id": "materiales_relampago",
+      "emoji": "📦",
+      "bg": "#fff0de",
+      "title": "Materiales Relámpago - SinPre",
+      "desc": "Carpeta de materiales del curso",
+      "files": [
+        {
+          "n": "Carpeta de Materiales",
+          "url": "https://drive.google.com/drive/folders/1qgm0JvkjBaMQ3p1YZJVkpB5KSoQUGQsP?usp=classroom_web&authuser=0",
+          "type": "Drive",
+          "ext": true
+        }
+      ]
+    },
+    {
+      "id": "diapositivas_relampago",
+      "emoji": "📊",
+      "bg": "#f0e8ff",
+      "title": "Diapositivas Relámpago - SinPre",
+      "desc": "Carpeta de diapositivas",
+      "files": [
+        {
+          "n": "Carpeta de Diapositivas",
+          "url": "https://drive.google.com/drive/folders/18wnddyIIlhJFPQ9O06oR3oDYdy6kynh9?usp=classroom_web&authuser=0",
+          "type": "Drive",
+          "ext": true
+        }
+      ]
+    },
+    {
+      "id": "articulos_relampago",
+      "emoji": "📰",
+      "bg": "#fef3e2",
+      "title": "Artículos Relámpago - SinPre",
+      "desc": "Carpeta de artículos",
+      "files": [
+        {
+          "n": "Carpeta de Artículos",
+          "url": "https://drive.google.com/drive/folders/1kUmy7eB7BWYJR7Rl2baA6wI6ZXoU0hoE?usp=classroom_web&authuser=0",
+          "type": "Drive",
+          "ext": true
+        }
+      ]
+    },
+    {
+      "id": "como_aprender_relampago",
+      "emoji": "🧠",
+      "bg": "#e8f4e8",
+      "title": "¿Cómo Aprender? Relámpago",
+      "desc": "Diapositivas y video",
+      "files": [
+        {
+          "n": "¿Cómo Aprender? — Diapositivas",
+          "url": "https://drive.google.com/file/d/1MWUwBAE2a0MarWrKxbS3ZZmwNXh8VL9j/view?usp=classroom_web&authuser=0",
+          "type": "PDF",
+          "ext": false
+        },
+        {
+          "n": "¿Cómo Aprender? — Video YouTube",
+          "url": "https://www.youtube.com/watch?v=xFnGLD_OD7E&authuser=0",
+          "type": "YouTube",
+          "ext": true
+        }
+      ]
+    },
+    {
+      "id": "aprender_a_aprender",
+      "emoji": "📖",
+      "bg": "#dce8f8",
+      "title": "Aprender a Aprender Relámpago",
+      "desc": "Documento y video",
+      "files": [
+        {
+          "n": "Aprender a Aprender — Documento",
+          "url": "https://drive.google.com/file/d/1g_zMsbYDjet8N5O8O3SKO2zZipUnmnBP/view?usp=classroom_web&authuser=0",
+          "type": "PDF",
+          "ext": false
+        },
+        {
+          "n": "Aprender a Aprender — Video YouTube",
+          "url": "https://youtu.be/dFpjSnVxuzY",
+          "type": "YouTube",
+          "ext": true
+        }
+      ]
+    },
+    {
+      "id": "padlet_relampago",
+      "emoji": "📌",
+      "bg": "#ffe8e8",
+      "title": "Padlet Relámpago - SinPre",
+      "desc": "Tablero colaborativo",
+      "files": [
+        {
+          "n": "Padlet Relámpago",
+          "url": "https://padlet.com/sinpreun/c-mo-aprender-bz6cdaqe5kytfw9v?authuser=0",
+          "type": "Padlet",
+          "ext": true
+        }
+      ]
+    },
+    {
+      "id": "tomos_resumen",
+      "emoji": "📕",
+      "bg": "#f0e8ff",
+      "title": "Tomos de Resumen",
+      "desc": "Matemáticas · Biología · Física",
+      "files": [
+        {
+          "n": "Tomo I — Matemáticas",
+          "url": "https://drive.google.com/file/d/1Vccn2DQzj_IiO68qGxYZ4hp0kBk5GaYq/view?usp=sharing",
+          "type": "PDF",
+          "ext": false
+        },
+        {
+          "n": "Tomo II — Matemáticas",
+          "url": "https://drive.google.com/file/d/1I6Ai3r27U5OXNImMGU1zOxnr1KdAXgEX/view?usp=sharing",
+          "type": "PDF",
+          "ext": false
+        },
+        {
+          "n": "Tomo III — Biología",
+          "url": "https://drive.google.com/file/d/1pa8i4x6bZLQvNU4HE1IpWFTwHjfvgGpo/view?usp=sharing",
+          "type": "PDF",
+          "ext": false
+        },
+        {
+          "n": "Tomo IV — Física",
+          "url": "https://drive.google.com/file/d/12bH9qyzhWpdPdRGbBgFfl_H-FLh-lvTo/view?usp=sharing",
+          "type": "PDF",
+          "ext": false
+        },
+        {
+          "n": "Tomo V — Física",
+          "url": "https://drive.google.com/file/d/1tF2wetBh6anVTeRWcoUgs_ULI0fNIqJg/view?usp=sharing",
+          "type": "PDF",
+          "ext": false
+        }
+      ]
+    }
+  ]
+}
