@@ -1,4 +1,6 @@
 // app/api/auth/delete-account/route.ts
+export const runtime = 'edge';
+
 import { NextResponse } from "next/server";
 import { createClient } from "@supabase/supabase-js";
 import { cookies } from "next/headers";
