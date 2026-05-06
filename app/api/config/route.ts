@@ -13,37 +13,41 @@ export async function GET(request: Request) {
 
   if (!file) return NextResponse.json({ error: 'File param missing' }, { status: 400 });
 
-  try {
-    const supabase = getSupabase();
-    const configId = file.replace('.json', '');
+  const supabase = getSupabase();
+  const configId = file.replace('.json', '');
 
-    if (configId === 'redes') {
-      const { data, error } = await supabase
-        .from('site_config')
-        .select('id, data')
-        .like('id', 'redes_%');
+  if (configId === 'redes') {
+    const { data, error } = await supabase
+      .from('site_config')
+      .select('id, data');
 
-      if (error) throw error;
-      const result = (data || []).map(row => ({
+    if (error) {
+      console.error('Config GET redes error:', error);
+      return NextResponse.json({ error: error.message }, { status: 500 });
+    }
+
+    const redes = (data || [])
+      .filter(row => row.id.startsWith('redes_'))
+      .map(row => ({
         filename: row.id.replace('redes_', '') + '.json',
         ...row.data,
       }));
-      return NextResponse.json(result);
-    }
 
-    const { data, error } = await supabase
-      .from('site_config')
-      .select('data')
-      .eq('id', configId)
-      .single();
-
-    if (error || !data) return NextResponse.json({ error: 'Not found' }, { status: 404 });
-
-    return NextResponse.json(data.data);
-  } catch (e) {
-    console.error('Config GET error:', e);
-    return NextResponse.json({ error: 'Failed to fetch' }, { status: 500 });
+    return NextResponse.json(redes);
   }
+
+  const { data, error } = await supabase
+    .from('site_config')
+    .select('data')
+    .eq('id', configId)
+    .single();
+
+  if (error) {
+    console.error(`Config GET ${configId} error:`, error);
+    return NextResponse.json({ error: 'Not found' }, { status: 404 });
+  }
+
+  return NextResponse.json(data.data);
 }
 
 export async function PUT(request: Request) {
@@ -51,39 +55,37 @@ export async function PUT(request: Request) {
 
   if (!file || !data) return NextResponse.json({ error: 'Missing data' }, { status: 400 });
 
-  try {
-    const supabase = getSupabase();
-    let configId = file.replace('.json', '');
+  const supabase = getSupabase();
+  let configId = file.replace('.json', '');
 
-    if (file === 'redes' && filename) {
-      configId = 'redes_' + filename.replace('.json', '');
-    }
+  if (file === 'redes' && filename) {
+    configId = 'redes_' + filename.replace('.json', '');
+  }
 
-    await supabase.from('site_config').upsert({
-      id: configId,
-      data: data,
-      updated_at: new Date().toISOString(),
-    });
+  const { error } = await supabase.from('site_config').upsert({
+    id: configId,
+    data: data,
+    updated_at: new Date().toISOString(),
+  });
 
-    return NextResponse.json({ success: true });
-  } catch (e) {
-    console.error('Config PUT error:', e);
+  if (error) {
+    console.error('Config PUT error:', error);
     return NextResponse.json({ error: 'Failed to write' }, { status: 500 });
   }
+
+  return NextResponse.json({ success: true });
 }
 
 export async function DELETE(request: Request) {
   const { file, filename } = await request.json();
 
   if (file === 'redes' && filename) {
-    try {
-      const supabase = getSupabase();
-      const configId = 'redes_' + filename.replace('.json', '');
-      await supabase.from('site_config').delete().eq('id', configId);
-      return NextResponse.json({ success: true });
-    } catch (e) {
-      return NextResponse.json({ error: 'Failed to delete' }, { status: 500 });
-    }
+    const supabase = getSupabase();
+    const configId = 'redes_' + filename.replace('.json', '');
+    const { error } = await supabase.from('site_config').delete().eq('id', configId);
+    if (error) return NextResponse.json({ error: 'Failed to delete' }, { status: 500 });
+    return NextResponse.json({ success: true });
   }
+
   return NextResponse.json({ error: 'Not allowed' }, { status: 400 });
 }
