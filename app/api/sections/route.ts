@@ -1,31 +1,33 @@
 export const runtime = 'edge';
 
 import { NextResponse } from 'next/server';
-import { createClient } from '@supabase/supabase-js';
 
-function getSupabase() {
-  const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!;
-  const supabaseKey = process.env.SUPABASE_SERVICE_ROLE_KEY || process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!;
-  return createClient(supabaseUrl, supabaseKey);
+const SUPABASE_URL = process.env.NEXT_PUBLIC_SUPABASE_URL!;
+const SUPABASE_KEY = (process.env.SUPABASE_SERVICE_ROLE_KEY || process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY)!;
+
+function headers() {
+  return {
+    'Content-Type': 'application/json',
+    'apikey': SUPABASE_KEY,
+    'Authorization': `Bearer ${SUPABASE_KEY}`,
+  };
 }
 
-async function readSections() {
-  const supabase = getSupabase();
-  const { data, error } = await supabase
-    .from('site_config')
-    .select('data')
-    .eq('id', 'classroom_sections')
-    .single();
-  if (error || !data) return [];
-  return data.data;
+async function readSections(): Promise<any[]> {
+  const res = await fetch(
+    `${SUPABASE_URL}/rest/v1/site_config?id=eq.classroom_sections&select=data&limit=1`,
+    { headers: headers() }
+  );
+  if (!res.ok) return [];
+  const rows = await res.json();
+  return rows?.[0]?.data ?? [];
 }
 
 async function writeSections(sections: any[]) {
-  const supabase = getSupabase();
-  await supabase.from('site_config').upsert({
-    id: 'classroom_sections',
-    data: sections,
-    updated_at: new Date().toISOString(),
+  await fetch(`${SUPABASE_URL}/rest/v1/site_config`, {
+    method: 'POST',
+    headers: { ...headers(), 'Prefer': 'resolution=merge-duplicates' },
+    body: JSON.stringify({ id: 'classroom_sections', data: sections, updated_at: new Date().toISOString() }),
   });
 }
 
