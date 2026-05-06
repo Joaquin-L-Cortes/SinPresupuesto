@@ -1,0 +1,36 @@
+{
+  // ── sinpresito-ai  (Cloudflare Worker independiente) ──────────────────────
+  // Deploy: npx wrangler deploy --config wrangler-ai-worker.jsonc
+  //
+  // Pasos para levantar desde cero:
+  //   1. npx wrangler kv namespace create SINPRE_INDEX
+  //        → copia el namespace_id al campo kv_namespaces[0].id abajo
+  //   2. npx wrangler kv namespace create SINPRE_INDEX --preview
+  //        → copia el preview_id al campo kv_namespaces[0].preview_id
+  //   3. node extract-index.mjs          (solo si partes del worker embebido)
+  //   4. node upload-index.mjs           (sube search_index.json a KV producción)
+  //   5. node upload-index.mjs --preview (sube a KV preview para wrangler dev)
+  //   6. npx wrangler deploy --config wrangler-ai-worker.jsonc
+
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "sinpresito-ai",
+  "main": "cloudflare-worker.js",
+  "compatibility_date": "2026-03-25",
+
+  // ── KV namespace binding ──────────────────────────────────────────────────
+  // El worker accede al índice con:  env.SINPRE_INDEX.get("search_index")
+  "kv_namespaces": [
+    {
+      "binding": "SINPRE_INDEX",
+      "id": "PENDIENTE_npx_wrangler_kv_namespace_create_SINPRE_INDEX",
+      "preview_id": "PENDIENTE_npx_wrangler_kv_namespace_create_SINPRE_INDEX_--preview"
+    }
+  ],
+
+  // ── Secretos (configurar con wrangler secret put) ─────────────────────────
+  // npx wrangler secret put AI_API_TOKEN --config wrangler-ai-worker.jsonc
+  // npx wrangler secret put CF_ACCOUNT_ID --config wrangler-ai-worker.jsonc
+  //
+  // Variables de entorno NO secretas (van aquí si las necesitas):
+  // "vars": {}
+}

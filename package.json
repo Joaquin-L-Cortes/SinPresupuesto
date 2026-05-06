@@ -1,0 +1,37 @@
+{
+  "name": "sinpresupuesto",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint",
+    "cf:build": "opennextjs-cloudflare build --dangerouslyUseUnsupportedNextVersion",
+    "cf:deploy": "opennextjs-cloudflare deploy",
+    "cf:preview": "opennextjs-cloudflare preview",
+    "extract-index": "node extract-index.mjs",
+    "upload-index": "node upload-index.mjs",
+    "upload-index:preview": "node upload-index.mjs --preview",
+    "deploy:ai": "wrangler deploy --config wrangler-ai-worker.jsonc"
+  },
+  "dependencies": {
+    "@keystatic/core": "^0.5.30",
+    "@keystatic/next": "^5.0.1",
+    "@supabase/ssr": "^0.10.2",
+    "@supabase/supabase-js": "^2.105.1",
+    "firebase": "^10.12.0",
+    "next": "^16.2.4",
+    "react": "^18",
+    "react-dom": "^18"
+  },
+  "devDependencies": {
+    "@cloudflare/workers-types": "^4.20240924.0",
+    "@opennextjs/cloudflare": "^1.18.1",
+    "@types/node": "^20",
+    "@types/react": "^18",
+    "@types/react-dom": "^18",
+    "typescript": "^5",
+    "wrangler": "^4.0.0"
+  }
+}

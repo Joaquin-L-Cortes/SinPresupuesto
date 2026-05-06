@@ -1,0 +1,48 @@
+rules_version = '2';
+// firestore.rules
+// NOTA: La autenticación fue migrada a Supabase. Firebase solo se usa para:
+//  - Datos de Libreta (usuarios/{uid}/moderation/libreta*)
+//  - Progreso del usuario (usuarios/{uid}/progress/*)
+//  - Notificaciones globales (global_notifications/)
+//  - Tokens FCM (usuarios/{uid}/fcm_tokens/)
+// La validación de admin ahora es: profile.role === 'admin' en Supabase.
+// Las reglas de Firestore usan el UID de Supabase como clave de documento.
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+    match /usuarios/{userId} {
+      allow read, write: if request.auth != null && request.auth.uid == userId;
+
+      match /progress/{pageKey} {
+        allow read, write: if request.auth != null && request.auth.uid == userId;
+      }
+      match /layout/{pageKey} {
+        allow read, write: if request.auth != null && request.auth.uid == userId;
+      }
+      match /prefs/{prefKey} {
+        allow read, write: if request.auth != null && request.auth.uid == userId;
+      }
+      match /moderation/{docId} {
+        allow read: if request.auth != null && request.auth.uid == userId;
+        allow write: if request.auth != null && request.auth.uid == userId;
+      }
+      match /fcm_tokens/{tokenId} {
+        allow read, write: if request.auth != null && request.auth.uid == userId;
+      }
+    }
+
+    // Notificaciones globales — se mantienen en Firestore
+    // La validación de admin se hace en el servidor / Supabase RLS
+    match /global_notifications/{notifId} {
+      allow read: if request.auth != null;
+      allow create: if request.auth != null
+                    && request.resource.data.authorId == request.auth.uid;
+      // Escritura de admin validada server-side (no hay ADMIN_UID hardcodeado)
+      allow update, delete: if request.auth != null;
+    }
+
+    match /{document=**} {
+      allow read, write: if false;
+    }
+  }
+}

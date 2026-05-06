@@ -1,0 +1,112 @@
+{
+  "logoSrc": "/logos/filosofia.png",
+  "logoAlt": "SinPre",
+  "nombreSitio": "Sin-Presupuesto",
+  "botonIngresar": "👤 Ingresar",
+  "links": [
+    {
+      "id": "l0",
+      "href": "/",
+      "label": "Inicio"
+    },
+    {
+      "id": "l1",
+      "label": "📖 Material",
+      "href": "/materiales",
+      "children": [
+        {
+          "id": "m1",
+          "label": "I. Relámpago - 2026 (Curso Activo)",
+          "href": "/materiales#sec-796643965899"
+        },
+        {
+          "id": "m2",
+          "label": "II. Actividades Relámpago",
+          "href": "/materiales#sec-442805904945"
+        },
+        {
+          "id": "m3",
+          "label": "III. Temarios",
+          "href": "/materiales#sec-196024194452"
+        },
+        {
+          "id": "m4",
+          "label": "IV. Exclusivos SinPre",
+          "href": "/materiales#sec-115386055536"
+        },
+        {
+          "id": "m5",
+          "label": "V. Análisis Textual",
+          "href": "/materiales#sec-309497769996"
+        },
+        {
+          "id": "m6",
+          "label": "VI. Matemáticas",
+          "href": "/materiales#sec-713251410113"
+        },
+        {
+          "id": "m7",
+          "label": "VII. Física",
+          "href": "/materiales#sec-795493393976"
+        },
+        {
+          "id": "m8",
+          "label": "VIII. Química",
+          "href": "/materiales#sec-283084333672"
+        },
+        {
+          "id": "m9",
+          "label": "IX. Biología",
+          "href": "/materiales#sec-394464817454"
+        },
+        {
+          "id": "m10",
+          "label": "X. Sociales",
+          "href": "/materiales#sec-146603582312"
+        },
+        {
+          "id": "m11",
+          "label": "XI. Análisis de Imagen",
+          "href": "/materiales#sec-259160578652"
+        },
+        {
+          "id": "m12",
+          "label": "XII. Extras (UdeA e ICFES)",
+          "href": "/materiales#sec-217983058866"
+        },
+        {
+          "id": "m13",
+          "label": "XIII. Simulacros UN",
+          "href": "/materiales#sec-772846939626"
+        },
+        {
+          "id": "m14",
+          "label": "XIV. Clases Extras",
+          "href": "/materiales#sec-654942944318"
+        },
+        {
+          "id": "m15",
+          "label": "XV. Exámenes UN",
+          "href": "/materiales#sec-254418579177"
+        }
+      ]
+    },
+    {
+      "id": "l2",
+      "href": "/clases",
+      "label": "📺 Clases"
+    },
+    {
+      "id": "l3",
+      "href": "/comunidad",
+      "label": "💬 Comunidad",
+      "children": []
+    },
+    {
+      "id": "l4",
+      "href": "/redes",
+      "label": "🌐 Redes",
+      "children": []
+    }
+  ]
+}

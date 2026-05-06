@@ -1,0 +1,138 @@
+{
+  "titulo": "⚡ SinPree Relámpago — 2026",
+  "fechas": "16 mar – 25 abr",
+  "meetUrl": "https://meet.google.com/efp-ocww-oao",
+  "cols": [
+    "Lun",
+    "Mar",
+    "Mié",
+    "Jue",
+    "Vie",
+    "Sáb"
+  ],
+  "rows": [
+    {
+      "label": "12–2 pm",
+      "cells": [
+        {
+          "materia": "",
+          "subTexto": "",
+          "logo": "",
+          "color": ""
+        },
+        {
+          "materia": "",
+          "subTexto": "",
+          "logo": "",
+          "color": ""
+        },
+        {
+          "materia": "",
+          "subTexto": "",
+          "logo": "",
+          "color": ""
+        },
+        {
+          "materia": "",
+          "subTexto": "",
+          "logo": "",
+          "color": ""
+        },
+        {
+          "materia": "",
+          "subTexto": "",
+          "logo": "",
+          "color": ""
+        },
+        {
+          "materia": "Reposiciones",
+          "subTexto": "",
+          "logo": "",
+          "color": "#f0f0f5"
+        }
+      ]
+    },
+    {
+      "label": "3–5 pm",
+      "cells": [
+        {
+          "materia": "Filosofía",
+          "subTexto": "Teoría",
+          "logo": "/logos/filosofia.png",
+          "color": "#e8f0fd"
+        },
+        {
+          "materia": "",
+          "subTexto": "",
+          "logo": "",
+          "color": ""
+        },
+        {
+          "materia": "Filosofía",
+          "subTexto": "Metodología",
+          "logo": "/logos/filosofia.png",
+          "color": "#e8f0fd"
+        },
+        {
+          "materia": "",
+          "subTexto": "",
+          "logo": "",
+          "color": ""
+        },
+        {
+          "materia": "",
+          "subTexto": "",
+          "logo": "",
+          "color": ""
+        },
+        {
+          "materia": "Imagen",
+          "subTexto": "",
+          "logo": "/logos/imagen.png",
+          "color": "#f5e8fc"
+        }
+      ]
+    },
+    {
+      "label": "6–8 pm",
+      "cells": [
+        {
+          "materia": "Biología",
+          "subTexto": "",
+          "logo": "/logos/biologia.png",
+          "color": "#e6f9f0"
+        },
+        {
+          "materia": "Matemát.",
+          "subTexto": "",
+          "logo": "/logos/matematicas.png",
+          "color": "#d0e4ff"
+        },
+        {
+          "materia": "Química",
+          "subTexto": "",
+          "logo": "/logos/quimica.png",
+          "color": "#c8eed8"
+        },
+        {
+          "materia": "Textual",
+          "subTexto": "",
+          "logo": "/logos/textual.png",
+          "color": "#fdecea"
+        },
+        {
+          "materia": "Física",
+          "subTexto": "",
+          "logo": "/logos/fisica.png",
+          "color": "#fce8f5"
+        },
+        {
+          "materia": "Sociales",
+          "subTexto": "",
+          "logo": "/logos/sociales.png",
+          "color": "#fff0de"
+        }
+      ]
+    }
+  ]
+}

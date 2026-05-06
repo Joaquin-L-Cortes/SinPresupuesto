@@ -1,0 +1,57 @@
+{
+  "id": "/",
+  "name": "Sin-Presupuesto · PreUniversitario gratuito",
+  "short_name": "SinPresupuesto",
+  "description": "Preuniversitario 100% gratuito y popular para la admisión a la Universidad Nacional.",
+  "start_url": "/",
+  "display": "standalone",
+  "theme_color": "#1a3a6b",
+  "background_color": "#1a3a6b",
+  "lang": "es",
+  "icons": [
+    {
+      "src": "/icon-192-any.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/icon-192-maskable.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "maskable"
+    },
+    {
+      "src": "/icon-512-any.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/icon-512-maskable.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ],
+  "screenshots": [
+    {
+      "src": "/screenshot-mobile.png",
+      "sizes": "390x844",
+      "type": "image/png",
+      "form_factor": "narrow",
+      "label": "Sin-Presupuesto en móvil"
+    },
+    {
+      "src": "/screenshot-desktop.png",
+      "sizes": "1280x800",
+      "type": "image/png",
+      "form_factor": "wide",
+      "label": "Sin-Presupuesto en escritorio"
+    }
+  ],
+  "display_override": [
+    "standalone"
+  ],
+  "prefer_related_applications": false
+}
