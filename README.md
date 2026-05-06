@@ -2,7 +2,7 @@
 
 PreUniversitario gratuito — Next.js 14 + Firebase + Cloudflare Workers
 
-## Arquitectura general 111
+## Arquitectura general 11
 
 | Capa | Tecnología |
 |------|------------|
